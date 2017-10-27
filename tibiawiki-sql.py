@@ -3,6 +3,7 @@ import json
 import requests
 
 from database import init_database
+from parsers import parse_attributes, parse_integers, parse_integer
 
 DATABASE_FILE = "tibia_database.db"
 ENDPOINT = "http://tibia.wikia.com/api.php"
@@ -39,7 +40,7 @@ def fetch_deprecated():
     print(f"{len(deprecated)} found.")
 
 
-def fetch_creature_list():
+def fetch_creature():
     print("Fetching creature list... ", end="")
     params = {
         "action": "query",
@@ -87,7 +88,10 @@ def fetch_creature_list():
             "title": "name",
             "name": "actualname",
             "hitpoints": "hp",
-            "experience": "exp"
+            "experience": "exp",
+            "maxdamage": "maxdmg",
+            "summon": "summon",
+            "convince": "convince"
         }
         for id, article in creature_pages.items():
             content = article["revisions"][0]["*"]
@@ -98,9 +102,27 @@ def fetch_creature_list():
             tup = ()
             for sql_attr, wiki_attr in attribute_map.items():
                 try:
-                    tup = tup + (creature[wiki_attr],)
+                    # Attribute special cases
+                    # If no actualname is found, we assume it is the same as title
+                    value = creature[wiki_attr]
+                    if wiki_attr == "actualname" and creature.get(wiki_attr, "") == "":
+                        value = creature["name"]
+                    # Max damage field may contain text and multiple numbers, we need the biggest one.
+                    elif wiki_attr == "maxdmg":
+                        damages = parse_integers(creature["maxdmg"])
+                        if len(damages) == 0:
+                            value = None
+                        else:
+                            value = max(damages)
+                    # Anything that is not a number is set to 0, meaning not summonable/convinceable
+                    elif wiki_attr in ["summon","convince"]:
+                        value = parse_integer(creature.get(wiki_attr, 0))
+                    tup = tup + (value,)
                 except KeyError:
                     tup = tup + (None,)
+                except:
+                    print(f"Unknown exception found for {article['title']}")
+                    print(creature)
             creature_data.append(tup)
     with con:
         con.executemany(f"INSERT INTO creatures({','.join(attribute_map.keys())}) "
@@ -108,49 +130,9 @@ def fetch_creature_list():
                         creature_data)
 
 
-def parse_attributes(content):
-    attributes = dict()
-    depth = 0
-    parse_value = False
-    attribute = ""
-    value = ""
-    for i in range(len(content)):
-        if content[i] == '{' or content[i] == '[':
-            depth += 1
-            if depth >= 3:
-                if parse_value:
-                    value = value + content[i]
-                else:
-                    attribute = attribute + content[i]
-        elif content[i] == '}' or content[i] == ']':
-            if depth >= 3:
-                if parse_value:
-                    value = value + content[i]
-                else:
-                    attribute = attribute + content[i]
-            if depth == 2:
-                attributes[attribute.strip()] = value.strip()
-                parse_value = False
-                attribute = ""
-                value = ""
-            depth -= 1
-        elif content[i] == '=' and depth == 2:
-            parse_value = True
-        elif content[i] == '|' and depth == 2:
-            attributes[attribute.strip()] = value.strip()
-            parse_value = False
-            attribute = ""
-            value = ""
-        elif parse_value:
-            value = value + content[i]
-        else:
-            attribute = attribute + content[i]
-    return attributes
-
-
 if __name__ == "__main__":
     print("Running...")
     con = init_database(DATABASE_FILE)
     fetch_deprecated()
-    fetch_creature_list()
+    fetch_creature()
     input("Done")

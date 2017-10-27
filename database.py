@@ -11,7 +11,10 @@ def init_database(name):
             `title`	STRING,
             `name`	STRING,
             `hitpoints`	INTEGER,
-            `experience`	INTEGER
+            `experience`	INTEGER,
+            `maxdamage` INTEGER,
+            `summon` INTEGER,
+            `convince` INTEGER
         );
         """)
     return con
