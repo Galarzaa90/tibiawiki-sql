@@ -14,10 +14,25 @@ def parse_integer(value: str, default=0):
     else:
         return default
 
+
 def parse_integers(value: str) -> List[int]:
     matches = re.findall(numbers_pattern, value)
     return list(map(int, matches))
 
+
+def parse_boolean(value: str):
+    return value.strip().lower() == "yes"
+
+def clean_links(content):
+    # Named links
+    content = re.sub(r'\[\[[^]|]+\|([^]]+)\]\]', '\g<1>', content)
+    # Links
+    content = re.sub(r'\[\[([^]]+)\]\]', '\g<1>', content)
+    # External links
+    content = re.sub(r'\[[^]]+\]', '', content)
+    # Double spaces
+    content = content.replace('  ', ' ')
+    return content
 
 def parse_attributes(content):
     attributes = dict()

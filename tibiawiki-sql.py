@@ -3,13 +3,13 @@ import json
 import requests
 
 from database import init_database
-from parsers import parse_attributes, parse_integers, parse_integer
+from parsers import parse_attributes, parse_integers, parse_integer, parse_boolean, clean_links
 
 DATABASE_FILE = "tibia_database.db"
 ENDPOINT = "http://tibia.wikia.com/api.php"
 
 headers = {
-    'User-Agent': 'tibiawiki-sql 1.0'
+    'User-Agent': 'tibiawiki-sql 1.1'
 }
 
 deprecated = []
@@ -91,7 +91,23 @@ def fetch_creature():
             "experience": "exp",
             "maxdamage": "maxdmg",
             "summon": "summon",
-            "convince": "convince"
+            "convince": "convince",
+            "illusionable": "illusionable",
+            "pushable": "pushable",
+            "paralyzable": "paraimmune",
+            "sense_invis": "senseinvis",
+            "boss": "isboss",
+            "physical": "physicalDmgMod",
+            "earth": "earthDmgMod",
+            "fire": "fireDmgMod",
+            "ice": "iceDmgMod",
+            "energy": "energyDmgMod",
+            "death": "deathDmgMod",
+            "holy": "holyDmgMod",
+            "drown": "drownDmgMod",
+            "hpdrain": "hpDrainDmgMod",
+            "abilities": "abilities",
+            "version": "implemented"
         }
         for id, article in creature_pages.items():
             content = article["revisions"][0]["*"]
@@ -102,9 +118,9 @@ def fetch_creature():
             tup = ()
             for sql_attr, wiki_attr in attribute_map.items():
                 try:
+                    value = creature[wiki_attr]
                     # Attribute special cases
                     # If no actualname is found, we assume it is the same as title
-                    value = creature[wiki_attr]
                     if wiki_attr == "actualname" and creature.get(wiki_attr, "") == "":
                         value = creature["name"]
                     # Max damage field may contain text and multiple numbers, we need the biggest one.
@@ -115,11 +131,16 @@ def fetch_creature():
                         else:
                             value = max(damages)
                     # Clean question marks and other symbols. If value is not a number, set to None, meaning unknown
-                    elif wiki_attr in ["hp", "exp"]:
+                    elif sql_attr in ["hitpoints", "experience", "physical", "fire", "earth", "ice", "energy", "death",
+                                      "holy", "drown", "hpdrain"]:
                         value = parse_integer(creature.get(wiki_attr), None)
                     # Anything that is not a number is set to 0, meaning not summonable/convinceable
                     elif wiki_attr in ["summon", "convince"]:
                         value = parse_integer(creature.get(wiki_attr))
+                    elif wiki_attr in ["illusionable", "pushable", "paraimmune", "senseinvis", "isboss"]:
+                        value = parse_boolean(creature.get(wiki_attr))
+                    elif wiki_attr == "abilities":
+                        value = clean_links(creature.get(wiki_attr))
                     tup = tup + (value,)
                 except KeyError:
                     tup = tup + (None,)
