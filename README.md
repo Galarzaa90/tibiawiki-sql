@@ -17,10 +17,10 @@ externally.
     * **requests** module
 
 ## Database contents
-* Creatures (basic information)
+* Creatures
+* Items (basic information)
 
 Planned:
-* Items
 * Creature drops
 * NPCs
 * NPC offers

@@ -68,7 +68,7 @@ def fetch_creature():
     print(f"\t{len(creatures)} creatures after removing deprecated creatures.")
     i = 0
     creature_data = []
-    print("Fetching creature information...")
+    print("Fetching creature information...",end="")
     while True:
         if i > len(creatures):
             break
@@ -152,6 +152,78 @@ def fetch_creature():
         con.executemany(f"INSERT INTO creatures({','.join(attribute_map.keys())}) "
                         f"VALUES({','.join(['?']*len(attribute_map.keys()))})",
                         creature_data)
+    print("Done")
+
+def fetch_items():
+    print("Fetching item list... ", end="")
+    params = {
+        "action": "query",
+        "list": "categorymembers",
+        "cmtitle": "Category:Items",
+        "cmlimit": 500,
+        "cmtype": "page",
+        "format": "json",
+    }
+    cmcontinue = None
+    items = []
+    while True:
+        params["cmcontinue"] = cmcontinue
+        r = requests.get(ENDPOINT, headers=headers, params=params)
+        data = json.loads(r.text)
+        category_members = data["query"]["categorymembers"]
+        if len(category_members) > 0:
+            items.extend([i["title"] for i in category_members if i["title"] != "Creatures"])
+        try:
+            cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
+        except KeyError:
+            break
+    print(f"{len(items)} items found.")
+    items = [c for c in items if c not in deprecated]
+    print(f"\t{len(items)} items after removing deprecated creatures.")
+    i = 0
+    item_data = []
+    print("Fetching creature information...", end="")
+    while True:
+        if i > len(items):
+            break
+        params = {
+            "action": "query",
+            "prop": "revisions",
+            "rvprop": "content",
+            "format": "json",
+            "titles": "|".join(items[i:min(i + 50, len(items))])
+        }
+        i += 50
+        r = requests.get(ENDPOINT, headers=headers, params=params)
+        data = json.loads(r.text)
+        item_pages = data["query"]["pages"]
+
+        attribute_map = {
+            "title": "name",
+            "name": "actualname",
+        }
+        for id, article in item_pages.items():
+            content = article["revisions"][0]["*"]
+            if "{{Infobox Item" not in content:
+                # Skipping pages like creature groups articles
+                continue
+            item = parse_attributes(content)
+            tup = ()
+            for sql_attr, wiki_attr in attribute_map.items():
+                try:
+                    value = item[wiki_attr]
+                    tup = tup + (value,)
+                except KeyError:
+                    tup = tup + (None,)
+                except:
+                    print(f"Unknown exception found for {article['title']}")
+                    print(item)
+            item_data.append(tup)
+    with con:
+        con.executemany(f"INSERT INTO items({','.join(attribute_map.keys())}) "
+                        f"VALUES({','.join(['?']*len(attribute_map.keys()))})",
+                        item_data)
+    print("Done")
 
 
 if __name__ == "__main__":
@@ -159,4 +231,5 @@ if __name__ == "__main__":
     con = init_database(DATABASE_FILE)
     fetch_deprecated()
     fetch_creature()
+    fetch_items()
     print("Done")
