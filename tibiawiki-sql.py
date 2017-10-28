@@ -77,7 +77,7 @@ def fetch_creature():
             "prop": "revisions",
             "rvprop": "content",
             "format": "json",
-            "titles": "|".join(creatures[i:min(i+50, len(creatures))])
+            "titles": "|".join(creatures[i:min(i + 50, len(creatures))])
         }
         i += 50
         r = requests.get(ENDPOINT, headers=headers, params=params)
@@ -114,9 +114,12 @@ def fetch_creature():
                             value = None
                         else:
                             value = max(damages)
+                    # Clean question marks and other symbols. If value is not a number, set to None, meaning unknown
+                    elif wiki_attr in ["hp", "exp"]:
+                        value = parse_integer(creature.get(wiki_attr), None)
                     # Anything that is not a number is set to 0, meaning not summonable/convinceable
-                    elif wiki_attr in ["summon","convince"]:
-                        value = parse_integer(creature.get(wiki_attr, 0))
+                    elif wiki_attr in ["summon", "convince"]:
+                        value = parse_integer(creature.get(wiki_attr))
                     tup = tup + (value,)
                 except KeyError:
                     tup = tup + (None,)
@@ -135,4 +138,4 @@ if __name__ == "__main__":
     con = init_database(DATABASE_FILE)
     fetch_deprecated()
     fetch_creature()
-    input("Done")
+    print("Done")

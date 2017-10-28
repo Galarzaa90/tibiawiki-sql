@@ -8,11 +8,11 @@ numbers_pattern = r"\d+"
 
 
 def parse_integer(value: str, default=0):
-    try:
-        return int(value)
-    except ValueError:
+    match = re.search(numbers_pattern, value)
+    if match:
+        return int(match.group(0))
+    else:
         return default
-
 
 def parse_integers(value: str) -> List[int]:
     matches = re.findall(numbers_pattern, value)
