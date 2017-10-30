@@ -5,6 +5,20 @@ from typing import List
 
 # Matches all numbers in a string
 numbers_pattern = r"\d+"
+creature_loot_pattern = r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)"
+min_max_pattern = r"(\d+)-(\d+)"
+loot_statistics_pattern = r"\|([\s\w]+),\s*times:(\d+)(?:,\s*amount:([\d-]+))?"
+
+def parse_loot(value: str):
+    return re.findall(creature_loot_pattern, value)
+
+
+def parse_min_max(value):
+    match = re.search(min_max_pattern, value)
+    if match:
+        return int(match.group(1)), int(match.group(2))
+    else:
+        return 0, parse_integer(value, 1)
 
 
 def parse_integer(value: str, default=0):

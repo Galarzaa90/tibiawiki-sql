@@ -3,7 +3,8 @@ import json
 import requests
 
 from database import init_database
-from parsers import parse_attributes, parse_integers, parse_integer, parse_boolean, clean_links
+from parsers import parse_attributes, parse_integers, parse_integer, parse_boolean, clean_links, parse_loot, \
+    parse_min_max
 
 DATABASE_FILE = "tibia_database.db"
 ENDPOINT = "http://tibia.wikia.com/api.php"
@@ -16,7 +17,7 @@ deprecated = []
 
 
 def fetch_deprecated():
-    print("Fetching deprecated articles list... ", end="")
+    print("Fetching deprecated articles list... ")
     params = {
         "action": "query",
         "list": "categorymembers",
@@ -37,11 +38,11 @@ def fetch_deprecated():
             cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
         except KeyError:
             break
-    print(f"{len(deprecated)} found.")
+    print(f"\t{len(deprecated)} found.")
 
 
 def fetch_creature():
-    print("Fetching creature list... ", end="")
+    print("Fetching creature list... ")
     params = {
         "action": "query",
         "list": "categorymembers",
@@ -63,12 +64,12 @@ def fetch_creature():
             cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
         except KeyError:
             break
-    print(f"{len(creatures)} creatures found.")
+    print(f"\t{len(creatures)} creatures found.")
     creatures = [c for c in creatures if c not in deprecated]
     print(f"\t{len(creatures)} creatures after removing deprecated creatures.")
     i = 0
     creature_data = []
-    print("Fetching creature information...",end="")
+    print("Fetching creature information...")
     while True:
         if i > len(creatures):
             break
@@ -79,11 +80,38 @@ def fetch_creature():
             "format": "json",
             "titles": "|".join(creatures[i:min(i + 50, len(creatures))])
         }
-        i += 50
+
         r = requests.get(ENDPOINT, headers=headers, params=params)
         data = json.loads(r.text)
         creature_pages = data["query"]["pages"]
 
+        params = {
+            "action": "query",
+            "prop": "revisions",
+            "rvprop": "content",
+            "format": "json",
+            "titles": "|".join([f"Loot Statistics:{c}" for c in creatures[i:min(i + 50, len(creatures))]])
+        }
+
+        r = requests.get(ENDPOINT, headers=headers, params=params)
+        data = json.loads(r.text)
+        creature_loot = data["query"]["pages"]
+
+        # TODO: Process creature images
+        """
+        params = {
+            "action": "query",
+            "prop": "imageinfo",
+            "iiprop": "url",
+            "format": "json",
+            "titles": "|".join([f"File:{c}.gif" for c in creatures[i:min(i + 50, len(creatures))]])
+        }
+
+        r = requests.get(ENDPOINT, headers=headers, params=params)
+        data = json.loads(r.text)
+        creature_images = data["query"]["pages"]"""
+
+        i += 50
         attribute_map = {
             "title": "name",
             "name": "actualname",
@@ -109,7 +137,9 @@ def fetch_creature():
             "abilities": "abilities",
             "version": "implemented"
         }
+        c = con.cursor()
         for id, article in creature_pages.items():
+            skip = False
             content = article["revisions"][0]["*"]
             if "{{Infobox Creature" not in content:
                 # Skipping pages like creature groups articles
@@ -147,15 +177,36 @@ def fetch_creature():
                 except:
                     print(f"Unknown exception found for {article['title']}")
                     print(creature)
-            creature_data.append(tup)
-    with con:
-        con.executemany(f"INSERT INTO creatures({','.join(attribute_map.keys())}) "
-                        f"VALUES({','.join(['?']*len(attribute_map.keys()))})",
-                        creature_data)
-    print("Done")
+                    skip = True
+            if skip:
+                continue
+            c.execute(f"INSERT INTO creatures({','.join(attribute_map.keys())}) "
+                      f"VALUES({','.join(['?']*len(attribute_map.keys()))})", tup)
+            creatureid = c.lastrowid
+            # Add loot from creature's article
+            # TODO: This should only be a fallback in case creature has no loot statistics
+            if "loot" in creature:
+                loot = parse_loot(creature["loot"])
+                loot_items = []
+                for item in loot:
+                    c.execute("SELECT id FROM items WHERE title = ?", (item[1],))
+                    itemid = c.fetchone()
+                    if itemid is None:
+                        continue
+                    itemid = itemid[0]
+                    if not item[0]:
+                        _min, _max = 0, 1
+                    else:
+                        _min, _max = parse_min_max(item[0])
+                    loot_items.append((creatureid, itemid, _min, _max))
+                c.executemany(f"INSERT INTO creature_drops(creatureid, itemid, min, max) VALUES(?,?,?,?)", loot_items)
+
+        con.commit()
+    print("\tDone")
+
 
 def fetch_items():
-    print("Fetching item list... ", end="")
+    print("Fetching item list... ")
     params = {
         "action": "query",
         "list": "categorymembers",
@@ -177,12 +228,12 @@ def fetch_items():
             cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
         except KeyError:
             break
-    print(f"{len(items)} items found.")
+    print(f"\t{len(items)} items found.")
     items = [c for c in items if c not in deprecated]
     print(f"\t{len(items)} items after removing deprecated creatures.")
     i = 0
     item_data = []
-    print("Fetching items information...", end="")
+    print("Fetching items information...")
     while True:
         if i > len(items):
             break
@@ -233,13 +284,13 @@ def fetch_items():
         con.executemany(f"INSERT INTO items({','.join(attribute_map.keys())}) "
                         f"VALUES({','.join(['?']*len(attribute_map.keys()))})",
                         item_data)
-    print("Done")
+    print("\tDone")
 
 
 if __name__ == "__main__":
     print("Running...")
     con = init_database(DATABASE_FILE)
     fetch_deprecated()
-    fetch_creature()
     fetch_items()
+    fetch_creature()
     print("Done")

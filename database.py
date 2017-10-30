@@ -33,6 +33,16 @@ def init_database(name):
             `version` TEXT
         );
         """)
+        con.execute("DROP TABLE IF EXISTS creature_drops")
+        con.execute("""
+        CREATE TABLE `creature_drops` (
+            `creatureid`	INTEGER,
+            `itemid`	INTEGER,
+            `chance`	REAL,
+            `min`	INTEGER,
+            `max`	INTEGER
+        );
+        """)
 
         con.execute("DROP TABLE IF EXISTS items")
         con.execute("""
