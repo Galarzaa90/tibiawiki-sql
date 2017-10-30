@@ -39,7 +39,13 @@ def init_database(name):
         CREATE TABLE `items` (
             `id`	INTEGER PRIMARY KEY AUTOINCREMENT,
             `title`	TEXT,
-            `name`	TEXT
+            `name`	TEXT,
+            `stackable` INTEGER DEFAULT 0,
+            `value`INTEGER,
+            `version` TEXT,
+            `weight` REAL,
+            `type` TEXT,
+            `flavortext` TEXT
         );
         """)
 

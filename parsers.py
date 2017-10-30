@@ -21,7 +21,8 @@ def parse_integers(value: str) -> List[int]:
 
 
 def parse_boolean(value: str):
-    return value.strip().lower() == "yes"
+    return value is None or value.strip().lower() == "yes"
+
 
 def clean_links(content):
     # Named links
@@ -33,6 +34,7 @@ def clean_links(content):
     # Double spaces
     content = content.replace('  ', ' ')
     return content
+
 
 def parse_attributes(content):
     attributes = dict()

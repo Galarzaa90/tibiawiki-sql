@@ -19,7 +19,7 @@ externally.
 ## Database contents
 * Creatures
 * Items (basic information)
-
+    
 Planned:
 * Creature drops
 * NPCs

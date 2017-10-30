@@ -172,7 +172,7 @@ def fetch_items():
         data = json.loads(r.text)
         category_members = data["query"]["categorymembers"]
         if len(category_members) > 0:
-            items.extend([i["title"] for i in category_members if i["title"] != "Creatures"])
+            items.extend([i["title"] for i in category_members if i["title"] != "Items"])
         try:
             cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
         except KeyError:
@@ -182,7 +182,7 @@ def fetch_items():
     print(f"\t{len(items)} items after removing deprecated creatures.")
     i = 0
     item_data = []
-    print("Fetching creature information...", end="")
+    print("Fetching items information...", end="")
     while True:
         if i > len(items):
             break
@@ -201,10 +201,16 @@ def fetch_items():
         attribute_map = {
             "title": "name",
             "name": "actualname",
+            "weight": "weight",
+            "stackable": "stackable",
+            "value": "npcvalue",
+            "version": "implemented",
+            "flavortext": "flavortext",
+            "type": "primarytype"
         }
         for id, article in item_pages.items():
             content = article["revisions"][0]["*"]
-            if "{{Infobox Item" not in content:
+            if "{{Infobox Item|" not in content:
                 # Skipping pages like creature groups articles
                 continue
             item = parse_attributes(content)
@@ -212,6 +218,10 @@ def fetch_items():
             for sql_attr, wiki_attr in attribute_map.items():
                 try:
                     value = item[wiki_attr]
+                    if wiki_attr == "actualname" and item.get(wiki_attr, "") == "":
+                        value = item["name"]
+                    elif wiki_attr == "stackable":
+                        value = parse_boolean(value)
                     tup = tup + (value,)
                 except KeyError:
                     tup = tup + (None,)
