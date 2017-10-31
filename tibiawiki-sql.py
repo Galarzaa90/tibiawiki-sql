@@ -1,4 +1,5 @@
 import json
+import re
 
 import requests
 
@@ -287,13 +288,14 @@ def fetch_items():
             "flavortext": "flavortext",
             "type": "primarytype"
         }
+        c = con.cursor()
         for id, article in item_pages.items():
             content = article["revisions"][0]["*"]
             if "{{Infobox Item|" not in content:
                 # Skipping pages like creature groups articles
                 continue
             item = parse_attributes(content)
-            tup = ()
+            item_data = ()
             for sql_attr, wiki_attr in attribute_map.items():
                 try:
                     value = item[wiki_attr]
@@ -301,17 +303,68 @@ def fetch_items():
                         value = item["name"]
                     elif wiki_attr == "stackable":
                         value = parse_boolean(value)
-                    tup = tup + (value,)
+                    item_data = item_data + (value,)
                 except KeyError:
-                    tup = tup + (None,)
+                    item_data = item_data + (None,)
                 except:
                     print(f"Unknown exception found for {article['title']}")
                     print(item)
-            item_data.append(tup)
-    with con:
-        con.executemany(f"INSERT INTO items({','.join(attribute_map.keys())}) "
-                        f"VALUES({','.join(['?']*len(attribute_map.keys()))})",
-                        item_data)
+            c.execute(f"INSERT INTO items({','.join(attribute_map.keys())}) "
+                      f"VALUES({','.join(['?']*len(attribute_map.keys()))})", item_data)
+            itemid = c.lastrowid
+            extra_attributes = {
+                "level": "levelrequired",
+                "attack": "attack",
+                "elementattack:": "elementattack",
+                "defense": "defense",
+                "defensemod": "defensemod",
+                "armor": "armor",
+                "hands": "hands",
+                "imbueslots": "imbueslots",
+                "attack+": "atk_mod",
+                "hit%+": "hit_mod",
+                "range": "range",
+                "damagetype": "damagetype",
+                "damage": "damage",
+                "mana": "mana"
+            }
+            extra_data = []
+            for sql_attr, wiki_attr in extra_attributes.items():
+                if wiki_attr in item and item[wiki_attr]:
+                    extra_data.append((itemid, sql_attr, item[wiki_attr]))
+            # These attributes require some extra processing
+            if "resist" in item and item["resist"]:
+                resistances = item["resist"].split(",")
+                for element in resistances:
+                    element = element.strip()
+                    m = re.search(r'([a-zA-Z0-9_ ]+) +(-?\+?\d+)%', element)
+                    if m:
+                        attribute = m.group(1) + "%"
+                        try:
+                            value = int(m.group(2))
+                        except ValueError:
+                            value = 0
+                        extra_data.append((itemid, attribute, value))
+            if "attrib" in item and item["attrib"]:
+                attribs = item["attrib"].split(",")
+                for attr in attribs:
+                    attr = attr.strip()
+                    m = re.search(r'([\s\w]+)\s([+\-\d]+)', attr)
+                    if m:
+                        attribute = m.group(1).replace("fighting", "").replace("level", "").strip()
+                        value = m.group(2)
+                        extra_data.append((itemid, attribute, value))
+            if "imbuements" in item and item["imbuements"]:
+                imbuements = item["imbuements"].split(",")
+                for imbuement in imbuements:
+                    imbuement = imbuement.strip()
+                    extra_data.append((itemid, "imbuement", imbuement))
+            if "vocrequired" in item and item["vocrequired"] and item["vocrequired"] != "None":
+                vocation = item['vocrequired'].replace('knights', 'k').replace('druids', 'd')\
+                    .replace('sorcerers', 's').replace('paladins', 'p').replace(' and ', '+')
+                extra_data.append((itemid, "vocation", vocation))
+            c.executemany("INSERT INTO item_attributes(itemid, attribute, value) VALUES(?,?,?)", extra_data)
+        con.commit()
     print("\tDone")
 
 

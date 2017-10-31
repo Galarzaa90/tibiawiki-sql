@@ -18,12 +18,15 @@ externally.
 
 ## Database contents
 * Creatures
-* Items (basic information)
+* Items
 * Creature drop statistics
     
 Planned:
 * NPCs
 * NPC offers
+* Spells and runes
+* Houses
+* Achievements
 * Quests
 * *and more...* 
     

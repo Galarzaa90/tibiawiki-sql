@@ -59,4 +59,13 @@ def init_database(name):
         );
         """)
 
+        con.execute("DROP TABLE IF EXISTS item_attributes")
+        con.execute("""
+        CREATE TABLE `item_attributes` (
+            `itemid`	INTEGER,
+            `attribute`	TEXT,
+            `value`	TEXT
+        );
+        """)
+
     return con
