@@ -19,9 +19,9 @@ externally.
 ## Database contents
 * Creatures
 * Items (basic information)
+* Creature drop statistics
     
 Planned:
-* Creature drops
 * NPCs
 * NPC offers
 * Quests

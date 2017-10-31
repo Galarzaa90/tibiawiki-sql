@@ -4,7 +4,7 @@ import requests
 
 from database import init_database
 from parsers import parse_attributes, parse_integers, parse_integer, parse_boolean, clean_links, parse_loot, \
-    parse_min_max
+    parse_min_max, parse_loot_statistics
 
 DATABASE_FILE = "tibia_database.db"
 ENDPOINT = "http://tibia.wikia.com/api.php"
@@ -68,7 +68,6 @@ def fetch_creature():
     creatures = [c for c in creatures if c not in deprecated]
     print(f"\t{len(creatures)} creatures after removing deprecated creatures.")
     i = 0
-    creature_data = []
     print("Fetching creature information...")
     while True:
         if i > len(creatures):
@@ -84,33 +83,6 @@ def fetch_creature():
         r = requests.get(ENDPOINT, headers=headers, params=params)
         data = json.loads(r.text)
         creature_pages = data["query"]["pages"]
-
-        params = {
-            "action": "query",
-            "prop": "revisions",
-            "rvprop": "content",
-            "format": "json",
-            "titles": "|".join([f"Loot Statistics:{c}" for c in creatures[i:min(i + 50, len(creatures))]])
-        }
-
-        r = requests.get(ENDPOINT, headers=headers, params=params)
-        data = json.loads(r.text)
-        creature_loot = data["query"]["pages"]
-
-        # TODO: Process creature images
-        """
-        params = {
-            "action": "query",
-            "prop": "imageinfo",
-            "iiprop": "url",
-            "format": "json",
-            "titles": "|".join([f"File:{c}.gif" for c in creatures[i:min(i + 50, len(creatures))]])
-        }
-
-        r = requests.get(ENDPOINT, headers=headers, params=params)
-        data = json.loads(r.text)
-        creature_images = data["query"]["pages"]"""
-
         i += 50
         attribute_map = {
             "title": "name",
@@ -184,7 +156,6 @@ def fetch_creature():
                       f"VALUES({','.join(['?']*len(attribute_map.keys()))})", tup)
             creatureid = c.lastrowid
             # Add loot from creature's article
-            # TODO: This should only be a fallback in case creature has no loot statistics
             if "loot" in creature:
                 loot = parse_loot(creature["loot"])
                 loot_items = []
@@ -202,6 +173,63 @@ def fetch_creature():
                 c.executemany(f"INSERT INTO creature_drops(creatureid, itemid, min, max) VALUES(?,?,?,?)", loot_items)
 
         con.commit()
+        c.close()
+    print("\tDone")
+
+    print("Fetching creature loot statistics...")
+    i = 0
+    while True:
+        if i > len(creatures):
+            break
+        params = {
+            "action": "query",
+            "prop": "revisions",
+            "rvprop": "content",
+            "format": "json",
+            "titles": "|".join(f"Loot Statistics:{c}" for c in creatures[i:min(i + 50, len(creatures))])
+        }
+
+        r = requests.get(ENDPOINT, headers=headers, params=params)
+        data = json.loads(r.text)
+        loot_pages = data["query"]["pages"]
+        i += 50
+        c = con.cursor()
+        for id, article in loot_pages.items():
+            if "missing" in article:
+                continue
+            content = article["revisions"][0]["*"]
+            creature_name = article["title"].replace("Loot Statistics:", "")
+            c.execute("SELECT id from creatures WHERE title = ?", (creature_name,))
+            creatureid = c.fetchone()
+            if creatureid is None:
+                # This could happen if a creature's article was deleted but its Loot Statistics weren't
+                continue
+            creatureid = creatureid[0]
+            # Most loot statistics contain stats for older version,we only care about the latest version
+            try:
+                start = content.index("Loot2")
+                end = content.index("}}", start)
+                content = content[start:end]
+            except ValueError:
+                # Article contains no loot
+                continue
+            kills, loot_stats = parse_loot_statistics(content)
+            loot_items = []
+            for item, times, amount in loot_stats:
+                c.execute("SELECT id FROM items WHERE title = ?", (item,))
+                itemid = c.fetchone()
+                if itemid is None:
+                    continue
+                itemid = itemid[0]
+                percentage = min(int(times) / kills * 100, 100)
+                _min, _max = parse_min_max(amount)
+                loot_items.append((creatureid, itemid, percentage, _min, _max))
+                # We delete any duplicate record that was added from the creature's article's loot if it exists
+                c.execute("DELETE FROM creature_drops WHERE creatureid = ? AND itemid = ?", (creatureid, itemid))
+            c.executemany(f"INSERT INTO creature_drops(creatureid, itemid, chance, min, max) VALUES(?,?,?,?,?)",
+                          loot_items)
+        con.commit()
+        c.close()
     print("\tDone")
 
 
@@ -230,7 +258,7 @@ def fetch_items():
             break
     print(f"\t{len(items)} items found.")
     items = [c for c in items if c not in deprecated]
-    print(f"\t{len(items)} items after removing deprecated creatures.")
+    print(f"\t{len(items)} items after removing deprecated items.")
     i = 0
     item_data = []
     print("Fetching items information...")

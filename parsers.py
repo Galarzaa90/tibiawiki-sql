@@ -8,9 +8,18 @@ numbers_pattern = r"\d+"
 creature_loot_pattern = r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)"
 min_max_pattern = r"(\d+)-(\d+)"
 loot_statistics_pattern = r"\|([\s\w]+),\s*times:(\d+)(?:,\s*amount:([\d-]+))?"
+kills_pattern = r"kills=(\d+)"
 
 def parse_loot(value: str):
     return re.findall(creature_loot_pattern, value)
+
+
+def parse_loot_statistics(value):
+    match = re.search(kills_pattern, value)
+    if match:
+        return int(match.group(1)), re.findall(loot_statistics_pattern, value)
+    else:
+        return 0, None
 
 
 def parse_min_max(value):
