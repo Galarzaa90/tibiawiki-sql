@@ -10,7 +10,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | items | Contains information for all items.
 | item_attributes | Contains extra attributes and properties of items that only apply to certain types.
 
-### Creatures
+### creatures
 
 #### Columns
 | Name | Type | Description |
