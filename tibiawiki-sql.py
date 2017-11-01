@@ -171,7 +171,7 @@ def fetch_creature():
                     else:
                         _min, _max = parse_min_max(item[0])
                     loot_items.append((creatureid, itemid, _min, _max))
-                c.executemany(f"INSERT INTO creature_drops(creatureid, itemid, min, max) VALUES(?,?,?,?)", loot_items)
+                c.executemany(f"INSERT INTO creatures_drops(creature_id, item_id, min, max) VALUES(?,?,?,?)", loot_items)
 
         con.commit()
         c.close()
@@ -226,8 +226,8 @@ def fetch_creature():
                 _min, _max = parse_min_max(amount)
                 loot_items.append((creatureid, itemid, percentage, _min, _max))
                 # We delete any duplicate record that was added from the creature's article's loot if it exists
-                c.execute("DELETE FROM creature_drops WHERE creatureid = ? AND itemid = ?", (creatureid, itemid))
-            c.executemany(f"INSERT INTO creature_drops(creatureid, itemid, chance, min, max) VALUES(?,?,?,?,?)",
+                c.execute("DELETE FROM creatures_drops WHERE creature_id = ? AND item_id = ?", (creatureid, itemid))
+            c.executemany(f"INSERT INTO creatures_drops(creature_id, item_id, chance, min, max) VALUES(?,?,?,?,?)",
                           loot_items)
         con.commit()
         c.close()
@@ -285,7 +285,7 @@ def fetch_items():
             "stackable": "stackable",
             "value": "npcvalue",
             "version": "implemented",
-            "flavortext": "flavortext",
+            "flavor_text": "flavortext",
             "type": "primarytype"
         }
         c = con.cursor()
@@ -363,7 +363,7 @@ def fetch_items():
                 vocation = item['vocrequired'].replace('knights', 'k').replace('druids', 'd')\
                     .replace('sorcerers', 's').replace('paladins', 'p').replace(' and ', '+')
                 extra_data.append((itemid, "vocation", vocation))
-            c.executemany("INSERT INTO item_attributes(itemid, attribute, value) VALUES(?,?,?)", extra_data)
+            c.executemany("INSERT INTO items_attributes(item_id, attribute, value) VALUES(?,?,?)", extra_data)
         con.commit()
     print("\tDone")
 

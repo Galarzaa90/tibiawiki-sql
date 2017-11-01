@@ -33,11 +33,11 @@ def init_database(name):
             `version` TEXT
         );
         """)
-        con.execute("DROP TABLE IF EXISTS creature_drops")
+        con.execute("DROP TABLE IF EXISTS creatures_drops")
         con.execute("""
-        CREATE TABLE `creature_drops` (
-            `creatureid`	INTEGER,
-            `itemid`	INTEGER,
+        CREATE TABLE `creatures_drops` (
+            `creature_id`	INTEGER,
+            `item_id`	INTEGER,
             `chance`	REAL,
             `min`	INTEGER,
             `max`	INTEGER
@@ -52,17 +52,17 @@ def init_database(name):
             `name`	TEXT,
             `stackable` INTEGER DEFAULT 0,
             `value`INTEGER,
-            `version` TEXT,
             `weight` REAL,
             `type` TEXT,
-            `flavortext` TEXT
+            `flavor_text` TEXT,
+            `version` TEXT
         );
         """)
 
-        con.execute("DROP TABLE IF EXISTS item_attributes")
+        con.execute("DROP TABLE IF EXISTS items_attributes")
         con.execute("""
-        CREATE TABLE `item_attributes` (
-            `itemid`	INTEGER,
+        CREATE TABLE `items_attributes` (
+            `item_id`	INTEGER,
             `attribute`	TEXT,
             `value`	TEXT
         );
