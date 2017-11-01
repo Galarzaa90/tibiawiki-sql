@@ -1,20 +1,17 @@
 # Database Schema
 The output of this script is a SQLite file named `tibia_database.db`.
 
-## Tables
-
-| Name | Description |
-| ---- | ----------- |
+| Table | Description |
+| ----- | ----------- |
 | creatures | Contains information for all creatures. |
 | creatures_drops | Contains all the items dropped by creatures.
 | items | Contains information for all items.
-| item_attributes | Contains extra attributes and properties of items that only apply to certain types.
+| items_attributes | Contains extra attributes and properties of items that only apply to certain types.
 
-### creatures
+## creatures
 
-#### Columns
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Column | Type | Description |
+| ------ | ---- | ----------- |
 | id | `INTEGER` | Autoincremented number, used for relationships with other tables.
 | title | `TEXT` | The title of the TibiaWiki article that refers to this creature. Title cased and may contain parenthesis to differentiate creature variations (e.g. `Butterfly (Yellow)`) or to differentiate from other objects (e.g. `Avalanche (Creature)`).
 | name | `TEXT` | The actual name of the creature in-game.
@@ -40,22 +37,20 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | abilities | `TEXT` | A summary of a creature's abilities (attacks, spells, healing).
 | version | `TEXT` | The client version this creature was introduced to the game.
 
-### creatures_drops
+## creatures_drops
 
-#### Columns
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Column | Type | Description |
+| ------ | ---- | ----------- |
 | creature_id | `INTEGER` | The id of the creature that yields this drop.
 | item_id | `INTEGER` | The id of the item dropped.
 | chance |  `REAL` | The chance percentage of this drop. `NULL` means unknown.
 | min | `INTEGER`| The minimum count this drop gives.
 | max | `INTEGER`| The maximum count this drop gives.
 
-### items
+## items
 
-#### Columns
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Column | Type | Description |
+| ------ | ---- | ----------- |
 | id | `INTEGER` | Autoincremented number, used for relationships with other tables.
 | title | `TEXT` | The title of the TibiaWiki article that refers to this item. Title cased and may contain parenthesis to differentiate item variations (e.g. `Surprise Bag (Red)`) or to differentiate from other objects (e.g. `Black Skull (Item)`).
 | name | `TEXT` | The actual name of the item in-game.
@@ -66,11 +61,10 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | flavor_text | `TEXT` | The extra text that is displayed when some items are looked at.
 | version | `TEXT` | The client version this item was introduced to the game.
 
-### items_attributes
+## items_attributes
 
-#### Columns
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Column | Type | Description |
+| ------ | ---- | ----------- |
 | item_id | `INTEGER` | The id of the item this attribute belongs to.
 | attribute | `TEXT` | The name of the attribute.
 | value | `TEXT` | The value of the attribute.
