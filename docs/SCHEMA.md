@@ -8,15 +8,15 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | creatures | Contains information for all creatures. |
 | creatures_drops | Contains all the items dropped by creatures.
 | items | Contains information for all items.
-| item_attributes | Constains extra attributes and properties of items that only apply to certain types.
+| item_attributes | Contains extra attributes and properties of items that only apply to certain types.
 
-### creatures
+### Creatures
 
 #### Columns
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | id | `INTEGER` | Autoincremented number, used for relationships with other tables.
-| title | `TEXT` | The title of the TibiaWiki article that refers to this creature. Title cased and may contain parenthesis to differentiate creature variations e.g. `Butterfly (Yellow)` or to differentiate from other objects e.g. `Avalanche (Creature)`
+| title | `TEXT` | The title of the TibiaWiki article that refers to this creature. Title cased and may contain parenthesis to differentiate creature variations (e.g. `Butterfly (Yellow)`) or to differentiate from other objects (e.g. `Avalanche (Creature)`).
 | name | `TEXT` | The actual name of the creature in-game.
 | hitpoints | `INTEGER` | The number of hitpoints the creature has. May be `NULL` if unknown.
 | experience | `INTEGER` | The number of experience the creature yields. May be `NULL` if unknown.
@@ -26,7 +26,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | illusionable | `INTEGER` | Whether the player can turn into this creature with Creature Illusion. `0` or `1`.
 | pushable | `INTEGER` | Whether this creature can be pushed or not. `0` or `1`.
 | paralyzable | `INTEGER` | Whether this creature can be paralyzed or not. `0` or `1`.
-| sense_invis | `INTEGER` | Whether this creature can be see invisibility or not. `0` or `1`.
+| sense_invis | `INTEGER` | Whether this creature can see through invisibility or not. `0` or `1`.
 | boss | `INTEGER` | Whether this creature is a boss or not. `0` or `1`.
 | physical | `INTEGER` | Percentage of damage the creature receives from this damage type. `0` being completely immune, `100` neutral. May be `NULL` if unknown.
 | earth | `INTEGER` | Percentage of damage the creature receives from this damage type. `0` being completely immune, `100` neutral. May be `NULL` if unknown.
@@ -57,13 +57,13 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | id | `INTEGER` | Autoincremented number, used for relationships with other tables.
-| title | `TEXT` | The title of the TibiaWiki article that refers to this item. Title cased and may contain parenthesis to differentiate item variations e.g. `Surprise Bag (Red)` or to differentiate from other objects e.g. `Black Skull (Item)`
+| title | `TEXT` | The title of the TibiaWiki article that refers to this item. Title cased and may contain parenthesis to differentiate item variations (e.g. `Surprise Bag (Red)`) or to differentiate from other objects (e.g. `Black Skull (Item)`).
 | name | `TEXT` | The actual name of the item in-game.
 | stacklable | `INTEGER` | Whether this item is stackable or not.
 | value | `INTEGER` | The sell value of this item according to NPCs.
 | weight | `REAL` | The weight of this item in ounces.
-| type | `TEXT` | The category this item belongs to. e.g. `Helmets`, `Valuables`
-| flavor_text | `TEXT` | The extra text that is displayed on some items when looked at.
+| type | `TEXT` | The category this item belongs to (e.g. `Helmets`, `Valuables`).
+| flavor_text | `TEXT` | The extra text that is displayed when some items are looked at.
 | version | `TEXT` | The client version this item was introduced to the game.
 
 ### items_attributes
