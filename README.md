@@ -19,8 +19,8 @@ externally.
 ## Running the script
 To execute the script, run `tibiawiki-sql.py`.
 
-The process can be long, taking up to 20 minutes because images have to 
-be fetched for every item and creature.
+The process can be long, taking up to 20 minutes the first time. All images are saved to the `images` folder. On 
+subsequent runs, images will be read from disk instead of being fetched from TibiaWiki again.
 
 When done, a database file called `tibia_database.db` will be found on the folder.
 

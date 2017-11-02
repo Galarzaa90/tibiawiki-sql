@@ -1,3 +1,5 @@
-/.idea/
-/tibia_database.db
+.idea/
+images/*
+!/images/.gitkeep
+tibia_database.db
 __pycache__/

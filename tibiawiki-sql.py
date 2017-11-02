@@ -1,4 +1,5 @@
 import json
+import os
 import re
 import time
 
@@ -389,6 +390,8 @@ def fetch_creature_images():
     i = 0
     print("Fetching creature images...")
     start_time = time.time()
+    fetch_count = 0
+    cache_count = 0
     while True:
         if i > len(creatures):
             break
@@ -416,9 +419,18 @@ def fetch_creature_images():
                 continue
             creatureid = result[0]
             try:
-                r = requests.get(url)
-                r.raise_for_status()
-                c.execute("UPDATE creatures SET image = ? WHERE id = ?", (r.content, creatureid))
+                if os.path.exists(f"images/{creature_title}.gif"):
+                    with open(f"images/{creature_title}.gif", "rb") as f:
+                        image = f.read()
+                        cache_count += 1
+                else:
+                    r = requests.get(url)
+                    r.raise_for_status()
+                    image = r.content
+                    fetch_count += 1
+                    with open(f"images/{creature_title}.gif", "wb") as f:
+                        f.write(image)
+                c.execute("UPDATE creatures SET image = ? WHERE id = ?", (image, creatureid))
                 con.commit()
             except requests.HTTPError:
                 print(f"HTTP Error fetching image for {creature_title}")
@@ -426,6 +438,7 @@ def fetch_creature_images():
             finally:
                 c.close()
 
+    print(f"\tFetched {fetch_count} images, loaded {cache_count} from cache.")
     print(f"\tDone in {time.time()-start_time} seconds.")
 
 
@@ -433,6 +446,8 @@ def fetch_item_images():
     i = 0
     print("Fetching item images...")
     start_time = time.time()
+    fetch_count = 0
+    cache_count = 0
     while True:
         if i > len(items):
             break
@@ -460,16 +475,25 @@ def fetch_item_images():
                 continue
             itemid = result[0]
             try:
-                r = requests.get(url)
-                r.raise_for_status()
-                c.execute("UPDATE items SET image = ? WHERE id = ?", (r.content, itemid))
+                if os.path.exists(f"images/{item_title}.gif"):
+                    with open(f"images/{item_title}.gif", "rb") as f:
+                        image = f.read()
+                        cache_count += 1
+                else:
+                    r = requests.get(url)
+                    r.raise_for_status()
+                    image = r.content
+                    fetch_count += 1
+                    with open(f"images/{item_title}.gif", "wb") as f:
+                        f.write(image)
+                c.execute("UPDATE items SET image = ? WHERE id = ?", (image, itemid))
                 con.commit()
             except requests.HTTPError:
                 print(f"HTTP Error fetching image for {item_title}")
                 continue
             finally:
                 c.close()
-
+    print(f"\tFetched {fetch_count} images, loaded {cache_count} from cache.")
     print(f"\tDone in {time.time()-start_time} seconds.")
 
 
