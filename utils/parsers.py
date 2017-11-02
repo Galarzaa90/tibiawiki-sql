@@ -10,6 +10,7 @@ min_max_pattern = r"(\d+)-(\d+)"
 loot_statistics_pattern = r"\|([\s\w]+),\s*times:(\d+)(?:,\s*amount:([\d-]+))?"
 kills_pattern = r"kills=(\d+)"
 
+
 def parse_loot(value: str):
     return re.findall(creature_loot_pattern, value)
 
