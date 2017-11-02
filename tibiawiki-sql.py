@@ -434,7 +434,7 @@ def fetch_item_images():
     print("Fetching item images...")
     start_time = time.time()
     while True:
-        if i > len(creatures):
+        if i > len(items):
             break
         params = {
             "action": "query",
