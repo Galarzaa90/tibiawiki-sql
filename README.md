@@ -15,6 +15,14 @@ externally.
 
 * Python 3.6 or higher
     * **requests** module
+    
+## Running the script
+To execute the script, run `tibiawiki-sql.py`.
+
+The process can be long, taking up to 20 minutes because images have to 
+be fetched for every item and creature.
+
+When done, a database file called `tibia_database.db` will be found on the folder.
 
 ## Database contents
 * Creatures
@@ -31,5 +39,5 @@ Planned:
 * *and more...* 
     
 ## Database schema
-*Coming soon*
+See [SCHEMA.md](docs/SCHEMA.md) in the `docs` folder
 

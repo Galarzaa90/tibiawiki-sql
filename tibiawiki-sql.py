@@ -1,5 +1,6 @@
 import json
 import re
+import time
 
 import requests
 
@@ -15,9 +16,12 @@ headers = {
 }
 
 deprecated = []
+creatures = []
+items = []
 
 
-def fetch_deprecated():
+def fetch_deprecated_list():
+    start_time = time.time()
     print("Fetching deprecated articles list... ")
     params = {
         "action": "query",
@@ -39,10 +43,12 @@ def fetch_deprecated():
             cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
         except KeyError:
             break
-    print(f"\t{len(deprecated)} found.")
+    print(f"\t{len(deprecated)} found in {time.time()-start_time} seconds.")
 
 
-def fetch_creature():
+def fetch_creature_list():
+    global creatures
+    start_time = time.time()
     print("Fetching creature list... ")
     params = {
         "action": "query",
@@ -53,7 +59,6 @@ def fetch_creature():
         "format": "json",
     }
     cmcontinue = None
-    creatures = []
     while True:
         params["cmcontinue"] = cmcontinue
         r = requests.get(ENDPOINT, headers=headers, params=params)
@@ -65,11 +70,15 @@ def fetch_creature():
             cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
         except KeyError:
             break
-    print(f"\t{len(creatures)} creatures found.")
+    print(f"\t{len(creatures)} creatures found in {time.time()-start_time} seconds.")
     creatures = [c for c in creatures if c not in deprecated]
     print(f"\t{len(creatures)} creatures after removing deprecated creatures.")
-    i = 0
+
+
+def fetch_creature():
     print("Fetching creature information...")
+    start_time = time.time()
+    i = 0
     while True:
         if i > len(creatures):
             break
@@ -111,7 +120,7 @@ def fetch_creature():
             "version": "implemented"
         }
         c = con.cursor()
-        for id, article in creature_pages.items():
+        for article_id, article in creature_pages.items():
             skip = False
             content = article["revisions"][0]["*"]
             if "{{Infobox Creature" not in content:
@@ -171,13 +180,17 @@ def fetch_creature():
                     else:
                         _min, _max = parse_min_max(item[0])
                     loot_items.append((creatureid, itemid, _min, _max))
-                c.executemany(f"INSERT INTO creatures_drops(creature_id, item_id, min, max) VALUES(?,?,?,?)", loot_items)
+                c.executemany(f"INSERT INTO creatures_drops(creature_id, item_id, min, max) VALUES(?,?,?,?)",
+                              loot_items)
 
         con.commit()
         c.close()
-    print("\tDone")
+    print(f"\tDone in {time.time()-start_time} seconds.")
 
+
+def fetch_drop_statistics():
     print("Fetching creature loot statistics...")
+    start_time = time.time()
     i = 0
     while True:
         if i > len(creatures):
@@ -195,7 +208,7 @@ def fetch_creature():
         loot_pages = data["query"]["pages"]
         i += 50
         c = con.cursor()
-        for id, article in loot_pages.items():
+        for article_id, article in loot_pages.items():
             if "missing" in article:
                 continue
             content = article["revisions"][0]["*"]
@@ -231,11 +244,13 @@ def fetch_creature():
                           loot_items)
         con.commit()
         c.close()
-    print("\tDone")
+    print(f"\tDone in {time.time()-start_time} seconds.")
 
 
-def fetch_items():
+def fetch_items_list():
+    global items
     print("Fetching item list... ")
+    start_time = time.time()
     params = {
         "action": "query",
         "list": "categorymembers",
@@ -245,7 +260,6 @@ def fetch_items():
         "format": "json",
     }
     cmcontinue = None
-    items = []
     while True:
         params["cmcontinue"] = cmcontinue
         r = requests.get(ENDPOINT, headers=headers, params=params)
@@ -257,12 +271,15 @@ def fetch_items():
             cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
         except KeyError:
             break
-    print(f"\t{len(items)} items found.")
+    print(f"\t{len(items)} items found in {time.time()-start_time} seconds.")
     items = [c for c in items if c not in deprecated]
     print(f"\t{len(items)} items after removing deprecated items.")
+
+
+def fetch_items():
     i = 0
-    item_data = []
     print("Fetching items information...")
+    start_time = time.time()
     while True:
         if i > len(items):
             break
@@ -289,7 +306,7 @@ def fetch_items():
             "type": "primarytype"
         }
         c = con.cursor()
-        for id, article in item_pages.items():
+        for article_id, article in item_pages.items():
             content = article["revisions"][0]["*"]
             if "{{Infobox Item|" not in content:
                 # Skipping pages like creature groups articles
@@ -360,18 +377,112 @@ def fetch_items():
                     imbuement = imbuement.strip()
                     extra_data.append((itemid, "imbuement", imbuement))
             if "vocrequired" in item and item["vocrequired"] and item["vocrequired"] != "None":
-                vocation = item['vocrequired'].replace('knights', 'k').replace('druids', 'd')\
+                vocation = item['vocrequired'].replace('knights', 'k').replace('druids', 'd') \
                     .replace('sorcerers', 's').replace('paladins', 'p').replace(' and ', '+')
                 extra_data.append((itemid, "vocation", vocation))
             c.executemany("INSERT INTO items_attributes(item_id, attribute, value) VALUES(?,?,?)", extra_data)
         con.commit()
-    print("\tDone")
+    print(f"\tDone in {time.time()-start_time} seconds.")
+
+
+def fetch_creature_images():
+    i = 0
+    print("Fetching creature images...")
+    start_time = time.time()
+    while True:
+        if i > len(creatures):
+            break
+        params = {
+            "action": "query",
+            "prop": "imageinfo",
+            "iiprop": "url",
+            "format": "json",
+            "titles": "|".join([f"File:{c}.gif" for c in creatures[i:min(i + 50, len(creatures))]])
+        }
+        i += 50
+        r = requests.get(ENDPOINT, headers=headers, params=params)
+        data = json.loads(r.text)
+        image_pages = data["query"]["pages"]
+        for article_id, article in image_pages.items():
+            if "missing" in article:
+                # Creature has no image
+                continue
+            creature_title = article["title"].replace("File:", "").replace(".gif", "")
+            url = article["imageinfo"][0]["url"]
+            c = con.cursor()
+            c.execute("SELECT id FROM creatures WHERE title = ?", (creature_title,))
+            result = c.fetchone()
+            if result is None:
+                continue
+            creatureid = result[0]
+            try:
+                r = requests.get(url)
+                r.raise_for_status()
+                c.execute("UPDATE creatures SET image = ? WHERE id = ?", (r.content, creatureid))
+                con.commit()
+            except requests.HTTPError:
+                print(f"HTTP Error fetching image for {creature_title}")
+                continue
+            finally:
+                c.close()
+
+    print(f"\tDone in {time.time()-start_time} seconds.")
+
+
+def fetch_item_images():
+    i = 0
+    print("Fetching item images...")
+    start_time = time.time()
+    while True:
+        if i > len(creatures):
+            break
+        params = {
+            "action": "query",
+            "prop": "imageinfo",
+            "iiprop": "url",
+            "format": "json",
+            "titles": "|".join([f"File:{c}.gif" for c in items[i:min(i + 50, len(items))]])
+        }
+        i += 50
+        r = requests.get(ENDPOINT, headers=headers, params=params)
+        data = json.loads(r.text)
+        image_pages = data["query"]["pages"]
+        for article_id, article in image_pages.items():
+            if "missing" in article:
+                # Item has no image
+                continue
+            item_title = article["title"].replace("File:", "").replace(".gif", "")
+            url = article["imageinfo"][0]["url"]
+            c = con.cursor()
+            c.execute("SELECT id FROM items WHERE title = ?", (item_title,))
+            result = c.fetchone()
+            if result is None:
+                continue
+            itemid = result[0]
+            try:
+                r = requests.get(url)
+                r.raise_for_status()
+                c.execute("UPDATE items SET image = ? WHERE id = ?", (r.content, itemid))
+                con.commit()
+            except requests.HTTPError:
+                print(f"HTTP Error fetching image for {item_title}")
+                continue
+            finally:
+                c.close()
+
+    print(f"\tDone in {time.time()-start_time} seconds.")
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     print("Running...")
     con = init_database(DATABASE_FILE)
-    fetch_deprecated()
+    fetch_deprecated_list()
+    fetch_items_list()
     fetch_items()
+    fetch_creature_list()
     fetch_creature()
-    print("Done")
+    fetch_drop_statistics()
+    fetch_creature_images()
+    fetch_item_images()
+    print(f"Done in {time.time()-start_time} seconds.")

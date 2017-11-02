@@ -30,7 +30,8 @@ def init_database(name):
             `drown` INTEGER,
             `hpdrain` INTEGER,
             `abilities` TEXT,
-            `version` TEXT
+            `version` TEXT,
+            `image` BLOB
         );
         """)
         con.execute("DROP TABLE IF EXISTS creatures_drops")
@@ -55,7 +56,8 @@ def init_database(name):
             `weight` REAL,
             `type` TEXT,
             `flavor_text` TEXT,
-            `version` TEXT
+            `version` TEXT,
+            `image` BLOB
         );
         """)
 

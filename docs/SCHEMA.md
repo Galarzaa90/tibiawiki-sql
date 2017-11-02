@@ -36,6 +36,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | hpdrain | `INTEGER` | Percentage of damage the creature receives from this damage type. `0` being completely immune, `100` neutral. May be `NULL` if unknown.
 | abilities | `TEXT` | A summary of a creature's abilities (attacks, spells, healing).
 | version | `TEXT` | The client version this creature was introduced to the game.
+| image | `BLOB` | The creature's image bytes.
 
 ## creatures_drops
 
@@ -60,6 +61,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | type | `TEXT` | The category this item belongs to (e.g. `Helmets`, `Valuables`).
 | flavor_text | `TEXT` | The extra text that is displayed when some items are looked at.
 | version | `TEXT` | The client version this item was introduced to the game.
+| image | `BLOB` | The creature's image bytes.
 
 ## items_attributes
 
