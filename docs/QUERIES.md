@@ -1,6 +1,6 @@
 A collection of example SQL queries.
 
-####Fetch creatures at least 15% weak to energy
+### Fetch creatures at least 15% weak to energy
 ```sql
 SELECT title, energy FROM creatures WHERE energy > 115 ORDER BY energy DESC LIMIT 5
 ```
@@ -15,9 +15,13 @@ Results:
 | Quara Constrictor | 125
 | Quara Hydromancer | 125
 
-####Fetch creatures that drop 'crown armor'
+### Fetch creatures that drop 'crown armor'
 ```sql
-SELECT creatures.title as "creature", chance FROM creatures, creatures_drops, items WHERE items.id = creatures_drops.item_id AND creatures.id = creatures_drops.creature_id AND items.name LIKE 'crown armor' ORDER BY chance DESC LIMIT 5
+SELECT creatures.title as "creature", chance 
+FROM creatures, creatures_drops, items 
+WHERE items.id = creatures_drops.item_id AND creatures.id = creatures_drops.creature_id AND items.name LIKE 'crown armor'
+ORDER BY chance DESC 
+LIMIT 5
 ```
 Results
 
