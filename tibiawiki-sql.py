@@ -5,6 +5,7 @@ from utils.creatures import fetch_creature_list, fetch_creature, fetch_drop_stat
 from utils.database import init_database
 from utils.items import fetch_items_list, fetch_items, fetch_item_images
 from utils.npcs import fetch_npc_list, fetch_npcs
+from utils.spells import fetch_spells_list, fetch_spells
 
 DATABASE_FILE = "tibia_database.db"
 SKIP_IMAGES = False  # Set this to true to skip anything involving fetching images
@@ -18,6 +19,9 @@ if __name__ == "__main__":
 
     fetch_npc_list()
     fetch_npcs(con)
+
+    fetch_spells_list()
+    fetch_spells(con)
 
     fetch_items_list()
     fetch_items(con)

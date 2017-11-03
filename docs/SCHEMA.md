@@ -10,6 +10,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | npcs | Contains information for all NPCs
 | npcs_buying | Contains all the NPCs' buy offers
 | npcs_selling | Contains all the NPCs' sell offers
+| spells | Constains information for all spells.
 
 ## creatures
 
@@ -101,3 +102,24 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | npc_id | `INTEGER` | The id of the npc this offer belongs to
 | item_id | `INTEGER` | The id of the item this offer refers to
 | value | `TEXT` | The value of the offer
+
+## spells
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| id | `INTEGER` | Autoincremented number, used for relationships with other tables.
+| name | `TEXT` | The spell's name
+| words | `TEXT` | Words used to cast the spell
+| type | `TEXT` | Whether the spell is instant or a rune spell.
+| class | `TEXT` | The spell's class (e.g. `Attack`, `Support`)
+| element | `TEXT` | The type of damage this spell deals if applicable.
+| level | `INTEGER` | Level required to cast this spell
+| mana | `INTEGER` | Mana required to cast this spell. `-1` means special conditions apply.
+| soul | `INTEGER` | Soul points required to cast this spell.
+| premium | `INTEGER` | Whether this spell requires premium account or not. `0` or `1`.
+| price | `INTEGER` | Price in gold coins of this spell
+| cooldown | `INTEGER` | Cooldown in seconds of this spell
+| knight | `INTEGER` | Whether this spell can be used by knights or not. `0` or `1`.
+| sorcerer | `INTEGER` | Whether this spell can be used by sorcerer or not. `0` or `1`.
+| druid | `INTEGER` | Whether this spell can be used by druid or not. `0` or `1`.
+| paladin | `INTEGER` | Whether this spell can be used by paladin or not. `0` or `1`.

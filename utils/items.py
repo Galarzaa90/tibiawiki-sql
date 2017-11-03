@@ -12,7 +12,6 @@ items = []
 
 
 def fetch_items_list():
-    global items
     print("Fetching item list... ")
     start_time = time.time()
     fetch_category_list("Category:Items", items)

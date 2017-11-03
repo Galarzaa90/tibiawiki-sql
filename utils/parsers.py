@@ -35,6 +35,8 @@ def parse_min_max(value):
 
 
 def parse_integer(value: str, default=0):
+    if value is None:
+        return default
     match = re.search(numbers_pattern, value)
     if match:
         return int(match.group(0))

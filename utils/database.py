@@ -100,4 +100,26 @@ def init_database(name):
         );
         """)
 
+        con.execute("DROP TABLE IF EXISTS spells")
+        con.execute("""
+        CREATE TABLE `spells` (
+            `id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+            `name`	TEXT,
+            `words`	TEXT,
+            `type`  TEXT,
+            `class` TEXT,
+            `element` TEXT,
+            `level` INTEGER,
+            `mana` INTEGER,
+            `soul` INTEGER,
+            `premium` INTEGER,
+            `price` INTEGER,
+            `cooldown` INTEGER,
+            `knight` TEXT,
+            `sorcerer` TEXT,
+            `druid` TEXT,
+            `paladin` TEXT
+        );
+        """)
+
     return con
