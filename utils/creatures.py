@@ -130,10 +130,10 @@ def fetch_creature(con):
                 loot_items = []
                 for item in loot:
                     c.execute("SELECT id FROM items WHERE title = ?", (item[1],))
-                    itemid = c.fetchone()
-                    if itemid is None:
+                    result = c.fetchone()
+                    if result is None:
                         continue
-                    itemid = itemid[0]
+                    itemid = result[0]
                     if not item[0]:
                         _min, _max = 0, 1
                     else:
@@ -172,7 +172,7 @@ def fetch_drop_statistics(con):
                 continue
             content = article["revisions"][0]["*"]
             creature_name = article["title"].replace("Loot Statistics:", "")
-            c.execute("SELECT id from creatures WHERE title = ?", (creature_name,))
+            c.execute("SELECT id from creatures WHERE title LIKE ?", (creature_name,))
             creatureid = c.fetchone()
             if creatureid is None:
                 # This could happen if a creature's article was deleted but its Loot Statistics weren't
@@ -189,7 +189,7 @@ def fetch_drop_statistics(con):
             kills, loot_stats = parse_loot_statistics(content)
             loot_items = []
             for item, times, amount in loot_stats:
-                c.execute("SELECT id FROM items WHERE title = ?", (item,))
+                c.execute("SELECT id FROM items WHERE title LIKE ?", (item,))
                 itemid = c.fetchone()
                 if itemid is None:
                     continue

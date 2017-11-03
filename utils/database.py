@@ -82,4 +82,22 @@ def init_database(name):
         );
         """)
 
+        con.execute("DROP TABLE IF EXISTS npcs_buying")
+        con.execute("""
+        CREATE TABLE `npcs_buying` (
+            `npc_id`	INTEGER,
+            `item_id`	INTEGER,
+            `value`	INTEGER
+        );
+        """)
+
+        con.execute("DROP TABLE IF EXISTS npcs_selling")
+        con.execute("""
+        CREATE TABLE `npcs_selling` (
+            `npc_id`	INTEGER,
+            `item_id`	INTEGER,
+            `value`	INTEGER
+        );
+        """)
+
     return con

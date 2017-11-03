@@ -6,7 +6,7 @@ import time
 import requests
 
 from utils import ENDPOINT, headers, deprecated, get_category_list_params
-from utils.parsers import parse_attributes, parse_boolean
+from utils.parsers import parse_attributes, parse_boolean, parse_item_offers
 
 items = []
 
@@ -138,6 +138,59 @@ def fetch_items(con):
                     .replace('sorcerers', 's').replace('paladins', 'p').replace(' and ', '+')
                 extra_data.append((itemid, "vocation", vocation))
             c.executemany("INSERT INTO items_attributes(item_id, attribute, value) VALUES(?,?,?)", extra_data)
+            if "sellto" in item:
+                sellto = parse_item_offers(item["sellto"])
+                buy_items = []
+                if len(sellto) > 0:
+                    for npc_names, value in sellto:
+                        npcs = npc_names.split(",")
+                        for npc in npcs:
+                            c.execute("SELECT id FROM npcs WHERE title LIKE ?", (npc.strip(),))
+                            result = c.fetchone()
+                            if result is None:
+                                continue
+                            npcid = result[0]
+                            buy_items.append((npcid, itemid, value))
+                else:
+                    npcs = item["sellto"].split(",")
+                    for npc in npcs:
+                        npc = npc.split(";")[0].strip()
+                        c.execute("SELECT id FROM npcs WHERE title LIKE ?", (npc,))
+                        result = c.fetchone()
+                        if result is None:
+                            continue
+                        npcid = result[0]
+                        buy_items.append((npcid, itemid, item["npcvalue"]))
+                c.executemany(f"INSERT INTO npcs_buying(npc_id, item_id, value) VALUES(?,?,?)",
+                              buy_items)
+            if "buyfrom" in item:
+                buyfrom = parse_item_offers(item["buyfrom"])
+                sell_items = []
+                if len(buyfrom) > 0:
+                    for npc_names, value in buyfrom:
+                        npcs = npc_names.split(",")
+                        for npc in npcs:
+                            c.execute("SELECT id FROM npcs WHERE title LIKE ?", (npc.strip(),))
+                            result = c.fetchone()
+                            if result is None:
+                                continue
+                            npcid = result[0]
+                            sell_items.append((npcid, itemid, value))
+                else:
+                    npcs = item["buyfrom"].split(",")
+                    for npc in npcs:
+                        npc = npc.split(";")[0].strip()
+                        c.execute("SELECT id FROM npcs WHERE title LIKE ?", (npc,))
+                        result = c.fetchone()
+                        if result is None:
+                            continue
+                        npcid = result[0]
+                        try:
+                            sell_items.append((npcid, itemid, item["npcprice"]))
+                        except KeyError:
+                            continue
+                c.executemany(f"INSERT INTO npcs_selling(npc_id, item_id, value) VALUES(?,?,?)",
+                              sell_items)
         con.commit()
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 

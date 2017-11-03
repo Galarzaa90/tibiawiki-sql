@@ -2,13 +2,16 @@ import re
 
 from typing import List
 
-
-# Matches all numbers in a string
 numbers_pattern = r"\d+"
 creature_loot_pattern = r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)"
 min_max_pattern = r"(\d+)-(\d+)"
 loot_statistics_pattern = r"\|([\s\w]+),\s*times:(\d+)(?:,\s*amount:([\d-]+))?"
 kills_pattern = r"kills=(\d+)"
+item_offers_pattern = r"\s*([^:]+):\s*(\d+),*"
+
+
+def parse_item_offers(value: str):
+    return re.findall(item_offers_pattern, value)
 
 
 def parse_loot(value: str):

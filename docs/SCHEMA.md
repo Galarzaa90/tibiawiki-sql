@@ -8,6 +8,8 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | items | Contains information for all items.
 | items_attributes | Contains extra attributes and properties of items that only apply to certain types.
 | npcs | Contains information for all NPCs
+| npcs_buying | Contains all the NPCs' buy offers
+| npcs_selling | Contains all the NPCs' sell offers
 
 ## creatures
 
@@ -83,3 +85,19 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | job | `INTEGER` | The NPC's job
 | city | `TEXT` | City where the NPC is found.
 | version | `TEXT` | The client version this item was introduced to the game.
+
+## npcs_buying
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| npc_id | `INTEGER` | The id of the npc this offer belongs to
+| item_id | `INTEGER` | The id of the item this offer refers to
+| value | `TEXT` | The value of the offer
+
+## npcs_selling
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| npc_id | `INTEGER` | The id of the npc this offer belongs to
+| item_id | `INTEGER` | The id of the item this offer refers to
+| value | `TEXT` | The value of the offer

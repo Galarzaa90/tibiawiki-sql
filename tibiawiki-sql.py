@@ -14,6 +14,9 @@ if __name__ == "__main__":
     print("Running...")
     con = init_database(DATABASE_FILE)
 
+    fetch_npc_list()
+    fetch_npcs(con)
+
     fetch_deprecated_list()
     fetch_items_list()
     fetch_items(con)
@@ -25,8 +28,5 @@ if __name__ == "__main__":
     fetch_drop_statistics(con)
     if not SKIP_IMAGES:
         fetch_creature_images(con)
-
-    fetch_npc_list()
-    fetch_npcs(con)
 
     print(f"Done in {time.time()-start_time} seconds.")
