@@ -14,10 +14,11 @@ if __name__ == "__main__":
     print("Running...")
     con = init_database(DATABASE_FILE)
 
+    fetch_deprecated_list()
+
     fetch_npc_list()
     fetch_npcs(con)
 
-    fetch_deprecated_list()
     fetch_items_list()
     fetch_items(con)
     if not SKIP_IMAGES:
