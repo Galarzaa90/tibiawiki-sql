@@ -70,4 +70,16 @@ def init_database(name):
         );
         """)
 
+        con.execute("DROP TABLE IF EXISTS npcs")
+        con.execute("""
+        CREATE TABLE `npcs` (
+            `id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+            `title`	TEXT,
+            `name`	TEXT,
+            `city` TEXT,
+            `job` TEXT,
+            `version` TEXT
+        );
+        """)
+
     return con

@@ -5,7 +5,7 @@ import time
 
 import requests
 
-from utils import ENDPOINT, headers, deprecated
+from utils import ENDPOINT, headers, deprecated, get_category_list_params
 from utils.parsers import parse_attributes, parse_boolean
 
 items = []
@@ -15,17 +15,9 @@ def fetch_items_list():
     global items
     print("Fetching item list... ")
     start_time = time.time()
-    params = {
-        "action": "query",
-        "list": "categorymembers",
-        "cmtitle": "Category:Items",
-        "cmlimit": 500,
-        "cmtype": "page",
-        "format": "json",
-    }
     cmcontinue = None
     while True:
-        params["cmcontinue"] = cmcontinue
+        params = get_category_list_params("Category:Items", cmcontinue)
         r = requests.get(ENDPOINT, headers=headers, params=params)
         data = json.loads(r.text)
         category_members = data["query"]["categorymembers"]
@@ -79,10 +71,11 @@ def fetch_items(con):
             item_data = ()
             for sql_attr, wiki_attr in attribute_map.items():
                 try:
-                    value = item[wiki_attr]
                     if wiki_attr == "actualname" and item.get(wiki_attr, "") == "":
                         value = item["name"]
-                    elif wiki_attr == "stackable":
+                    else:
+                        value = item[wiki_attr]
+                    if wiki_attr == "stackable":
                         value = parse_boolean(value)
                     item_data = item_data + (value,)
                 except KeyError:

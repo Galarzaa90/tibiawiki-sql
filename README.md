@@ -28,9 +28,9 @@ When done, a database file called `tibia_database.db` will be found on the folde
 * Creatures
 * Items
 * Creature drop statistics
+* NPCs
     
 Planned:
-* NPCs
 * NPC offers
 * Spells and runes
 * Houses

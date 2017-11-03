@@ -7,6 +7,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | creatures_drops | Contains all the items dropped by creatures.
 | items | Contains information for all items.
 | items_attributes | Contains extra attributes and properties of items that only apply to certain types.
+| npcs | Contains information for all NPCs
 
 ## creatures
 
@@ -70,3 +71,15 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | item_id | `INTEGER` | The id of the item this attribute belongs to.
 | attribute | `TEXT` | The name of the attribute.
 | value | `TEXT` | The value of the attribute.
+
+
+## npcs
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| id | `INTEGER` | Autoincremented number, used for relationships with other tables.
+| title | `TEXT` | The title of the TibiaWiki article that refers to this npc. Title cased and may contain parenthesis to differentiate from other objects (e.g. `Cobra (NPC)`).
+| name | `TEXT` | The actual name of the npc in-game.
+| job | `INTEGER` | The NPC's job
+| city | `TEXT` | City where the NPC is found.
+| version | `TEXT` | The client version this item was introduced to the game.

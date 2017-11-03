@@ -4,7 +4,7 @@ import time
 
 import requests
 
-from utils import ENDPOINT, headers, deprecated
+from utils import ENDPOINT, headers, deprecated, get_category_list_params
 from utils.parsers import parse_attributes, parse_integers, parse_integer, parse_boolean, clean_links, parse_loot, \
     parse_min_max, parse_loot_statistics
 
@@ -15,17 +15,9 @@ def fetch_creature_list():
     global creatures
     start_time = time.time()
     print("Fetching creature list... ")
-    params = {
-        "action": "query",
-        "list": "categorymembers",
-        "cmtitle": "Category:Creatures",
-        "cmlimit": 500,
-        "cmtype": "page",
-        "format": "json",
-    }
     cmcontinue = None
     while True:
-        params["cmcontinue"] = cmcontinue
+        params = get_category_list_params("Category:Creatures", cmcontinue)
         r = requests.get(ENDPOINT, headers=headers, params=params)
         data = json.loads(r.text)
         category_members = data["query"]["categorymembers"]
@@ -95,13 +87,15 @@ def fetch_creature(con):
             tup = ()
             for sql_attr, wiki_attr in attribute_map.items():
                 try:
-                    value = creature[wiki_attr]
+
                     # Attribute special cases
                     # If no actualname is found, we assume it is the same as title
                     if wiki_attr == "actualname" and creature.get(wiki_attr, "") == "":
                         value = creature["name"]
+                    else:
+                        value = creature[wiki_attr]
                     # Max damage field may contain text and multiple numbers, we need the biggest one.
-                    elif wiki_attr == "maxdmg":
+                    if wiki_attr == "maxdmg":
                         damages = parse_integers(creature["maxdmg"])
                         if len(damages) == 0:
                             value = None

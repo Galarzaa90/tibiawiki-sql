@@ -12,25 +12,30 @@ headers = {
 deprecated = []
 
 
+def get_category_list_params(category: str, cmcontinue=None):
+    return {
+        "action": "query",
+        "list": "categorymembers",
+        "cmtitle": category,
+        "cmlimit": 500,
+        "cmtype": "page",
+        "cmprop": "title|sortkeyprefix",
+        "format": "json",
+        "cmcontinue": cmcontinue
+    }
+
+
 def fetch_deprecated_list():
     start_time = time.time()
     print("Fetching deprecated articles list... ")
-    params = {
-        "action": "query",
-        "list": "categorymembers",
-        "cmtitle": "Category:Deprecated",
-        "cmlimit": 500,
-        "cmtype": "page",
-        "format": "json",
-    }
     cmcontinue = None
     while True:
-        params["cmcontinue"] = cmcontinue
+        params = get_category_list_params("Category:Deprecated", cmcontinue)
         r = requests.get(ENDPOINT, headers=headers, params=params)
         data = json.loads(r.text)
         category_members = data["query"]["categorymembers"]
         if len(category_members) > 0:
-            deprecated.extend([i["title"] for i in category_members if i["title"] != "Creatures"])
+            deprecated.extend([i["title"] for i in category_members])
         try:
             cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
         except KeyError:
