@@ -120,6 +120,6 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | price | `INTEGER` | Price in gold coins of this spell
 | cooldown | `INTEGER` | Cooldown in seconds of this spell
 | knight | `INTEGER` | Whether this spell can be used by knights or not. `0` or `1`.
-| sorcerer | `INTEGER` | Whether this spell can be used by sorcerer or not. `0` or `1`.
-| druid | `INTEGER` | Whether this spell can be used by druid or not. `0` or `1`.
-| paladin | `INTEGER` | Whether this spell can be used by paladin or not. `0` or `1`.
+| sorcerer | `INTEGER` | Whether this spell can be used by sorcerers or not. `0` or `1`.
+| druid | `INTEGER` | Whether this spell can be used by druids or not. `0` or `1`.
+| paladin | `INTEGER` | Whether this spell can be used by paladins or not. `0` or `1`.
