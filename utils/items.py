@@ -5,7 +5,7 @@ import time
 
 import requests
 
-from utils import ENDPOINT, headers, deprecated, get_category_list_params
+from utils import ENDPOINT, headers, deprecated, fetch_category_list
 from utils.parsers import parse_attributes, parse_boolean, parse_item_offers
 
 items = []
@@ -15,20 +15,11 @@ def fetch_items_list():
     global items
     print("Fetching item list... ")
     start_time = time.time()
-    cmcontinue = None
-    while True:
-        params = get_category_list_params("Category:Items", cmcontinue)
-        r = requests.get(ENDPOINT, headers=headers, params=params)
-        data = json.loads(r.text)
-        category_members = data["query"]["categorymembers"]
-        if len(category_members) > 0:
-            items.extend([i["title"] for i in category_members if i["title"] != "Items"])
-        try:
-            cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
-        except KeyError:
-            break
+    fetch_category_list("Category:Items", items)
     print(f"\t{len(items):,} items found in {time.time()-start_time:.3f} seconds.")
-    items = [c for c in items if c not in deprecated]
+    for d in deprecated:
+        if d in items:
+            items.remove(d)
     print(f"\t{len(items):,} items after removing deprecated items.")
 
 

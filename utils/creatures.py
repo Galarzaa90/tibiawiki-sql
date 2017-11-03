@@ -4,7 +4,7 @@ import time
 
 import requests
 
-from utils import ENDPOINT, headers, deprecated, get_category_list_params
+from utils import ENDPOINT, headers, deprecated, fetch_category_list
 from utils.parsers import parse_attributes, parse_integers, parse_integer, parse_boolean, clean_links, parse_loot, \
     parse_min_max, parse_loot_statistics
 
@@ -12,23 +12,14 @@ creatures = []
 
 
 def fetch_creature_list():
-    global creatures
     start_time = time.time()
     print("Fetching creature list... ")
-    cmcontinue = None
-    while True:
-        params = get_category_list_params("Category:Creatures", cmcontinue)
-        r = requests.get(ENDPOINT, headers=headers, params=params)
-        data = json.loads(r.text)
-        category_members = data["query"]["categorymembers"]
-        if len(category_members) > 0:
-            creatures.extend([i["title"] for i in category_members if i["title"] != "Creatures"])
-        try:
-            cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
-        except KeyError:
-            break
+    fetch_category_list("Category:Creatures", creatures)
     print(f"\t{len(creatures):,} creatures found in {time.time()-start_time:.3f} seconds.")
-    creatures = [c for c in creatures if c not in deprecated]
+
+    for d in deprecated:
+        if d in creatures:
+            creatures.remove(d)
     print(f"\t{len(creatures):,} creatures after removing deprecated creatures.")
 
 

@@ -3,30 +3,21 @@ import time
 
 import requests
 
-from utils import get_category_list_params, ENDPOINT, headers, deprecated
+from utils import ENDPOINT, headers, deprecated, fetch_category_list
 from utils.parsers import parse_attributes
 
 npcs = []
 
 
 def fetch_npc_list():
-    global npcs
     start_time = time.time()
     print("Fetching npc list...")
-    cmcontinue = None
-    while True:
-        params = get_category_list_params("Category:NPCs", cmcontinue)
-        r = requests.get(ENDPOINT, headers=headers, params=params)
-        data = json.loads(r.text)
-        category_members = data["query"]["categorymembers"]
-        if len(category_members) > 0:
-            npcs.extend([i["title"] for i in category_members if i["sortkeyprefix"] != "*"])
-        try:
-            cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
-        except KeyError:
-            break
+    fetch_category_list("Category:NPCs", npcs)
     print(f"\t{len(npcs):,} npcs found in {time.time()-start_time:.3f} seconds.")
-    npcs = [n for n in npcs if n not in deprecated]
+
+    for d in deprecated:
+        if d in npcs:
+            npcs.remove(d)
     print(f"\t{len(npcs):,} npcs after removing deprecated creatures.")
 
 
