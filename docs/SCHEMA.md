@@ -3,13 +3,14 @@ The output of this script is a SQLite file named `tibia_database.db`.
 
 | Table | Description |
 | ----- | ----------- |
-| creatures | Contains information for all creatures. |
+| creatures | Contains information for all creatures.
 | creatures_drops | Contains all the items dropped by creatures.
 | items | Contains information for all items.
 | items_attributes | Contains extra attributes and properties of items that only apply to certain types.
-| npcs | Contains information for all NPCs
-| npcs_buying | Contains all the NPCs' buy offers
-| npcs_selling | Contains all the NPCs' sell offers
+| npcs | Contains information for all NPCs.
+| npcs_buying | Contains all the NPCs' buy offers.
+| npcs_selling | Contains all the NPCs' sell offers.
+| npcs_spells | Contains all the spells NPCs teach.
 | spells | Constains information for all spells.
 
 ## creatures
@@ -102,6 +103,17 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | npc_id | `INTEGER` | The id of the npc this offer belongs to
 | item_id | `INTEGER` | The id of the item this offer refers to
 | value | `TEXT` | The value of the offer
+
+## spells
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| npc_id | `INTEGER` | The id of the npc that teaches this spell
+| spell_id | `INTEGER` | The id of the spell this npc teaches
+| knight | `INTEGER` | Whether this NPC teaches this spell to knights. `0` or `1`.
+| sorcerer | `INTEGER` | Whether this NPC teaches this spell to sorcerers. `0` or `1`.
+| druid | `INTEGER` | Whether this NPC teaches this spell to druids. `0` or `1`.
+| paladin | `INTEGER` | Whether this NPC teaches this spell to paladins. `0` or `1`.
 
 ## spells
 

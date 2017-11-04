@@ -17,7 +17,7 @@ def fetch_spells_list():
     for d in deprecated:
         if d in spells:
             spells.remove(d)
-    print(f"\t{len(spells):,} spells after removing deprecated items.")
+    print(f"\t{len(spells):,} spells after removing deprecated spells.")
 
 
 def fetch_spells(con):

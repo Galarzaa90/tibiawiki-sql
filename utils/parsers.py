@@ -103,3 +103,12 @@ def parse_attributes(content):
         else:
             attribute = attribute + content[i]
     return attributes
+
+
+def parse_spells(value):
+    result = []
+    for name, spell_list in re.findall(r"{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}", value):
+        spells = re.findall(r"\|([^|]+)", spell_list)
+        spells = [s.strip() for s in spells]
+        result.append((name, spells))
+    return result

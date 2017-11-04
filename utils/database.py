@@ -122,4 +122,16 @@ def init_database(name):
         );
         """)
 
+        con.execute("DROP TABLE IF EXISTS npcs_spells")
+        con.execute("""
+        CREATE TABLE `npcs_spells` (
+            `npc_id`	INTEGER,
+            `spell_id`	INTEGER,
+            `knight`	INTEGER,
+            `sorcerer`	INTEGER,
+            `druid`	INTEGER,
+            `paladin`	INTEGER
+        );
+        """)
+
     return con
