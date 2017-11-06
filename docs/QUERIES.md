@@ -2,7 +2,7 @@ A collection of example SQL queries.
 
 ### Fetch creatures at least 15% weak to energy
 ```sql
-SELECT title, energy FROM creatures WHERE energy > 115 ORDER BY energy DESC LIMIT 5
+SELECT title, energy FROM creatures WHERE energy >= 115 ORDER BY energy DESC LIMIT 5
 ```
 
 Results:
