@@ -113,3 +113,24 @@ def fetch_article_images(con, article_list, table, no_title=False):
             finally:
                 c.close()
     return fetch_count, cache_count, missing_count, fail_count
+
+
+def fetch_articles(article_list):
+    i = 0
+    while True:
+        if i > len(article_list):
+            break
+        params = {
+            "action": "query",
+            "prop": "revisions",
+            "rvprop": "content",
+            "format": "json",
+            "titles": "|".join(article_list[i:min(i + 50, len(article_list))])
+        }
+
+        r = requests.get(ENDPOINT, headers=headers, params=params)
+        data = json.loads(r.text)
+        npc_pages = data["query"]["pages"]
+        i += 50
+        for article_id, article in npc_pages.items():
+            yield article_id, article
