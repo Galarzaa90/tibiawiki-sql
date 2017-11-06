@@ -31,9 +31,9 @@ When done, a database file called `tibia_database.db` will be found on the folde
 * NPCs
 * NPC offers
 * Spells
+* Houses
     
 Planned:
-* Houses
 * Achievements
 * Quests
 * *and more...* 

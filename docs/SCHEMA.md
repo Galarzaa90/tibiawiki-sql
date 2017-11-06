@@ -5,6 +5,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | ----- | ----------- |
 | creatures | Contains information for all creatures.
 | creatures_drops | Contains all the items dropped by creatures.
+| houses | Contains all houses and guildhalls.
 | items | Contains information for all items.
 | items_attributes | Contains extra attributes and properties of items that only apply to certain types.
 | npcs | Contains information for all NPCs.
@@ -52,6 +53,22 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | chance |  `REAL` | The chance percentage of this drop. `NULL` means unknown.
 | min | `INTEGER`| The minimum count this drop gives.
 | max | `INTEGER`| The maximum count this drop gives.
+
+## houses
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| id | `INTEGER` | The house's internal id in Tibia.com.
+| name | `TEXT` | The name of the house.
+| city | `TEXT` | The city the house belongs to.
+| street | `TEXT` | The street this house is located.
+| beds | `INTEGER` | The number of beds the house has.
+| rent | `INTEGER` | The monthly rent of this house.
+| size | `INTEGER` | The number of tiles this house has.
+| rooms | `INTEGER` | The number of rooms or divisions this house has.
+| floors | `INTEGER` | The number of floors this house has.
+| guildhall | `INTEGER` | Whether this house is a guildhall or not. `0` or `1`.
+| version | `TEXT` | The client version this was implemented in.
 
 ## items
 

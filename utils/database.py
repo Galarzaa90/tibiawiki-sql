@@ -136,4 +136,21 @@ def init_database(name):
         );
         """)
 
+        con.execute("DROP TABLE IF EXISTS houses")
+        con.execute("""
+        CREATE TABLE `houses` (
+            `id`	INTEGER,
+            `name`	TEXT,
+            `city` TEXT,
+            `street`  TEXT,
+            `beds`    INTEGER,
+            `rent`    INTEGER,
+            `size`    INTEGER,
+            `rooms`   INTEGER,
+            `floors`  INTEGER,
+            `guildhall` INTEGER,
+            `version` TEXT
+        );
+        """)
+
     return con
