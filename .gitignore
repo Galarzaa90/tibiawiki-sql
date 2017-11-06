@@ -1,5 +1,4 @@
 .idea/
 images/*
-!/images/.gitkeep
 tibia_database.db
 __pycache__/

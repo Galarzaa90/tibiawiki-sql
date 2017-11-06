@@ -1,4 +1,5 @@
 import json
+import os
 import time
 from typing import List
 
@@ -52,3 +53,63 @@ def fetch_deprecated_list():
     print("Fetching deprecated articles list... ")
     fetch_category_list("Category:Deprecated", deprecated)
     print(f"\t{len(deprecated):,} found in {time.time()-start_time:.3f} seconds.")
+
+
+def fetch_article_images(con, article_list, table, no_title=False):
+    i = 0
+    fetch_count = 0
+    cache_count = 0
+    missing_count = 0
+    fail_count = 0
+    os.makedirs(f"images/{table}", exist_ok=True)
+    while True:
+        if i > len(article_list):
+            break
+        params = {
+            "action": "query",
+            "prop": "imageinfo",
+            "iiprop": "url",
+            "format": "json",
+            "titles": "|".join([f"File:{c}.gif" for c in article_list[i:min(i + 50, len(article_list))]])
+        }
+        i += 50
+        r = requests.get(ENDPOINT, headers=headers, params=params)
+        data = json.loads(r.text)
+        image_pages = data["query"]["pages"]
+        for article_id, article in image_pages.items():
+            if "missing" in article:
+                # Article has no image
+                missing_count += 1
+                continue
+            article_title = article["title"].replace("File:", "").replace(".gif", "")
+            url = article["imageinfo"][0]["url"]
+            c = con.cursor()
+            if no_title:
+                c.execute(f"SELECT id FROM {table} WHERE name = ?", (article_title,))
+            else:
+                c.execute(f"SELECT id FROM {table} WHERE title = ?", (article_title,))
+            result = c.fetchone()
+            if result is None:
+                continue
+            article_id = result[0]
+            try:
+                if os.path.exists(f"images/{table}/{article_title}.gif"):
+                    with open(f"images/{table}/{article_title}.gif", "rb") as f:
+                        image = f.read()
+                        cache_count += 1
+                else:
+                    r = requests.get(url)
+                    r.raise_for_status()
+                    image = r.content
+                    fetch_count += 1
+                    with open(f"images/{table}/{article_title}.gif", "wb") as f:
+                        f.write(image)
+                c.execute(f"UPDATE {table} SET image = ? WHERE id = ?", (image, article_id))
+                con.commit()
+            except requests.HTTPError:
+                print(f"HTTP Error fetching image for {article_title}")
+                fail_count += 1
+                continue
+            finally:
+                c.close()
+    return fetch_count, cache_count, missing_count, fail_count

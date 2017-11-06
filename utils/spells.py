@@ -3,7 +3,7 @@ import time
 
 import requests
 
-from utils import fetch_category_list, deprecated, headers, ENDPOINT
+from utils import fetch_category_list, deprecated, headers, ENDPOINT, fetch_article_images
 from utils.parsers import parse_attributes, parse_boolean, parse_integer
 
 spells = []
@@ -93,3 +93,16 @@ def fetch_spells(con):
         con.commit()
         c.close()
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
+
+
+def fetch_spell_images(con):
+    print("Fetching spell images...")
+    start_time = time.time()
+    fetch_count, cache_count, missing_count, failed_count = fetch_article_images(con, spells, "spells", True)
+    print(f"\tFetched {fetch_count:,} images, loaded {cache_count:,} from cache.")
+    print(f"\t{missing_count:,} without image.")
+    if failed_count > 0:
+        print(f"\t{failed_count:,} images failed fetching.")
+    print(f"\tDone in {time.time()-start_time:.3f} seconds.")
+
+

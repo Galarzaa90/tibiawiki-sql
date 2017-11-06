@@ -1,11 +1,10 @@
 import json
-import os
 import re
 import time
 
 import requests
 
-from utils import ENDPOINT, headers, deprecated, fetch_category_list
+from utils import ENDPOINT, headers, deprecated, fetch_category_list, fetch_article_images
 from utils.parsers import parse_attributes, parse_boolean, parse_item_offers
 
 items = []
@@ -186,55 +185,11 @@ def fetch_items(con):
 
 
 def fetch_item_images(con):
-    i = 0
     print("Fetching item images...")
     start_time = time.time()
-    fetch_count = 0
-    cache_count = 0
-    while True:
-        if i > len(items):
-            break
-        params = {
-            "action": "query",
-            "prop": "imageinfo",
-            "iiprop": "url",
-            "format": "json",
-            "titles": "|".join([f"File:{c}.gif" for c in items[i:min(i + 50, len(items))]])
-        }
-        i += 50
-        r = requests.get(ENDPOINT, headers=headers, params=params)
-        data = json.loads(r.text)
-        image_pages = data["query"]["pages"]
-        for article_id, article in image_pages.items():
-            if "missing" in article:
-                # Item has no image
-                continue
-            item_title = article["title"].replace("File:", "").replace(".gif", "")
-            url = article["imageinfo"][0]["url"]
-            c = con.cursor()
-            c.execute("SELECT id FROM items WHERE title = ?", (item_title,))
-            result = c.fetchone()
-            if result is None:
-                continue
-            itemid = result[0]
-            try:
-                if os.path.exists(f"images/{item_title}.gif"):
-                    with open(f"images/{item_title}.gif", "rb") as f:
-                        image = f.read()
-                        cache_count += 1
-                else:
-                    r = requests.get(url)
-                    r.raise_for_status()
-                    image = r.content
-                    fetch_count += 1
-                    with open(f"images/{item_title}.gif", "wb") as f:
-                        f.write(image)
-                c.execute("UPDATE items SET image = ? WHERE id = ?", (image, itemid))
-                con.commit()
-            except requests.HTTPError:
-                print(f"HTTP Error fetching image for {item_title}")
-                continue
-            finally:
-                c.close()
+    fetch_count, cache_count, missing_count, failed_count = fetch_article_images(con, items, "items")
     print(f"\tFetched {fetch_count:,} images, loaded {cache_count:,} from cache.")
+    print(f"\t{missing_count:,} items with no image.")
+    if failed_count > 0:
+        print(f"\t{failed_count:,} images failed fetching.")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")

@@ -3,7 +3,7 @@ import time
 
 import requests
 
-from utils import ENDPOINT, headers, deprecated, fetch_category_list
+from utils import ENDPOINT, headers, deprecated, fetch_category_list, fetch_article_images
 from utils.parsers import parse_attributes, parse_spells
 
 npcs = []
@@ -128,3 +128,15 @@ def fetch_npcs(con):
         c.close()
     print(f"\t{spell_counter:,} teachable spells added.")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
+
+
+def fetch_npc_images(con):
+    print("Fetching npc images...")
+    start_time = time.time()
+    fetch_count, cache_count, missing_count, failed_count = fetch_article_images(con, npcs, "npcs")
+    print(f"\tFetched {fetch_count:,} images, loaded {cache_count:,} from cache.")
+    print(f"\t{missing_count:,} without image.")
+    if failed_count > 0:
+        print(f"\t{failed_count:,} images failed fetching.")
+    print(f"\tDone in {time.time()-start_time:.3f} seconds.")
+

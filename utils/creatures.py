@@ -1,10 +1,9 @@
 import json
-import os
 import time
 
 import requests
 
-from utils import ENDPOINT, headers, deprecated, fetch_category_list
+from utils import ENDPOINT, headers, deprecated, fetch_category_list, fetch_article_images
 from utils.parsers import parse_attributes, parse_integers, parse_integer, parse_boolean, clean_links, parse_loot, \
     parse_min_max, parse_loot_statistics
 
@@ -198,58 +197,12 @@ def fetch_drop_statistics(con):
 
 
 def fetch_creature_images(con):
-    i = 0
     print("Fetching creature images...")
     start_time = time.time()
-    fetch_count = 0
-    cache_count = 0
-    while True:
-        if i > len(creatures):
-            break
-        params = {
-            "action": "query",
-            "prop": "imageinfo",
-            "iiprop": "url",
-            "format": "json",
-            "titles": "|".join([f"File:{c}.gif" for c in creatures[i:min(i + 50, len(creatures))]])
-        }
-        i += 50
-        r = requests.get(ENDPOINT, headers=headers, params=params)
-        data = json.loads(r.text)
-        image_pages = data["query"]["pages"]
-        for article_id, article in image_pages.items():
-            if "missing" in article:
-                # Creature has no image
-                continue
-            creature_title = article["title"].replace("File:", "").replace(".gif", "")
-            url = article["imageinfo"][0]["url"]
-            c = con.cursor()
-            c.execute("SELECT id FROM creatures WHERE title = ?", (creature_title,))
-            result = c.fetchone()
-            if result is None:
-                continue
-            creatureid = result[0]
-            try:
-                if os.path.exists(f"images/{creature_title}.gif"):
-                    with open(f"images/{creature_title}.gif", "rb") as f:
-                        image = f.read()
-                        cache_count += 1
-                else:
-                    r = requests.get(url)
-                    r.raise_for_status()
-                    image = r.content
-                    fetch_count += 1
-                    with open(f"images/{creature_title}.gif", "wb") as f:
-                        f.write(image)
-                c.execute("UPDATE creatures SET image = ? WHERE id = ?", (image, creatureid))
-                con.commit()
-            except requests.HTTPError:
-                print(f"HTTP Error fetching image for {creature_title}")
-                continue
-            finally:
-                c.close()
-
+    fetch_count, cache_count, missing_count, failed_count = fetch_article_images(con, creatures, "creatures")
     print(f"\tFetched {fetch_count:,} images, loaded {cache_count:,} from cache.")
+    print(f"\t{missing_count:,} without image.")
+    if failed_count > 0:
+        print(f"\t{failed_count:,} images failed fetching.")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
-
 

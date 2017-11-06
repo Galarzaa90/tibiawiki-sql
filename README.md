@@ -41,3 +41,9 @@ Planned:
 ## Database schema
 See [SCHEMA.md](docs/SCHEMA.md) in the `docs` folder
 
+## Contributing
+Improvements and bug fixes are welcome, via pull requests  
+For questions, suggestions and bug reports, submit an issue.
+
+The best way to contribute to this project is by contributing to [TibiaWiki](http://tibia.wikia.com)
+

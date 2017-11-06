@@ -78,7 +78,8 @@ def init_database(name):
             `name`	TEXT,
             `city` TEXT,
             `job` TEXT,
-            `version` TEXT
+            `version` TEXT,
+            `image` BLOB
         );
         """)
 
@@ -118,7 +119,8 @@ def init_database(name):
             `knight` TEXT,
             `sorcerer` TEXT,
             `druid` TEXT,
-            `paladin` TEXT
+            `paladin` TEXT,
+            `image` BLOB
         );
         """)
 

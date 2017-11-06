@@ -87,6 +87,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | job | `INTEGER` | The NPC's job
 | city | `TEXT` | City where the NPC is found.
 | version | `TEXT` | The client version this item was introduced to the game.
+| image | `BLOB` | The npc's image bytes.
 
 ## npcs_buying
 
@@ -135,3 +136,4 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | sorcerer | `INTEGER` | Whether this spell can be used by sorcerers or not. `0` or `1`.
 | druid | `INTEGER` | Whether this spell can be used by druids or not. `0` or `1`.
 | paladin | `INTEGER` | Whether this spell can be used by paladins or not. `0` or `1`.
+| image | `BLOB` | The spell's image bytes.
