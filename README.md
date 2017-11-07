@@ -1,6 +1,6 @@
 **This project is in early development**
 
-# tibiawiki-sql
+# tibiawiki-sql [![Build Status](https://travis-ci.org/Galarzaa90/tibiawiki-sql.svg?branch=master)](https://travis-ci.org/Galarzaa90/tibiawiki-sql)
 Script that generates a sqlite database for the MMO Tibia.
 
 Inspired in [Mytherin's Tibiaylzer](https://github.com/Mytherin/Tibialyzer) TibiaWiki parsing script.
