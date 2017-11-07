@@ -3,16 +3,16 @@ The output of this script is a SQLite file named `tibia_database.db`.
 
 | Table | Description |
 | ----- | ----------- |
-| creatures | Contains information for all creatures.
-| creatures_drops | Contains all the items dropped by creatures.
-| houses | Contains all houses and guildhalls.
-| items | Contains information for all items.
-| items_attributes | Contains extra attributes and properties of items that only apply to certain types.
-| npcs | Contains information for all NPCs.
-| npcs_buying | Contains all the NPCs' buy offers.
-| npcs_selling | Contains all the NPCs' sell offers.
-| npcs_spells | Contains all the spells NPCs teach.
-| spells | Constains information for all spells.
+| [creatures](#creatures) | Contains information for all creatures.
+| [creatures_drops](#creatures_drops) | Contains all the items dropped by creatures.
+| [houses](#houses) | Contains all houses and guildhalls.
+| [items](#items) | Contains information for all items.
+| [items_attributes](#items_attributes) | Contains extra attributes and properties of items that only apply to certain types.
+| [npcs](#npcs) | Contains information for all NPCs.
+| [npcs_buying](#npcs_buying) | Contains all the NPCs' buy offers.
+| [npcs_selling](#npcs_selling) | Contains all the NPCs' sell offers.
+| [npcs_spells](#npcs_spells) | Contains all the spells NPCs teach.
+| [spells](#spells) | Constains information for all spells.
 
 ## creatures
 
@@ -122,7 +122,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | item_id | `INTEGER` | The id of the item this offer refers to
 | value | `TEXT` | The value of the offer
 
-## spells
+## npcs_spells
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
