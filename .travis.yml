@@ -1,0 +1,9 @@
+language: python
+python:
+  - "3.6"
+install:
+  - pip install requests
+
+"script":
+- python -m compileall ./tibiawiki-sql.py
+- python ./tibiawiki-sql.py skipimages
