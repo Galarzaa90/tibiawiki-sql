@@ -1,6 +1,7 @@
 import time
 
-from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles
+from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log
+from utils.database import get_row_count
 from utils.parsers import parse_attributes, parse_maximum_integer, parse_integer, parse_boolean, clean_links, \
     parse_loot, \
     parse_min_max, parse_loot_statistics
@@ -12,17 +13,18 @@ def fetch_creature_list():
     start_time = time.time()
     print("Fetching creature list... ")
     fetch_category_list("Category:Creatures", creatures)
-    print(f"\t{len(creatures):,} creatures found in {time.time()-start_time:.3f} seconds.")
+    print(f"\t{len(creatures):,} found in {time.time()-start_time:.3f} seconds.")
 
     for d in deprecated:
         if d in creatures:
             creatures.remove(d)
-    print(f"\t{len(creatures):,} creatures after removing deprecated creatures.")
+    print(f"\t{len(creatures):,} after removing deprecated articles.")
 
 
 def fetch_creature(con):
-    print("Fetching creature information...")
+    print("Fetching creatures information...")
     start_time = time.time()
+    exception_count = 0
     attribute_map = {
         "title": ("name",),
         "name": ("actualname",),
@@ -53,7 +55,7 @@ def fetch_creature(con):
         skip = False
         content = article["revisions"][0]["*"]
         if "{{Infobox Creature" not in content:
-            # Skipping pages like creature groups articles
+            # Skipping page without Infoboxes
             continue
         creature = parse_attributes(content)
         tup = ()
@@ -68,9 +70,9 @@ def fetch_creature(con):
                 tup = tup + (value,)
             except KeyError:
                 tup = tup + (None,)
-            except:
-                print(f"Unknown exception found for {article['title']}")
-                print(creature)
+            except Exception as e:
+                log.e(f"Unknown exception found for {article['title']}", e)
+                exception_count += 1
                 skip = True
         if skip:
             continue
@@ -96,12 +98,19 @@ def fetch_creature(con):
                           loot_items)
     con.commit()
     c.close()
+    rows = get_row_count(con, "creatures")
+    drops_rows = get_row_count(con, "creatures_drops")
+    print(f"\t{rows:,} entries added to table")
+    if exception_count:
+        print(f"\t{exception_count:,} exceptions found, check errors.log for more information.")
+    print(f"\t{drops_rows:,} item drops added.")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 
 
 def fetch_drop_statistics(con):
     print("Fetching creature loot statistics...")
     start_time = time.time()
+    added = 0
     c = con.cursor()
     for article_id, article in fetch_articles([f"Loot Statistics:{c}" for c in creatures]):
         if "missing" in article:
@@ -126,19 +135,21 @@ def fetch_drop_statistics(con):
         loot_items = []
         for item, times, amount in loot_stats:
             c.execute("SELECT id FROM items WHERE title LIKE ?", (item,))
-            itemid = c.fetchone()
-            if itemid is None:
+            result = c.fetchone()
+            if result is None:
                 continue
-            itemid = itemid[0]
+            item_id = result[0]
             percentage = min(int(times) / kills * 100, 100)
             _min, _max = parse_min_max(amount)
-            loot_items.append((creature_id, itemid, percentage, _min, _max))
+            loot_items.append((creature_id, item_id, percentage, _min, _max))
             # We delete any duplicate record that was added from the creature's article's loot if it exists
-            c.execute("DELETE FROM creatures_drops WHERE creature_id = ? AND item_id = ?", (creature_id, itemid))
+            c.execute("DELETE FROM creatures_drops WHERE creature_id = ? AND item_id = ?", (creature_id, item_id))
         c.executemany(f"INSERT INTO creatures_drops(creature_id, item_id, chance, min, max) VALUES(?,?,?,?,?)",
                       loot_items)
+        added += c.rowcount
     con.commit()
     c.close()
+    print(f"\t{added:,} entries added or modified.")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 
 

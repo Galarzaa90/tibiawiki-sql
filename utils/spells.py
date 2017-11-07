@@ -1,6 +1,7 @@
 import time
 
-from utils import fetch_category_list, deprecated, fetch_article_images, fetch_articles
+from utils import fetch_category_list, deprecated, fetch_article_images, fetch_articles, log
+from utils.database import get_row_count
 from utils.parsers import parse_attributes, parse_boolean, parse_integer
 
 spells = []
@@ -19,6 +20,7 @@ def fetch_spells_list():
 
 def fetch_spells(con):
     print("Fetching spells information...")
+    exception_count = 0
     start_time = time.time()
     attribute_map = {
         "name": ("name",),
@@ -55,8 +57,8 @@ def fetch_spells(con):
             except KeyError:
                 tup = tup + (None,)
             except Exception as e:
-                print(f"Unknown exception found for {article['title']}")
-                print(spell)
+                log.e(f"Unknown exception found for {article['title']}", e)
+                exception_count += 1
                 skip = True
         if skip:
             continue
@@ -64,6 +66,10 @@ def fetch_spells(con):
                   f"VALUES({','.join(['?']*len(attribute_map.keys()))})", tup)
     con.commit()
     c.close()
+    rows = get_row_count(con, "spells")
+    print(f"\t{rows:,} entries added to table")
+    if exception_count:
+        print(f"\t{exception_count:,} exceptions found, check errors.log for more information.")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 
 

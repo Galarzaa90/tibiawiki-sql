@@ -1,7 +1,8 @@
 import re
 import time
 
-from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles
+from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log
+from utils.database import get_row_count
 from utils.parsers import parse_attributes, parse_boolean, parse_item_offers, parse_float, parse_integer
 
 items = []
@@ -11,16 +12,17 @@ def fetch_items_list():
     print("Fetching item list... ")
     start_time = time.time()
     fetch_category_list("Category:Items", items)
-    print(f"\t{len(items):,} items found in {time.time()-start_time:.3f} seconds.")
+    print(f"\t{len(items):,} found in {time.time()-start_time:.3f} seconds.")
     for d in deprecated:
         if d in items:
             items.remove(d)
-    print(f"\t{len(items):,} items after removing deprecated items.")
+    print(f"\t{len(items):,} after removing deprecated articles.")
 
 
 def fetch_items(con):
     print("Fetching items information...")
     start_time = time.time()
+    exception_count = 0
     attribute_map = {
         "title": ("name",),
         "name": ("actualname",),
@@ -33,9 +35,10 @@ def fetch_items(con):
     }
     c = con.cursor()
     for article_id, article in fetch_articles(items):
+        skip = False
         content = article["revisions"][0]["*"]
         if "{{Infobox Item|" not in content:
-            # Skipping pages like creature groups articles
+            # Skipping page without Infoboxes
             continue
         item = parse_attributes(content)
         item_data = ()
@@ -50,9 +53,12 @@ def fetch_items(con):
                 item_data = item_data + (value,)
             except KeyError:
                 item_data = item_data + (None,)
-            except:
-                print(f"Unknown exception found for {article['title']}")
-                print(item)
+            except Exception as e:
+                log.e(f"Unknown exception found for {article['title']}", e)
+                exception_count += 1
+                skip = True
+        if skip:
+            continue
         c.execute(f"INSERT INTO items({','.join(attribute_map.keys())}) "
                   f"VALUES({','.join(['?']*len(attribute_map.keys()))})", item_data)
         item_id = c.lastrowid
@@ -162,6 +168,17 @@ def fetch_items(con):
             c.executemany(f"INSERT INTO npcs_selling(npc_id, item_id, value) VALUES(?,?,?)",
                           sell_items)
     con.commit()
+    c.close()
+    rows = get_row_count(con, "items")
+    attributes_row = get_row_count(con, "items_attributes")
+    selling_rows = get_row_count(con, "npcs_selling")
+    buying_rows = get_row_count(con, "npcs_buying")
+    print(f"\t{rows:,} entries added to table")
+    print(f"\t{attributes_row:,} attributes added to table")
+    print(f"\t{selling_rows:,} sell offers added to table")
+    print(f"\t{buying_rows:,} buy offers added to table")
+    if exception_count:
+        print(f"\t{exception_count:,} exceptions found, check errors.log for more information.")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 
 

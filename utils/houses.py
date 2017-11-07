@@ -1,6 +1,7 @@
 import time
 
-from utils import fetch_category_list, deprecated, fetch_articles
+from utils import fetch_category_list, deprecated, fetch_articles, log
+from utils.database import get_row_count
 from utils.parsers import parse_attributes, parse_integer
 
 houses = []
@@ -9,18 +10,19 @@ houses = []
 def fetch_house_list():
     start_time = time.time()
     print("Fetching houses list...")
-    fetch_category_list("Category:Player-Ownable_Buildings",houses)
-    print(f"\t{len(houses):,} houses found in {time.time()-start_time:.3f} seconds.")
+    fetch_category_list("Category:Player-Ownable_Buildings", houses)
+    print(f"\t{len(houses):,} found in {time.time()-start_time:.3f} seconds.")
 
     for d in deprecated:
         if d in houses:
             houses.remove(d)
-    print(f"\t{len(houses):,} after removing deprecated houses.")
+    print(f"\t{len(houses):,} after removing deprecated articles.")
 
 
 def fetch_houses(con):
     print("Fetching house information...")
     start_time = time.time()
+    exception_count = 0
     attribute_map = {
         "id": ("houseid", lambda x: parse_integer(x)),
         "name": ("name", ),
@@ -51,7 +53,8 @@ def fetch_houses(con):
             except KeyError:
                 tup = tup + (None,)
             except Exception as e:
-                print(f"Unknown exception found for {article['title']}")
+                log.e(f"Unknown exception found for {article['title']}", e)
+                exception_count += 1
                 skip = True
         if skip:
             continue
@@ -59,4 +62,8 @@ def fetch_houses(con):
                   f"VALUES({','.join(['?']*len(attribute_map.keys()))})", tup)
     con.commit()
     c.close()
+    rows = get_row_count(con, "houses")
+    print(f"\t{rows:,} entries added to table")
+    if exception_count:
+        print(f"\t{exception_count:,} exceptions found, check errors.log for more information.")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")

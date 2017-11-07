@@ -2,3 +2,4 @@
 images/*
 tibia_database.db
 __pycache__/
+*.log

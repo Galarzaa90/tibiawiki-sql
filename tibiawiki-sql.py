@@ -40,4 +40,4 @@ if __name__ == "__main__":
         fetch_npc_images(con)
         fetch_spell_images(con)
 
-    print(f"Done in {time.time()-start_time} seconds.")
+    print(f"Done in {time.time()-start_time:.3f} seconds.")

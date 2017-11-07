@@ -154,3 +154,14 @@ def init_database(name):
         """)
 
     return con
+
+
+def get_row_count(con, table_name):
+    c = con.cursor()
+    try:
+        c.execute(f"SELECT Count() FROM {table_name}")
+        return c.fetchone()[0]
+    except (sqlite3.OperationalError, IndexError):
+        return -1
+    finally:
+        c.close()

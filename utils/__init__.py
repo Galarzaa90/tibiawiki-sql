@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import time
 from typing import List, Tuple
@@ -12,6 +13,13 @@ headers = {
 }
 
 deprecated = []
+
+# Error logger
+log = logging.getLogger(__name__)
+log.setLevel(logging.ERROR)
+handler = logging.FileHandler(filename="errors.log", encoding="utf-8", mode="a")
+handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+log.addHandler(handler)
 
 
 def fetch_category_list(category: str, list_container: List):
@@ -41,7 +49,7 @@ def fetch_category_list(category: str, list_container: List):
         try:
             cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
         except KeyError:
-            # If there's no "cmontinue", means we reached the end of the list.
+            # If there's no "cmcontinue", means we reached the end of the list.
             break
 
 

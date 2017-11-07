@@ -1,6 +1,7 @@
 import time
 
-from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles
+from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log
+from utils.database import get_row_count
 from utils.parsers import parse_attributes, parse_spells
 
 npcs = []
@@ -22,6 +23,7 @@ def fetch_npcs(con):
     print("Fetching npc information...")
     start_time = time.time()
     spell_counter = 0
+    exception_count = 0
     attribute_map = {
         "title": "name",
         "name": "actualname",
@@ -49,9 +51,9 @@ def fetch_npcs(con):
                 tup = tup + (value,)
             except KeyError:
                 tup = tup + (None,)
-            except:
-                print(f"Unknown exception found for {article['title']}")
-                print(npc)
+            except Exception as e:
+                log.e(f"Unknown exception found for {article['title']}", e)
+                exception_count += 1
                 skip = True
         if skip:
             continue
@@ -107,6 +109,10 @@ def fetch_npcs(con):
             spell_counter += c.rowcount
     con.commit()
     c.close()
+    rows = get_row_count(con, "npcs")
+    print(f"\t{rows:,} entries added to table")
+    if exception_count:
+        print(f"\t{exception_count:,} exceptions found, check errors.log for more information.")
     print(f"\t{spell_counter:,} teachable spells added.")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 
