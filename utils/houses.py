@@ -15,7 +15,7 @@ def fetch_house_list():
     for d in deprecated:
         if d in houses:
             houses.remove(d)
-    print(f"\t{len(houses):,} after removing deprecated creatures.")
+    print(f"\t{len(houses):,} after removing deprecated houses.")
 
 
 def fetch_houses(con):
