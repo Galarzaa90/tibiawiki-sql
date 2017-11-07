@@ -1,7 +1,8 @@
 import time
 
 from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles
-from utils.parsers import parse_attributes, parse_integers, parse_integer, parse_boolean, clean_links, parse_loot, \
+from utils.parsers import parse_attributes, parse_maximum_integer, parse_integer, parse_boolean, clean_links, \
+    parse_loot, \
     parse_min_max, parse_loot_statistics
 
 creatures = []
@@ -23,29 +24,29 @@ def fetch_creature(con):
     print("Fetching creature information...")
     start_time = time.time()
     attribute_map = {
-        "title": "name",
-        "name": "actualname",
-        "hitpoints": "hp",
-        "experience": "exp",
-        "maxdamage": "maxdmg",
-        "summon": "summon",
-        "convince": "convince",
-        "illusionable": "illusionable",
-        "pushable": "pushable",
-        "paralyzable": "paraimmune",
-        "sense_invis": "senseinvis",
-        "boss": "isboss",
-        "physical": "physicalDmgMod",
-        "earth": "earthDmgMod",
-        "fire": "fireDmgMod",
-        "ice": "iceDmgMod",
-        "energy": "energyDmgMod",
-        "death": "deathDmgMod",
-        "holy": "holyDmgMod",
-        "drown": "drownDmgMod",
-        "hpdrain": "hpDrainDmgMod",
-        "abilities": "abilities",
-        "version": "implemented"
+        "title": ("name",),
+        "name": ("actualname",),
+        "hitpoints": ("hp", lambda x: parse_integer(x, None)),
+        "experience": ("exp", lambda x: parse_integer(x, None)),
+        "maxdamage": ("maxdmg", lambda x: parse_maximum_integer(x)),
+        "summon": ("summon", lambda x: parse_integer(x, 0)),
+        "convince": ("convince", lambda x: parse_integer(x, 0)),
+        "illusionable": ("illusionable", lambda x: parse_boolean(x)),
+        "pushable": ("pushable", lambda x: parse_boolean(x)),
+        "paralyzable": ("paraimmune", lambda x: parse_boolean(x)),
+        "sense_invis": ("senseinvis", lambda x: parse_boolean(x)),
+        "boss": ("isboss", lambda x: parse_boolean(x)),
+        "physical": ("physicalDmgMod", lambda x: parse_integer(x, None)),
+        "earth": ("earthDmgMod", lambda x: parse_integer(x, None)),
+        "fire": ("fireDmgMod", lambda x: parse_integer(x, None)),
+        "ice": ("iceDmgMod", lambda x: parse_integer(x, None)),
+        "energy": ("energyDmgMod", lambda x: parse_integer(x, None)),
+        "death": ("deathDmgMod", lambda x: parse_integer(x, None)),
+        "holy": ("holyDmgMod", lambda x: parse_integer(x, None)),
+        "drown": ("drownDmgMod", lambda x: parse_integer(x, None)),
+        "hpdrain": ("hpDrainDmgMod", lambda x: parse_integer(x, None)),
+        "abilities": ("abilities", lambda x: clean_links(x)),
+        "version": ("implemented",),
     }
     c = con.cursor()
     for article_id, article in fetch_articles(creatures):
@@ -56,33 +57,14 @@ def fetch_creature(con):
             continue
         creature = parse_attributes(content)
         tup = ()
-        for sql_attr, wiki_attr in attribute_map.items():
+        for sql_attr, attribute in attribute_map.items():
             try:
-
-                # Attribute special cases
+                value = creature.get(attribute[0], None)
+                if len(attribute) > 1:
+                    value = attribute[1](value)
                 # If no actualname is found, we assume it is the same as title
-                if wiki_attr == "actualname" and creature.get(wiki_attr, "") == "":
+                if sql_attr == "name" and creature.get("name", "") == "":
                     value = creature["name"]
-                else:
-                    value = creature[wiki_attr]
-                # Max damage field may contain text and multiple numbers, we need the biggest one.
-                if wiki_attr == "maxdmg":
-                    damages = parse_integers(creature["maxdmg"])
-                    if len(damages) == 0:
-                        value = None
-                    else:
-                        value = max(damages)
-                # Clean question marks and other symbols. If value is not a number, set to None, meaning unknown
-                elif sql_attr in ["hitpoints", "experience", "physical", "fire", "earth", "ice", "energy", "death",
-                                  "holy", "drown", "hpdrain"]:
-                    value = parse_integer(creature.get(wiki_attr), None)
-                # Anything that is not a number is set to 0, meaning not summonable/convinceable
-                elif wiki_attr in ["summon", "convince"]:
-                    value = parse_integer(creature.get(wiki_attr))
-                elif wiki_attr in ["illusionable", "pushable", "paraimmune", "senseinvis", "isboss"]:
-                    value = parse_boolean(creature.get(wiki_attr))
-                elif wiki_attr == "abilities":
-                    value = clean_links(creature.get(wiki_attr))
                 tup = tup + (value,)
             except KeyError:
                 tup = tup + (None,)
@@ -169,4 +151,3 @@ def fetch_creature_images(con):
     if failed_count > 0:
         print(f"\t{failed_count:,} images failed fetching.")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
-

@@ -21,21 +21,21 @@ def fetch_spells(con):
     print("Fetching spells information...")
     start_time = time.time()
     attribute_map = {
-        "name": "name",
-        "words": "words",
-        "type": "type",
-        "class": "subclass",
-        "element": "damagetype",
-        "mana": "mana",
-        "soul": "soul",
-        "price": "spellcost",
-        "cooldown": "cooldown",
-        "level": "levelrequired",
-        "premium": "premium",
-        "knight": "voc",
-        "sorcerer": "voc",
-        "druid": "voc",
-        "paladin": "voc",
+        "name": ("name",),
+        "words": ("words",),
+        "type": ("type",),
+        "class": ("subclass",),
+        "element": ("damagetype",),
+        "mana": ("mana", lambda x: parse_integer(x, -1)),
+        "soul": ("soul", lambda x: parse_integer(x, 0)),
+        "price": ("spellcost", lambda x: parse_integer(x)),
+        "cooldown": ("cooldown", lambda x: parse_integer(x)),
+        "level": ("levelrequired", lambda x: parse_integer(x)),
+        "premium": ("premium", lambda x: parse_boolean(x)),
+        "knight": ("voc", lambda x: x is not None and "knight" in x.lower()),
+        "sorcerer": ("voc", lambda x: x is not None and "sorcerer" in x.lower()),
+        "druid": ("voc", lambda x: x is not None and "druid" in x.lower()),
+        "paladin": ("voc", lambda x: x is not None and "paladin" in x.lower()),
     }
     c = con.cursor()
     for article_id, article in fetch_articles(spells):
@@ -46,20 +46,11 @@ def fetch_spells(con):
             continue
         spell = parse_attributes(content)
         tup = ()
-        for sql_attr, wiki_attr in attribute_map.items():
+        for sql_attr, attribute in attribute_map.items():
             try:
-                # Attribute special cases
-                # If no actualname is found, we assume it is the same as title
-                if wiki_attr == "premium":
-                    value = parse_boolean(spell.get(wiki_attr))
-                elif sql_attr in ["knight", "sorcerer", "druid", "paladin"] and spell.get(wiki_attr) not in [None, ""]:
-                    value = sql_attr in spell[wiki_attr].lower()
-                elif wiki_attr == "soul":
-                    value = parse_integer(spell.get(wiki_attr), 0)
-                elif wiki_attr == "mana":
-                    value = parse_integer(spell.get(wiki_attr), -1)
-                else:
-                    value = spell[wiki_attr]
+                value = spell.get(attribute[0], None)
+                if len(attribute) > 1:
+                    value = attribute[1](value)
                 tup = tup + (value,)
             except KeyError:
                 tup = tup + (None,)

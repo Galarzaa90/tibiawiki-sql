@@ -1,8 +1,7 @@
 import re
 
-from typing import List
+from typing import Optional
 
-numbers_pattern = r"\d+"
 creature_loot_pattern = r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)"
 min_max_pattern = r"(\d+)-(\d+)"
 loot_statistics_pattern = r"\|([\s\w]+),\s*times:(\d+)(?:,\s*amount:([\d-]+))?"
@@ -37,16 +36,31 @@ def parse_min_max(value):
 def parse_integer(value: str, default=0):
     if value is None:
         return default
-    match = re.search(numbers_pattern, value)
+    match = re.search(r"[+-]?\d+", value)
     if match:
         return int(match.group(0))
     else:
         return default
 
 
-def parse_integers(value: str) -> List[int]:
-    matches = re.findall(numbers_pattern, value)
-    return list(map(int, matches))
+def parse_float(value: str, default=0):
+    if value is None:
+        return default
+    match = re.search(r'[+-]?(\d*[.])?\d+', value)
+    if match:
+        return float(match.group(0))
+    else:
+        return default
+
+
+def parse_maximum_integer(value: str) -> Optional[int]:
+    if value is None:
+        return None
+    matches = re.findall(r"[+-]?\d+", value)
+    try:
+        return max(list(map(int, matches)))
+    except ValueError:
+        return None
 
 
 def parse_boolean(value: str):

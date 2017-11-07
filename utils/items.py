@@ -2,7 +2,7 @@ import re
 import time
 
 from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles
-from utils.parsers import parse_attributes, parse_boolean, parse_item_offers
+from utils.parsers import parse_attributes, parse_boolean, parse_item_offers, parse_float, parse_integer
 
 items = []
 
@@ -22,14 +22,14 @@ def fetch_items(con):
     print("Fetching items information...")
     start_time = time.time()
     attribute_map = {
-        "title": "name",
-        "name": "actualname",
-        "weight": "weight",
-        "stackable": "stackable",
-        "value": "npcvalue",
-        "version": "implemented",
-        "flavor_text": "flavortext",
-        "type": "primarytype"
+        "title": ("name",),
+        "name": ("actualname",),
+        "weight": ("weight", lambda x: parse_float(x, None)),
+        "stackable": ("stackable", lambda x: parse_boolean(x)),
+        "value": ("npcvalue", lambda x: parse_integer(x, None)),
+        "version": ("implemented",),
+        "flavor_text": ("flavortext",),
+        "type": ("primarytype",),
     }
     c = con.cursor()
     for article_id, article in fetch_articles(items):
@@ -39,14 +39,14 @@ def fetch_items(con):
             continue
         item = parse_attributes(content)
         item_data = ()
-        for sql_attr, wiki_attr in attribute_map.items():
+        for sql_attr, attribute in attribute_map.items():
             try:
-                if wiki_attr == "actualname" and item.get(wiki_attr, "") == "":
+                value = item.get(attribute[0], None)
+                if len(attribute) > 1:
+                    value = attribute[1](value)
+                # If no actualname is found, we assume it is the same as title
+                if sql_attr == "name" and item.get("name", "") == "":
                     value = item["name"]
-                else:
-                    value = item[wiki_attr]
-                if wiki_attr == "stackable":
-                    value = parse_boolean(value)
                 item_data = item_data + (value,)
             except KeyError:
                 item_data = item_data + (None,)

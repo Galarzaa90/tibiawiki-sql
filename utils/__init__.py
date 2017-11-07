@@ -1,7 +1,7 @@
 import json
 import os
 import time
-from typing import List
+from typing import List, Tuple
 
 import requests
 
@@ -14,27 +14,24 @@ headers = {
 deprecated = []
 
 
-def get_category_list_params(category: str, cmcontinue=None):
-    return {
-        "action": "query",
-        "list": "categorymembers",
-        "cmtitle": category,
-        "cmlimit": 500,
-        "cmtype": "page",
-        "cmprop": "title|sortkeyprefix",
-        "format": "json",
-        "cmcontinue": cmcontinue
-    }
-
-
 def fetch_category_list(category: str, list_container: List):
     """Generic function to fetch a category's articles
 
+    category: Name of the category that will be searched
     list_container is where the results will be stored, taking advantage of python lists immutability
     """
     cmcontinue = None
     while True:
-        params = get_category_list_params(category, cmcontinue)
+        params = {
+            "action": "query",
+            "list": "categorymembers",
+            "cmtitle": category,
+            "cmlimit": 500,
+            "cmtype": "page",
+            "cmprop": "title|sortkeyprefix",
+            "format": "json",
+            "cmcontinue": cmcontinue
+        }
         r = requests.get(ENDPOINT, headers=headers, params=params)
         data = json.loads(r.text)
         category_members = data["query"]["categorymembers"]
@@ -55,7 +52,14 @@ def fetch_deprecated_list():
     print(f"\t{len(deprecated):,} found in {time.time()-start_time:.3f} seconds.")
 
 
-def fetch_article_images(con, article_list, table, no_title=False):
+def fetch_article_images(con, article_list, table, no_title=False) -> Tuple[int, int, int, int]:
+    """Generic function to fetch article images.
+    It searches through a list of articles, adding the 'Image:' prefix and '.gif' suffix.
+    The image is first checked for in the images folder, otherwise is downloaded
+
+    Returns a tuple containing the number of images fetch, images read from cache, articles that had no image and
+    images failed to fetch, in that order.
+    """
     i = 0
     fetch_count = 0
     cache_count = 0
@@ -70,7 +74,7 @@ def fetch_article_images(con, article_list, table, no_title=False):
             "prop": "imageinfo",
             "iiprop": "url",
             "format": "json",
-            "titles": "|".join([f"File:{c}.gif" for c in article_list[i:min(i + 50, len(article_list))]])
+            "titles": "|".join([f"File:{a}.gif" for a in article_list[i:min(i + 50, len(article_list))]])
         }
         i += 50
         r = requests.get(ENDPOINT, headers=headers, params=params)
