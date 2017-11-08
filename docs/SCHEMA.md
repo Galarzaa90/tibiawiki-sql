@@ -84,6 +84,9 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | size | `INTEGER` | The number of tiles this house has.
 | rooms | `INTEGER` | The number of rooms or divisions this house has.
 | floors | `INTEGER` | The number of floors this house has.
+| x | `INTEGER` | The x position of the door's entrance for this house.
+| y | `INTEGER` | The y position of the door's entrance for this house.
+| z | `INTEGER` | The z position of the door's entrance for this house.
 | guildhall | `INTEGER` | Whether this house is a guildhall or not. `0` or `1`.
 | version | `TEXT` | The client version this was implemented in.
 

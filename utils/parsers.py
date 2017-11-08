@@ -1,6 +1,6 @@
 import re
 
-from typing import Optional
+from typing import Optional, Tuple
 
 creature_loot_pattern = r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)"
 min_max_pattern = r"(\d+)-(\d+)"
@@ -126,3 +126,32 @@ def parse_spells(value):
         spells = [s.strip() for s in spells]
         result.append((name, spells))
     return result
+
+
+def parse_mapper_coordinates(value) -> Tuple[Optional[str], ...]:
+    m = re.search(r"coords=([^,]+),([^,]+),([^,]+)", value)
+    if m:
+        return m.group(1), m.group(2), m.group(3)
+    else:
+        return None, None, None
+
+
+start_x = 124 * 256
+start_y = 121 * 256
+
+
+def convert_position(pos, min):
+    if pos is None:
+        return None
+    if '.' not in pos: pos = pos + '.0'
+    if pos[len(pos)-1] == '.': pos = pos + '0'
+    split = [int(x) for x in str(pos).split('.')]
+    return split[0] * 256 + split[1] - min
+
+
+def convert_x(x_pos):
+    return convert_position(x_pos, start_x)
+
+
+def convert_y(y_pos):
+    return convert_position(y_pos, start_y)

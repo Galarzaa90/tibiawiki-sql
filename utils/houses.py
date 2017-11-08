@@ -1,8 +1,9 @@
+import json
 import time
 
 from utils import fetch_category_list, deprecated, fetch_articles, log
 from utils.database import get_row_count
-from utils.parsers import parse_attributes, parse_integer
+from utils.parsers import parse_attributes, parse_integer, start_y, start_x
 
 houses = []
 
@@ -25,17 +26,20 @@ def fetch_houses(con):
     exception_count = 0
     attribute_map = {
         "id": ("houseid", lambda x: parse_integer(x)),
-        "name": ("name", ),
+        "name": ("name",),
         "guildhall": ("type", lambda x: x is not None and "guildhall" in x.lower()),
-        "city": ("city", ),
-        "street": ("street", ),
+        "city": ("city",),
+        "street": ("street",),
         "beds": ("beds", lambda x: parse_integer(x, None)),
         "rent": ("rent", lambda x: parse_integer(x, None)),
         "size": ("size", lambda x: parse_integer(x, None)),
         "rooms": ("rooms", lambda x: parse_integer(x, None)),
         "floors": ("floors", lambda x: parse_integer(x, None)),
-        "version": ("implemented", ),
+        "version": ("implemented",),
     }
+    # House positions are not available at TibiaWiki (yet)
+    with open('utils/house_positions.json') as f:
+        house_positions = json.load(f)
     c = con.cursor()
     for article_id, article in fetch_articles(houses):
         skip = False
@@ -60,6 +64,10 @@ def fetch_houses(con):
             continue
         c.execute(f"INSERT INTO houses({','.join(attribute_map.keys())}) "
                   f"VALUES({','.join(['?']*len(attribute_map.keys()))})", tup)
+        positions = house_positions.get(house["houseid"].strip())
+        if positions is not None:
+            x, y, z = positions
+            c.execute(f"UPDATE houses SET x = ?, y = ?, z = ? WHERE id = ?", (x - start_x, y - start_y, z, tup[0]))
     con.commit()
     c.close()
     rows = get_row_count(con, "houses")

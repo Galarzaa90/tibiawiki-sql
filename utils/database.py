@@ -148,6 +148,9 @@ def init_database(name):
             `size`    INTEGER,
             `rooms`   INTEGER,
             `floors`  INTEGER,
+            `x`  INTEGER,
+            `y`  INTEGER,
+            `z`  INTEGER,
             `guildhall` INTEGER,
             `version` TEXT
         );
