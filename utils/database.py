@@ -152,6 +152,33 @@ def init_database(name):
             `version` TEXT
         );
         """)
+        con.execute("DROP TABLE IF EXISTS achievements")
+        con.execute("""
+        CREATE TABLE `achievements` (
+            `id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+            `name`	TEXT,
+            `grade` INTEGER,
+            `points`  INTEGER,
+            `description`    TEXT,
+            `spoiler`    TEXT,
+            `secret`    INTEGER,
+            `premium`  INTEGER,
+            `version` TEXT
+        );
+        """)
+        con.execute("DROP TABLE IF EXISTS quests")
+        con.execute("""
+        CREATE TABLE `quests` (
+            `id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+            `name` TEXT,
+            `location` TEXT,
+            `legend` TEXT,
+            `level_required`  INTEGER,
+            `level_recommended` INTEGER,
+            `premium`  INTEGER,
+            `version` TEXT
+        );
+        """)
 
     return con
 

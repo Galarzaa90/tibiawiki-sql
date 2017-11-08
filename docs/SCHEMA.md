@@ -3,6 +3,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 
 | Table | Description |
 | ----- | ----------- |
+| [achievements](#achievements) | Contains information for all achievements.
 | [creatures](#creatures) | Contains information for all creatures.
 | [creatures_drops](#creatures_drops) | Contains all the items dropped by creatures.
 | [houses](#houses) | Contains all houses and guildhalls.
@@ -12,9 +13,24 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | [npcs_buying](#npcs_buying) | Contains all the NPCs' buy offers.
 | [npcs_selling](#npcs_selling) | Contains all the NPCs' sell offers.
 | [npcs_spells](#npcs_spells) | Contains all the spells NPCs teach.
-| [spells](#spells) | Constains information for all spells.
+| [quests](#quests) | Contains information for all quests.
+| [spells](#spells) | Contains information for all spells.
 
-## creatures
+## achievements
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| id | `INTEGER` | Autoincremented number, used for relationships with other tables.## creatures
+| name | `TEXT` | The name of the achievement
+| grade | `INTEGER` | The grade of the achievement. Goes from 1 to 3.
+| points | `INTEGER` | The number of points this achievement gives.
+| description | `TEXT` | The official description shown for this achievement.
+| spoiler | `TEXT` | Brief instructions on how to complete the quest.
+| secret | `INTEGER` | Whether this is a secret achievement or not. `0` or `1`.
+| premium | `INTEGER` | Whether this achievement requires premium. `0` or `1`.
+| version | `TEXT` | Client version this achievement was implemented in.
+
+## creatures 
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
@@ -132,6 +148,18 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | sorcerer | `INTEGER` | Whether this NPC teaches this spell to sorcerers. `0` or `1`.
 | druid | `INTEGER` | Whether this NPC teaches this spell to druids. `0` or `1`.
 | paladin | `INTEGER` | Whether this NPC teaches this spell to paladins. `0` or `1`.
+
+## quests
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| id | `INTEGER` | Autoincremented number, user for relationships with other tables.
+| name | `TEXT` | The name of the quest.
+| location | `TEXT` | Location where the quest starts or takes place.
+| legend | `TEXT` | Short description of the quest.
+| level_required | `INTEGER` | The level required to finish the quest.
+| level_recommended | `INTEGER` | The level recommended to finish the quest.
+| premium | `INTEGER` | Whether premium account is required to finish the quest. `0` or `1`.
+| version | `TEXT` | Client version where this quest was implemented.
 
 ## spells
 

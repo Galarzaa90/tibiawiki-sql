@@ -1,6 +1,6 @@
 **This project is in early development**
 
-# tibiawiki-sql [![Build Status](https://travis-ci.org/Galarzaa90/tibiawiki-sql.svg?branch=master)](https://travis-ci.org/Galarzaa90/tibiawiki-sql)
+# tibiawiki-sql [![Build Status](https://travis-ci.org/Galarzaa90/tibiawiki-sql.svg?branch=master)](https://travis-ci.org/Galarzaa90/tibiawiki-sql) ![Python](https://img.shields.io/badge/python-3.6+-yellow.svg) [![GitHub (pre-)release](https://img.shields.io/github/release/Galarzaa90/tibiawiki-sql/all.svg)](https://github.com/Galarzaa90/tibiawiki-sql/releases) 
 Script that generates a sqlite database for the MMO Tibia.
 
 Inspired in [Mytherin's Tibiaylzer](https://github.com/Mytherin/Tibialyzer) TibiaWiki parsing script.
@@ -32,10 +32,13 @@ When done, a database file called `tibia_database.db` will be found on the folde
 * NPC offers
 * Spells
 * Houses
-    
-Planned:
 * Achievements
 * Quests
+    
+Planned:
+* Map coordinates for houses
+* More quest information
+* NPC destinations
 * *and more...* 
     
 ## Database schema

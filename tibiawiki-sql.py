@@ -2,11 +2,13 @@ import sys
 import time
 
 from utils import fetch_deprecated_list
+from utils.achievements import fetch_achievement_list, fetch_achievements
 from utils.creatures import fetch_creature_images, fetch_creature_list, fetch_creature, fetch_drop_statistics
 from utils.database import init_database
 from utils.houses import fetch_house_list, fetch_houses
 from utils.items import fetch_item_images, fetch_items_list, fetch_items
 from utils.npcs import fetch_npc_images, fetch_npc_list, fetch_npcs
+from utils.quests import fetch_quests, fetch_quest_list
 from utils.spells import fetch_spell_images, fetch_spells_list, fetch_spells
 
 DATABASE_FILE = "tibia_database.db"
@@ -33,6 +35,12 @@ if __name__ == "__main__":
     fetch_drop_statistics(con)
     fetch_house_list()
     fetch_houses(con)
+
+    fetch_achievement_list()
+    fetch_achievements(con)
+
+    fetch_quest_list()
+    fetch_quests(con)
 
     if not SKIP_IMAGES:
         fetch_creature_images(con)
