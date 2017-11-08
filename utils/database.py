@@ -179,6 +179,13 @@ def init_database(name):
             `version` TEXT
         );
         """)
+        con.execute("DROP TABLE IF EXISTS map")
+        con.execute("""
+        CREATE TABLE `map` (
+            `z`	INTEGER PRIMARY KEY,
+            `image` BLOB
+        );
+        """)
 
     return con
 

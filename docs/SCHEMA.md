@@ -9,6 +9,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | [houses](#houses) | Contains all houses and guildhalls.
 | [items](#items) | Contains information for all items.
 | [items_attributes](#items_attributes) | Contains extra attributes and properties of items that only apply to certain types.
+| [map](#map) | Contains the world map's images.
 | [npcs](#npcs) | Contains information for all NPCs.
 | [npcs_buying](#npcs_buying) | Contains all the NPCs' buy offers.
 | [npcs_selling](#npcs_selling) | Contains all the NPCs' sell offers.
@@ -109,6 +110,12 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | attribute | `TEXT` | The name of the attribute.
 | value | `TEXT` | The value of the attribute.
 
+## maps
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| z | `INTEGER` | The floor's level, where 7 is the ground floor.
+| image | `BLOB` | The map's image for that that floor, in PNG format.
 
 ## npcs
 
