@@ -110,7 +110,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | attribute | `TEXT` | The name of the attribute.
 | value | `TEXT` | The value of the attribute.
 
-## maps
+## map
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
