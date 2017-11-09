@@ -3,7 +3,7 @@ import time
 
 from utils import fetch_category_list, deprecated, fetch_articles, log
 from utils.database import get_row_count
-from utils.parsers import parse_attributes, parse_integer, start_y, start_x
+from utils.parsers import parse_attributes, parse_integer
 
 houses = []
 
@@ -64,10 +64,9 @@ def fetch_houses(con):
             continue
         c.execute(f"INSERT INTO houses({','.join(attribute_map.keys())}) "
                   f"VALUES({','.join(['?']*len(attribute_map.keys()))})", tup)
-        positions = house_positions.get(house["houseid"].strip())
-        if positions is not None:
-            x, y, z = positions
-            c.execute(f"UPDATE houses SET x = ?, y = ?, z = ? WHERE id = ?", (x - start_x, y - start_y, z, tup[0]))
+        if house["name"] in house_positions:
+            position = house_positions[house["name"]]
+            c.execute(f"UPDATE houses SET x = ?, y = ?, z = ? WHERE id = ?", (position["x"], position["y"], position["z"], tup[0]))
     con.commit()
     c.close()
     rows = get_row_count(con, "houses")
