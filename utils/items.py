@@ -65,7 +65,7 @@ def fetch_items(con):
         extra_attributes = {
             "level": "levelrequired",
             "attack": "attack",
-            "elementattack:": "elementattack",
+            "element_attack": "elementattack",
             "defense": "defense",
             "defensemod": "defensemod",
             "armor": "armor",
