@@ -79,6 +79,9 @@ def init_database(name):
             `city` TEXT,
             `job` TEXT,
             `version` TEXT,
+            `x` INTEGER,
+            `y` INTEGER,
+            `z` INTEGER,
             `image` BLOB
         );
         """)

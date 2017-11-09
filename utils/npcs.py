@@ -2,7 +2,7 @@ import time
 
 from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log
 from utils.database import get_row_count
-from utils.parsers import parse_attributes, parse_spells
+from utils.parsers import parse_attributes, parse_spells, convert_tibiawiki_position, parse_integer
 
 npcs = []
 
@@ -29,6 +29,9 @@ def fetch_npcs(con):
         "name": "actualname",
         "job": "job",
         "city": "city",
+        "x": "posx",
+        "y": "posy",
+        "z": "posz",
         "version": "implemented"
     }
     c = con.cursor()
@@ -42,12 +45,15 @@ def fetch_npcs(con):
         tup = ()
         for sql_attr, wiki_attr in attribute_map.items():
             try:
+                value = npc[wiki_attr]
                 # Attribute special cases
                 # If no actualname is found, we assume it is the same as title
                 if wiki_attr == "actualname" and npc.get(wiki_attr) in [None, ""]:
                     value = npc["name"]
-                else:
-                    value = npc[wiki_attr]
+                elif sql_attr in ["x", "y"]:
+                    value = convert_tibiawiki_position(npc[wiki_attr])
+                elif sql_attr == "z":
+                    value = parse_integer(npc[wiki_attr])
                 tup = tup + (value,)
             except KeyError:
                 tup = tup + (None,)

@@ -136,22 +136,16 @@ def parse_mapper_coordinates(value) -> Tuple[Optional[str], ...]:
         return None, None, None
 
 
-start_x = 124 * 256
-start_y = 121 * 256
+def convert_tibiawiki_position(pos) -> int:
+    """Converts from TibiaWiki position system to regular numeric coordinates
 
+    TibiaWiki takes the coordinates and splits in two bytes, represented in decimal, separated by a period."""
+    position_splits = pos.strip().split(".")
+    try:
+        coordinate = int(position_splits[0]) << 8
+        if len(position_splits) > 1 and position_splits[1].strip():
+            coordinate += int(position_splits[1])
+        return coordinate
+    except (ValueError, IndexError):
+        return 0
 
-def convert_position(pos, min):
-    if pos is None:
-        return None
-    if '.' not in pos: pos = pos + '.0'
-    if pos[len(pos)-1] == '.': pos = pos + '0'
-    split = [int(x) for x in str(pos).split('.')]
-    return split[0] * 256 + split[1] - min
-
-
-def convert_x(x_pos):
-    return convert_position(x_pos, start_x)
-
-
-def convert_y(y_pos):
-    return convert_position(y_pos, start_y)

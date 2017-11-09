@@ -129,6 +129,9 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | name | `TEXT` | The actual name of the npc in-game.
 | job | `INTEGER` | The NPC's job
 | city | `TEXT` | City where the NPC is found.
+| x | `INTEGER` | The x position where the NPC is usually located.
+| y | `INTEGER` | The y position where the NPC is usually located.
+| z | `INTEGER` | The z position where the NPC is usually located.
 | version | `TEXT` | The client version this item was introduced to the game.
 | image | `BLOB` | The npc's image bytes.
 
