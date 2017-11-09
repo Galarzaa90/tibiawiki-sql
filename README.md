@@ -33,9 +33,6 @@ When done, a database file called `tibia_database.db` will be found on the folde
 * Achievements
 * Quests
 
-* NPC destinations
-* *and more...* 
-
 ## Database schema
 See [SCHEMA.md](docs/SCHEMA.md) in the `docs` folder
 
