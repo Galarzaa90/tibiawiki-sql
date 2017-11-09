@@ -185,6 +185,7 @@ def init_database(name):
             `version` TEXT
         );
         """)
+
         con.execute("DROP TABLE IF EXISTS map")
         con.execute("""
         CREATE TABLE `map` (
@@ -192,6 +193,23 @@ def init_database(name):
             `image` BLOB
         );
         """)
+
+        con.execute("DROP TABLE IF EXISTS quests_rewards")
+        con.execute("""
+        CREATE TABLE `quests_rewards` (
+            `quest_id`	INTEGER,
+            `item_id` INTEGER
+        );
+        """)
+
+        con.execute("DROP TABLE IF EXISTS quests_dangers")
+        con.execute("""
+        CREATE TABLE `quests_dangers` (
+            `quest_id`	INTEGER,
+            `creature_id` INTEGER
+        );
+        """)
+
 
     return con
 

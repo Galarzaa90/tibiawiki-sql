@@ -149,3 +149,6 @@ def convert_tibiawiki_position(pos) -> int:
     except (ValueError, IndexError):
         return 0
 
+
+def parse_links(value):
+    return list(re.findall(r'\[\[([^|\]]+)', value))

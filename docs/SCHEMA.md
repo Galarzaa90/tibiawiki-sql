@@ -15,6 +15,8 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | [npcs_selling](#npcs_selling) | Contains all the NPCs' sell offers.
 | [npcs_spells](#npcs_spells) | Contains all the spells NPCs teach.
 | [quests](#quests) | Contains information for all quests.
+| [quests_dangers](#quests_dangers) | Contains creatures that can be found in a quest.
+| [quests_rewards](#quests_rewards) | Contains item rewards for quests.
 | [spells](#spells) | Contains information for all spells.
 
 ## achievements
@@ -173,6 +175,18 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | level_recommended | `INTEGER` | The level recommended to finish the quest.
 | premium | `INTEGER` | Whether premium account is required to finish the quest. `0` or `1`.
 | version | `TEXT` | Client version where this quest was implemented.
+
+## quests_dangers
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| quest_id | `INTEGER` | Id of the quest this danger belongs to.
+| creature_id | `INTEGER` | Id of the creature found in this quest.
+
+## quests_rewards
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| quest_id | `INTEGER` | Id of the quest this reward belongs to.
+| item_id | `INTEGER` | Id of the item obtained in this quest.
 
 ## spells
 
