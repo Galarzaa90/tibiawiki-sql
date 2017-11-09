@@ -34,16 +34,6 @@ def init_database(name):
             `image` BLOB
         );
         """)
-        con.execute("DROP TABLE IF EXISTS creatures_drops")
-        con.execute("""
-        CREATE TABLE `creatures_drops` (
-            `creature_id`	INTEGER,
-            `item_id`	INTEGER,
-            `chance`	REAL,
-            `min`	INTEGER,
-            `max`	INTEGER
-        );
-        """)
 
         con.execute("DROP TABLE IF EXISTS items")
         con.execute("""
@@ -61,12 +51,25 @@ def init_database(name):
         );
         """)
 
+        con.execute("DROP TABLE IF EXISTS creatures_drops")
+        con.execute("""
+        CREATE TABLE `creatures_drops` (
+            `creature_id`	INTEGER,
+            `item_id`	INTEGER,
+            `chance`	REAL,
+            `min`	INTEGER,
+            `max`	INTEGER,
+            FOREIGN KEY(`creature_id`) REFERENCES `creatures`(`id`),
+            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`)
+        );""")
+
         con.execute("DROP TABLE IF EXISTS items_attributes")
         con.execute("""
         CREATE TABLE `items_attributes` (
             `item_id`	INTEGER,
             `attribute`	TEXT,
-            `value`	TEXT
+            `value`	TEXT,
+            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`)
         );
         """)
 
@@ -91,7 +94,9 @@ def init_database(name):
         CREATE TABLE `npcs_buying` (
             `npc_id`	INTEGER,
             `item_id`	INTEGER,
-            `value`	INTEGER
+            `value`	INTEGER,
+            FOREIGN KEY(`npc_id`) REFERENCES `npcs`(`id`),
+            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`)
         );
         """)
 
@@ -100,7 +105,9 @@ def init_database(name):
         CREATE TABLE `npcs_selling` (
             `npc_id`	INTEGER,
             `item_id`	INTEGER,
-            `value`	INTEGER
+            `value`	INTEGER,
+            FOREIGN KEY(`npc_id`) REFERENCES `npcs`(`id`),
+            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`)
         );
         """)
 
@@ -135,7 +142,9 @@ def init_database(name):
             `knight`	INTEGER,
             `sorcerer`	INTEGER,
             `druid`	INTEGER,
-            `paladin`	INTEGER
+            `paladin`	INTEGER,
+            FOREIGN KEY(`npc_id`) REFERENCES `npcs`(`id`),
+            FOREIGN KEY(`spell_id`) REFERENCES `spells`(`id`)
         );
         """)
 
@@ -198,7 +207,9 @@ def init_database(name):
         con.execute("""
         CREATE TABLE `quests_rewards` (
             `quest_id`	INTEGER,
-            `item_id` INTEGER
+            `item_id` INTEGER,
+            FOREIGN KEY(`quest_id`) REFERENCES `quests`(`id`),
+            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`)
         );
         """)
 
@@ -206,7 +217,9 @@ def init_database(name):
         con.execute("""
         CREATE TABLE `quests_dangers` (
             `quest_id`	INTEGER,
-            `creature_id` INTEGER
+            `creature_id` INTEGER,
+            FOREIGN KEY(`quest_id`) REFERENCES `quests`(`id`),
+            FOREIGN KEY(`creature_id`) REFERENCES `creatures`(`id`)
         );
         """)
     return con
