@@ -42,13 +42,13 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | name | `TEXT` | The actual name of the creature in-game.
 | hitpoints | `INTEGER` | The number of hitpoints the creature has. May be `NULL` if unknown.
 | experience | `INTEGER` | The number of experience the creature yields. May be `NULL` if unknown.
-| maxdamage | `INTEGER` | The maximum damage a creature may deal if it were to use all it's abilities at once. May be `NULL` if unknown.
+| max_damage | `INTEGER` | The maximum damage a creature may deal if it were to use all it's abilities at once. May be `NULL` if unknown.
 | summon | `INTEGER` | The mana cost to summon this creature. `0` means it is not summonable. 
 | convince | `INTEGER` | The mana cost to convince this creature. `0` means it is not convinceable.
 | illusionable | `INTEGER` | Whether the player can turn into this creature with Creature Illusion. `0` or `1`.
 | pushable | `INTEGER` | Whether this creature can be pushed or not. `0` or `1`.
-| paralyzable | `INTEGER` | Whether this creature can be paralyzed or not. `0` or `1`.
-| sense_invis | `INTEGER` | Whether this creature can see through invisibility or not. `0` or `1`.
+| paralysable | `INTEGER` | Whether this creature can be paralyzed or not. `0` or `1`.
+| see_invisible | `INTEGER` | Whether this creature can see through invisibility or not. `0` or `1`.
 | boss | `INTEGER` | Whether this creature is a boss or not. `0` or `1`.
 | physical | `INTEGER` | Percentage of damage the creature receives from this damage type. `0` being completely immune, `100` neutral. May be `NULL` if unknown.
 | earth | `INTEGER` | Percentage of damage the creature receives from this damage type. `0` being completely immune, `100` neutral. May be `NULL` if unknown.
