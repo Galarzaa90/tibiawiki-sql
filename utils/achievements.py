@@ -24,14 +24,14 @@ def fetch_achievements(con):
     start_time = time.time()
     exception_count = 0
     attribute_map = {
-        "name": ("name", ),
-        "grade": ("grade", lambda x: parse_integer(x,None)),
-        "points": ("points", lambda x: parse_integer(x,None)),
+        "name": ("name",),
+        "grade": ("grade", lambda x: parse_integer(x, None)),
+        "points": ("points", lambda x: parse_integer(x, None)),
         "premium": ("premium", lambda x: parse_boolean(x)),
-        "description": ("description", ),
+        "description": ("description",),
         "spoiler": ("spoiler", lambda x: clean_links(x)),
         "secret": ("secret", lambda x: parse_boolean(x)),
-        "version": ("implemented", ),
+        "version": ("implemented",),
     }
     c = con.cursor()
     for article_id, article in fetch_articles(achievements):

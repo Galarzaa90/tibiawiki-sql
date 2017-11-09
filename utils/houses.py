@@ -66,7 +66,8 @@ def fetch_houses(con):
                   f"VALUES({','.join(['?']*len(attribute_map.keys()))})", tup)
         if house["name"] in house_positions:
             position = house_positions[house["name"]]
-            c.execute(f"UPDATE houses SET x = ?, y = ?, z = ? WHERE id = ?", (position["x"], position["y"], position["z"], tup[0]))
+            c.execute(f"UPDATE houses SET x = ?, y = ?, z = ? WHERE id = ?",
+                      (position["x"], position["y"], position["z"], tup[0]))
     con.commit()
     c.close()
     rows = get_row_count(con, "houses")

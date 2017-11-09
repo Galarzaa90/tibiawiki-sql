@@ -105,7 +105,8 @@ def fetch_npcs(con):
                     for j, s in enumerate(spell_data):
                         # Spell was already in list, so we update vocations
                         if s[1] == spell_id:
-                            spell_data[j] = [npc_id, s[1], s[2] or knight, s[3] or paladin, s[4] or druid, s[5] or sorcerer]
+                            spell_data[j] = [npc_id, s[1], s[2] or knight, s[3] or paladin, s[4] or druid,
+                                             s[5] or sorcerer]
                             exists = True
                             break
                     if not exists:

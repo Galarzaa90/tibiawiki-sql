@@ -25,13 +25,13 @@ def fetch_quests(con):
     start_time = time.time()
     exception_count = 0
     attribute_map = {
-        "name": ("name",lambda x: html.unescape(x)),
+        "name": ("name", lambda x: html.unescape(x)),
         "location": ("location", lambda x: clean_links(x)),
         "legend": ("legend", lambda x: clean_links(x)),
         "level_required": ("lvl", lambda x: parse_integer(x)),
         "level_recommended": ("lvlrec", lambda x: parse_integer(x)),
         "premium": ("premium", lambda x: parse_boolean(x)),
-        "version": ("implemented", ),
+        "version": ("implemented",),
     }
     c = con.cursor()
     for article_id, article in fetch_articles(quests):

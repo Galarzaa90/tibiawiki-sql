@@ -209,8 +209,6 @@ def init_database(name):
             `creature_id` INTEGER
         );
         """)
-
-
     return con
 
 
