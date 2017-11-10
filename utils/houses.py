@@ -56,8 +56,8 @@ def fetch_houses(con):
                 tup = tup + (value,)
             except KeyError:
                 tup = tup + (None,)
-            except Exception as e:
-                log.e(f"Unknown exception found for {article['title']}", e)
+            except Exception:
+                log.exception(f"Unknown exception found for {article['title']}")
                 exception_count += 1
                 skip = True
         if skip:

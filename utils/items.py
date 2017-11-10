@@ -53,8 +53,8 @@ def fetch_items(con):
                 item_data = item_data + (value,)
             except KeyError:
                 item_data = item_data + (None,)
-            except Exception as e:
-                log.e(f"Unknown exception found for {article['title']}", e)
+            except Exception:
+                log.exception(f"Unknown exception found for {article['title']}")
                 exception_count += 1
                 skip = True
         if skip:

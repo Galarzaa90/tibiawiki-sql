@@ -68,6 +68,8 @@ def parse_boolean(value: str):
 
 
 def clean_links(content):
+    if content is None:
+        return None
     # Named links
     content = re.sub(r'\[\[[^]|]+\|([^]]+)\]\]', '\g<1>', content)
     # Links

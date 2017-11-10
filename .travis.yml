@@ -8,5 +8,10 @@ install:
   - pip install requests
 
 "script":
+- rm errors.log -f
 - python -m compileall ./tibiawiki-sql.py
 - python ./tibiawiki-sql.py skipimages
+- echo "**************************"
+- echo "*      error.log         *"
+- echo "**************************"
+- cat errors.log
