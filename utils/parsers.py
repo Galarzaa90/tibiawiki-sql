@@ -116,7 +116,7 @@ def parse_attributes(content):
             value = value + content[i]
         else:
             attribute = attribute + content[i]
-    return attributes
+    return dict((k, v) for k, v in attributes.items() if v.strip())
 
 
 def parse_spells(value):
