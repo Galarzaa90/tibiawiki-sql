@@ -1,6 +1,6 @@
 import re
 
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict
 
 creature_loot_pattern = r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)"
 min_max_pattern = r"(\d+)-(\d+)"
@@ -81,7 +81,7 @@ def clean_links(content):
     return content
 
 
-def parse_attributes(content):
+def parse_attributes(content) -> Dict[str, str]:
     attributes = dict()
     depth = 0
     parse_value = False
