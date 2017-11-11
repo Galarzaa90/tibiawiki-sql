@@ -1,5 +1,9 @@
 import sqlite3
 
+DATABASE_FILE = "tibia_database.db"
+TABLE_ITEMS = 'items'
+TABLE_CREATURES = 'creatures'
+
 
 def init_database(name):
     con = sqlite3.connect(name)
@@ -234,3 +238,7 @@ def get_row_count(con, table_name):
         return -1
     finally:
         c.close()
+
+
+def get_connection(database):
+    return sqlite3.connect(database)
