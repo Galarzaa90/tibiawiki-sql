@@ -42,7 +42,7 @@ def init_database(name):
             `title`	TEXT,
             `name`	TEXT,
             `stackable` INTEGER DEFAULT 0,
-            `value`INTEGER,
+            `value`INTEGER DEFAULT 0,
             `weight` REAL,
             `type` TEXT,
             `flavor_text` TEXT,
