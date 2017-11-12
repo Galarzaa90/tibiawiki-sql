@@ -1,7 +1,8 @@
 import time
-from utils.database import *
+from utils.database import TABLE_CREATURES, TABLE_ITEMS, TABLE_NPCS, DATABASE_FILE, get_connection
 
 DEFAULT_SELECT = 'SELECT * FROM {} '
+DEFAULT_WHERE = ' WHERE {} LIKE ? '
 DEFAULT_ORDER_BY = ' ORDER BY {} ASC '
 
 
@@ -13,10 +14,8 @@ def fetch_creature_by_name(creature_name):
     return __fetch_creature__('name', creature_name + '%')
 
 
-def __fetch_creature__(filter_column, creature_name):
-    where = ' WHERE {} LIKE ? '.format(filter_column)
-    order_by = ' ORDER BY name DESC '
-    return __fetch_thing__(TABLE_CREATURES, filter_column, where, order_by, creature_name)
+def __fetch_creature__(filtered_column, filtered_param):
+    return __fetch_thing__(TABLE_CREATURES, filtered_column, '', '', filtered_param)
 
 
 def fetch_item_by_exact_name(item_name):
@@ -27,32 +26,42 @@ def fetch_item_by_name(item_name):
     return __fetch_item__('name', item_name + '%')
 
 
-def __fetch_item__(filter_column, item_name):
-    where = ' WHERE {} LIKE ? '.format(filter_column)
-    order_by = ''
-    return __fetch_thing__(TABLE_ITEMS, filter_column, where, order_by, item_name)
+def __fetch_item__(filtered_column, item_name):
+    return __fetch_thing__(TABLE_ITEMS, filtered_column, '', '', item_name)
 
 
-def __fetch_thing__(table_name, filter_column, where, order_by, filtered_param):
-    print('Running call to fetch {} by {}: \'{}\''.format(table_name, filter_column, filtered_param))
-    creatures_return = []
+def fetch_npc_by_exact_name(npc_name):
+    return __fetch_npc__('title', npc_name)
+
+
+def fetch_npc_by_name(npc_name):
+    return __fetch_npc__('title', npc_name + '%')
+
+
+def __fetch_npc__(filtered_column, npc_name):
+    return __fetch_thing__(TABLE_NPCS, filtered_column, '', '', npc_name)
+
+
+def __fetch_thing__(table_name, filtered_column, where, order_by, filtered_param):
+    print('Running call to fetch table \'{}\' by column \'{}\', filtering by \'{}\'.'.format(table_name, filtered_column, filtered_param))
+    things = []
     con = get_connection(DATABASE_FILE)
     cursor = con.cursor()
     try:
         start_time = time.time()
-        results = execute_query(cursor, table_name, filter_column, where, order_by, filtered_param)
+        results = execute_query(cursor, table_name, filtered_column, where, order_by, filtered_param)
         num_fields = len(cursor.description)
         field_names = [i[0] for i in cursor.description]
 
         for result in results:
-            creature_return = {}
+            thing = {}
             for i in range(0, num_fields):
-                creature_return[field_names[i]] = result[i]
+                thing[field_names[i]] = result[i]
 
-            creatures_return.append(creature_return)
+            things.append(thing)
 
-        if len(creatures_return) == 0:
-            print("No creature found with that name.")
+        if len(things) == 0:
+            print("No rows found.")
 
         print(f"Done in {time.time()-start_time:.3f} seconds.")
     except Exception as e:
@@ -61,19 +70,32 @@ def __fetch_thing__(table_name, filter_column, where, order_by, filtered_param):
         cursor.close()
         con.close()
 
-    return creatures_return
+    return things
 
 
-def execute_query(cursor, table_name, filter_column, where, order_by, param):
+def execute_query(cursor, table_name, filtered_column, where, order_by, filtered_param):
     sql = DEFAULT_SELECT.format(table_name)
-    sql += where
-    if not order_by:
-        sql += order_by
-    else:
-        sql += DEFAULT_ORDER_BY.format(filter_column)
+    sql = add_where_clause(sql, filtered_column, where)
+    sql = add_order_by_clause(sql, filtered_column, order_by)
     print(sql)
-    cursor.execute(sql, (param,))
+    cursor.execute(sql, (filtered_param,))
     return cursor.fetchall()
+
+
+def add_order_by_clause(sql, filtered_column, order_by):
+    if not order_by:
+        sql += DEFAULT_ORDER_BY.format(filtered_column)
+    else:
+        sql += order_by
+    return sql
+
+
+def add_where_clause(sql, filtered_column, where):
+    if not where:
+        sql += DEFAULT_WHERE
+    else:
+        sql += where
+    return sql.format(filtered_column)
 
 
 if __name__ == "__main__":
@@ -92,3 +114,11 @@ if __name__ == "__main__":
     items = fetch_item_by_name("skull")
     for item in items:
         print(item)
+
+    npcs = fetch_npc_by_exact_name("Frodo")
+    for npc in npcs:
+        print(npc)
+
+    npcs = fetch_npc_by_name("Fr")
+    for npc in npcs:
+        print(npc)

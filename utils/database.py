@@ -1,8 +1,9 @@
 import sqlite3
 
 DATABASE_FILE = "tibia_database.db"
-TABLE_ITEMS = 'items'
 TABLE_CREATURES = 'creatures'
+TABLE_ITEMS = 'items'
+TABLE_NPCS = 'npcs'
 
 
 def init_database(name):
