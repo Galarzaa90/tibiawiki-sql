@@ -10,3 +10,4 @@ install:
 "script":
 - python -m compileall ./tibiawiki-sql.py
 - python ./tibiawiki-sql.py skipimages
+- cat errors.log

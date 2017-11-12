@@ -1,4 +1,5 @@
 import time
+from typing import Dict, Tuple, Callable
 
 from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log
 from utils.database import get_row_count
@@ -13,12 +14,13 @@ def fetch_creature_list():
     start_time = time.time()
     print("Fetching creature list... ")
     fetch_category_list("Category:Creatures", creatures)
-    print(f"\t{len(creatures):,} found in {time.time()-start_time:.3f} seconds.")
+    print(f"\t{len(creatures):,} found")
 
     for d in deprecated:
         if d in creatures:
             creatures.remove(d)
     print(f"\t{len(creatures):,} after removing deprecated articles.")
+    print(f"\tDone in {time.time()-start_time:.3f} seconds")
 
 
 def fetch_creature(con):
@@ -26,76 +28,71 @@ def fetch_creature(con):
     start_time = time.time()
     exception_count = 0
     attribute_map = {
-        "title": ("name",),
-        "name": ("actualname",),
-        "hitpoints": ("hp", lambda x: parse_integer(x, None)),
-        "experience": ("exp", lambda x: parse_integer(x, None)),
-        "max_damage": ("maxdmg", lambda x: parse_maximum_integer(x)),
-        "summon": ("summon", lambda x: parse_integer(x, 0)),
-        "convince": ("convince", lambda x: parse_integer(x, 0)),
+        "name": ("title", lambda x: x),
+        "actualname": ("name", lambda x: x),
+        "hp": ("hitpoints", lambda x: parse_integer(x, None)),
+        "exp": ("experience", lambda x: parse_integer(x, None)),
+        "maxdmg": ("max_damage", lambda x: parse_maximum_integer(x)),
+        "summon": ("summon", lambda x: parse_integer(x)),
+        "convince": ("convince", lambda x: parse_integer(x)),
         "illusionable": ("illusionable", lambda x: parse_boolean(x)),
         "pushable": ("pushable", lambda x: parse_boolean(x)),
-        "paralysable": ("paraimmune", lambda x: parse_boolean(x)),
-        "see_invisible": ("senseinvis", lambda x: parse_boolean(x)),
-        "boss": ("isboss", lambda x: parse_boolean(x)),
-        "physical": ("physicalDmgMod", lambda x: parse_integer(x, None)),
-        "earth": ("earthDmgMod", lambda x: parse_integer(x, None)),
-        "fire": ("fireDmgMod", lambda x: parse_integer(x, None)),
-        "ice": ("iceDmgMod", lambda x: parse_integer(x, None)),
-        "energy": ("energyDmgMod", lambda x: parse_integer(x, None)),
-        "death": ("deathDmgMod", lambda x: parse_integer(x, None)),
-        "holy": ("holyDmgMod", lambda x: parse_integer(x, None)),
-        "drown": ("drownDmgMod", lambda x: parse_integer(x, None)),
-        "hpdrain": ("hpDrainDmgMod", lambda x: parse_integer(x, None)),
+        "senseinvis": ("see_invisible", lambda x: parse_boolean(x)),
+        "paraimmune": ("paralysable", lambda x: parse_boolean(x)),
+        "isboss": ("boss", lambda x: parse_boolean(x)),
+        "physicalDmgMod": ("physical", lambda x: parse_integer(x)),
+        "earthDmgMod": ("earth", lambda x: parse_integer(x)),
+        "fireDmgMod": ("fire", lambda x: parse_integer(x)),
+        "iceDmgMod": ("ice", lambda x: parse_integer(x)),
+        "energyDmgMod": ("energy", lambda x: parse_integer(x)),
+        "deathDmgMod": ("death", lambda x: parse_integer(x)),
+        "holyDmgMod": ("holy", lambda x: parse_integer(x)),
+        "drownDmgMod": ("drown", lambda x: parse_integer(x)),
+        "hpDrainDmgMod": ("hpdrain", lambda x: parse_integer(x)),
         "abilities": ("abilities", lambda x: clean_links(x)),
-        "version": ("implemented",),
-    }
+        "implemented": ("version", lambda x: x)
+    }  # type: Dict[str, Tuple[str, Callable]]
     c = con.cursor()
     for article_id, article in fetch_articles(creatures):
-        skip = False
-        content = article["revisions"][0]["*"]
-        if "{{Infobox Creature" not in content:
-            # Skipping page without Infoboxes
-            continue
-        creature = parse_attributes(content)
-        tup = ()
-        for sql_attr, attribute in attribute_map.items():
-            try:
-                value = creature.get(attribute[0], None)
-                if len(attribute) > 1:
-                    value = attribute[1](value)
-                # If no actualname is found, we assume it is the same as title
-                if sql_attr == "name" and creature.get("name", "") == "":
-                    value = creature["name"]
-                tup = tup + (value,)
-            except KeyError:
-                tup = tup + (None,)
-            except Exception as e:
-                log.e(f"Unknown exception found for {article['title']}", e)
-                exception_count += 1
-                skip = True
-        if skip:
-            continue
-        c.execute(f"INSERT INTO creatures({','.join(attribute_map.keys())}) "
-                  f"VALUES({','.join(['?']*len(attribute_map.keys()))})", tup)
-        creature_id = c.lastrowid
-        # Add loot from creature's article
-        if "loot" in creature:
-            loot = parse_loot(creature["loot"])
-            loot_items = []
-            for item in loot:
-                c.execute("SELECT id FROM items WHERE title = ?", (item[1],))
-                result = c.fetchone()
-                if result is None:
+        try:
+            content = article["revisions"][0]["*"]
+            if "{{Infobox Creature" not in content:
+                # Skipping page without Infoboxes
+                continue
+            creature = parse_attributes(content)
+            columns = []
+            values = []
+            if "actualname" not in creature:
+                creature["actualname"] = creature["name"]
+            for attribute, value in creature.items():
+                if attribute not in attribute_map:
                     continue
-                item_id = result[0]
-                if not item[0]:
-                    _min, _max = 0, 1
-                else:
-                    _min, _max = parse_min_max(item[0])
-                loot_items.append((creature_id, item_id, _min, _max))
-            c.executemany(f"INSERT INTO creatures_drops(creature_id, item_id, min, max) VALUES(?,?,?,?)",
-                          loot_items)
+                column, func = attribute_map[attribute]
+                columns.append(column)
+                values.append(func(value))
+            c.execute(f"INSERT INTO creatures({','.join(columns)}) VALUES({','.join(['?']*len(values))})", values)
+            creature_id = c.lastrowid
+            # Add loot from creature's article
+            if "loot" in creature:
+                loot = parse_loot(creature["loot"])
+                loot_items = []
+                for item in loot:
+                    c.execute("SELECT id FROM items WHERE title = ?", (item[1],))
+                    result = c.fetchone()
+                    if result is None:
+                        continue
+                    item_id = result[0]
+                    if not item[0]:
+                        _min, _max = 0, 1
+                    else:
+                        _min, _max = parse_min_max(item[0])
+                    loot_items.append((creature_id, item_id, _min, _max))
+                c.executemany(f"INSERT INTO creatures_drops(creature_id, item_id, min, max) VALUES(?,?,?,?)",
+                              loot_items)
+        except Exception:
+            log.exception(f"Unknown exception found for {article['title']}")
+            exception_count += 1
+            continue
     con.commit()
     c.close()
     rows = get_row_count(con, "creatures")

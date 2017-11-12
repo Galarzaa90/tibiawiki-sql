@@ -1,6 +1,6 @@
 import re
 
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict
 
 creature_loot_pattern = r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)"
 min_max_pattern = r"(\d+)-(\d+)"
@@ -68,6 +68,8 @@ def parse_boolean(value: str):
 
 
 def clean_links(content):
+    if content is None:
+        return None
     # Named links
     content = re.sub(r'\[\[[^]|]+\|([^]]+)\]\]', '\g<1>', content)
     # Links
@@ -79,7 +81,7 @@ def clean_links(content):
     return content
 
 
-def parse_attributes(content):
+def parse_attributes(content) -> Dict[str, str]:
     attributes = dict()
     depth = 0
     parse_value = False
@@ -116,7 +118,7 @@ def parse_attributes(content):
             value = value + content[i]
         else:
             attribute = attribute + content[i]
-    return attributes
+    return dict((k, v.strip()) for k, v in attributes.items() if v.strip())
 
 
 def parse_spells(value):
