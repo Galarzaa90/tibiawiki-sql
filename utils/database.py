@@ -4,6 +4,8 @@ DATABASE_FILE = "tibia_database.db"
 TABLE_CREATURES = 'creatures'
 TABLE_ITEMS = 'items'
 TABLE_NPCS = 'npcs'
+TABLE_SPELLS = 'spells'
+TABLE_QUESTS = 'quests'
 
 
 def init_database(name):
