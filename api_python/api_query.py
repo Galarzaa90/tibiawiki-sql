@@ -1,9 +1,15 @@
 import time
-from utils.database import *
+import sqlite3
 
+DATABASE_FILE = '../tibia_database.db'
 DEFAULT_SELECT = 'SELECT * FROM {} '
 DEFAULT_WHERE = ' WHERE {} LIKE ? '
 DEFAULT_ORDER_BY = ' ORDER BY {} ASC '
+TABLE_CREATURES = 'creatures'
+TABLE_ITEMS = 'items'
+TABLE_NPCS = 'npcs'
+TABLE_QUESTS = 'quests'
+TABLE_SPELLS = 'spells'
 
 
 def get_creature_by_exact_name(creature_name):
@@ -70,7 +76,7 @@ def __get_entity__(table_name, filtered_column, filtered_param, where=None, orde
     print('Running call to get table \'{}\' by column \'{}\', filtering by \'{}\'.'.format(
         table_name, filtered_column, filtered_param))
     entities = []
-    con = get_connection(DATABASE_FILE)
+    con = get_connection()
     cursor = con.cursor()
     try:
         start_time = time.time()
@@ -87,6 +93,8 @@ def __get_entity__(table_name, filtered_column, filtered_param, where=None, orde
 
         if len(entities) == 0:
             print("No rows found.")
+        else:
+            print("{} rows found.".format(len(entities)))
 
         print(f"Done in {time.time()-start_time:.3f} seconds.")
     except Exception as e:
@@ -127,51 +135,5 @@ def add_wildcards(param):
     return '%' + param + '%'
 
 
-if __name__ == "__main__":
-    creatures = get_creature_by_exact_name("Lion")
-    for creature in creatures:
-        print(creature)
-
-    creatures = get_creature_by_name("Lion")
-    for creature in creatures:
-        print(creature)
-
-    print('\n==============================\n')
-
-    items = get_item_by_exact_name("chasm spawn head")
-    for item in items:
-        print(item)
-
-    items = get_item_by_name("chasm")
-    for item in items:
-        print(item)
-
-    print('\n==============================\n')
-
-    npcs = get_npc_by_exact_name("Frodo")
-    for npc in npcs:
-        print(npc)
-
-    npcs = get_npc_by_name("Fro")
-    for npc in npcs:
-        print(npc)
-
-    print('\n==============================\n')
-
-    spells = get_spell_by_exact_name("divine healing")
-    for spell in spells:
-        print(spell)
-
-    spells = get_spell_by_name("divine")
-    for spell in spells:
-        print(spell)
-
-    print('\n==============================\n')
-
-    quests = get_quest_by_exact_name("vampire shield quest")
-    for quest in quests:
-        print(quest)
-
-    quests = get_quest_by_name("vampire")
-    for quest in quests:
-        print(quest)
+def get_connection():
+    return sqlite3.connect(DATABASE_FILE)
