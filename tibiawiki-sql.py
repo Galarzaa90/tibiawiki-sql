@@ -36,6 +36,7 @@ if __name__ == "__main__":
     fetch_creature_list()
     fetch_creature(con)
     fetch_drop_statistics(con)
+
     fetch_house_list()
     fetch_houses(con)
 
