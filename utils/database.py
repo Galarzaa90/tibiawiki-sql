@@ -123,6 +123,17 @@ def init_database(name):
         );
         """)
 
+        con.execute("DROP TABLE IF EXISTS npcs_destinations")
+        con.execute("""
+        CREATE TABLE `npcs_destinations` (
+            `npc_id`	INTEGER,
+            `destination`	TEXT,
+            `price`	INTEGER,
+            `notes`	TEXT,
+            FOREIGN KEY(`npc_id`) REFERENCES `npcs`(`id`)
+        );
+        """)
+
         con.execute("DROP TABLE IF EXISTS spells")
         con.execute("""
         CREATE TABLE `spells` (

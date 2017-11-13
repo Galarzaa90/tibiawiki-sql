@@ -3,7 +3,7 @@ import time
 from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log
 from utils.database import get_row_count
 from utils.parsers import parse_attributes, parse_spells, convert_tibiawiki_position, parse_item_offers, \
-    parse_item_trades
+    parse_item_trades, parse_destinations, clean_links
 
 npcs = []
 
@@ -183,19 +183,32 @@ def fetch_npcs(con):
                 c.executemany("INSERT INTO npcs_spells(npc_id, spell_id, knight, paladin, druid, sorcerer) "
                               "VALUES(?,?,?,?,?,?)", spell_data)
                 spell_counter += c.rowcount
+            if "notes" in npc and "{{Transport" in npc["notes"]:
+                destinations = parse_destinations(npc["notes"])
+                destinations_rows = []
+                for destination, price, notes in destinations:
+                    destination.strip()
+                    notes = clean_links(notes.strip())
+                    price = int(price)
+                    if not notes:
+                        notes = None
+                    destinations_rows.append((npc_id, destination, price, notes))
+                if destinations_rows:
+                    c.executemany("INSERT INTO npcs_destinations(npc_id, destination, price, notes) VALUES(?,?,?,?)",
+                                  destinations_rows)
         except Exception:
             log.exception(f"Unknown exception found for {article['title']}")
             exception_count += 1
             continue
     con.commit()
     c.close()
-    rows = get_row_count(con, "npcs")
-    print(f"\t{rows:,} entries added to table")
+    print(f"\t{get_row_count(con, 'npcs'):,} entries added to table")
     if exception_count:
         print(f"\t{exception_count:,} exceptions found, check errors.log for more information.")
     print(f"\t{spell_counter:,} teachable spells added.")
     print(f"\t{get_row_count(con, 'npcs_selling'):,} sell offers added to table")
     print(f"\t{get_row_count(con, 'npcs_buying'):,} buy offers added to table")
+    print(f"\t{get_row_count(con, 'npcs_destinations'):,} destinations added to table")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 
 

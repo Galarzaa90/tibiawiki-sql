@@ -13,6 +13,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | [map](#map) | Contains the world map's images.
 | [npcs](#npcs) | Contains information for all NPCs.
 | [npcs_buying](#npcs_buying) | Contains all the NPCs' buy offers.
+| [npcs_destinations](#npcs_destinations) | Contains all the NPCs' travel destinations.
 | [npcs_selling](#npcs_selling) | Contains all the NPCs' sell offers.
 | [npcs_spells](#npcs_spells) | Contains all the spells NPCs teach.
 | [quests](#quests) | Contains information for all quests.
@@ -154,6 +155,16 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | item_id | `INTEGER` | The id of the item this offer refers to
 | value | `TEXT` | The value of the offer
 | currency | `INTEGER` | The id of the item used as currency in this offer. In most cases this is the id of "gold coin".
+
+## npcs_destinations
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| npc_id | `INTEGER` | The id of the npc this destination belongs to.
+| destination | `INTEGER` | The name of the place this npc can take you to.
+| price | `TEXT` | The price to travel to the destination with this npc.
+| notes | `INTEGER` | Extra notes for this destination, like extra requirements or exceptions.
+
 
 ## npcs_selling
 

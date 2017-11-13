@@ -12,16 +12,22 @@ named_links_pattern = re.compile(r'\[\[[^]|]+\|([^]]+)\]\]')
 link_pattern = re.compile(r'\[\[([^|\]]+)')
 links_pattern = re.compile(r'\[\[([^]]+)\]\]')
 external_links_pattern = re.compile(r'\[[^]]+\]')
-npc_teaches_pattern = re.compile(r"{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}")
+
+teaches_template = re.compile(r"{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}")
 spells_pattern = re.compile(r"\|([^|]+)")
-npc_offers_template = re.compile(r"{{Price to (?:Buy|Sell)\s*([^}]+)}}")
-npc_offers = re.compile("\|([^|:\[]+)(?::\s?(\d+))?(?:\s?\[\[([^\]]+))?")
-npc_trades_template = re.compile(r"{{Trades/Sells\s*(?:\|note=([^|]+))?([^}]+)}}")
+
+price_to_template = re.compile(r"{{Price to (?:Buy|Sell)\s*([^}]+)}}")
+npc_offers = re.compile(r"\|([^|:\[]+)(?::\s?(\d+))?(?:\s?\[\[([^\]]+))?")
+
+trades_sell_template = re.compile(r"{{Trades/Sells\s*(?:\|note=([^|]+))?([^}]+)}}")
 npc_trades = re.compile(r"\|([^|,\[]+)(?:,\s?([+-]?\d+))?(?:\s?\[\[([^\]]+))?")
+
+transport_template = re.compile(r"{{Transport\s*(?:\|discount=([^|]+))?([^}]+)}}")
+npc_destinations = re.compile(r"\|([^,]+),\s?(\d+)(?:;\s?([^|]+))?")
 
 
 def parse_item_offers(value: str) -> List:
-    match = npc_offers_template.search(value)
+    match = price_to_template.search(value)
     if match:
         return npc_offers.findall(match.group(1))
     else:
@@ -30,8 +36,15 @@ def parse_item_offers(value: str) -> List:
 
 def parse_item_trades(value: str) -> List:
     result = []
-    for note, trades in npc_trades_template.findall(value):
+    for note, trades in trades_sell_template.findall(value):
         result.extend(npc_trades.findall(trades))
+    return result
+
+
+def parse_destinations(value: str) -> List:
+    result = []
+    for __, destinations in transport_template.findall(value):
+        result.extend(npc_destinations.findall(destinations))
     return result
 
 
@@ -145,7 +158,7 @@ def parse_attributes(content) -> Dict[str, str]:
 
 def parse_spells(value):
     result = []
-    for name, spell_list in npc_teaches_pattern.findall(value):
+    for name, spell_list in teaches_template.findall(value):
         spells = spells_pattern.findall(spell_list)
         spells = [s.strip() for s in spells]
         result.append((name, spells))
