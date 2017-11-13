@@ -4,7 +4,7 @@ import time
 from utils import fetch_deprecated_list
 from utils.achievements import fetch_achievement_list, fetch_achievements
 from utils.creatures import fetch_creature_images, fetch_creature_list, fetch_creature, fetch_drop_statistics
-from utils.database import init_database
+from utils.database import init_database, set_database_info
 from utils.houses import fetch_house_list, fetch_houses
 from utils.items import fetch_item_images, fetch_items_list, fetch_items
 from utils.map import save_maps
@@ -52,5 +52,7 @@ if __name__ == "__main__":
         fetch_npc_images(con)
         fetch_spell_images(con)
         save_maps(con)
+
+    set_database_info(con, __version__)
 
     print(f"Done in {time.time()-start_time:.3f} seconds.")

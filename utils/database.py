@@ -1,9 +1,16 @@
 import sqlite3
+import time
 
 
 def init_database(name):
     con = sqlite3.connect(name)
     with con:
+        con.execute("DROP TABLE IF EXISTS database_info")
+        con.execute("""CREATE TABLE `database_info` (
+            `key` TEXT PRIMARY KEY,
+            `value` TEXT
+        );""")
+
         con.execute("DROP TABLE IF EXISTS creatures")
         con.execute("""
         CREATE TABLE `creatures` (
@@ -234,3 +241,9 @@ def get_row_count(con, table_name):
         return -1
     finally:
         c.close()
+
+
+def set_database_info(con, version):
+    with con:
+        con.execute("INSERT INTO database_info(key, value) VALUES(?,?)",("version", version,))
+        con.execute("INSERT INTO database_info(key, value) VALUES(?,?)",("generated_date", time.time(),))

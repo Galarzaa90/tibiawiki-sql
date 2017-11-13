@@ -6,6 +6,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | [achievements](#achievements) | Contains information for all achievements.
 | [creatures](#creatures) | Contains information for all creatures.
 | [creatures_drops](#creatures_drops) | Contains all the items dropped by creatures.
+| [database_info](#database_info) | Contains information about the database itself.
 | [houses](#houses) | Contains all houses and guildhalls.
 | [items](#items) | Contains information for all items.
 | [items_attributes](#items_attributes) | Contains extra attributes and properties of items that only apply to certain types.
@@ -72,6 +73,13 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | chance |  `REAL` | The chance percentage of this drop. `NULL` means unknown.
 | min | `INTEGER`| The minimum count this drop gives.
 | max | `INTEGER`| The maximum count this drop gives.
+
+## database_info
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| key | `INTEGER` | The name of the value contained.
+| value | `INTEGER` | The value of the database property.
 
 ## houses
 
