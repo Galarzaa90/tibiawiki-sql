@@ -17,7 +17,7 @@ def fetch_achievement_list():
         if d in achievements:
             achievements.remove(d)
     print(f"\t{len(achievements):,} after removing deprecated articles.")
-    print(f"\nDone in {time.time()-start_time:.3f} seconds.")
+    print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 
 
 def fetch_achievements(con):
@@ -49,7 +49,7 @@ def fetch_achievements(con):
                 column, func = attribute_map[attribute]
                 columns.append(column)
                 values.append(func(value))
-            c.execute(f"INSERT INTO creatures({','.join(columns)}) VALUES({','.join(['?']*len(values))})", values)
+            c.execute(f"INSERT INTO achievements({','.join(columns)}) VALUES({','.join(['?']*len(values))})", values)
 
         except Exception:
             log.exception(f"Unknown exception found for {article['title']}")
