@@ -1,5 +1,6 @@
 import json
 import time
+from typing import Dict, Tuple, Callable
 
 from utils import fetch_category_list, deprecated, fetch_articles, log
 from utils.database import get_row_count
@@ -12,12 +13,13 @@ def fetch_house_list():
     start_time = time.time()
     print("Fetching houses list...")
     fetch_category_list("Category:Player-Ownable_Buildings", houses)
-    print(f"\t{len(houses):,} found in {time.time()-start_time:.3f} seconds.")
+    print(f"\t{len(houses):,} found.")
 
     for d in deprecated:
         if d in houses:
             houses.remove(d)
     print(f"\t{len(houses):,} after removing deprecated articles.")
+    print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 
 
 def fetch_houses(con):
@@ -25,49 +27,44 @@ def fetch_houses(con):
     start_time = time.time()
     exception_count = 0
     attribute_map = {
-        "id": ("houseid", lambda x: parse_integer(x)),
-        "name": ("name",),
-        "guildhall": ("type", lambda x: x is not None and "guildhall" in x.lower()),
-        "city": ("city",),
-        "street": ("street",),
+        "houseid": ("id", lambda x: parse_integer(x)),
+        "name": ("name", lambda x:x),
+        "type": ("guildhall", lambda x: x is not None and "guildhall" in x.lower()),
+        "city": ("city", lambda x:x),
+        "street": ("street", lambda x:x),
         "beds": ("beds", lambda x: parse_integer(x, None)),
         "rent": ("rent", lambda x: parse_integer(x, None)),
         "size": ("size", lambda x: parse_integer(x, None)),
         "rooms": ("rooms", lambda x: parse_integer(x, None)),
         "floors": ("floors", lambda x: parse_integer(x, None)),
-        "version": ("implemented",),
-    }
-    # House positions are not available at TibiaWiki (yet)
+        "implemented": ("version", lambda x:x),
+    }  # type: Dict[str, Tuple[str, Callable]]
+    # House positions are not available at TibiaWiki
     with open('utils/house_positions.json') as f:
         house_positions = json.load(f)
     c = con.cursor()
     for article_id, article in fetch_articles(houses):
-        skip = False
-        content = article["revisions"][0]["*"]
-        if "{{Infobox Building" not in content:
-            continue
-        house = parse_attributes(content)
-        tup = ()
-        for sql_attr, attribute in attribute_map.items():
-            try:
-                value = house.get(attribute[0], None)
-                if len(attribute) > 1:
-                    value = attribute[1](value)
-                tup = tup + (value,)
-            except KeyError:
-                tup = tup + (None,)
-            except Exception:
-                log.exception(f"Unknown exception found for {article['title']}")
-                exception_count += 1
-                skip = True
-        if skip:
-            continue
-        c.execute(f"INSERT INTO houses({','.join(attribute_map.keys())}) "
-                  f"VALUES({','.join(['?']*len(attribute_map.keys()))})", tup)
-        if house["name"] in house_positions:
-            position = house_positions[house["name"]]
-            c.execute(f"UPDATE houses SET x = ?, y = ?, z = ? WHERE id = ?",
-                      (position["x"], position["y"], position["z"], tup[0]))
+        try:
+            content = article["revisions"][0]["*"]
+            if "{{Infobox Building" not in content:
+                continue
+            house = parse_attributes(content)
+            columns = []
+            values = []
+            for attribute, value in house.items():
+                if attribute not in attribute_map:
+                    continue
+                column, func = attribute_map[attribute]
+                columns.append(column)
+                values.append(func(value))
+            if house["name"] in house_positions:
+                position = house_positions[house["name"]]
+                columns.extend(["x", "y", "z"])
+                values.extend([position["x"], position["y"], position["z"]])
+            c.execute(f"INSERT INTO houses({','.join(columns)}) VALUES({','.join(['?']*len(values))})", values)
+        except Exception:
+            log.exception(f"Unknown exception found for {article['title']}")
+            exception_count += 1
     con.commit()
     c.close()
     rows = get_row_count(con, "houses")

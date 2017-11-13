@@ -1,32 +1,40 @@
 import re
 
-from typing import Optional, Tuple, Dict
+from typing import Optional, Dict
 
-creature_loot_pattern = r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)"
-min_max_pattern = r"(\d+)-(\d+)"
-loot_statistics_pattern = r"\|([\s\w]+),\s*times:(\d+)(?:,\s*amount:([\d-]+))?"
-kills_pattern = r"kills=(\d+)"
-item_offers_pattern = r"\s*([^:]+):\s*(\d+),*"
+creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
+min_max_pattern = re.compile(r"(\d+)-(\d+)")
+loot_stats_pattern = re.compile(r"\|([\s\w]+),\s*times:(\d+)(?:,\s*amount:([\d-]+))?")
+kills_pattern = re.compile(r"kills=(\d+)")
+item_offers_pattern = re.compile(r"\s*([^:]+):\s*(\d+),*")
+int_pattern = re.compile(r"[+-]?\d+")
+float_pattern = re.compile(r'[+-]?(\d*[.])?\d+')
+named_links_pattern = re.compile(r'\[\[[^]|]+\|([^]]+)\]\]')
+link_pattern = re.compile(r'\[\[([^|\]]+)')
+links_pattern = re.compile(r'\[\[([^]]+)\]\]')
+external_links_pattern = re.compile(r'\[[^]]+\]')
+npc_teaches_pattern = re.compile(r"{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}")
+spells_pattern = re.compile(r"\|([^|]+)")
 
 
 def parse_item_offers(value: str):
-    return re.findall(item_offers_pattern, value)
+    return item_offers_pattern.findall(value)
 
 
 def parse_loot(value: str):
-    return re.findall(creature_loot_pattern, value)
+    return creature_loot_pattern.findall(value)
 
 
 def parse_loot_statistics(value):
-    match = re.search(kills_pattern, value)
+    match = kills_pattern.search(value)
     if match:
-        return int(match.group(1)), re.findall(loot_statistics_pattern, value)
+        return int(match.group(1)), loot_stats_pattern.findall(value)
     else:
         return 0, None
 
 
 def parse_min_max(value):
-    match = re.search(min_max_pattern, value)
+    match = min_max_pattern.search(value)
     if match:
         return int(match.group(1)), int(match.group(2))
     else:
@@ -36,7 +44,7 @@ def parse_min_max(value):
 def parse_integer(value: str, default=0):
     if value is None:
         return default
-    match = re.search(r"[+-]?\d+", value)
+    match = int_pattern.search(value)
     if match:
         return int(match.group(0))
     else:
@@ -46,7 +54,7 @@ def parse_integer(value: str, default=0):
 def parse_float(value: str, default=0):
     if value is None:
         return default
-    match = re.search(r'[+-]?(\d*[.])?\d+', value)
+    match = float_pattern.search(value)
     if match:
         return float(match.group(0))
     else:
@@ -56,7 +64,7 @@ def parse_float(value: str, default=0):
 def parse_maximum_integer(value: str) -> Optional[int]:
     if value is None:
         return None
-    matches = re.findall(r"[+-]?\d+", value)
+    matches = int_pattern.findall(value)
     try:
         return max(list(map(int, matches)))
     except ValueError:
@@ -71,11 +79,11 @@ def clean_links(content):
     if content is None:
         return None
     # Named links
-    content = re.sub(r'\[\[[^]|]+\|([^]]+)\]\]', '\g<1>', content)
+    content = named_links_pattern.sub('\g<1>', content)
     # Links
-    content = re.sub(r'\[\[([^]]+)\]\]', '\g<1>', content)
+    content = links_pattern.sub('\g<1>', content)
     # External links
-    content = re.sub(r'\[[^]]+\]', '', content)
+    content = external_links_pattern.sub('', content)
     # Double spaces
     content = content.replace('  ', ' ')
     return content
@@ -123,19 +131,11 @@ def parse_attributes(content) -> Dict[str, str]:
 
 def parse_spells(value):
     result = []
-    for name, spell_list in re.findall(r"{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}", value):
-        spells = re.findall(r"\|([^|]+)", spell_list)
+    for name, spell_list in npc_teaches_pattern.findall(value):
+        spells = spells_pattern.findall(spell_list)
         spells = [s.strip() for s in spells]
         result.append((name, spells))
     return result
-
-
-def parse_mapper_coordinates(value) -> Tuple[Optional[str], ...]:
-    m = re.search(r"coords=([^,]+),([^,]+),([^,]+)", value)
-    if m:
-        return m.group(1), m.group(2), m.group(3)
-    else:
-        return None, None, None
 
 
 def convert_tibiawiki_position(pos) -> int:
@@ -153,4 +153,4 @@ def convert_tibiawiki_position(pos) -> int:
 
 
 def parse_links(value):
-    return list(re.findall(r'\[\[([^|\]]+)', value))
+    return list(link_pattern.findall(value))

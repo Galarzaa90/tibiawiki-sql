@@ -12,7 +12,7 @@ from utils.npcs import fetch_npc_images, fetch_npc_list, fetch_npcs
 from utils.quests import fetch_quests, fetch_quest_list
 from utils.spells import fetch_spell_images, fetch_spells_list, fetch_spells
 
-
+__version__ = "v0.1.1"
 SKIP_IMAGES = "skipimages" in sys.argv
 
 if __name__ == "__main__":
@@ -34,6 +34,7 @@ if __name__ == "__main__":
     fetch_creature_list()
     fetch_creature(con)
     fetch_drop_statistics(con)
+
     fetch_house_list()
     fetch_houses(con)
 

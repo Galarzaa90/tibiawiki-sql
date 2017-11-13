@@ -11,12 +11,13 @@ def fetch_achievement_list():
     start_time = time.time()
     print("Fetching achievement list...")
     fetch_category_list("Category:Achievements", achievements)
-    print(f"\t{len(achievements):,} found in {time.time()-start_time:.3f} seconds.")
+    print(f"\t{len(achievements):,} found.")
 
     for d in deprecated:
         if d in achievements:
             achievements.remove(d)
     print(f"\t{len(achievements):,} after removing deprecated articles.")
+    print(f"\nDone in {time.time()-start_time:.3f} seconds.")
 
 
 def fetch_achievements(con):
@@ -24,39 +25,37 @@ def fetch_achievements(con):
     start_time = time.time()
     exception_count = 0
     attribute_map = {
-        "name": ("name",),
+        "name": ("name", lambda x: x),
         "grade": ("grade", lambda x: parse_integer(x, None)),
         "points": ("points", lambda x: parse_integer(x, None)),
         "premium": ("premium", lambda x: parse_boolean(x)),
-        "description": ("description",),
+        "description": ("description", lambda x: x),
         "spoiler": ("spoiler", lambda x: clean_links(x)),
         "secret": ("secret", lambda x: parse_boolean(x)),
-        "version": ("implemented",),
+        "implemented": ("version", lambda x: x),
     }
     c = con.cursor()
     for article_id, article in fetch_articles(achievements):
-        skip = False
-        content = article["revisions"][0]["*"]
-        if "{{Infobox Achievement" not in content:
+        try:
+            content = article["revisions"][0]["*"]
+            if "{{Infobox Achievement" not in content:
+                continue
+            achievement = parse_attributes(content)
+            columns = []
+            values = []
+            for attribute, value in achievement.items():
+                if attribute not in attribute_map:
+                    continue
+                column, func = attribute_map[attribute]
+                columns.append(column)
+                values.append(func(value))
+            c.execute(f"INSERT INTO creatures({','.join(columns)}) VALUES({','.join(['?']*len(values))})", values)
+
+        except Exception:
+            log.exception(f"Unknown exception found for {article['title']}")
+            exception_count += 1
             continue
-        house = parse_attributes(content)
-        tup = ()
-        for sql_attr, attribute in attribute_map.items():
-            try:
-                value = house.get(attribute[0], None)
-                if len(attribute) > 1:
-                    value = attribute[1](value)
-                tup = tup + (value,)
-            except KeyError:
-                tup = tup + (None,)
-            except Exception:
-                log.exception(f"Unknown exception found for {article['title']}")
-                exception_count += 1
-                skip = True
-        if skip:
-            continue
-        c.execute(f"INSERT INTO achievements({','.join(attribute_map.keys())}) "
-                  f"VALUES({','.join(['?']*len(attribute_map.keys()))})", tup)
+
     con.commit()
     c.close()
     rows = get_row_count(con, "achievements")
