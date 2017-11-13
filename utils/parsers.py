@@ -16,6 +16,8 @@ npc_teaches_pattern = re.compile(r"{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}")
 spells_pattern = re.compile(r"\|([^|]+)")
 npc_offers_template = re.compile(r"{{Price to (?:Buy|Sell)\s*([^}]+)}}")
 npc_offers = re.compile("\|([^|:\[]+)(?::\s?(\d+))?(?:\s?\[\[([^\]]+))?")
+npc_trades_template = re.compile(r"{{Trades/Sells\s*(?:\|note=([^|]+))?([^}]+)}}")
+npc_trades = re.compile(r"\|([^|,\[]+)(?:,\s?([+-]?\d+))?(?:\s?\[\[([^\]]+))?")
 
 
 def parse_item_offers(value: str) -> List:
@@ -24,6 +26,13 @@ def parse_item_offers(value: str) -> List:
         return npc_offers.findall(match.group(1))
     else:
         return []
+
+
+def parse_item_trades(value: str) -> List:
+    result = []
+    for note, trades in npc_trades_template.findall(value):
+        result.extend(npc_trades.findall(trades))
+    return result
 
 
 def parse_loot(value: str):

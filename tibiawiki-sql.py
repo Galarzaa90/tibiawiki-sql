@@ -12,7 +12,7 @@ from utils.npcs import fetch_npc_images, fetch_npc_list, fetch_npcs
 from utils.quests import fetch_quests, fetch_quest_list
 from utils.spells import fetch_spell_images, fetch_spells_list, fetch_spells
 
-__version__ = "v0.1.1"
+__version__ = "v0.2.0"
 
 DATABASE_FILE = "tibia_database.db"
 SKIP_IMAGES = "skipimages" in sys.argv
