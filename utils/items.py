@@ -70,7 +70,19 @@ def fetch_items(con):
                 "range": "range",
                 "damagetype": "damagetype",
                 "damage": "damage",
-                "mana": "mana"
+                "mana": "mana",
+                "magic_level": "mlrequired",
+                "words": "words",
+                "critical_chance": "crithit_ch",
+                "critical%": "critextra_dmg",
+                "hpleech_chance": "hpleech_ch",
+                "hpleech%": "hpleech_am",
+                "manaleech_chance": "manaleech_ch",
+                "manaleech%": "manaleech_am",
+                "volume": "volume",
+                "charges": "charges",
+                "food_time": "regenseconds",
+                "duration": "duration",
             }
             extra_data = []
             for sql_attr, wiki_attr in extra_attributes.items():
