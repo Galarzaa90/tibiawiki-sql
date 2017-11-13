@@ -1,12 +1,11 @@
 import re
 
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
 creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
 min_max_pattern = re.compile(r"(\d+)-(\d+)")
 loot_stats_pattern = re.compile(r"\|([\s\w]+),\s*times:(\d+)(?:,\s*amount:([\d-]+))?")
 kills_pattern = re.compile(r"kills=(\d+)")
-item_offers_pattern = re.compile(r"\s*([^:]+):\s*(\d+),*")
 int_pattern = re.compile(r"[+-]?\d+")
 float_pattern = re.compile(r'[+-]?(\d*[.])?\d+')
 named_links_pattern = re.compile(r'\[\[[^]|]+\|([^]]+)\]\]')
@@ -15,10 +14,16 @@ links_pattern = re.compile(r'\[\[([^]]+)\]\]')
 external_links_pattern = re.compile(r'\[[^]]+\]')
 npc_teaches_pattern = re.compile(r"{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}")
 spells_pattern = re.compile(r"\|([^|]+)")
+npc_offers_template = re.compile(r"{{Price to (?:Buy|Sell)\s*([^}]+)}}")
+npc_offers = re.compile("\|([^|:\[]+)(?::\s?(\d+))?(?:\s?\[\[([^\]]+))?")
 
 
-def parse_item_offers(value: str):
-    return item_offers_pattern.findall(value)
+def parse_item_offers(value: str) -> List:
+    match = npc_offers_template.search(value)
+    if match:
+        return npc_offers.findall(match.group(1))
+    else:
+        return []
 
 
 def parse_loot(value: str):

@@ -49,7 +49,8 @@ def init_database(name):
             `title`	TEXT,
             `name`	TEXT,
             `stackable` INTEGER DEFAULT 0,
-            `value`INTEGER DEFAULT 0,
+            `value` INTEGER DEFAULT 0,
+            `price` INTEGER DEFAULT 0,
             `weight` REAL,
             `type` TEXT,
             `flavor_text` TEXT,
@@ -102,8 +103,10 @@ def init_database(name):
             `npc_id`	INTEGER,
             `item_id`	INTEGER,
             `value`	INTEGER,
+            `currency`	INTEGER,
             FOREIGN KEY(`npc_id`) REFERENCES `npcs`(`id`),
-            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`)
+            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`),
+            FOREIGN KEY(`currency`) REFERENCES `items`(`id`)
         );
         """)
 
@@ -113,8 +116,10 @@ def init_database(name):
             `npc_id`	INTEGER,
             `item_id`	INTEGER,
             `value`	INTEGER,
+            `currency`	INTEGER,
             FOREIGN KEY(`npc_id`) REFERENCES `npcs`(`id`),
-            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`)
+            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`),
+            FOREIGN KEY(`currency`) REFERENCES `items`(`id`)
         );
         """)
 

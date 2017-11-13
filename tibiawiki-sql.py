@@ -27,11 +27,11 @@ if __name__ == "__main__":
     fetch_spells_list()
     fetch_spells(con)
 
-    fetch_npc_list()
-    fetch_npcs(con)
-
     fetch_items_list()
     fetch_items(con)
+
+    fetch_npc_list()
+    fetch_npcs(con)
 
     fetch_creature_list()
     fetch_creature(con)
