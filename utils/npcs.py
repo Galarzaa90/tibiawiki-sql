@@ -17,7 +17,7 @@ def fetch_npc_list():
         if d in npcs:
             npcs.remove(d)
     print(f"\t{len(npcs):,} after removing deprecated npcs.")
-    print(f"Done in {time.time()-start_time:.3f} seconds.")
+    print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 
 
 def fetch_npcs(con):

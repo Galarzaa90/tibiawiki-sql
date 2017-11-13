@@ -10,6 +10,7 @@ item_offers_pattern = re.compile(r"\s*([^:]+):\s*(\d+),*")
 int_pattern = re.compile(r"[+-]?\d+")
 float_pattern = re.compile(r'[+-]?(\d*[.])?\d+')
 named_links_pattern = re.compile(r'\[\[[^]|]+\|([^]]+)\]\]')
+link_pattern = re.compile(r'\[\[([^|\]]+)')
 links_pattern = re.compile(r'\[\[([^]]+)\]\]')
 external_links_pattern = re.compile(r'\[[^]]+\]')
 npc_teaches_pattern = re.compile(r"{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}")
@@ -152,4 +153,4 @@ def convert_tibiawiki_position(pos) -> int:
 
 
 def parse_links(value):
-    return list(re.findall(r'\[\[([^|\]]+)', value))
+    return list(link_pattern.findall(value))

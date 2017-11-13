@@ -18,7 +18,7 @@ def fetch_items_list():
         if d in items:
             items.remove(d)
     print(f"\t{len(items):,} after removing deprecated articles.")
-    print(f"Done in {time.time()-start_time:.3f} seconds.")
+    print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 
 
 def fetch_items(con):

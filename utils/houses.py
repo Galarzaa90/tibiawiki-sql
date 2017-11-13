@@ -19,7 +19,7 @@ def fetch_house_list():
         if d in houses:
             houses.remove(d)
     print(f"\t{len(houses):,} after removing deprecated articles.")
-    print(f"Done in {time.time()-start_time:.3f} seconds.")
+    print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 
 
 def fetch_houses(con):
