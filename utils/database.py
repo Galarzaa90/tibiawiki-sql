@@ -1,16 +1,16 @@
 import sqlite3
-
-DATABASE_FILE = "tibia_database.db"
-TABLE_CREATURES = 'creatures'
-TABLE_ITEMS = 'items'
-TABLE_NPCS = 'npcs'
-TABLE_SPELLS = 'spells'
-TABLE_QUESTS = 'quests'
+import time
 
 
 def init_database(name):
     con = sqlite3.connect(name)
     with con:
+        con.execute("DROP TABLE IF EXISTS database_info")
+        con.execute("""CREATE TABLE `database_info` (
+            `key` TEXT PRIMARY KEY,
+            `value` TEXT
+        );""")
+
         con.execute("DROP TABLE IF EXISTS creatures")
         con.execute("""
         CREATE TABLE `creatures` (
@@ -49,7 +49,8 @@ def init_database(name):
             `title`	TEXT,
             `name`	TEXT,
             `stackable` INTEGER DEFAULT 0,
-            `value`INTEGER DEFAULT 0,
+            `value` INTEGER DEFAULT 0,
+            `price` INTEGER DEFAULT 0,
             `weight` REAL,
             `type` TEXT,
             `flavor_text` TEXT,
@@ -102,8 +103,10 @@ def init_database(name):
             `npc_id`	INTEGER,
             `item_id`	INTEGER,
             `value`	INTEGER,
+            `currency`	INTEGER,
             FOREIGN KEY(`npc_id`) REFERENCES `npcs`(`id`),
-            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`)
+            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`),
+            FOREIGN KEY(`currency`) REFERENCES `items`(`id`)
         );
         """)
 
@@ -113,8 +116,21 @@ def init_database(name):
             `npc_id`	INTEGER,
             `item_id`	INTEGER,
             `value`	INTEGER,
+            `currency`	INTEGER,
             FOREIGN KEY(`npc_id`) REFERENCES `npcs`(`id`),
-            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`)
+            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`),
+            FOREIGN KEY(`currency`) REFERENCES `items`(`id`)
+        );
+        """)
+
+        con.execute("DROP TABLE IF EXISTS npcs_destinations")
+        con.execute("""
+        CREATE TABLE `npcs_destinations` (
+            `npc_id`	INTEGER,
+            `destination`	TEXT,
+            `price`	INTEGER,
+            `notes`	TEXT,
+            FOREIGN KEY(`npc_id`) REFERENCES `npcs`(`id`)
         );
         """)
 
@@ -243,5 +259,7 @@ def get_row_count(con, table_name):
         c.close()
 
 
-def get_connection(database):
-    return sqlite3.connect(database)
+def set_database_info(con, version):
+    with con:
+        con.execute("INSERT INTO database_info(key, value) VALUES(?,?)",("version", version,))
+        con.execute("INSERT INTO database_info(key, value) VALUES(?,?)",("generated_date", time.time(),))

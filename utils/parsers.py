@@ -1,24 +1,51 @@
 import re
 
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
 creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
 min_max_pattern = re.compile(r"(\d+)-(\d+)")
 loot_stats_pattern = re.compile(r"\|([\s\w]+),\s*times:(\d+)(?:,\s*amount:([\d-]+))?")
 kills_pattern = re.compile(r"kills=(\d+)")
-item_offers_pattern = re.compile(r"\s*([^:]+):\s*(\d+),*")
 int_pattern = re.compile(r"[+-]?\d+")
 float_pattern = re.compile(r'[+-]?(\d*[.])?\d+')
 named_links_pattern = re.compile(r'\[\[[^]|]+\|([^]]+)\]\]')
 link_pattern = re.compile(r'\[\[([^|\]]+)')
 links_pattern = re.compile(r'\[\[([^]]+)\]\]')
 external_links_pattern = re.compile(r'\[[^]]+\]')
-npc_teaches_pattern = re.compile(r"{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}")
+
+teaches_template = re.compile(r"{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}")
 spells_pattern = re.compile(r"\|([^|]+)")
 
+price_to_template = re.compile(r"{{Price to (?:Buy|Sell)\s*([^}]+)}}")
+npc_offers = re.compile(r"\|([^|:\[]+)(?::\s?(\d+))?(?:\s?\[\[([^\]]+))?")
 
-def parse_item_offers(value: str):
-    return item_offers_pattern.findall(value)
+trades_sell_template = re.compile(r"{{Trades/Sells\s*(?:\|note=([^|]+))?([^}]+)}}")
+npc_trades = re.compile(r"\|([^|,\[]+)(?:,\s?([+-]?\d+))?(?:\s?\[\[([^\]]+))?")
+
+transport_template = re.compile(r"{{Transport\s*(?:\|discount=([^|]+))?([^}]+)}}")
+npc_destinations = re.compile(r"\|([^,]+),\s?(\d+)(?:;\s?([^|]+))?")
+
+
+def parse_item_offers(value: str) -> List:
+    match = price_to_template.search(value)
+    if match:
+        return npc_offers.findall(match.group(1))
+    else:
+        return []
+
+
+def parse_item_trades(value: str) -> List:
+    result = []
+    for note, trades in trades_sell_template.findall(value):
+        result.extend(npc_trades.findall(trades))
+    return result
+
+
+def parse_destinations(value: str) -> List:
+    result = []
+    for __, destinations in transport_template.findall(value):
+        result.extend(npc_destinations.findall(destinations))
+    return result
 
 
 def parse_loot(value: str):
@@ -131,7 +158,7 @@ def parse_attributes(content) -> Dict[str, str]:
 
 def parse_spells(value):
     result = []
-    for name, spell_list in npc_teaches_pattern.findall(value):
+    for name, spell_list in teaches_template.findall(value):
         spells = spells_pattern.findall(spell_list)
         spells = [s.strip() for s in spells]
         result.append((name, spells))

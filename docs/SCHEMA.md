@@ -6,12 +6,14 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | [achievements](#achievements) | Contains information for all achievements.
 | [creatures](#creatures) | Contains information for all creatures.
 | [creatures_drops](#creatures_drops) | Contains all the items dropped by creatures.
+| [database_info](#database_info) | Contains information about the database itself.
 | [houses](#houses) | Contains all houses and guildhalls.
 | [items](#items) | Contains information for all items.
 | [items_attributes](#items_attributes) | Contains extra attributes and properties of items that only apply to certain types.
 | [map](#map) | Contains the world map's images.
 | [npcs](#npcs) | Contains information for all NPCs.
 | [npcs_buying](#npcs_buying) | Contains all the NPCs' buy offers.
+| [npcs_destinations](#npcs_destinations) | Contains all the NPCs' travel destinations.
 | [npcs_selling](#npcs_selling) | Contains all the NPCs' sell offers.
 | [npcs_spells](#npcs_spells) | Contains all the spells NPCs teach.
 | [quests](#quests) | Contains information for all quests.
@@ -73,6 +75,13 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | min | `INTEGER`| The minimum count this drop gives.
 | max | `INTEGER`| The maximum count this drop gives.
 
+## database_info
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| key | `INTEGER` | The name of the value contained.
+| value | `INTEGER` | The value of the database property.
+
 ## houses
 
 | Column | Type | Description |
@@ -100,7 +109,8 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | title | `TEXT` | The title of the TibiaWiki article that refers to this item. Title cased and may contain parenthesis to differentiate item variations (e.g. `Surprise Bag (Red)`) or to differentiate from other objects (e.g. `Black Skull (Item)`).
 | name | `TEXT` | The actual name of the item in-game.
 | stacklable | `INTEGER` | Whether this item is stackable or not.
-| value | `INTEGER` | The sell value of this item according to NPCs.
+| value | `INTEGER` | The maximum value of this item when sold to NPCs
+| price | `INTEGER` | The maximum price of this item when bought from NPCs.
 | weight | `REAL` | The weight of this item in ounces.
 | type | `TEXT` | The category this item belongs to (e.g. `Helmets`, `Valuables`).
 | flavor_text | `TEXT` | The extra text that is displayed when some items are looked at.
@@ -144,6 +154,17 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | npc_id | `INTEGER` | The id of the npc this offer belongs to
 | item_id | `INTEGER` | The id of the item this offer refers to
 | value | `TEXT` | The value of the offer
+| currency | `INTEGER` | The id of the item used as currency in this offer. In most cases this is the id of "gold coin".
+
+## npcs_destinations
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| npc_id | `INTEGER` | The id of the npc this destination belongs to.
+| destination | `INTEGER` | The name of the place this npc can take you to.
+| price | `TEXT` | The price to travel to the destination with this npc.
+| notes | `INTEGER` | Extra notes for this destination, like extra requirements or exceptions.
+
 
 ## npcs_selling
 
@@ -152,6 +173,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | npc_id | `INTEGER` | The id of the npc this offer belongs to
 | item_id | `INTEGER` | The id of the item this offer refers to
 | value | `TEXT` | The value of the offer
+| currency | `INTEGER` | The id of the item used as currency in this offer. In most cases this is the id of "gold coin".
 
 ## npcs_spells
 

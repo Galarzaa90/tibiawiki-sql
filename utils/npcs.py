@@ -2,7 +2,8 @@ import time
 
 from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log
 from utils.database import get_row_count
-from utils.parsers import parse_attributes, parse_spells, convert_tibiawiki_position
+from utils.parsers import parse_attributes, parse_spells, convert_tibiawiki_position, parse_item_offers, \
+    parse_item_trades, parse_destinations, clean_links
 
 npcs = []
 
@@ -36,6 +37,14 @@ def fetch_npcs(con):
         "implemented": ("version", lambda x: x)
     }
     c = con.cursor()
+    # We get the item id of gold coins here for all unespecified currencies
+    c.execute("SELECT id FROM items WHERE name LIKE ?", ("gold coin",))
+    result = c.fetchone()
+    if result is None:
+        print("\nCould not find gold coin in items database, table must be empty, sell and buy offers will be skipped.")
+        gold_id = None
+    else:
+        gold_id = int(result[0])
     for article_id, article in fetch_articles(npcs):
         try:
             content = article["revisions"][0]["*"]
@@ -55,7 +64,78 @@ def fetch_npcs(con):
                 values.append(func(value))
             c.execute(f"INSERT INTO npcs({','.join(columns)}) VALUES({','.join(['?']*len(values))})", values)
             npc_id = c.lastrowid
-            if "sells" in npc and 'teaches' in npc["sells"].lower():
+            if "buys" in npc and gold_id is not None:
+                buy_items = parse_item_offers(npc["buys"])
+                buy_data = []
+                for item, price, currency in buy_items:
+                    # Some items have extra requirements, separated with ;, so we remove them
+                    item = item.split(";")[0]
+                    c.execute("SELECT id, value FROM items WHERE name LIKE ?", (item.strip(),))
+                    result = c.fetchone()
+                    if result is None:
+                        continue
+                    item_id = result[0]
+                    if price.strip():
+                        value = int(price)
+                    else:
+                        value = int(result[1])
+                    currency_id = gold_id
+                    if currency.strip():
+                        c.execute("SELECT id FROM items WHERE name LIKE ?", (currency.strip(),))
+                        result = c.fetchone()
+                        if result is not None:
+                            currency_id = result[0]
+                    buy_data.append((npc_id, item_id, value, currency_id))
+                c.executemany("INSERT INTO npcs_buying(npc_id, item_id, value, currency) VALUES(?,?,?,?)", buy_data)
+            if "sells" in npc and gold_id is not None:
+                # Items sold by npc
+                sell_items = parse_item_offers(npc["sells"])
+                sell_data = []
+                for item, price, currency in sell_items:
+                    # Some items have extra requirements, separated with ;, so we remove them
+                    item = item.split(";")[0]
+                    c.execute("SELECT id, price FROM items WHERE title LIKE ?", (item.strip(),))
+                    result = c.fetchone()
+                    if result is None:
+                        continue
+                    item_id = result[0]
+                    if price.strip():
+                        value = int(price)
+                    else:
+                        value = int(result[1])
+                    curency_id = gold_id
+                    if currency.strip():
+                        c.execute("SELECT id FROM items WHERE title LIKE ?", (currency.strip(),))
+                        result = c.fetchone()
+                        if result is not None:
+                            curency_id = result[0]
+                    sell_data.append((npc_id, item_id, value, curency_id))
+                c.executemany("INSERT INTO npcs_selling(npc_id, item_id, value, currency) VALUES(?,?,?, ?)", sell_data)
+                # Items traded by npcs (these have a different template)
+                trade_items = parse_item_trades(npc["sells"])
+                trade_data = []
+                for item, price, currency in trade_items:
+                    item = item.split(";")[0]
+                    c.execute("SELECT id, price FROM items WHERE title LIKE ?", (item.strip(),))
+                    result = c.fetchone()
+                    if result is None:
+                        continue
+                    item_id = result[0]
+                    if price.strip():
+                        value = abs(int(price))
+                    else:
+                        value = int(result[1])
+                    curency_id = gold_id
+                    if currency.strip():
+                        c.execute("SELECT id FROM items WHERE title LIKE ?", (currency.strip(),))
+                        result = c.fetchone()
+                        if result is not None:
+                            curency_id = result[0]
+                    trade_data.append((npc_id, item_id, value, curency_id))
+                if trade_data:
+                    c.executemany("INSERT INTO npcs_selling(npc_id, item_id, value, currency) VALUES(?,?,?, ?)",
+                                  trade_data)
+                # Spells sold by npc
                 spell_list = parse_spells(npc["sells"])
                 spell_data = []
                 for group, spells in spell_list:
@@ -103,17 +183,32 @@ def fetch_npcs(con):
                 c.executemany("INSERT INTO npcs_spells(npc_id, spell_id, knight, paladin, druid, sorcerer) "
                               "VALUES(?,?,?,?,?,?)", spell_data)
                 spell_counter += c.rowcount
+            if "notes" in npc and "{{Transport" in npc["notes"]:
+                destinations = parse_destinations(npc["notes"])
+                destinations_rows = []
+                for destination, price, notes in destinations:
+                    destination.strip()
+                    notes = clean_links(notes.strip())
+                    price = int(price)
+                    if not notes:
+                        notes = None
+                    destinations_rows.append((npc_id, destination, price, notes))
+                if destinations_rows:
+                    c.executemany("INSERT INTO npcs_destinations(npc_id, destination, price, notes) VALUES(?,?,?,?)",
+                                  destinations_rows)
         except Exception:
             log.exception(f"Unknown exception found for {article['title']}")
             exception_count += 1
             continue
     con.commit()
     c.close()
-    rows = get_row_count(con, "npcs")
-    print(f"\t{rows:,} entries added to table")
+    print(f"\t{get_row_count(con, 'npcs'):,} entries added to table")
     if exception_count:
         print(f"\t{exception_count:,} exceptions found, check errors.log for more information.")
     print(f"\t{spell_counter:,} teachable spells added.")
+    print(f"\t{get_row_count(con, 'npcs_selling'):,} sell offers added to table")
+    print(f"\t{get_row_count(con, 'npcs_buying'):,} buy offers added to table")
+    print(f"\t{get_row_count(con, 'npcs_destinations'):,} destinations added to table")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 
 
