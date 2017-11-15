@@ -17,7 +17,14 @@ class TestAPI(unittest.TestCase):
         for entity in entity_list:
             self.assertTrue(param.lower() in (entity[column_name]).lower())
 
+    def assertAllElementsNotEqual(self, entity_list, column_name, param):
+        for entity in entity_list:
+            self.assertNotEqual(entity[column_name], param)
+
     def testCreatures(self):
+        creatures = get_summonable_creatures()
+        self.assertListHasMultipleElements(creatures)
+        self.assertAllElementsNotEqual(creatures, 'summon', 0)
         param = "Lion"
         creatures = get_creature_by_exact_name(param)
         self.assertListHasOneElement(creatures)

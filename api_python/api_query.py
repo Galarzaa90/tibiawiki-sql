@@ -3,7 +3,10 @@ import sqlite3
 
 DATABASE_FILE = '../tibia_database.db'
 DEFAULT_SELECT = 'SELECT * FROM {} '
-DEFAULT_WHERE = ' WHERE {} LIKE ? '
+DEFAULT_WHERE = ' WHERE {} '
+DEFAULT_WHERE_LIKE = DEFAULT_WHERE + ' LIKE ? '
+DEFAULT_WHERE_EQUAL = DEFAULT_WHERE + ' = ? '
+DEFAULT_WHERE_NOT_EQUAL = DEFAULT_WHERE + ' <> ? '
 DEFAULT_ORDER_BY = ' ORDER BY {} ASC '
 TABLE_CREATURES = 'creatures'
 TABLE_ITEMS = 'items'
@@ -21,7 +24,7 @@ def get_creature_by_name(creature_name):
 
 
 def __get_creature__(filtered_column, filtered_param):
-    return __get_entity__(TABLE_CREATURES, filtered_column, filtered_param)
+    return __get_entity__(TABLE_CREATURES, filtered_column, filtered_param, DEFAULT_WHERE_LIKE)
 
 
 def get_item_by_exact_name(item_name):
@@ -33,7 +36,7 @@ def get_item_by_name(item_name):
 
 
 def __get_item__(filtered_column, filtered_param):
-    return __get_entity__(TABLE_ITEMS, filtered_column, filtered_param)
+    return __get_entity__(TABLE_ITEMS, filtered_column, filtered_param, DEFAULT_WHERE_LIKE)
 
 
 def get_npc_by_exact_name(npc_name):
@@ -45,7 +48,7 @@ def get_npc_by_name(npc_name):
 
 
 def __get_npc__(filtered_column, filtered_param):
-    return __get_entity__(TABLE_NPCS, filtered_column, filtered_param)
+    return __get_entity__(TABLE_NPCS, filtered_column, filtered_param,  DEFAULT_WHERE_LIKE)
 
 
 def get_spell_by_exact_name(spell_name):
@@ -57,7 +60,7 @@ def get_spell_by_name(spell_name):
 
 
 def __get_spell__(filtered_column, filtered_param):
-    return __get_entity__(TABLE_SPELLS, filtered_column, filtered_param)
+    return __get_entity__(TABLE_SPELLS, filtered_column, filtered_param, DEFAULT_WHERE_LIKE)
 
 
 def get_quest_by_exact_name(quest_name):
@@ -69,12 +72,16 @@ def get_quest_by_name(quest_name):
 
 
 def __get_quest__(filtered_column, filtered_param):
-    return __get_entity__(TABLE_QUESTS, filtered_column, filtered_param)
+    return __get_entity__(TABLE_QUESTS, filtered_column, filtered_param, DEFAULT_WHERE_LIKE)
+
+
+def get_summonable_creatures():
+    filtered_column = 'summon'
+    filtered_param = 0
+    return __get_entity__(TABLE_CREATURES, filtered_column, filtered_param, DEFAULT_WHERE_NOT_EQUAL)
 
 
 def __get_entity__(table_name, filtered_column, filtered_param, where=None, order_by=None):
-    print('Running call to get table \'{}\' by column \'{}\', filtering by \'{}\'.'.format(
-        table_name, filtered_column, filtered_param))
     entities = []
     con = get_connection()
     cursor = con.cursor()
@@ -125,7 +132,7 @@ def add_order_by_clause(sql, filtered_column, order_by):
 
 def add_where_clause(sql, filtered_column, where):
     if not where:
-        sql += DEFAULT_WHERE
+        sql += DEFAULT_WHERE_LIKE
     else:
         sql += where
     return sql.format(filtered_column)
