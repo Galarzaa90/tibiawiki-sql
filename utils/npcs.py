@@ -183,19 +183,22 @@ def fetch_npcs(con):
                 c.executemany("INSERT INTO npcs_spells(npc_id, spell_id, knight, paladin, druid, sorcerer) "
                               "VALUES(?,?,?,?,?,?)", spell_data)
                 spell_counter += c.rowcount
+            destinations = []
             if "notes" in npc and "{{Transport" in npc["notes"]:
-                destinations = parse_destinations(npc["notes"])
-                destinations_rows = []
-                for destination, price, notes in destinations:
-                    destination.strip()
-                    notes = clean_links(notes.strip())
-                    price = int(price)
-                    if not notes:
-                        notes = None
-                    destinations_rows.append((npc_id, destination, price, notes))
-                if destinations_rows:
-                    c.executemany("INSERT INTO npcs_destinations(npc_id, destination, price, notes) VALUES(?,?,?,?)",
-                                  destinations_rows)
+                destinations.extend(parse_destinations(npc["notes"]))
+            if "sells" in npc and "{{Transport" in npc["sells"]:
+                destinations.extend(parse_destinations(npc["sells"]))
+            destinations_rows = []
+            for destination, price, notes in destinations:
+                destination.strip()
+                notes = clean_links(notes.strip())
+                price = int(price)
+                if not notes:
+                    notes = None
+                destinations_rows.append((npc_id, destination, price, notes))
+            if destinations_rows:
+                c.executemany("INSERT INTO npcs_destinations(npc_id, destination, price, notes) VALUES(?,?,?,?)",
+                              destinations_rows)
         except Exception:
             log.exception(f"Unknown exception found for {article['title']}")
             exception_count += 1
