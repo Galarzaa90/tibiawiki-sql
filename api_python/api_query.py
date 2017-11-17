@@ -16,79 +16,100 @@ TABLE_SPELLS = 'spells'
 NAME_COLUMN = 'name'
 
 
+# CREATURES
 def get_summonable_creatures():
     filtered_column = 'summon'
     filtered_param = 0
-    return __get_entity__(TABLE_CREATURES, filtered_column, filtered_param, DEFAULT_WHERE_NOT_EQUAL)
+    order_by = DEFAULT_ORDER_BY.format(NAME_COLUMN)
+    return __get_entities__(TABLE_CREATURES, filtered_column, filtered_param, DEFAULT_WHERE_NOT_EQUAL, order_by)
+
+
+def get_bosses_creatures():
+    filtered_column = 'boss'
+    filtered_param = 1
+    order_by = DEFAULT_ORDER_BY.format(NAME_COLUMN)
+    return __get_entities__(TABLE_CREATURES, filtered_column, filtered_param, DEFAULT_WHERE_EQUAL, order_by)
 
 
 def get_convincible_creatures():
     filtered_column = 'convince'
     filtered_param = 0
-    return __get_entity__(TABLE_CREATURES, filtered_column, filtered_param, DEFAULT_WHERE_NOT_EQUAL)
+    order_by = DEFAULT_ORDER_BY.format(NAME_COLUMN)
+    return __get_entities__(TABLE_CREATURES, filtered_column, filtered_param, DEFAULT_WHERE_NOT_EQUAL, order_by)
 
 
-def get_creature_by_exact_name(creature_name):
-    return __get_creature__(NAME_COLUMN, creature_name)
+def get_creatures_by_exact_name(creature_name):
+    return __get_creatures__(NAME_COLUMN, creature_name)
 
 
-def get_creature_by_name(creature_name):
-    return __get_creature__(NAME_COLUMN, add_wildcards(creature_name))
+def get_creatures_by_name(creature_name):
+    return __get_creatures__(NAME_COLUMN, add_wildcards(creature_name))
 
 
-def __get_creature__(filtered_column, filtered_param):
-    return __get_entity__(TABLE_CREATURES, filtered_column, filtered_param)
+def __get_creatures__(filtered_column, filtered_param):
+    return __get_entities__(TABLE_CREATURES, filtered_column, filtered_param)
 
 
-def get_item_by_exact_name(item_name):
-    return __get_item__(NAME_COLUMN, item_name)
+# ITEMS
+def get_items_by_exact_name(item_name):
+    return __get_items__(NAME_COLUMN, item_name)
 
 
-def get_item_by_name(item_name):
-    return __get_item__(NAME_COLUMN, add_wildcards(item_name))
+def get_items_by_name(item_name):
+    return __get_items__(NAME_COLUMN, add_wildcards(item_name))
 
 
-def __get_item__(filtered_column, filtered_param):
-    return __get_entity__(TABLE_ITEMS, filtered_column, filtered_param)
+def __get_items__(filtered_column, filtered_param):
+    return __get_entities__(TABLE_ITEMS, filtered_column, filtered_param)
 
 
-def get_npc_by_exact_name(npc_name):
-    return __get_npc__(NAME_COLUMN, npc_name)
+# NPCS
+def get_npcs_by_exact_name(npc_name):
+    return __get_npcs__(NAME_COLUMN, npc_name)
 
 
-def get_npc_by_name(npc_name):
-    return __get_npc__(NAME_COLUMN, add_wildcards(npc_name))
+def get_npcs_by_name(npc_name):
+    return __get_npcs__(NAME_COLUMN, add_wildcards(npc_name))
 
 
-def __get_npc__(filtered_column, filtered_param):
-    return __get_entity__(TABLE_NPCS, filtered_column, filtered_param)
+def __get_npcs__(filtered_column, filtered_param):
+    return __get_entities__(TABLE_NPCS, filtered_column, filtered_param)
 
 
-def get_spell_by_exact_name(spell_name):
-    return __get_spell__(NAME_COLUMN, spell_name)
+# SPELLS
+def get_spells_by_exact_name(spell_name):
+    return __get_spells__(NAME_COLUMN, spell_name)
 
 
-def get_spell_by_name(spell_name):
-    return __get_spell__(NAME_COLUMN, add_wildcards(spell_name))
+def get_spells_by_name(spell_name):
+    return __get_spells__(NAME_COLUMN, add_wildcards(spell_name))
 
 
-def __get_spell__(filtered_column, filtered_param):
-    return __get_entity__(TABLE_SPELLS, filtered_column, filtered_param)
+def get_spells_by_vocation(filtered_column):
+    filtered_param = 1
+    order_by = DEFAULT_ORDER_BY.format(NAME_COLUMN)
+    return __get_entities__(TABLE_SPELLS, filtered_column, filtered_param, DEFAULT_WHERE_EQUAL, order_by)
 
 
-def get_quest_by_exact_name(quest_name):
-    return __get_quest__(NAME_COLUMN, quest_name)
+def __get_spells__(filtered_column, filtered_param):
+    return __get_entities__(TABLE_SPELLS, filtered_column, filtered_param)
 
 
-def get_quest_by_name(quest_name):
-    return __get_quest__(NAME_COLUMN, add_wildcards(quest_name))
+# QUESTS
+def get_quests_by_exact_name(quest_name):
+    return __get_quests__(NAME_COLUMN, quest_name)
 
 
-def __get_quest__(filtered_column, filtered_param):
-    return __get_entity__(TABLE_QUESTS, filtered_column, filtered_param,)
+def get_quests_by_name(quest_name):
+    return __get_quests__(NAME_COLUMN, add_wildcards(quest_name))
 
 
-def __get_entity__(table_name, filtered_column, filtered_param, where=None, order_by=None):
+def __get_quests__(filtered_column, filtered_param):
+    return __get_entities__(TABLE_QUESTS, filtered_column, filtered_param)
+
+
+# MAIN
+def __get_entities__(table_name, filtered_column, filtered_param, where=None, order_by=None):
     entities = []
     con = get_connection()
     cursor = con.cursor()
