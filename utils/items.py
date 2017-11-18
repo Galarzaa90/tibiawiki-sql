@@ -59,16 +59,16 @@ def fetch_items(con):
             extra_attributes = {
                 "level": "levelrequired",
                 "attack": "attack",
-                "element_attack": "elementattack",
+                "elemental_attack": "elementattack",
                 "defense": "defense",
-                "defensemod": "defensemod",
+                "defense_modifier": "defensemod",
                 "armor": "armor",
                 "hands": "hands",
-                "imbueslots": "imbueslots",
+                "imbue_slots": "imbueslots",
                 "attack+": "atk_mod",
                 "hit%+": "hit_mod",
                 "range": "range",
-                "damagetype": "damagetype",
+                "damage_type": "damagetype",
                 "damage": "damage",
                 "mana": "mana",
                 "magic_level": "mlrequired",
@@ -116,8 +116,7 @@ def fetch_items(con):
                     imbuement = imbuement.strip()
                     extra_data.append((item_id, "imbuement", imbuement))
             if "vocrequired" in item and item["vocrequired"] and item["vocrequired"] != "None":
-                vocation = item['vocrequired'].replace('knights', 'k').replace('druids', 'd') \
-                    .replace('sorcerers', 's').replace('paladins', 'p').replace(' and ', '+')
+                vocation = item['vocrequired'].replace(' and ', '+')
                 extra_data.append((item_id, "vocation", vocation))
             c.executemany("INSERT INTO items_attributes(item_id, attribute, value) VALUES(?,?,?)", extra_data)
         except Exception:
