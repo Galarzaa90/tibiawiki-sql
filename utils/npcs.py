@@ -1,3 +1,4 @@
+import json
 import time
 
 from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log
@@ -224,4 +225,16 @@ def fetch_npc_images(con):
     if failed_count > 0:
         print(f"\t{failed_count:,} images failed fetching.")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
+
+
+def save_rashid_locations(con):
+    with open('utils/rashid_positions.json') as f:
+        rashid_locations = json.load(f)
+    c = con.cursor()
+    for location in rashid_locations:
+        c.execute("INSERT INTO rashid_positions(day, day_name, city, x, y, z) VALUES(?,?,?,?,?,?)",
+                  (location["day"], location["day_name"], location["city"], location["x"], location["y"],
+                   location["z"]))
+    con.commit()
+    c.close()
 

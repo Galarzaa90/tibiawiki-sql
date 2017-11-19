@@ -1,0 +1,58 @@
+[
+  {
+    "day": 0,
+    "day_name": "Monday",
+    "x": 32210,
+    "y": 31157,
+    "z": 7,
+    "city": "Svargrond"
+  },
+  {
+    "day": 1,
+    "day_name": "Tuesday",
+    "x": 32303,
+    "y": 32834,
+    "z": 7,
+    "city": "Liberty Bay"
+  },
+  {
+    "day": 2,
+    "day_name": "Wednesday",
+    "x": 32578,
+    "y": 32754,
+    "z": 7,
+    "city": "Port Hope"
+  },
+  {
+    "day": 3,
+    "day_name": "Thursday",
+    "x": 33068,
+    "y": 32879,
+    "z": 6,
+    "city": "Ankrahmun"
+  },
+  {
+    "day": 4,
+    "day_name": "Friday",
+    "x": 33239,
+    "y": 32480,
+    "z": 7,
+    "city": "Darashia"
+  },
+  {
+    "day": 5,
+    "day_name": "Saturday",
+    "x": 33172,
+    "y": 31813,
+    "z": 6,
+    "city": "Edron"
+  },
+  {
+    "day": 6,
+    "day_name": "Sunday",
+    "x": 32326,
+    "y": 31784,
+    "z": 6,
+    "city": "Carlin"
+  }
+]

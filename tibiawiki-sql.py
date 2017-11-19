@@ -8,11 +8,11 @@ from utils.database import init_database, set_database_info
 from utils.houses import fetch_house_list, fetch_houses
 from utils.items import fetch_item_images, fetch_items_list, fetch_items
 from utils.map import save_maps
-from utils.npcs import fetch_npc_images, fetch_npc_list, fetch_npcs
+from utils.npcs import fetch_npc_images, fetch_npc_list, fetch_npcs, save_rashid_locations
 from utils.quests import fetch_quests, fetch_quest_list
 from utils.spells import fetch_spell_images, fetch_spells_list, fetch_spells
 
-__version__ = "v0.2.1-alpha"
+__version__ = "v0.3.0-alpha"
 
 DATABASE_FILE = "tibia_database.db"
 SKIP_IMAGES = "skipimages" in sys.argv
@@ -45,6 +45,8 @@ if __name__ == "__main__":
 
     fetch_quest_list()
     fetch_quests(con)
+
+    save_rashid_locations(con)
 
     if not SKIP_IMAGES:
         fetch_creature_images(con)

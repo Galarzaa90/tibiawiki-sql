@@ -245,6 +245,18 @@ def init_database(name):
             FOREIGN KEY(`creature_id`) REFERENCES `creatures`(`id`)
         );
         """)
+
+        con.execute("DROP TABLE IF EXISTS rashid_positions")
+        con.execute("""
+        CREATE TABLE `rashid_positions` (
+            `day`	INTEGER PRIMARY KEY,
+            `day_name` TEXT,
+            `city` TEXT,
+            `x` INTEGER,
+            `y` INTEGER,
+            `z` INTEGER
+         );
+         """)
     return con
 
 

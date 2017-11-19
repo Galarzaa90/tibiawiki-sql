@@ -19,6 +19,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | [quests](#quests) | Contains information for all quests.
 | [quests_dangers](#quests_dangers) | Contains creatures that can be found in a quest.
 | [quests_rewards](#quests_rewards) | Contains item rewards for quests.
+| [rashid_positions](#rashid_positions) | Contains the positions for the NPC Rashid every day of the week.
 | [spells](#spells) | Contains information for all spells.
 
 ## achievements
@@ -198,17 +199,30 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | premium | `INTEGER` | Whether premium account is required to finish the quest. `0` or `1`.
 | version | `TEXT` | Client version where this quest was implemented.
 
+
 ## quests_dangers
 | Column | Type | Description |
 | ------ | ---- | ----------- |
 | quest_id | `INTEGER` | Id of the quest this danger belongs to.
 | creature_id | `INTEGER` | Id of the creature found in this quest.
 
+
 ## quests_rewards
 | Column | Type | Description |
 | ------ | ---- | ----------- |
 | quest_id | `INTEGER` | Id of the quest this reward belongs to.
 | item_id | `INTEGER` | Id of the item obtained in this quest.
+
+
+## rashid_positoons
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| day | `INTEGER` | Day of the week, where Monday is `0`.
+| day_name | `TEXT` | Name of the weekday.
+| city | `TEXT` | Name of the city Rashid is located.
+| x | `INTEGER` | The x position where the Rashid is that day.
+| y | `INTEGER` | The y position where the Rashid is that day.
+| z | `INTEGER` | The z position where the Rashid is that day.
 
 ## spells
 
