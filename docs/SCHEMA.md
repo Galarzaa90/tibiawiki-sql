@@ -214,15 +214,15 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | item_id | `INTEGER` | Id of the item obtained in this quest.
 
 
-## rashid_positoons
+## rashid_positions
 | Column | Type | Description |
 | ------ | ---- | ----------- |
 | day | `INTEGER` | Day of the week, where Monday is `0`.
 | day_name | `TEXT` | Name of the weekday.
 | city | `TEXT` | Name of the city Rashid is located.
-| x | `INTEGER` | The x position where the Rashid is that day.
-| y | `INTEGER` | The y position where the Rashid is that day.
-| z | `INTEGER` | The z position where the Rashid is that day.
+| x | `INTEGER` | The x position where Rashid is that day.
+| y | `INTEGER` | The y position where Rashid is that day.
+| z | `INTEGER` | The z position where Rashid is that day.
 
 ## spells
 
