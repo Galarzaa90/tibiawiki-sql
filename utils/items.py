@@ -4,9 +4,10 @@ from typing import Tuple, Dict, Callable
 
 from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log
 from utils.database import get_row_count
-from utils.parsers import parse_attributes, parse_boolean, parse_float, parse_integer
+from utils.parsers import parse_attributes, parse_boolean, parse_float, parse_integer, clean_links
 
 items = []
+keys = []
 
 
 def fetch_items_list():
@@ -142,4 +143,66 @@ def fetch_item_images(con):
     print(f"\t{missing_count:,} items with no image.")
     if failed_count > 0:
         print(f"\t{failed_count:,} images failed fetching.")
+    print(f"\tDone in {time.time()-start_time:.3f} seconds.")
+
+
+def fetch_keys_list():
+    print("Fetching key list... ")
+    start_time = time.time()
+    fetch_category_list("Category:Keys", keys)
+    print(f"\t{len(keys):,} found")
+    for d in deprecated:
+        if d in keys:
+            keys.remove(d)
+    print(f"\t{len(keys):,} after removing deprecated articles.")
+    print(f"\tDone in {time.time()-start_time:.3f} seconds.")
+
+
+def fetch_keys(con):
+    print("Fetching keys information...")
+    start_time = time.time()
+    exception_count = 0
+    attribute_map = {
+        "aka": ("name", lambda x: clean_links(x)),
+        "number": ("number", lambda x: int(x)),
+        "primarytype": ("material", lambda x: x),
+        "location": ("location", lambda x: clean_links(x)),
+        "origin": ("origin", lambda x: clean_links(x)),
+        "shortnotes": ("notes", lambda x: clean_links(x)),
+        "implemented": ("version", lambda x: x),
+    }  # type: Dict[str, Tuple[str, Callable]]
+    c = con.cursor()
+    for article_id, article in fetch_articles(keys):
+        try:
+            content = article["revisions"][0]["*"]
+            if "{{Infobox Key|" not in content:
+                # Skipping page without Infoboxes
+                continue
+            key = parse_attributes(content)
+            columns = []
+            values = []
+            for attribute, value in key.items():
+                if attribute not in attribute_map:
+                    continue
+                column, func = attribute_map[attribute]
+                columns.append(column)
+                values.append(func(value))
+                if attribute == "primarytype":
+                    c.execute("SELECT id FROM items WHERE title LIKE ?", (value + " Key",))
+                    result = c.fetchone()
+                    if result:
+                        item_id = result[0]
+                        columns.append("item_id")
+                        values.append(item_id)
+            c.execute(f"INSERT INTO items_keys({','.join(columns)}) VALUES({','.join(['?']*len(values))})", values)
+        except Exception:
+            log.exception(f"Unknown exception found for {article['title']}")
+            exception_count += 1
+            continue
+    con.commit()
+    c.close()
+    rows = get_row_count(con, "items_keys")
+    print(f"\t{rows:,} entries added to table")
+    if exception_count:
+        print(f"\t{exception_count:,} exceptions found, check errors.log for more information.")
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")

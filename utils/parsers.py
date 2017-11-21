@@ -12,6 +12,7 @@ named_links_pattern = re.compile(r'\[\[[^]|]+\|([^]]+)\]\]')
 link_pattern = re.compile(r'\[\[([^|\]]+)')
 links_pattern = re.compile(r'\[\[([^]]+)\]\]')
 external_links_pattern = re.compile(r'\[[^]]+\]')
+no_wiki_pattern = re.compile(r'<nowiki>([^<]+)</nowiki>')
 
 teaches_template = re.compile(r"{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}")
 spells_pattern = re.compile(r"\|([^|]+)")
@@ -113,6 +114,8 @@ def clean_links(content):
     content = external_links_pattern.sub('', content)
     # Double spaces
     content = content.replace('  ', ' ')
+    # No wiki
+    content = no_wiki_pattern.sub('\g<1>', content)
     return content
 
 

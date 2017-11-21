@@ -257,6 +257,21 @@ def init_database(name):
             `z` INTEGER
          );
          """)
+
+        con.execute("DROP TABLE IF EXISTS items_keys")
+        con.execute("""
+        CREATE TABLE `items_keys` (
+            `item_id`	INTEGER,
+            `number` INTEGER PRIMARY KEY,
+            `name` TEXT,
+            `material` TEXT,
+            `location` TEXT,
+            `origin` TEXT,
+            `notes` TEXT,
+            `version` TEXT,
+            FOREIGN KEY(`item_id`) REFERENCES `items`(`id`)
+         );
+         """)
     return con
 
 

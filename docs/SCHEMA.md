@@ -10,6 +10,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | [houses](#houses) | Contains all houses and guildhalls.
 | [items](#items) | Contains information for all items.
 | [items_attributes](#items_attributes) | Contains extra attributes and properties of items that only apply to certain types.
+| [items_keys](#items_keys) | Contains the different key variations.
 | [map](#map) | Contains the world map's images.
 | [npcs](#npcs) | Contains information for all NPCs.
 | [npcs_buying](#npcs_buying) | Contains all the NPCs' buy offers.

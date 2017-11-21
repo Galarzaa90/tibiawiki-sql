@@ -6,7 +6,7 @@ from utils.achievements import fetch_achievement_list, fetch_achievements
 from utils.creatures import fetch_creature_images, fetch_creature_list, fetch_creature, fetch_drop_statistics
 from utils.database import init_database, set_database_info
 from utils.houses import fetch_house_list, fetch_houses
-from utils.items import fetch_item_images, fetch_items_list, fetch_items
+from utils.items import fetch_item_images, fetch_items_list, fetch_items, fetch_keys_list, fetch_keys
 from utils.map import save_maps
 from utils.npcs import fetch_npc_images, fetch_npc_list, fetch_npcs, save_rashid_locations
 from utils.quests import fetch_quests, fetch_quest_list
@@ -29,6 +29,8 @@ if __name__ == "__main__":
 
     fetch_items_list()
     fetch_items(con)
+    fetch_keys_list()
+    fetch_keys(con)
 
     fetch_npc_list()
     fetch_npcs(con)
