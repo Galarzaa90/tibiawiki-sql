@@ -44,8 +44,11 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | id | `INTEGER` | Autoincremented number, used for relationships with other tables.
 | title | `TEXT` | The title of the TibiaWiki article that refers to this creature. Title cased and may contain parenthesis to differentiate creature variations (e.g. `Butterfly (Yellow)`) or to differentiate from other objects (e.g. `Avalanche (Creature)`).
 | name | `TEXT` | The actual name of the creature in-game.
+| article | `TEXT` | The article before the creature's name. This is shown when looking at creatures. Bosses have no article.
 | hitpoints | `INTEGER` | The number of hitpoints the creature has. May be `NULL` if unknown.
 | experience | `INTEGER` | The number of experience the creature yields. May be `NULL` if unknown.
+| class | `TEXT` | The class this creature belongs to (e.g. `Demons`, `Humanoids`, `Mammals`).
+| type | `TEXT` | The class this creature belongs to (e.g. `Archdemons`, `Dwarves`, `Apes`).
 | max_damage | `INTEGER` | The maximum damage a creature may deal if it were to use all it's abilities at once. May be `NULL` if unknown.
 | summon | `INTEGER` | The mana cost to summon this creature. `0` means it is not summonable. 
 | convince | `INTEGER` | The mana cost to convince this creature. `0` means it is not convinceable.
@@ -114,7 +117,8 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | value | `INTEGER` | The maximum value of this item when sold to NPCs
 | price | `INTEGER` | The maximum price of this item when bought from NPCs.
 | weight | `REAL` | The weight of this item in ounces.
-| type | `TEXT` | The category this item belongs to (e.g. `Helmets`, `Valuables`).
+| CLASS | `TEXT` | The class this item belongs to (e.g. `Body Equipment` ,`Weapons`).
+| type | `TEXT` | The category this item belongs to (e.g. `Helmets`, `Club Weapons`).
 | flavor_text | `TEXT` | The extra text that is displayed when some items are looked at.
 | version | `TEXT` | The client version this item was introduced to the game.
 | image | `BLOB` | The creature's image bytes.

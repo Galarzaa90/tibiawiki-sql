@@ -29,7 +29,10 @@ def fetch_creature(con):
     exception_count = 0
     attribute_map = {
         "name": ("title", lambda x: x),
+        "article": ("article", lambda x: x),
         "actualname": ("name", lambda x: x),
+        "creatureclass": ("class", lambda x: x),
+        "primarytype": ("type", lambda x: x),
         "hp": ("hitpoints", lambda x: parse_integer(x, None)),
         "exp": ("experience", lambda x: parse_integer(x, None)),
         "maxdmg": ("max_damage", lambda x: parse_maximum_integer(x)),

@@ -17,8 +17,11 @@ def init_database(name):
             `id`	INTEGER PRIMARY KEY AUTOINCREMENT,
             `title`	TEXT,
             `name`	TEXT,
+            `article`	TEXT,
             `hitpoints`	INTEGER,
             `experience`	INTEGER,
+            `class` TEXT,
+            `type` TEXT,
             `max_damage` INTEGER,
             `summon` INTEGER DEFAULT 0,
             `convince` INTEGER DEFAULT 0,
@@ -47,14 +50,17 @@ def init_database(name):
         CREATE TABLE `items` (
             `id`	INTEGER PRIMARY KEY AUTOINCREMENT,
             `title`	TEXT,
+            `article`	TEXT,
             `name`	TEXT,
             `stackable` INTEGER DEFAULT 0,
             `value` INTEGER DEFAULT 0,
             `price` INTEGER DEFAULT 0,
             `weight` REAL,
+            `class` TEXT,
             `type` TEXT,
             `flavor_text` TEXT,
             `version` TEXT,
+            `client_id` INTEGER,
             `image` BLOB
         );
         """)
