@@ -1,3 +1,4 @@
+import datetime as dt
 import json
 import logging
 import os
@@ -135,7 +136,7 @@ def fetch_articles(article_list):
         params = {
             "action": "query",
             "prop": "revisions",
-            "rvprop": "content",
+            "rvprop": "content|timestamp",
             "format": "json",
             "titles": "|".join(article_list[i:min(i + 50, len(article_list))])
         }
@@ -146,3 +147,8 @@ def fetch_articles(article_list):
         i += 50
         for article_id, article in npc_pages.items():
             yield article_id, article
+
+
+def parse_timestamp(timestamp: str) -> int:
+    d = dt.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    return int(d.replace(tzinfo=dt.timezone.utc).timestamp())

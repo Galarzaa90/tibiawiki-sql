@@ -41,7 +41,8 @@ def init_database(name):
             `hpdrain` INTEGER,
             `abilities` TEXT,
             `version` TEXT,
-            `image` BLOB
+            `image` BLOB,
+            `last_edit` INTEGER
         );
         """)
 
@@ -61,7 +62,8 @@ def init_database(name):
             `flavor_text` TEXT,
             `version` TEXT,
             `client_id` INTEGER,
-            `image` BLOB
+            `image` BLOB,
+            `last_edit` INTEGER
         );
         """)
 
@@ -99,7 +101,8 @@ def init_database(name):
             `x` INTEGER,
             `y` INTEGER,
             `z` INTEGER,
-            `image` BLOB
+            `image` BLOB,
+            `last_edit` INTEGER
         );
         """)
 
@@ -159,7 +162,8 @@ def init_database(name):
             `sorcerer` INTEGER DEFAULT 0,
             `druid` INTEGER DEFAULT 0,
             `paladin` INTEGER DEFAULT 0,
-            `image` BLOB
+            `image` BLOB,
+            `last_edit` INTEGER
         );
         """)
 
@@ -193,7 +197,8 @@ def init_database(name):
             `y`  INTEGER,
             `z`  INTEGER,
             `guildhall` INTEGER,
-            `version` TEXT
+            `version` TEXT,
+            `last_edit` INTEGER
         );
         """)
         con.execute("DROP TABLE IF EXISTS achievements")
@@ -207,7 +212,8 @@ def init_database(name):
             `spoiler`    TEXT,
             `secret`    INTEGER,
             `premium`  INTEGER,
-            `version` TEXT
+            `version` TEXT,
+            `last_edit` INTEGER
         );
         """)
         con.execute("DROP TABLE IF EXISTS quests")
@@ -220,7 +226,8 @@ def init_database(name):
             `level_required`  INTEGER,
             `level_recommended` INTEGER,
             `premium`  INTEGER,
-            `version` TEXT
+            `version` TEXT,
+            `last_edit` INTEGER
         );
         """)
 
@@ -267,14 +274,15 @@ def init_database(name):
         con.execute("DROP TABLE IF EXISTS items_keys")
         con.execute("""
         CREATE TABLE `items_keys` (
-            `item_id`	INTEGER,
             `number` INTEGER PRIMARY KEY,
+            `item_id`	INTEGER,
             `name` TEXT,
             `material` TEXT,
             `location` TEXT,
             `origin` TEXT,
             `notes` TEXT,
             `version` TEXT,
+            `last_edit` INTEGER,
             FOREIGN KEY(`item_id`) REFERENCES `items`(`id`)
          );
          """)

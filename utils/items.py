@@ -2,7 +2,7 @@ import re
 import time
 from typing import Tuple, Dict, Callable
 
-from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log
+from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, parse_timestamp
 from utils.database import get_row_count
 from utils.parsers import parse_attributes, parse_boolean, parse_float, parse_integer, clean_links
 
@@ -48,8 +48,8 @@ def fetch_items(con):
                 # Skipping page without Infoboxes
                 continue
             item = parse_attributes(content)
-            columns = []
-            values = []
+            columns = ["last_edit"]
+            values = [parse_timestamp(article["revisions"][0]["timestamp"])]
             if "actualname" not in item:
                 item["actualname"] = item["name"].lower()
             for attribute, value in item.items():

@@ -1,7 +1,7 @@
 import time
 from typing import Dict, Tuple, Callable
 
-from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log
+from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, parse_timestamp
 from utils.database import get_row_count
 from utils.parsers import parse_attributes, parse_maximum_integer, parse_integer, parse_boolean, clean_links, \
     parse_loot, \
@@ -63,8 +63,8 @@ def fetch_creature(con):
                 # Skipping page without Infoboxes
                 continue
             creature = parse_attributes(content)
-            columns = []
-            values = []
+            columns = ["last_edit"]
+            values = [parse_timestamp(article["revisions"][0]["timestamp"])]
             if "actualname" not in creature:
                 creature["actualname"] = creature["name"]
             for attribute, value in creature.items():

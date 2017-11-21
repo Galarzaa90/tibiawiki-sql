@@ -36,6 +36,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | secret | `INTEGER` | Whether this is a secret achievement or not. `0` or `1`.
 | premium | `INTEGER` | Whether this achievement requires premium. `0` or `1`.
 | version | `TEXT` | Client version this achievement was implemented in.
+| last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
 ## creatures 
 
@@ -69,6 +70,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | abilities | `TEXT` | A summary of a creature's abilities (attacks, spells, healing).
 | version | `TEXT` | The client version this creature was introduced to the game.
 | image | `BLOB` | The creature's image bytes.
+| last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
 ## creatures_drops
 
@@ -105,6 +107,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | z | `INTEGER` | The z position of the door's entrance for this house.
 | guildhall | `INTEGER` | Whether this house is a guildhall or not. `0` or `1`.
 | version | `TEXT` | The client version this was implemented in.
+| last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
 ## items
 
@@ -117,11 +120,26 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | value | `INTEGER` | The maximum value of this item when sold to NPCs
 | price | `INTEGER` | The maximum price of this item when bought from NPCs.
 | weight | `REAL` | The weight of this item in ounces.
-| CLASS | `TEXT` | The class this item belongs to (e.g. `Body Equipment` ,`Weapons`).
+| class | `TEXT` | The class this item belongs to (e.g. `Body Equipment` ,`Weapons`).
 | type | `TEXT` | The category this item belongs to (e.g. `Helmets`, `Club Weapons`).
 | flavor_text | `TEXT` | The extra text that is displayed when some items are looked at.
 | version | `TEXT` | The client version this item was introduced to the game.
 | image | `BLOB` | The creature's image bytes.
+| last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
+
+## items_keys
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| number | `INTEGER` | The number of this key, without padding (e.g. Key 0555's `number` would be `555`).
+| item_id | `INTEGER` | The item id of the key.
+| name | `TEXT` | Name(s) this key usually receives by players.
+| material | `TEXT` | The material this key is made of.
+| location | `TEXT` | General location of this key.
+| origin | `TEXT` | How this key is obtained.
+| notes | `TEXT` | Where this key is used or other notes.
+| version | `TEXT` | The client version this item was introduced to the game.
+| last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
 ## items_attributes
 
@@ -152,6 +170,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | z | `INTEGER` | The z position where the NPC is usually located.
 | version | `TEXT` | The client version this item was introduced to the game.
 | image | `BLOB` | The npc's image bytes.
+| last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
 ## npcs_buying
 
@@ -203,6 +222,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | level_recommended | `INTEGER` | The level recommended to finish the quest.
 | premium | `INTEGER` | Whether premium account is required to finish the quest. `0` or `1`.
 | version | `TEXT` | Client version where this quest was implemented.
+| last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
 
 ## quests_dangers
@@ -250,3 +270,4 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | druid | `INTEGER` | Whether this spell can be used by druids or not. `0` or `1`.
 | paladin | `INTEGER` | Whether this spell can be used by paladins or not. `0` or `1`.
 | image | `BLOB` | The spell's image bytes.
+| last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.

@@ -1,7 +1,7 @@
 import time
 from typing import Tuple, Callable, Dict
 
-from utils import fetch_category_list, deprecated, fetch_article_images, fetch_articles, log
+from utils import fetch_category_list, deprecated, fetch_article_images, fetch_articles, log, parse_timestamp
 from utils.database import get_row_count
 from utils.parsers import parse_attributes, parse_boolean, parse_integer
 
@@ -45,8 +45,8 @@ def fetch_spells(con):
                 # Skipping pages like creature groups articles
                 continue
             spell = parse_attributes(content)
-            columns = []
-            values = []
+            columns = ["last_edit"]
+            values = [parse_timestamp(article["revisions"][0]["timestamp"])]
             for attribute, value in spell.items():
                 if attribute not in attribute_map:
                     continue

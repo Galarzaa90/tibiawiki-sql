@@ -2,7 +2,7 @@ import json
 import time
 from typing import Dict, Tuple, Callable
 
-from utils import fetch_category_list, deprecated, fetch_articles, log
+from utils import fetch_category_list, deprecated, fetch_articles, log, parse_timestamp
 from utils.database import get_row_count
 from utils.parsers import parse_attributes, parse_integer
 
@@ -49,8 +49,8 @@ def fetch_houses(con):
             if "{{Infobox Building" not in content:
                 continue
             house = parse_attributes(content)
-            columns = []
-            values = []
+            columns = ["last_edit"]
+            values = [parse_timestamp(article["revisions"][0]["timestamp"])]
             for attribute, value in house.items():
                 if attribute not in attribute_map:
                     continue

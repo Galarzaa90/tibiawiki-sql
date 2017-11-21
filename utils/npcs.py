@@ -1,7 +1,7 @@
 import json
 import time
 
-from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log
+from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, parse_timestamp
 from utils.database import get_row_count
 from utils.parsers import parse_attributes, parse_spells, convert_tibiawiki_position, parse_item_offers, \
     parse_item_trades, parse_destinations, clean_links
@@ -53,8 +53,8 @@ def fetch_npcs(con):
                 # Skipping pages like creature groups articles
                 continue
             npc = parse_attributes(content)
-            columns = []
-            values = []
+            columns = ["last_edit"]
+            values = [parse_timestamp(article["revisions"][0]["timestamp"])]
             if "actualname" not in npc:
                 npc["actualname"] = npc["name"]
             for attribute, value in npc.items():

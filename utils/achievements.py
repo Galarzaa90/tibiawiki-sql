@@ -1,6 +1,6 @@
 import time
 
-from utils import fetch_category_list, deprecated, fetch_articles, log
+from utils import fetch_category_list, deprecated, fetch_articles, log, parse_timestamp
 from utils.database import get_row_count
 from utils.parsers import parse_attributes, parse_integer, parse_boolean, clean_links
 
@@ -41,8 +41,8 @@ def fetch_achievements(con):
             if "{{Infobox Achievement" not in content:
                 continue
             achievement = parse_attributes(content)
-            columns = []
-            values = []
+            columns = ["last_edit"]
+            values = [parse_timestamp(article["revisions"][0]["timestamp"])]
             for attribute, value in achievement.items():
                 if attribute not in attribute_map:
                     continue
