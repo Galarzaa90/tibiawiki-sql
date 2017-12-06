@@ -124,7 +124,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | type | `TEXT` | The category this item belongs to (e.g. `Helmets`, `Club Weapons`).
 | flavor_text | `TEXT` | The extra text that is displayed when some items are looked at.
 | version | `TEXT` | The client version this item was introduced to the game.
-| image | `BLOB` | The creature's image bytes.
+| image | `BLOB` | The item's image bytes.
 | last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
 ## items_keys
