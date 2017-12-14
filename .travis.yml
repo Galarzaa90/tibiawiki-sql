@@ -14,7 +14,6 @@ install:
   - python -m compileall ./tibiawiki-sql.py
   - python ./tibiawiki-sql.py skipimages
   - cat errors.log
-  - cp README.md docs/index.md
   - python -m mkdocs build
 
 deploy:

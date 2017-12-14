@@ -1,5 +1,6 @@
 site_name: tibiawiki-sql
 repo_url: https://github.com/Galarzaa90/tibiawiki-sql
 pages:
-    - Schema: SCHEMA.md
-    - Queries: QUERIES.md
+    - Home: index.md
+    - Schema: schema.md
+    - Queries: queries.md
