@@ -7,12 +7,18 @@ cache: pip
 install:
   - pip install requests
 
+stages:
+  - test
+  - deploy-docs
+
 jobs:
   include:
     - stage: test
-      script: python -m compileall ./tibiawiki-sql.py
+      script:
+      - python -m compileall ./tibiawiki-sql.py
       - python ./tibiawiki-sql.py skipimages
       - cat errors.log
     - stage: deploy-docs
-      script: cp README.md index.md
+      script:
+      - cp README.md index.md
       - python -m mkdocs gh-deploy
