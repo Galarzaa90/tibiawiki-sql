@@ -10,21 +10,12 @@ git:
 install:
   - pip install requests mkdocs
 
-stages:
-  - test
-  - deploy-docs
-
-jobs:
-  include:
-    - stage: test
-      script:
-      - python -m compileall ./tibiawiki-sql.py
-      - python ./tibiawiki-sql.py skipimages
-      - cat errors.log
-    - stage: deploy-docs
-      script:
-      - cp README.md docs/index.md
-      - python -m mkdocs build
+"script":
+  - python -m compileall ./tibiawiki-sql.py
+  - python ./tibiawiki-sql.py skipimages
+  - cat errors.log
+  - cp README.md docs/index.md
+  - python -m mkdocs build
 
 deploy:
   provider: pages
