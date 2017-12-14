@@ -34,7 +34,7 @@ When done, a database file called `tibia_database.db` will be found on the folde
 * Quests
 
 ## Database schema
-See [SCHEMA.md](docs/SCHEMA.md) in the `docs` folder
+See [schema.md](docs/schema.md) in the `docs` folder
 
 ## Contributing
 Improvements and bug fixes are welcome, via pull requests  

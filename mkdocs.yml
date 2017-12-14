@@ -1,5 +1,24 @@
+site_name: 'tibiawiki-sql'
+site_description: 'A sqlite database generator based on TibiaWiki articles'
+site_author: 'Allan Galarzaa'
+site_url: 'https://galarzaa90.github.io/tibiawiki-sql/'
+
 site_name: tibiawiki-sql
+theme:
+  name: material
+  palette:
+    primary: 'red'
+    accent: 'green'
+  logo:
+    icon: 'info'
+
+extra:
+  social:
+    - type: 'github'
+      link: 'https://github.com/galarzaa90'
+
 repo_url: https://github.com/Galarzaa90/tibiawiki-sql
+edit_uri: ""
 pages:
     - Home: index.md
     - Schema: schema.md

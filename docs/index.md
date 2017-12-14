@@ -22,9 +22,6 @@ subsequent runs, images will be read from disk instead of being fetched from Tib
 
 When done, a database file called `tibia_database.db` will be found on the folder.
 
-## Database schema
-See [SCHEMA.md](SCHEMA.md) in the `docs` folder
-
 ## Contributing
 Improvements and bug fixes are welcome, via pull requests  
 For questions, suggestions and bug reports, submit an issue.

@@ -8,7 +8,7 @@ git:
   depth: 3
 
 install:
-  - pip install requests mkdocs
+  - pip install requests mkdocs mkdocs-material
 
 "script":
   - python -m compileall ./tibiawiki-sql.py
