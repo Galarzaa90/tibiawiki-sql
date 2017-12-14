@@ -5,7 +5,7 @@ python:
 cache: pip
 
 install:
-  - pip install requests
+  - pip install requests mkdocs
 
 stages:
   - test
@@ -20,5 +20,5 @@ jobs:
       - cat errors.log
     - stage: deploy-docs
       script:
-      - cp README.md index.md
+      - cp README.md docs/index.md
       - python -m mkdocs gh-deploy
