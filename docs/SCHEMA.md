@@ -1,6 +1,11 @@
 # Database Schema
 The output of this script is a SQLite file named `tibia_database.db`.
 
+## Database model
+
+![](model.png "Model")
+
+
 | Table | Description |
 | ----- | ----------- |
 | [achievements](#achievements) | Contains information for all achievements.
@@ -23,7 +28,9 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | [rashid_positions](#rashid_positions) | Contains the positions for the NPC Rashid every day of the week.
 | [spells](#spells) | Contains information for all spells.
 
-## achievements
+## Tables
+
+### achievements
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
@@ -38,7 +45,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | version | `TEXT` | Client version this achievement was implemented in.
 | last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
-## creatures 
+### creatures 
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
@@ -72,7 +79,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | image | `BLOB` | The creature's image bytes.
 | last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
-## creatures_drops
+### creatures_drops
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
@@ -82,14 +89,14 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | min | `INTEGER`| The minimum count this drop gives.
 | max | `INTEGER`| The maximum count this drop gives.
 
-## database_info
+### database_info
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
 | key | `INTEGER` | The name of the value contained.
 | value | `INTEGER` | The value of the database property.
 
-## houses
+### houses
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
@@ -109,7 +116,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | version | `TEXT` | The client version this was implemented in.
 | last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
-## items
+### items
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
@@ -127,7 +134,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | image | `BLOB` | The item's image bytes.
 | last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
-## items_keys
+### items_keys
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
@@ -141,7 +148,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | version | `TEXT` | The client version this item was introduced to the game.
 | last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
-## items_attributes
+### items_attributes
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
@@ -149,14 +156,14 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | attribute | `TEXT` | The name of the attribute.
 | value | `TEXT` | The value of the attribute.
 
-## map
+### map
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
 | z | `INTEGER` | The floor's level, where 7 is the ground floor.
 | image | `BLOB` | The map's image for that that floor, in PNG format.
 
-## npcs
+### npcs
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
@@ -172,7 +179,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | image | `BLOB` | The npc's image bytes.
 | last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
-## npcs_buying
+### npcs_buying
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
@@ -181,7 +188,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | value | `TEXT` | The value of the offer
 | currency | `INTEGER` | The id of the item used as currency in this offer. In most cases this is the id of "gold coin".
 
-## npcs_destinations
+### npcs_destinations
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
@@ -191,7 +198,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | notes | `INTEGER` | Extra notes for this destination, like extra requirements or exceptions.
 
 
-## npcs_selling
+### npcs_selling
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
@@ -200,7 +207,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | value | `TEXT` | The value of the offer
 | currency | `INTEGER` | The id of the item used as currency in this offer. In most cases this is the id of "gold coin".
 
-## npcs_spells
+### npcs_spells
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
@@ -211,7 +218,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | druid | `INTEGER` | Whether this NPC teaches this spell to druids. `0` or `1`.
 | paladin | `INTEGER` | Whether this NPC teaches this spell to paladins. `0` or `1`.
 
-## quests
+### quests
 | Column | Type | Description |
 | ------ | ---- | ----------- |
 | id | `INTEGER` | Autoincremented number, user for relationships with other tables.
@@ -225,21 +232,21 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
 
-## quests_dangers
+### quests_dangers
 | Column | Type | Description |
 | ------ | ---- | ----------- |
 | quest_id | `INTEGER` | Id of the quest this danger belongs to.
 | creature_id | `INTEGER` | Id of the creature found in this quest.
 
 
-## quests_rewards
+### quests_rewards
 | Column | Type | Description |
 | ------ | ---- | ----------- |
 | quest_id | `INTEGER` | Id of the quest this reward belongs to.
 | item_id | `INTEGER` | Id of the item obtained in this quest.
 
 
-## rashid_positions
+### rashid_positions
 | Column | Type | Description |
 | ------ | ---- | ----------- |
 | day | `INTEGER` | Day of the week, where Monday is `0`.
@@ -249,7 +256,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | y | `INTEGER` | The y position where Rashid is that day.
 | z | `INTEGER` | The z position where Rashid is that day.
 
-## spells
+### spells
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
