@@ -4,6 +4,9 @@ python:
 
 cache: pip
 
+git:
+  depth: 3
+
 install:
   - pip install requests mkdocs
 
@@ -21,4 +24,12 @@ jobs:
     - stage: deploy-docs
       script:
       - cp README.md docs/index.md
-      - python -m mkdocs gh-deploy
+      - python -m mkdocs build
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: site
+  on:
+    branch: master
