@@ -55,7 +55,11 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | article | `TEXT` | The article before the creature's name. This is shown when looking at creatures. Bosses have no article.
 | hitpoints | `INTEGER` | The number of hitpoints the creature has. May be `NULL` if unknown.
 | experience | `INTEGER` | The number of experience the creature yields. May be `NULL` if unknown.
+| armor | `INTEGER` | The armor value of the creature. May be `NULL` if unknown.
+| speed | `INTEGER` | The speed value of the creature. May be `NULL` if unknown.
 | class | `TEXT` | The class this creature belongs to (e.g. `Demons`, `Humanoids`, `Mammals`).
+| bestiary_class | `TEXT` | The bestiary category of this creature. `NULL` for creatures not in the bestiary or unknown.
+| bestiary_level | `TEXT` | The bestiary level of this creature. `NULL` for creatures not in the bestiary or unknown.
 | type | `TEXT` | The class this creature belongs to (e.g. `Archdemons`, `Dwarves`, `Apes`).
 | max_damage | `INTEGER` | The maximum damage a creature may deal if it were to use all it's abilities at once. May be `NULL` if unknown.
 | summon | `INTEGER` | The mana cost to summon this creature. `0` means it is not summonable. 
