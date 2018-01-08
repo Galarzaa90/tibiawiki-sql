@@ -1,0 +1,1813 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="A sqlite database generator based on TibiaWiki articles">
+      
+      
+        <link rel="canonical" href="https://galarzaa90.github.io/tibiawiki-sql/schema/">
+      
+      
+        <meta name="author" content="Allan Galarzaa">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-0.17.2, mkdocs-material-2.2.6">
+    
+    
+      
+        <title>Schema - tibiawiki-sql</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.6525f7f6.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.792431c1.css">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+    
+  </head>
+  
+    
+    
+    
+      <body data-md-color-primary="red" data-md-color-accent="green">
+    
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://galarzaa90.github.io/tibiawiki-sql/" title="tibiawiki-sql" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">info</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                tibiawiki-sql
+              </span>
+              <span class="md-header-nav__topic">
+                Schema
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">&#xE5CD;</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/Galarzaa90/tibiawiki-sql" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    <span class="md-nav__button md-logo">
+      
+        <i class="md-icon">info</i>
+      
+    </span>
+    tibiawiki-sql
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/Galarzaa90/tibiawiki-sql" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Schema
+      </label>
+    
+    <a href="./" title="Schema" class="md-nav__link md-nav__link--active">
+      Schema
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#database-model" title="Database model" class="md-nav__link">
+    Database model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tables" title="Tables" class="md-nav__link">
+    Tables
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#achievements" title="achievements" class="md-nav__link">
+    achievements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creatures" title="creatures" class="md-nav__link">
+    creatures
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creatures_drops" title="creatures_drops" class="md-nav__link">
+    creatures_drops
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database_info" title="database_info" class="md-nav__link">
+    database_info
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#houses" title="houses" class="md-nav__link">
+    houses
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#items" title="items" class="md-nav__link">
+    items
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#items_keys" title="items_keys" class="md-nav__link">
+    items_keys
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#items_attributes" title="items_attributes" class="md-nav__link">
+    items_attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#map" title="map" class="md-nav__link">
+    map
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npcs" title="npcs" class="md-nav__link">
+    npcs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npcs_buying" title="npcs_buying" class="md-nav__link">
+    npcs_buying
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npcs_destinations" title="npcs_destinations" class="md-nav__link">
+    npcs_destinations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npcs_selling" title="npcs_selling" class="md-nav__link">
+    npcs_selling
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npcs_spells" title="npcs_spells" class="md-nav__link">
+    npcs_spells
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quests" title="quests" class="md-nav__link">
+    quests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quests_dangers" title="quests_dangers" class="md-nav__link">
+    quests_dangers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quests_rewards" title="quests_rewards" class="md-nav__link">
+    quests_rewards
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rashid_positions" title="rashid_positions" class="md-nav__link">
+    rashid_positions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spells" title="spells" class="md-nav__link">
+    spells
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../queries/" title="Queries" class="md-nav__link">
+      Queries
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#database-model" title="Database model" class="md-nav__link">
+    Database model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tables" title="Tables" class="md-nav__link">
+    Tables
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#achievements" title="achievements" class="md-nav__link">
+    achievements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creatures" title="creatures" class="md-nav__link">
+    creatures
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creatures_drops" title="creatures_drops" class="md-nav__link">
+    creatures_drops
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database_info" title="database_info" class="md-nav__link">
+    database_info
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#houses" title="houses" class="md-nav__link">
+    houses
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#items" title="items" class="md-nav__link">
+    items
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#items_keys" title="items_keys" class="md-nav__link">
+    items_keys
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#items_attributes" title="items_attributes" class="md-nav__link">
+    items_attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#map" title="map" class="md-nav__link">
+    map
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npcs" title="npcs" class="md-nav__link">
+    npcs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npcs_buying" title="npcs_buying" class="md-nav__link">
+    npcs_buying
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npcs_destinations" title="npcs_destinations" class="md-nav__link">
+    npcs_destinations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npcs_selling" title="npcs_selling" class="md-nav__link">
+    npcs_selling
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npcs_spells" title="npcs_spells" class="md-nav__link">
+    npcs_spells
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quests" title="quests" class="md-nav__link">
+    quests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quests_dangers" title="quests_dangers" class="md-nav__link">
+    quests_dangers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quests_rewards" title="quests_rewards" class="md-nav__link">
+    quests_rewards
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rashid_positions" title="rashid_positions" class="md-nav__link">
+    rashid_positions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spells" title="spells" class="md-nav__link">
+    spells
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="database-schema">Database Schema</h1>
+<p>The output of this script is a SQLite file named <code>tibia_database.db</code>.</p>
+<h2 id="database-model">Database model</h2>
+<p><img alt="" src="../model.png" title="Model" /></p>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#achievements">achievements</a></td>
+<td>Contains information for all achievements.</td>
+</tr>
+<tr>
+<td><a href="#creatures">creatures</a></td>
+<td>Contains information for all creatures.</td>
+</tr>
+<tr>
+<td><a href="#creatures_drops">creatures_drops</a></td>
+<td>Contains all the items dropped by creatures.</td>
+</tr>
+<tr>
+<td><a href="#database_info">database_info</a></td>
+<td>Contains information about the database itself.</td>
+</tr>
+<tr>
+<td><a href="#houses">houses</a></td>
+<td>Contains all houses and guildhalls.</td>
+</tr>
+<tr>
+<td><a href="#items">items</a></td>
+<td>Contains information for all items.</td>
+</tr>
+<tr>
+<td><a href="#items_attributes">items_attributes</a></td>
+<td>Contains extra attributes and properties of items that only apply to certain types.</td>
+</tr>
+<tr>
+<td><a href="#items_keys">items_keys</a></td>
+<td>Contains the different key variations.</td>
+</tr>
+<tr>
+<td><a href="#map">map</a></td>
+<td>Contains the world map's images.</td>
+</tr>
+<tr>
+<td><a href="#npcs">npcs</a></td>
+<td>Contains information for all NPCs.</td>
+</tr>
+<tr>
+<td><a href="#npcs_buying">npcs_buying</a></td>
+<td>Contains all the NPCs' buy offers.</td>
+</tr>
+<tr>
+<td><a href="#npcs_destinations">npcs_destinations</a></td>
+<td>Contains all the NPCs' travel destinations.</td>
+</tr>
+<tr>
+<td><a href="#npcs_selling">npcs_selling</a></td>
+<td>Contains all the NPCs' sell offers.</td>
+</tr>
+<tr>
+<td><a href="#npcs_spells">npcs_spells</a></td>
+<td>Contains all the spells NPCs teach.</td>
+</tr>
+<tr>
+<td><a href="#quests">quests</a></td>
+<td>Contains information for all quests.</td>
+</tr>
+<tr>
+<td><a href="#quests_dangers">quests_dangers</a></td>
+<td>Contains creatures that can be found in a quest.</td>
+</tr>
+<tr>
+<td><a href="#quests_rewards">quests_rewards</a></td>
+<td>Contains item rewards for quests.</td>
+</tr>
+<tr>
+<td><a href="#rashid_positions">rashid_positions</a></td>
+<td>Contains the positions for the NPC Rashid every day of the week.</td>
+</tr>
+<tr>
+<td><a href="#spells">spells</a></td>
+<td>Contains information for all spells.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tables">Tables</h2>
+<h3 id="achievements">achievements</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td><code>INTEGER</code></td>
+<td>Autoincremented number, used for relationships with other tables.## creatures</td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>TEXT</code></td>
+<td>The name of the achievement</td>
+</tr>
+<tr>
+<td>grade</td>
+<td><code>INTEGER</code></td>
+<td>The grade of the achievement. Goes from 1 to 3.</td>
+</tr>
+<tr>
+<td>points</td>
+<td><code>INTEGER</code></td>
+<td>The number of points this achievement gives.</td>
+</tr>
+<tr>
+<td>description</td>
+<td><code>TEXT</code></td>
+<td>The official description shown for this achievement.</td>
+</tr>
+<tr>
+<td>spoiler</td>
+<td><code>TEXT</code></td>
+<td>Brief instructions on how to complete the quest.</td>
+</tr>
+<tr>
+<td>secret</td>
+<td><code>INTEGER</code></td>
+<td>Whether this is a secret achievement or not. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>premium</td>
+<td><code>INTEGER</code></td>
+<td>Whether this achievement requires premium. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>version</td>
+<td><code>TEXT</code></td>
+<td>Client version this achievement was implemented in.</td>
+</tr>
+<tr>
+<td>last_edit</td>
+<td><code>INTEGER</code></td>
+<td>Unix timestamp of the UTC time of the last edit made to this article.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="creatures">creatures</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td><code>INTEGER</code></td>
+<td>Autoincremented number, used for relationships with other tables.</td>
+</tr>
+<tr>
+<td>title</td>
+<td><code>TEXT</code></td>
+<td>The title of the TibiaWiki article that refers to this creature. Title cased and may contain parenthesis to differentiate creature variations (e.g. <code>Butterfly (Yellow)</code>) or to differentiate from other objects (e.g. <code>Avalanche (Creature)</code>).</td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>TEXT</code></td>
+<td>The actual name of the creature in-game.</td>
+</tr>
+<tr>
+<td>article</td>
+<td><code>TEXT</code></td>
+<td>The article before the creature's name. This is shown when looking at creatures. Bosses have no article.</td>
+</tr>
+<tr>
+<td>hitpoints</td>
+<td><code>INTEGER</code></td>
+<td>The number of hitpoints the creature has. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>experience</td>
+<td><code>INTEGER</code></td>
+<td>The number of experience the creature yields. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>armor</td>
+<td><code>INTEGER</code></td>
+<td>The armor value of the creature. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>speed</td>
+<td><code>INTEGER</code></td>
+<td>The speed value of the creature. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>class</td>
+<td><code>TEXT</code></td>
+<td>The class this creature belongs to (e.g. <code>Demons</code>, <code>Humanoids</code>, <code>Mammals</code>).</td>
+</tr>
+<tr>
+<td>bestiary_class</td>
+<td><code>TEXT</code></td>
+<td>The bestiary category of this creature. <code>NULL</code> for creatures not in the bestiary or unknown.</td>
+</tr>
+<tr>
+<td>bestiary_level</td>
+<td><code>TEXT</code></td>
+<td>The bestiary level of this creature. <code>NULL</code> for creatures not in the bestiary or unknown.</td>
+</tr>
+<tr>
+<td>type</td>
+<td><code>TEXT</code></td>
+<td>The class this creature belongs to (e.g. <code>Archdemons</code>, <code>Dwarves</code>, <code>Apes</code>).</td>
+</tr>
+<tr>
+<td>max_damage</td>
+<td><code>INTEGER</code></td>
+<td>The maximum damage a creature may deal if it were to use all it's abilities at once. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>summon</td>
+<td><code>INTEGER</code></td>
+<td>The mana cost to summon this creature. <code>0</code> means it is not summonable.</td>
+</tr>
+<tr>
+<td>convince</td>
+<td><code>INTEGER</code></td>
+<td>The mana cost to convince this creature. <code>0</code> means it is not convinceable.</td>
+</tr>
+<tr>
+<td>illusionable</td>
+<td><code>INTEGER</code></td>
+<td>Whether the player can turn into this creature with Creature Illusion. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>pushable</td>
+<td><code>INTEGER</code></td>
+<td>Whether this creature can be pushed or not. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>paralysable</td>
+<td><code>INTEGER</code></td>
+<td>Whether this creature can be paralyzed or not. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>see_invisible</td>
+<td><code>INTEGER</code></td>
+<td>Whether this creature can see through invisibility or not. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>boss</td>
+<td><code>INTEGER</code></td>
+<td>Whether this creature is a boss or not. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>physical</td>
+<td><code>INTEGER</code></td>
+<td>Percentage of damage the creature receives from this damage type. <code>0</code> being completely immune, <code>100</code> neutral. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>earth</td>
+<td><code>INTEGER</code></td>
+<td>Percentage of damage the creature receives from this damage type. <code>0</code> being completely immune, <code>100</code> neutral. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>fire</td>
+<td><code>INTEGER</code></td>
+<td>Percentage of damage the creature receives from this damage type. <code>0</code> being completely immune, <code>100</code> neutral. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>ice</td>
+<td><code>INTEGER</code></td>
+<td>Percentage of damage the creature receives from this damage type. <code>0</code> being completely immune, <code>100</code> neutral. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>energy</td>
+<td><code>INTEGER</code></td>
+<td>Percentage of damage the creature receives from this damage type. <code>0</code> being completely immune, <code>100</code> neutral. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>death</td>
+<td><code>INTEGER</code></td>
+<td>Percentage of damage the creature receives from this damage type. <code>0</code> being completely immune, <code>100</code> neutral. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>holy</td>
+<td><code>INTEGER</code></td>
+<td>Percentage of damage the creature receives from this damage type. <code>0</code> being completely immune, <code>100</code> neutral. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>drown</td>
+<td><code>INTEGER</code></td>
+<td>Percentage of damage the creature receives from this damage type. <code>0</code> being completely immune, <code>100</code> neutral. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>hpdrain</td>
+<td><code>INTEGER</code></td>
+<td>Percentage of damage the creature receives from this damage type. <code>0</code> being completely immune, <code>100</code> neutral. May be <code>NULL</code> if unknown.</td>
+</tr>
+<tr>
+<td>abilities</td>
+<td><code>TEXT</code></td>
+<td>A summary of a creature's abilities (attacks, spells, healing).</td>
+</tr>
+<tr>
+<td>version</td>
+<td><code>TEXT</code></td>
+<td>The client version this creature was introduced to the game.</td>
+</tr>
+<tr>
+<td>image</td>
+<td><code>BLOB</code></td>
+<td>The creature's image bytes.</td>
+</tr>
+<tr>
+<td>last_edit</td>
+<td><code>INTEGER</code></td>
+<td>Unix timestamp of the UTC time of the last edit made to this article.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="creatures_drops">creatures_drops</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>creature_id</td>
+<td><code>INTEGER</code></td>
+<td>The id of the creature that yields this drop.</td>
+</tr>
+<tr>
+<td>item_id</td>
+<td><code>INTEGER</code></td>
+<td>The id of the item dropped.</td>
+</tr>
+<tr>
+<td>chance</td>
+<td><code>REAL</code></td>
+<td>The chance percentage of this drop. <code>NULL</code> means unknown.</td>
+</tr>
+<tr>
+<td>min</td>
+<td><code>INTEGER</code></td>
+<td>The minimum count this drop gives.</td>
+</tr>
+<tr>
+<td>max</td>
+<td><code>INTEGER</code></td>
+<td>The maximum count this drop gives.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="database_info">database_info</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td><code>INTEGER</code></td>
+<td>The name of the value contained.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><code>INTEGER</code></td>
+<td>The value of the database property.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="houses">houses</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td><code>INTEGER</code></td>
+<td>The house's internal id in Tibia.com.</td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>TEXT</code></td>
+<td>The name of the house.</td>
+</tr>
+<tr>
+<td>city</td>
+<td><code>TEXT</code></td>
+<td>The city the house belongs to.</td>
+</tr>
+<tr>
+<td>street</td>
+<td><code>TEXT</code></td>
+<td>The street this house is located.</td>
+</tr>
+<tr>
+<td>beds</td>
+<td><code>INTEGER</code></td>
+<td>The number of beds the house has.</td>
+</tr>
+<tr>
+<td>rent</td>
+<td><code>INTEGER</code></td>
+<td>The monthly rent of this house.</td>
+</tr>
+<tr>
+<td>size</td>
+<td><code>INTEGER</code></td>
+<td>The number of tiles this house has.</td>
+</tr>
+<tr>
+<td>rooms</td>
+<td><code>INTEGER</code></td>
+<td>The number of rooms or divisions this house has.</td>
+</tr>
+<tr>
+<td>floors</td>
+<td><code>INTEGER</code></td>
+<td>The number of floors this house has.</td>
+</tr>
+<tr>
+<td>x</td>
+<td><code>INTEGER</code></td>
+<td>The x position of the door's entrance for this house.</td>
+</tr>
+<tr>
+<td>y</td>
+<td><code>INTEGER</code></td>
+<td>The y position of the door's entrance for this house.</td>
+</tr>
+<tr>
+<td>z</td>
+<td><code>INTEGER</code></td>
+<td>The z position of the door's entrance for this house.</td>
+</tr>
+<tr>
+<td>guildhall</td>
+<td><code>INTEGER</code></td>
+<td>Whether this house is a guildhall or not. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>version</td>
+<td><code>TEXT</code></td>
+<td>The client version this was implemented in.</td>
+</tr>
+<tr>
+<td>last_edit</td>
+<td><code>INTEGER</code></td>
+<td>Unix timestamp of the UTC time of the last edit made to this article.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="items">items</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td><code>INTEGER</code></td>
+<td>Autoincremented number, used for relationships with other tables.</td>
+</tr>
+<tr>
+<td>title</td>
+<td><code>TEXT</code></td>
+<td>The title of the TibiaWiki article that refers to this item. Title cased and may contain parenthesis to differentiate item variations (e.g. <code>Surprise Bag (Red)</code>) or to differentiate from other objects (e.g. <code>Black Skull (Item)</code>).</td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>TEXT</code></td>
+<td>The actual name of the item in-game.</td>
+</tr>
+<tr>
+<td>stacklable</td>
+<td><code>INTEGER</code></td>
+<td>Whether this item is stackable or not.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><code>INTEGER</code></td>
+<td>The maximum value of this item when sold to NPCs</td>
+</tr>
+<tr>
+<td>price</td>
+<td><code>INTEGER</code></td>
+<td>The maximum price of this item when bought from NPCs.</td>
+</tr>
+<tr>
+<td>weight</td>
+<td><code>REAL</code></td>
+<td>The weight of this item in ounces.</td>
+</tr>
+<tr>
+<td>class</td>
+<td><code>TEXT</code></td>
+<td>The class this item belongs to (e.g. <code>Body Equipment</code> ,<code>Weapons</code>).</td>
+</tr>
+<tr>
+<td>type</td>
+<td><code>TEXT</code></td>
+<td>The category this item belongs to (e.g. <code>Helmets</code>, <code>Club Weapons</code>).</td>
+</tr>
+<tr>
+<td>flavor_text</td>
+<td><code>TEXT</code></td>
+<td>The extra text that is displayed when some items are looked at.</td>
+</tr>
+<tr>
+<td>version</td>
+<td><code>TEXT</code></td>
+<td>The client version this item was introduced to the game.</td>
+</tr>
+<tr>
+<td>image</td>
+<td><code>BLOB</code></td>
+<td>The item's image bytes.</td>
+</tr>
+<tr>
+<td>last_edit</td>
+<td><code>INTEGER</code></td>
+<td>Unix timestamp of the UTC time of the last edit made to this article.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="items_keys">items_keys</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>number</td>
+<td><code>INTEGER</code></td>
+<td>The number of this key, without padding (e.g. Key 0555's <code>number</code> would be <code>555</code>).</td>
+</tr>
+<tr>
+<td>item_id</td>
+<td><code>INTEGER</code></td>
+<td>The item id of the key.</td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>TEXT</code></td>
+<td>Name(s) this key usually receives by players.</td>
+</tr>
+<tr>
+<td>material</td>
+<td><code>TEXT</code></td>
+<td>The material this key is made of.</td>
+</tr>
+<tr>
+<td>location</td>
+<td><code>TEXT</code></td>
+<td>General location of this key.</td>
+</tr>
+<tr>
+<td>origin</td>
+<td><code>TEXT</code></td>
+<td>How this key is obtained.</td>
+</tr>
+<tr>
+<td>notes</td>
+<td><code>TEXT</code></td>
+<td>Where this key is used or other notes.</td>
+</tr>
+<tr>
+<td>version</td>
+<td><code>TEXT</code></td>
+<td>The client version this item was introduced to the game.</td>
+</tr>
+<tr>
+<td>last_edit</td>
+<td><code>INTEGER</code></td>
+<td>Unix timestamp of the UTC time of the last edit made to this article.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="items_attributes">items_attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>item_id</td>
+<td><code>INTEGER</code></td>
+<td>The id of the item this attribute belongs to.</td>
+</tr>
+<tr>
+<td>attribute</td>
+<td><code>TEXT</code></td>
+<td>The name of the attribute.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><code>TEXT</code></td>
+<td>The value of the attribute.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="map">map</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>z</td>
+<td><code>INTEGER</code></td>
+<td>The floor's level, where 7 is the ground floor.</td>
+</tr>
+<tr>
+<td>image</td>
+<td><code>BLOB</code></td>
+<td>The map's image for that that floor, in PNG format.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="npcs">npcs</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td><code>INTEGER</code></td>
+<td>Autoincremented number, used for relationships with other tables.</td>
+</tr>
+<tr>
+<td>title</td>
+<td><code>TEXT</code></td>
+<td>The title of the TibiaWiki article that refers to this npc. Title cased and may contain parenthesis to differentiate from other objects (e.g. <code>Cobra (NPC)</code>).</td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>TEXT</code></td>
+<td>The actual name of the npc in-game.</td>
+</tr>
+<tr>
+<td>job</td>
+<td><code>INTEGER</code></td>
+<td>The NPC's job</td>
+</tr>
+<tr>
+<td>city</td>
+<td><code>TEXT</code></td>
+<td>City where the NPC is found.</td>
+</tr>
+<tr>
+<td>x</td>
+<td><code>INTEGER</code></td>
+<td>The x position where the NPC is usually located.</td>
+</tr>
+<tr>
+<td>y</td>
+<td><code>INTEGER</code></td>
+<td>The y position where the NPC is usually located.</td>
+</tr>
+<tr>
+<td>z</td>
+<td><code>INTEGER</code></td>
+<td>The z position where the NPC is usually located.</td>
+</tr>
+<tr>
+<td>version</td>
+<td><code>TEXT</code></td>
+<td>The client version this item was introduced to the game.</td>
+</tr>
+<tr>
+<td>image</td>
+<td><code>BLOB</code></td>
+<td>The npc's image bytes.</td>
+</tr>
+<tr>
+<td>last_edit</td>
+<td><code>INTEGER</code></td>
+<td>Unix timestamp of the UTC time of the last edit made to this article.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="npcs_buying">npcs_buying</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>npc_id</td>
+<td><code>INTEGER</code></td>
+<td>The id of the npc this offer belongs to</td>
+</tr>
+<tr>
+<td>item_id</td>
+<td><code>INTEGER</code></td>
+<td>The id of the item this offer refers to</td>
+</tr>
+<tr>
+<td>value</td>
+<td><code>TEXT</code></td>
+<td>The value of the offer</td>
+</tr>
+<tr>
+<td>currency</td>
+<td><code>INTEGER</code></td>
+<td>The id of the item used as currency in this offer. In most cases this is the id of "gold coin".</td>
+</tr>
+</tbody>
+</table>
+<h3 id="npcs_destinations">npcs_destinations</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>npc_id</td>
+<td><code>INTEGER</code></td>
+<td>The id of the npc this destination belongs to.</td>
+</tr>
+<tr>
+<td>destination</td>
+<td><code>INTEGER</code></td>
+<td>The name of the place this npc can take you to.</td>
+</tr>
+<tr>
+<td>price</td>
+<td><code>TEXT</code></td>
+<td>The price to travel to the destination with this npc.</td>
+</tr>
+<tr>
+<td>notes</td>
+<td><code>INTEGER</code></td>
+<td>Extra notes for this destination, like extra requirements or exceptions.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="npcs_selling">npcs_selling</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>npc_id</td>
+<td><code>INTEGER</code></td>
+<td>The id of the npc this offer belongs to</td>
+</tr>
+<tr>
+<td>item_id</td>
+<td><code>INTEGER</code></td>
+<td>The id of the item this offer refers to</td>
+</tr>
+<tr>
+<td>value</td>
+<td><code>TEXT</code></td>
+<td>The value of the offer</td>
+</tr>
+<tr>
+<td>currency</td>
+<td><code>INTEGER</code></td>
+<td>The id of the item used as currency in this offer. In most cases this is the id of "gold coin".</td>
+</tr>
+</tbody>
+</table>
+<h3 id="npcs_spells">npcs_spells</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>npc_id</td>
+<td><code>INTEGER</code></td>
+<td>The id of the npc that teaches this spell</td>
+</tr>
+<tr>
+<td>spell_id</td>
+<td><code>INTEGER</code></td>
+<td>The id of the spell this npc teaches</td>
+</tr>
+<tr>
+<td>knight</td>
+<td><code>INTEGER</code></td>
+<td>Whether this NPC teaches this spell to knights. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>sorcerer</td>
+<td><code>INTEGER</code></td>
+<td>Whether this NPC teaches this spell to sorcerers. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>druid</td>
+<td><code>INTEGER</code></td>
+<td>Whether this NPC teaches this spell to druids. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>paladin</td>
+<td><code>INTEGER</code></td>
+<td>Whether this NPC teaches this spell to paladins. <code>0</code> or <code>1</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="quests">quests</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td><code>INTEGER</code></td>
+<td>Autoincremented number, user for relationships with other tables.</td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>TEXT</code></td>
+<td>The name of the quest.</td>
+</tr>
+<tr>
+<td>location</td>
+<td><code>TEXT</code></td>
+<td>Location where the quest starts or takes place.</td>
+</tr>
+<tr>
+<td>legend</td>
+<td><code>TEXT</code></td>
+<td>Short description of the quest.</td>
+</tr>
+<tr>
+<td>level_required</td>
+<td><code>INTEGER</code></td>
+<td>The level required to finish the quest.</td>
+</tr>
+<tr>
+<td>level_recommended</td>
+<td><code>INTEGER</code></td>
+<td>The level recommended to finish the quest.</td>
+</tr>
+<tr>
+<td>premium</td>
+<td><code>INTEGER</code></td>
+<td>Whether premium account is required to finish the quest. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>version</td>
+<td><code>TEXT</code></td>
+<td>Client version where this quest was implemented.</td>
+</tr>
+<tr>
+<td>last_edit</td>
+<td><code>INTEGER</code></td>
+<td>Unix timestamp of the UTC time of the last edit made to this article.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="quests_dangers">quests_dangers</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>quest_id</td>
+<td><code>INTEGER</code></td>
+<td>Id of the quest this danger belongs to.</td>
+</tr>
+<tr>
+<td>creature_id</td>
+<td><code>INTEGER</code></td>
+<td>Id of the creature found in this quest.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="quests_rewards">quests_rewards</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>quest_id</td>
+<td><code>INTEGER</code></td>
+<td>Id of the quest this reward belongs to.</td>
+</tr>
+<tr>
+<td>item_id</td>
+<td><code>INTEGER</code></td>
+<td>Id of the item obtained in this quest.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rashid_positions">rashid_positions</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>day</td>
+<td><code>INTEGER</code></td>
+<td>Day of the week, where Monday is <code>0</code>.</td>
+</tr>
+<tr>
+<td>day_name</td>
+<td><code>TEXT</code></td>
+<td>Name of the weekday.</td>
+</tr>
+<tr>
+<td>city</td>
+<td><code>TEXT</code></td>
+<td>Name of the city Rashid is located.</td>
+</tr>
+<tr>
+<td>x</td>
+<td><code>INTEGER</code></td>
+<td>The x position where Rashid is that day.</td>
+</tr>
+<tr>
+<td>y</td>
+<td><code>INTEGER</code></td>
+<td>The y position where Rashid is that day.</td>
+</tr>
+<tr>
+<td>z</td>
+<td><code>INTEGER</code></td>
+<td>The z position where Rashid is that day.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="spells">spells</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td><code>INTEGER</code></td>
+<td>Autoincremented number, used for relationships with other tables.</td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>TEXT</code></td>
+<td>The spell's name</td>
+</tr>
+<tr>
+<td>words</td>
+<td><code>TEXT</code></td>
+<td>Words used to cast the spell</td>
+</tr>
+<tr>
+<td>type</td>
+<td><code>TEXT</code></td>
+<td>Whether the spell is instant or a rune spell.</td>
+</tr>
+<tr>
+<td>class</td>
+<td><code>TEXT</code></td>
+<td>The spell's class (e.g. <code>Attack</code>, <code>Support</code>)</td>
+</tr>
+<tr>
+<td>element</td>
+<td><code>TEXT</code></td>
+<td>The type of damage this spell deals if applicable.</td>
+</tr>
+<tr>
+<td>level</td>
+<td><code>INTEGER</code></td>
+<td>Level required to cast this spell</td>
+</tr>
+<tr>
+<td>mana</td>
+<td><code>INTEGER</code></td>
+<td>Mana required to cast this spell. <code>-1</code> means special conditions apply.</td>
+</tr>
+<tr>
+<td>soul</td>
+<td><code>INTEGER</code></td>
+<td>Soul points required to cast this spell.</td>
+</tr>
+<tr>
+<td>premium</td>
+<td><code>INTEGER</code></td>
+<td>Whether this spell requires premium account or not. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>price</td>
+<td><code>INTEGER</code></td>
+<td>Price in gold coins of this spell</td>
+</tr>
+<tr>
+<td>cooldown</td>
+<td><code>INTEGER</code></td>
+<td>Cooldown in seconds of this spell</td>
+</tr>
+<tr>
+<td>knight</td>
+<td><code>INTEGER</code></td>
+<td>Whether this spell can be used by knights or not. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>sorcerer</td>
+<td><code>INTEGER</code></td>
+<td>Whether this spell can be used by sorcerers or not. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>druid</td>
+<td><code>INTEGER</code></td>
+<td>Whether this spell can be used by druids or not. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>paladin</td>
+<td><code>INTEGER</code></td>
+<td>Whether this spell can be used by paladins or not. <code>0</code> or <code>1</code>.</td>
+</tr>
+<tr>
+<td>image</td>
+<td><code>BLOB</code></td>
+<td>The spell's image bytes.</td>
+</tr>
+<tr>
+<td>last_edit</td>
+<td><code>INTEGER</code></td>
+<td>Unix timestamp of the UTC time of the last edit made to this article.</td>
+</tr>
+</tbody>
+</table>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href=".." title="Home" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Home
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../queries/" title="Queries" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Queries
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+  <div class="md-footer-social">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+      <a href="https://github.com/galarzaa90" class="md-footer-social__link fa fa-github"></a>
+    
+  </div>
+
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.cae2244d.js"></script>
+      
+      <script>app.initialize({version:"0.17.2",url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
