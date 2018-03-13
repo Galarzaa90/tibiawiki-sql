@@ -2,9 +2,11 @@ import json
 import time
 from typing import Dict, Tuple, Callable
 
-from utils import fetch_category_list, deprecated, fetch_articles, log, parse_timestamp
-from utils.database import get_row_count
-from utils.parsers import parse_attributes, parse_integer
+import pkg_resources
+
+from tibiawikisql.utils import fetch_category_list, deprecated, fetch_articles, log, parse_timestamp
+from tibiawikisql.utils.database import get_row_count
+from tibiawikisql.utils.parsers import parse_attributes, parse_integer
 
 houses = []
 
@@ -40,7 +42,8 @@ def fetch_houses(con):
         "implemented": ("version", lambda x:x),
     }  # type: Dict[str, Tuple[str, Callable]]
     # House positions are not available at TibiaWiki
-    with open('utils/house_positions.json') as f:
+    # with open('../data/house_positions.json') as f:
+    with open(pkg_resources.resource_filename(__name__, "house_positions.json")) as f:
         house_positions = json.load(f)
     c = con.cursor()
     for article_id, article in fetch_articles(houses):

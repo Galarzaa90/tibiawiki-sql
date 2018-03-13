@@ -1,9 +1,10 @@
 import time
 from typing import Tuple, Callable, Dict
 
-from utils import fetch_category_list, deprecated, fetch_article_images, fetch_articles, log, parse_timestamp
-from utils.database import get_row_count
-from utils.parsers import parse_attributes, parse_boolean, parse_integer
+from tibiawikisql.utils import fetch_category_list, deprecated, fetch_article_images, fetch_articles, log, \
+    parse_timestamp
+from tibiawikisql.utils.database import get_row_count
+from tibiawikisql.utils.parsers import parse_attributes, parse_boolean, parse_integer
 
 spells = []
 

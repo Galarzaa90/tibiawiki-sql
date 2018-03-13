@@ -1,6 +1,6 @@
 import unittest
 
-from api_python.api_query import *
+from tibiawikisql.api_python.api_query import *
 
 
 class TestAPI(unittest.TestCase):

@@ -1,5 +1,5 @@
-import time
 import sqlite3
+import time
 
 DATABASE_FILE = '../tibia_database.db'
 DEFAULT_SELECT = 'SELECT * FROM {} '

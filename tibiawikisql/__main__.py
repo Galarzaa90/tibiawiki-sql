@@ -1,23 +1,24 @@
 import sys
 import time
 
-from utils import fetch_deprecated_list
-from utils.achievements import fetch_achievement_list, fetch_achievements
-from utils.creatures import fetch_creature_images, fetch_creature_list, fetch_creature, fetch_drop_statistics
-from utils.database import init_database, set_database_info
-from utils.houses import fetch_house_list, fetch_houses
-from utils.items import fetch_item_images, fetch_items_list, fetch_items, fetch_keys_list, fetch_keys
-from utils.map import save_maps
-from utils.npcs import fetch_npc_images, fetch_npc_list, fetch_npcs, save_rashid_locations
-from utils.quests import fetch_quests, fetch_quest_list
-from utils.spells import fetch_spell_images, fetch_spells_list, fetch_spells
-
-__version__ = "v0.3.1-alpha"
+from tibiawikisql import __version__
+from tibiawikisql.utils import fetch_deprecated_list
+from tibiawikisql.utils.achievements import fetch_achievement_list, fetch_achievements
+from tibiawikisql.utils.creatures import fetch_creature_images, fetch_creature_list, fetch_creature, \
+    fetch_drop_statistics
+from tibiawikisql.utils.database import init_database, set_database_info
+from tibiawikisql.utils.houses import fetch_house_list, fetch_houses
+from tibiawikisql.utils.items import fetch_item_images, fetch_items_list, fetch_items, fetch_keys_list, fetch_keys
+from tibiawikisql.utils.map import save_maps
+from tibiawikisql.utils.npcs import fetch_npc_images, fetch_npc_list, fetch_npcs, save_rashid_locations
+from tibiawikisql.utils.quests import fetch_quests, fetch_quest_list
+from tibiawikisql.utils.spells import fetch_spell_images, fetch_spells_list, fetch_spells
 
 DATABASE_FILE = "tibia_database.db"
 SKIP_IMAGES = "skipimages" in sys.argv
 
-if __name__ == "__main__":
+
+def main():
     start_time = time.time()
     print("Running...")
     con = init_database(DATABASE_FILE)
@@ -60,3 +61,7 @@ if __name__ == "__main__":
     set_database_info(con, __version__)
 
     print(f"Done in {time.time()-start_time:.3f} seconds.")
+
+
+if __name__ == "__main__":
+    main()

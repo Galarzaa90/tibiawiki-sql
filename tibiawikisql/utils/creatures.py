@@ -1,9 +1,11 @@
 import time
 from typing import Dict, Tuple, Callable
 
-from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, parse_timestamp
-from utils.database import get_row_count
-from utils.parsers import parse_attributes, parse_maximum_integer, parse_integer, parse_boolean, clean_links, \
+from tibiawikisql.utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, \
+    parse_timestamp
+from tibiawikisql.utils.database import get_row_count
+from tibiawikisql.utils.parsers import parse_attributes, parse_maximum_integer, parse_integer, parse_boolean, \
+    clean_links, \
     parse_loot, \
     parse_min_max, parse_loot_statistics
 

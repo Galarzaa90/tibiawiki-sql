@@ -3,3 +3,5 @@ images/*
 tibia_database.db
 __pycache__/
 *.log
+dist/
+*.egg-info

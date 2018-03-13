@@ -1,9 +1,12 @@
 import json
 import time
 
-from utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, parse_timestamp
-from utils.database import get_row_count
-from utils.parsers import parse_attributes, parse_spells, convert_tibiawiki_position, parse_item_offers, \
+import pkg_resources
+
+from tibiawikisql.utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, \
+    parse_timestamp
+from tibiawikisql.utils.database import get_row_count
+from tibiawikisql.utils.parsers import parse_attributes, parse_spells, convert_tibiawiki_position, parse_item_offers, \
     parse_item_trades, parse_destinations, clean_links
 
 npcs = []
@@ -228,7 +231,8 @@ def fetch_npc_images(con):
 
 
 def save_rashid_locations(con):
-    with open('utils/rashid_positions.json') as f:
+    # with open('../data/rashid_positions.json') as f:
+    with open(pkg_resources.resource_filename(__name__, "rashid_positions.json")) as f:
         rashid_locations = json.load(f)
     c = con.cursor()
     for location in rashid_locations:

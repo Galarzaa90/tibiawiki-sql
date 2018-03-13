@@ -1,8 +1,8 @@
 import time
 
-from utils import fetch_category_list, deprecated, fetch_articles, log, parse_timestamp
-from utils.database import get_row_count
-from utils.parsers import parse_attributes, parse_integer, parse_boolean, clean_links
+from tibiawikisql.utils import fetch_category_list, deprecated, fetch_articles, log, parse_timestamp
+from tibiawikisql.utils.database import get_row_count
+from tibiawikisql.utils.parsers import parse_attributes, parse_integer, parse_boolean, clean_links
 
 achievements = []
 
