@@ -30,5 +30,19 @@ setup(
     description="Python script that generates a SQLite database from TibiaWiki articles",
     long_description=readme,
     packages=find_packages(),
-    include_package_data=True
+    include_package_data=True,
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Environment :: Console',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+        'Natural Language :: English',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python :: 3.6',
+        'Topic :: Database',
+        'Topic :: Games/Entertainment :: Role-Playing',
+        'Topic :: Internet',
+        'Topic :: Utilities'
+    ]
 )
