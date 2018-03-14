@@ -7,6 +7,9 @@ from typing import List, Tuple
 
 import requests
 
+__all__ = ["achievements", "creatures", "database", "houses", "items", "map", "npcs", "parsers", "quests", "spells",
+           "fetch_deprecated_list", "fetch_article_images", "fetch_articles", "fetch_category_list"]
+
 ENDPOINT = "http://tibia.wikia.com/api.php"
 
 headers = {

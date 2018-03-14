@@ -3,10 +3,10 @@ import time
 
 import pkg_resources
 
-from tibiawikisql.utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, \
+from . import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, \
     parse_timestamp
-from tibiawikisql.utils.database import get_row_count
-from tibiawikisql.utils.parsers import parse_attributes, parse_spells, convert_tibiawiki_position, parse_item_offers, \
+from .database import get_row_count
+from .parsers import parse_attributes, parse_spells, convert_tibiawiki_position, parse_item_offers, \
     parse_item_trades, parse_destinations, clean_links
 
 npcs = []

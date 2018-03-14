@@ -4,9 +4,9 @@ from typing import Dict, Tuple, Callable
 
 import pkg_resources
 
-from tibiawikisql.utils import fetch_category_list, deprecated, fetch_articles, log, parse_timestamp
-from tibiawikisql.utils.database import get_row_count
-from tibiawikisql.utils.parsers import parse_attributes, parse_integer
+from . import fetch_category_list, deprecated, fetch_articles, log, parse_timestamp
+from .database import get_row_count
+from .parsers import parse_attributes, parse_integer
 
 houses = []
 

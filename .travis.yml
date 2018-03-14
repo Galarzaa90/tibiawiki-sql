@@ -11,9 +11,7 @@ install:
   - pip install requests mkdocs mkdocs-material
 
 "script":
-  - python -m compileall ./tibiawikisql
-  - python ./tibiawikisql/__main__.py skipimages
-  - cat errors.log
+  - python run.py skipimages
   - python -m mkdocs build
 
 deploy:

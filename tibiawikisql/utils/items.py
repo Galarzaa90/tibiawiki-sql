@@ -2,10 +2,10 @@ import re
 import time
 from typing import Tuple, Dict, Callable
 
-from tibiawikisql.utils import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, \
+from . import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, \
     parse_timestamp
-from tibiawikisql.utils.database import get_row_count
-from tibiawikisql.utils.parsers import parse_attributes, parse_boolean, parse_float, parse_integer, clean_links
+from .database import get_row_count
+from .parsers import parse_attributes, parse_boolean, parse_float, parse_integer, clean_links
 
 items = []
 keys = []

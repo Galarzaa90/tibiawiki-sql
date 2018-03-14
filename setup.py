@@ -1,12 +1,15 @@
 import os
 import re
+import sys
 
 from setuptools import setup, find_packages
 
+if sys.version_info < (3,6):
+    sys.exit('Sorry, Python < 3.6 is not supported')
 
 def get_version(package):
     """Return package version as listed in `__version__` in `init.py`."""
-    init_py = open(os.path.join(package, '__init__.py')).read()
+    init_py = open(os.path.join(package, '__main__.py')).read()
     return re.search("__version__ = ['\"]([^'\"]+)['\"]", init_py).group(1)
 
 
@@ -27,10 +30,5 @@ setup(
     description="Python script that generates a SQLite database from TibiaWiki articles",
     long_description=readme,
     packages=find_packages(),
-    entry_points={
-        'console_scripts': [
-            'tibiawiki = tibiawikisql.tibiawikisql:main',
-        ],
-    },
     include_package_data=True
 )
