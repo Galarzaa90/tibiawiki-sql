@@ -13,7 +13,7 @@ def get_version(package):
     return re.search("__version__ = ['\"]([^'\"]+)['\"]", init_py).group(1)
 
 
-with open('requirements.txt') as f:
+with open('requirements.rst') as f:
     requirements = f.read().splitlines()
 
 with open('README.md') as f:
