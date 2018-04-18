@@ -55,6 +55,9 @@ When done, a database file called `tibia_database.db` will be found on the folde
 * Achievements
 * Quests
 
+## Database schema
+See [schema.md](docs/schema.md) in the `docs` folder
+
 ## Contributing
 Improvements and bug fixes are welcome, via pull requests  
 For questions, suggestions and bug reports, submit an issue.

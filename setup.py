@@ -13,7 +13,7 @@ def get_version(package):
     return re.search("__version__ = ['\"]([^'\"]+)['\"]", init_py).group(1)
 
 
-with open('requirements.rst') as f:
+with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
 with open('README.md') as f:
@@ -29,6 +29,7 @@ setup(
     install_requires=requirements,
     description="Python script that generates a SQLite database from TibiaWiki articles",
     long_description=readme,
+    long_description_content_type="text/markdown",
     packages=find_packages(),
     include_package_data=True,
     classifiers=[
@@ -38,8 +39,10 @@ setup(
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
         'Operating System :: OS Independent',
+        'Programming Language :: Python',
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: SQL',
         'Topic :: Database',
         'Topic :: Games/Entertainment :: Role-Playing',
         'Topic :: Internet',

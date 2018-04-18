@@ -1,5 +1,6 @@
-include README.rst
+include README.md
 include LICENSE
+include CHANGELOG.md
 include requirements.txt
 recursive-include tibiawikisql *.json
 recursive-exclude * __pycache__
