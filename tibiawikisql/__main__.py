@@ -9,6 +9,7 @@ SKIP_IMAGES = "skipimages" in sys.argv
 
 __version__ = "1.0.0"
 
+
 def main():
     start_time = time.time()
     print("Running...")

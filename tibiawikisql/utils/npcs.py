@@ -119,6 +119,9 @@ def fetch_npcs(con):
                 trade_items = parse_item_trades(npc["sells"])
                 trade_data = []
                 for item, price, currency in trade_items:
+                    # TODO: This is just a quickfix, but the regex pattern should be improved to fix this
+                    if npc["name"] == "Minzy":
+                        break
                     item = item.split(";")[0]
                     c.execute("SELECT id, price FROM items WHERE title LIKE ?", (item.strip(),))
                     result = c.fetchone()
