@@ -47,7 +47,7 @@ def fetch_creature(con):
         "illusionable": ("illusionable", lambda x: parse_boolean(x)),
         "pushable": ("pushable", lambda x: parse_boolean(x)),
         "senseinvis": ("see_invisible", lambda x: parse_boolean(x)),
-        "paraimmune": ("paralysable", lambda x: parse_boolean(x)),
+        "paraimmune": ("paralysable", lambda x: not parse_boolean(x)),
         "isboss": ("boss", lambda x: parse_boolean(x)),
         "physicalDmgMod": ("physical", lambda x: parse_integer(x)),
         "earthDmgMod": ("earth", lambda x: parse_integer(x)),
