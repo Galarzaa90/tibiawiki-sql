@@ -1,4 +1,8 @@
 # Changelog
+## Version 1.0.0 (Unreleased)
+- `id` is now TibiaWiki's article id for the element, making them more reliable than autoincremented ids.
+- Fixed bug with potion's prices.
+- Fixed bug with paralysable being inverted.
 
 ## Version 0.3.0 (2017-12-18)
 - New `items_keys` table, contains key numbers with their uses and locations

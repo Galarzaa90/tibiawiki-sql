@@ -41,8 +41,8 @@ def fetch_achievements(con):
             if "{{Infobox Achievement" not in content:
                 continue
             achievement = parse_attributes(content)
-            columns = ["last_edit"]
-            values = [parse_timestamp(article["revisions"][0]["timestamp"])]
+            columns = ["id", "last_edit"]
+            values = [int(article_id), parse_timestamp(article["revisions"][0]["timestamp"])]
             for attribute, value in achievement.items():
                 if attribute not in attribute_map:
                     continue

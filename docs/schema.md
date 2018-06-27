@@ -34,7 +34,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
-| id | `INTEGER` | Autoincremented number, used for relationships with other tables.## creatures
+| id | `INTEGER` | The article id of this entry on TibiaWiki. used for relations with other tables.
 | name | `TEXT` | The name of the achievement
 | grade | `INTEGER` | The grade of the achievement. Goes from 1 to 3.
 | points | `INTEGER` | The number of points this achievement gives.
@@ -49,7 +49,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
-| id | `INTEGER` | Autoincremented number, used for relationships with other tables.
+| id | `INTEGER` | The article id of this entry on TibiaWiki. used for relations with other tables.
 | title | `TEXT` | The title of the TibiaWiki article that refers to this creature. Title cased and may contain parenthesis to differentiate creature variations (e.g. `Butterfly (Yellow)`) or to differentiate from other objects (e.g. `Avalanche (Creature)`).
 | name | `TEXT` | The actual name of the creature in-game.
 | article | `TEXT` | The article before the creature's name. This is shown when looking at creatures. Bosses have no article.
@@ -124,7 +124,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
-| id | `INTEGER` | Autoincremented number, used for relationships with other tables.
+| id | `INTEGER` |  The article id of this entry on TibiaWiki. used for relations with other tables.
 | title | `TEXT` | The title of the TibiaWiki article that refers to this item. Title cased and may contain parenthesis to differentiate item variations (e.g. `Surprise Bag (Red)`) or to differentiate from other objects (e.g. `Black Skull (Item)`).
 | name | `TEXT` | The actual name of the item in-game.
 | stacklable | `INTEGER` | Whether this item is stackable or not.
@@ -171,7 +171,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
-| id | `INTEGER` | Autoincremented number, used for relationships with other tables.
+| id | `INTEGER` | The article id of this entry on TibiaWiki. used for relations with other tables.
 | title | `TEXT` | The title of the TibiaWiki article that refers to this npc. Title cased and may contain parenthesis to differentiate from other objects (e.g. `Cobra (NPC)`).
 | name | `TEXT` | The actual name of the npc in-game.
 | job | `INTEGER` | The NPC's job
@@ -225,7 +225,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 ### quests
 | Column | Type | Description |
 | ------ | ---- | ----------- |
-| id | `INTEGER` | Autoincremented number, user for relationships with other tables.
+| id | `INTEGER` |  The article id of this entry on TibiaWiki. used for relations with other tables.
 | name | `TEXT` | The name of the quest.
 | location | `TEXT` | Location where the quest starts or takes place.
 | legend | `TEXT` | Short description of the quest.
@@ -264,7 +264,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 
 | Column | Type | Description |
 | ------ | ---- | ----------- |
-| id | `INTEGER` | Autoincremented number, used for relationships with other tables.
+| id | `INTEGER` |  The article id of this entry on TibiaWiki. used for relations with other tables.
 | name | `TEXT` | The spell's name
 | words | `TEXT` | Words used to cast the spell
 | type | `TEXT` | Whether the spell is instant or a rune spell.

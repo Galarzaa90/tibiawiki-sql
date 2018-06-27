@@ -69,8 +69,8 @@ def fetch_creature(con):
                 # Skipping page without Infoboxes
                 continue
             creature = parse_attributes(content)
-            columns = ["last_edit"]
-            values = [parse_timestamp(article["revisions"][0]["timestamp"])]
+            columns = ["id", "last_edit"]
+            values = [int(article_id), parse_timestamp(article["revisions"][0]["timestamp"])]
             if "actualname" not in creature:
                 creature["actualname"] = creature["name"]
             for attribute, value in creature.items():

@@ -14,7 +14,7 @@ def init_database(name):
         con.execute("DROP TABLE IF EXISTS creatures")
         con.execute("""
         CREATE TABLE `creatures` (
-            `id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+            `id`	INTEGER PRIMARY KEY,
             `title`	TEXT,
             `name`	TEXT,
             `article`	TEXT,
@@ -53,7 +53,7 @@ def init_database(name):
         con.execute("DROP TABLE IF EXISTS items")
         con.execute("""
         CREATE TABLE `items` (
-            `id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+            `id`	INTEGER PRIMARY KEY,
             `title`	TEXT,
             `article`	TEXT,
             `name`	TEXT,
@@ -96,7 +96,7 @@ def init_database(name):
         con.execute("DROP TABLE IF EXISTS npcs")
         con.execute("""
         CREATE TABLE `npcs` (
-            `id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+            `id`	INTEGER PRIMARY KEY,
             `title`	TEXT,
             `name`	TEXT,
             `city` TEXT,
@@ -150,7 +150,7 @@ def init_database(name):
         con.execute("DROP TABLE IF EXISTS spells")
         con.execute("""
         CREATE TABLE `spells` (
-            `id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+            `id`	INTEGER PRIMARY KEY,
             `name`	TEXT,
             `words`	TEXT,
             `type`  TEXT,
@@ -188,7 +188,7 @@ def init_database(name):
         con.execute("DROP TABLE IF EXISTS houses")
         con.execute("""
         CREATE TABLE `houses` (
-            `id`	INTEGER,
+            `id`	INTEGER PRIMARY KEY,
             `name`	TEXT,
             `city` TEXT,
             `street`  TEXT,
@@ -208,7 +208,7 @@ def init_database(name):
         con.execute("DROP TABLE IF EXISTS achievements")
         con.execute("""
         CREATE TABLE `achievements` (
-            `id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+            `id`	INTEGER PRIMARY KEY,
             `name`	TEXT,
             `grade` INTEGER,
             `points`  INTEGER,
@@ -223,7 +223,7 @@ def init_database(name):
         con.execute("DROP TABLE IF EXISTS quests")
         con.execute("""
         CREATE TABLE `quests` (
-            `id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+            `id`	INTEGER PRIMARY KEY,
             `name` TEXT,
             `location` TEXT,
             `legend` TEXT,

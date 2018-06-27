@@ -49,8 +49,8 @@ def fetch_items(con):
                 # Skipping page without Infoboxes
                 continue
             item = parse_attributes(content)
-            columns = ["last_edit"]
-            values = [parse_timestamp(article["revisions"][0]["timestamp"])]
+            columns = ["id", "last_edit"]
+            values = [int(article_id), parse_timestamp(article["revisions"][0]["timestamp"])]
             if "actualname" not in item:
                 item["actualname"] = item["name"].lower()
             for attribute, value in item.items():

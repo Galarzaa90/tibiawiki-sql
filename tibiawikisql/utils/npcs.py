@@ -56,8 +56,8 @@ def fetch_npcs(con):
                 # Skipping pages like creature groups articles
                 continue
             npc = parse_attributes(content)
-            columns = ["last_edit"]
-            values = [parse_timestamp(article["revisions"][0]["timestamp"])]
+            columns = ["id", "last_edit"]
+            values = [int(article_id), parse_timestamp(article["revisions"][0]["timestamp"])]
             if "actualname" not in npc:
                 npc["actualname"] = npc["name"]
             for attribute, value in npc.items():

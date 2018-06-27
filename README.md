@@ -62,4 +62,4 @@ See [schema.md](docs/schema.md) in the `docs` folder
 Improvements and bug fixes are welcome, via pull requests  
 For questions, suggestions and bug reports, submit an issue.
 
-The best way to contribute to this project is by contributing to [TibiaWiki](http://tibia.wikia.com)
+The best way to contribute to this project is by contributing to [TibiaWiki](http://tibia.wikia.com).

@@ -46,8 +46,8 @@ def fetch_spells(con):
                 # Skipping pages like creature groups articles
                 continue
             spell = parse_attributes(content)
-            columns = ["last_edit"]
-            values = [parse_timestamp(article["revisions"][0]["timestamp"])]
+            columns = ["id", "last_edit"]
+            values = [int(article_id), parse_timestamp(article["revisions"][0]["timestamp"])]
             for attribute, value in spell.items():
                 if attribute not in attribute_map:
                     continue
