@@ -19,6 +19,9 @@ def main():
 
     fetch_deprecated_list()
 
+    # imbuements.fetch_imbuements_list()
+    # imbuements.fetch_imbuements(con)
+
     spells.fetch_spells_list()
     spells.fetch_spells(con)
 
