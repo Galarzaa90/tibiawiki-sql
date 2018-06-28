@@ -3,20 +3,28 @@
 - `id` is now TibiaWiki's article id for the element, making them more reliable than autoincremented ids.
 - Fixed bug with potion's prices.
 - Fixed bug with paralysable being inverted.
+- Unknown creature attributes are no longer parsed as `False`, but `None`.
+- New columns in creatures table:
+    - `bestiary_class`
+    - `bestiary_level` 
+    - `occurrence`
+    - `armor`
+    - `speed`
+
 
 ## Version 0.3.0 (2017-12-18)
-- New `items_keys` table, contains key numbers with their uses and locations
-- New `rashid_positions` database, contains Rashid's coordinates for each weekday
-- Added `article`, `class` and `type` to `creatures table
-- Added `article`, `class` and `client_id` to `items` table
-- Added `last_edit` column to most tables
+- New `items_keys` table, contains key numbers with their uses and locations.
+- New `rashid_positions` database, contains Rashid's coordinates for each weekday.
+- Added `article`, `class` and `type` to `creatures table.
+- Added `article`, `class` and `client_id` to `items` table.
+- Added `last_edit` column to most tables.
 
 ## Version 0.2.0 (2017-11-14)
 - Improved the parsing of all data tables, resulting in more consistency in values, less empty strings (not `NULL`) and better handling of default values.
 - New `database_info` table, it contains two rows, "version" and "generated_date", containing the script version used and the date the database was generated respectively.
 - Added a new `currency` column to `npcs_buying` and `npcs_selling`, it contains the id of the item used as currency for that transaction (e.g. gold coins, gold tokens, silver tokens, etc).
-- Better parsing for item npc offers, a lot more offers are saved now, including item trades (e.g. 1 fighting spirit for 2 royal helmets)
-- More item attributes are saved to `item_attributes`
+- Better parsing for item npc offers, a lot more offers are saved now, including item trades (e.g. 1 fighting spirit for 2 royal helmets).
+- More item attributes are saved to `item_attributes`.
 
 ## Version 0.1.1 (2017-11-12)
 - Better attribute parsing, this means values should me more consistent and there are no entries without the `name` column

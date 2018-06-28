@@ -60,6 +60,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | class | `TEXT` | The class this creature belongs to (e.g. `Demons`, `Humanoids`, `Mammals`).
 | bestiary_class | `TEXT` | The bestiary category of this creature. `NULL` for creatures not in the bestiary or unknown.
 | bestiary_level | `TEXT` | The bestiary level of this creature. `NULL` for creatures not in the bestiary or unknown.
+| occurrence | `TEXT` | The bestiary's rarity value of this creature. `NULL` for creatures not in the bestiary or unknown.
 | type | `TEXT` | The class this creature belongs to (e.g. `Archdemons`, `Dwarves`, `Apes`).
 | max_damage | `INTEGER` | The maximum damage a creature may deal if it were to use all it's abilities at once. May be `NULL` if unknown.
 | summon | `INTEGER` | The mana cost to summon this creature. `0` means it is not summonable. 

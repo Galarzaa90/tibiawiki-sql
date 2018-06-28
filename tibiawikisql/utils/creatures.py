@@ -36,6 +36,7 @@ def fetch_creature(con):
         "creatureclass": ("class", lambda x: x),
         "bestiaryclass": ("bestiary_class", lambda x: x),
         "bestiarylevel": ("bestiary_level", lambda x: x),
+        "occurrence": ("occurrence", lambda x: x),
         "primarytype": ("type", lambda x: x),
         "hp": ("hitpoints", lambda x: parse_integer(x, None)),
         "exp": ("experience", lambda x: parse_integer(x, None)),

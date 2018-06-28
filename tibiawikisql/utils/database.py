@@ -25,6 +25,7 @@ def init_database(name):
             `class` TEXT,
             `bestiary_class` TEXT,
             `bestiary_level` TEXT,
+            `occurrence` TEXT,
             `type` TEXT,
             `max_damage` INTEGER,
             `summon` INTEGER DEFAULT 0,
