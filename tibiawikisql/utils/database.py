@@ -72,6 +72,30 @@ def init_database(name):
         );
         """)
 
+        con.execute("DROP TABLE IF EXISTS imbuements")
+        con.execute("""
+                CREATE TABLE `imbuements` (
+                    `id`	INTEGER PRIMARY KEY,
+                    `name`	TEXT,
+                    `tier`	TEXT,
+                    `effect`	TEXT,
+                    `version` TEXT,
+                    `image` BLOB,
+                    `last_edit` INTEGER
+                );
+                """)
+
+        con.execute("DROP TABLE IF EXISTS imbuements_materials")
+        con.execute("""
+                    CREATE TABLE `imbuements_materials` (
+                        `imbuement_id`	INTEGER,
+                        `item_id`	INTEGER,
+                        `amount`	INTEGER,
+                        FOREIGN KEY(`imbuement_id`) REFERENCES `imbuements`(`id`),
+                        FOREIGN KEY(`item_id`) REFERENCES `items`(`id`)
+                    );
+                    """)
+
         con.execute("DROP TABLE IF EXISTS creatures_drops")
         con.execute("""
         CREATE TABLE `creatures_drops` (

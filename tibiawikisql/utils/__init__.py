@@ -64,7 +64,7 @@ def fetch_deprecated_list():
     print(f"\t{len(deprecated):,} found in {time.time()-start_time:.3f} seconds.")
 
 
-def fetch_article_images(con, article_list, table, no_title=False) -> Tuple[int, int, int, int]:
+def fetch_article_images(con, article_list, table, no_title=False, extension=".gif") -> Tuple[int, int, int, int]:
     """Generic function to fetch article images.
     It searches through a list of articles, adding the 'Image:' prefix and '.gif' suffix.
     The image is first checked for in the images folder, otherwise is downloaded
@@ -86,7 +86,7 @@ def fetch_article_images(con, article_list, table, no_title=False) -> Tuple[int,
             "prop": "imageinfo",
             "iiprop": "url",
             "format": "json",
-            "titles": "|".join([f"File:{a}.gif" for a in article_list[i:min(i + 50, len(article_list))]])
+            "titles": "|".join([f"File:{a}{extension}" for a in article_list[i:min(i + 50, len(article_list))]])
         }
         i += 50
         r = requests.get(ENDPOINT, headers=headers, params=params)
@@ -97,7 +97,7 @@ def fetch_article_images(con, article_list, table, no_title=False) -> Tuple[int,
                 # Article has no image
                 missing_count += 1
                 continue
-            article_title = article["title"].replace("File:", "").replace(".gif", "")
+            article_title = article["title"].replace("File:", "").replace(extension, "")
             url = article["imageinfo"][0]["url"]
             c = con.cursor()
             if no_title:
@@ -109,8 +109,8 @@ def fetch_article_images(con, article_list, table, no_title=False) -> Tuple[int,
                 continue
             article_id = result[0]
             try:
-                if os.path.exists(f"images/{table}/{article_title}.gif"):
-                    with open(f"images/{table}/{article_title}.gif", "rb") as f:
+                if os.path.exists(f"images/{table}/{article_title}{extension}"):
+                    with open(f"images/{table}/{article_title}{extension}", "rb") as f:
                         image = f.read()
                         cache_count += 1
                 else:
@@ -118,7 +118,7 @@ def fetch_article_images(con, article_list, table, no_title=False) -> Tuple[int,
                     r.raise_for_status()
                     image = r.content
                     fetch_count += 1
-                    with open(f"images/{table}/{article_title}.gif", "wb") as f:
+                    with open(f"images/{table}/{article_title}{extension}", "wb") as f:
                         f.write(image)
                 c.execute(f"UPDATE {table} SET image = ? WHERE id = ?", (image, article_id))
                 con.commit()

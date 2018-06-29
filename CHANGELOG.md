@@ -3,6 +3,7 @@
 - `id` is now TibiaWiki's article id for the element, making them more reliable than autoincremented ids.
 - Fixed bug with potion's prices.
 - Fixed bug with paralysable being inverted.
+- New tables `imbuements` and `imbuements_materials`.
 - Unknown creature attributes are no longer parsed as `False`, but `None`.
 - New columns in creatures table:
     - `bestiary_class`

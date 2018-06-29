@@ -13,6 +13,8 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | [creatures_drops](#creatures_drops) | Contains all the items dropped by creatures.
 | [database_info](#database_info) | Contains information about the database itself.
 | [houses](#houses) | Contains all houses and guildhalls.
+| [imbuements](#imbuements) | Contains information for all imbuements.
+| [imbuements_materials](#imbuements_materials) | Contains the item materials for imbuements.
 | [items](#items) | Contains information for all items.
 | [items_attributes](#items_attributes) | Contains extra attributes and properties of items that only apply to certain types.
 | [items_keys](#items_keys) | Contains the different key variations.
@@ -121,6 +123,26 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | version | `TEXT` | The client version this was implemented in.
 | last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
 
+### imbuements
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| id | `INTEGER` |  The article id of this entry on TibiaWiki. used for relations with other tables.
+| name | `TEXT` | The name of the imbuement.
+| tier | `TEXT` | The imbuement's tier: `Basic`, `Intricate`, `Powerful`.
+| effect | `TEXT` | The effect given by this imbuement.
+| version | `TEXT` | The client version this imbuement was introduced to the game.
+| image | `BLOB` | The imbuement's image bytes.
+| last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
+
+### imbuements_materials
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| imbuement_id | `INTEGER` | The id of the imbuement this material belongs to
+| item_id | `INTEGER` | The id of the item material.
+| amount | `INTEGER` | The amount of items needed.
+
 ### items
 
 | Column | Type | Description |
@@ -128,7 +150,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | id | `INTEGER` |  The article id of this entry on TibiaWiki. used for relations with other tables.
 | title | `TEXT` | The title of the TibiaWiki article that refers to this item. Title cased and may contain parenthesis to differentiate item variations (e.g. `Surprise Bag (Red)`) or to differentiate from other objects (e.g. `Black Skull (Item)`).
 | name | `TEXT` | The actual name of the item in-game.
-| stacklable | `INTEGER` | Whether this item is stackable or not.
+| stackable | `INTEGER` | Whether this item is stackable or not.
 | value | `INTEGER` | The maximum value of this item when sold to NPCs
 | price | `INTEGER` | The maximum price of this item when bought from NPCs.
 | weight | `REAL` | The weight of this item in ounces.

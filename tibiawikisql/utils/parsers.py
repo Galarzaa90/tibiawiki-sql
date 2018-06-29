@@ -26,6 +26,9 @@ npc_trades = re.compile(r"\|([^|,\[]+)(?:,\s?([+-]?\d+))?(?:\s?\[\[([^\]]+))?")
 transport_template = re.compile(r"{{Transport\s*(?:\|discount=([^|]+))?([^}]+)}}")
 npc_destinations = re.compile(r"\|([^,]+),\s?(\d+)(?:;\s?([^|]+))?")
 
+astral_pattern = re.compile(r"\s*([^:]+):\s*(\d+),*")
+effect_pattern = re.compile(r"Effect/([^|]+)\|([^}|]+)")
+
 
 def parse_item_offers(value: str) -> List:
     match = price_to_template.search(value)
@@ -190,3 +193,59 @@ def convert_tibiawiki_position(pos) -> int:
 
 def parse_links(value):
     return list(link_pattern.findall(value))
+
+
+def parse_effect(effect):
+    m = effect_pattern.search(effect)
+    category, amount = m.groups()
+    if category == "Bash":
+        return f"Club fighting +{amount}"
+    if category == "Chop":
+        return f"Axe fighting +{amount}"
+    if category == "Slash":
+        return f"Sword fighting +{amount}"
+    if category == "Precision":
+        return f"Distance fighting +{amount}"
+    if category == "Blockade":
+        return f"Shielding +{amount}"
+    if category == "Epiphany":
+        return f"Magic level +{amount}"
+    if category == "Scorch":
+        return f"Fire damage {amount}"
+    if category == "Venom":
+        return f"Earth damage {amount}"
+    if category == "Frost":
+        return f"Ice damage {amount}"
+    if category == "Electrify":
+        return f"Energy damage {amount}"
+    if category == "Reap":
+        return f"Death damage {amount}"
+    if category == "Vampirism":
+        return f"Life leech {amount}"
+    if category == "Void":
+        return f"Mana leech {amount}"
+    if category == "Strike":
+        return f"Critical {amount}"
+    if category == "Lich Shroud":
+        return f"Death protection {amount}"
+    if category == "Snake Skin":
+        return f"Earth protection {amount}"
+    if category == "Quara Scale":
+        return f"Ice protection {amount}"
+    if category == "Dragon Hide":
+        return f"Fire protection {amount}"
+    if category == "Cloud Fabric":
+        return f"Energy protection {amount}"
+    if category == "Demon Presence":
+        return f"Holy protection {amount}"
+    if category == "Swiftness":
+        return f"Speed +{amount}"
+    if category == "Featherweight":
+        return f"Capacity +{amount}"
+    return f"{category} {amount}"
+
+
+def parse_astral_sources(content: str) -> Dict[str, int]:
+    materials = astral_pattern.findall(content)
+    if materials:
+        return {item: int(amount) for (item, amount) in materials}
