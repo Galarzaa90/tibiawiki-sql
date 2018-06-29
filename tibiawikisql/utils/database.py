@@ -78,6 +78,7 @@ def init_database(name):
                     `id`	INTEGER PRIMARY KEY,
                     `name`	TEXT,
                     `tier`	TEXT,
+                    `type`	TEXT,
                     `effect`	TEXT,
                     `version` TEXT,
                     `image` BLOB,

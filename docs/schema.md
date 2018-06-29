@@ -130,6 +130,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | id | `INTEGER` |  The article id of this entry on TibiaWiki. used for relations with other tables.
 | name | `TEXT` | The name of the imbuement.
 | tier | `TEXT` | The imbuement's tier: `Basic`, `Intricate`, `Powerful`.
+| type | `TEXT` | The imbuement's type, e.g. `Void`, `Frost`, etc.
 | effect | `TEXT` | The effect given by this imbuement.
 | version | `TEXT` | The client version this imbuement was introduced to the game.
 | image | `BLOB` | The imbuement's image bytes.
