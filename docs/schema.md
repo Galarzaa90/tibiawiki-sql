@@ -1,10 +1,6 @@
 # Database Schema
 The output of this script is a SQLite file named `tibia_database.db`.
 
-## Database model
-
-![](model.png "Model")
-
 
 | Table | Description |
 | ----- | ----------- |
