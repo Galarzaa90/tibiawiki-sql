@@ -1,4 +1,7 @@
 # Changelog
+## Version 1.0.1 (2018-07-02)
+- Fixed bug caused when a category had a number of articles that was exactly a multiple of 50.
+
 ## Version 1.0.0 (2018-07-01)
 - `id` is now TibiaWiki's article id for the element, making them more reliable than autoincremented ids.
 - Fixed bug with potion's prices.

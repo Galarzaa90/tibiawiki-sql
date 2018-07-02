@@ -13,7 +13,7 @@ __all__ = ["achievements", "creatures", "database", "houses", "items", "map", "n
 ENDPOINT = "http://tibia.wikia.com/api.php"
 
 headers = {
-    'User-Agent': 'tibiawiki-sql 1.1'
+    'User-Agent': 'tibiawikisql v1.1.1'
 }
 
 deprecated = []
@@ -91,7 +91,10 @@ def fetch_article_images(con, article_list, table, no_title=False, extension=".g
         i += 50
         r = requests.get(ENDPOINT, headers=headers, params=params)
         data = json.loads(r.text)
-        image_pages = data["query"]["pages"]
+        try:
+            image_pages = data["query"]["pages"]
+        except TypeError:
+            continue
         for article_id, article in image_pages.items():
             if "missing" in article:
                 # Article has no image
@@ -146,9 +149,12 @@ def fetch_articles(article_list):
 
         r = requests.get(ENDPOINT, headers=headers, params=params)
         data = json.loads(r.text)
-        npc_pages = data["query"]["pages"]
         i += 50
-        for article_id, article in npc_pages.items():
+        try:
+            pages = data["query"]["pages"]
+        except TypeError:
+            continue
+        for article_id, article in pages.items():
             yield article_id, article
 
 
