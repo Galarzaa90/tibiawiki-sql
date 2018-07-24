@@ -45,7 +45,7 @@ def fetch_items(con):
     for article_id, article in fetch_articles(items):
         try:
             content = article["revisions"][0]["*"]
-            if "{{Infobox Item|" not in content:
+            if "{{Infobox Item" not in content:
                 # Skipping page without Infoboxes
                 continue
             item = parse_attributes(content)
@@ -179,7 +179,7 @@ def fetch_keys(con):
     for article_id, article in fetch_articles(keys):
         try:
             content = article["revisions"][0]["*"]
-            if "{{Infobox Key|" not in content:
+            if "{{Infobox Key" not in content:
                 # Skipping page without Infoboxes
                 continue
             key = parse_attributes(content)

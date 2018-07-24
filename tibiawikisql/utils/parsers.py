@@ -102,14 +102,14 @@ def parse_maximum_integer(value: str) -> Optional[int]:
         return None
 
 
-def parse_boolean(value: str, force=False) -> Optional[bool]:
+def parse_boolean(value: str, force=False, negated=False) -> Optional[bool]:
     value = value.strip().lower()
     if value == "yes":
-        return True
+        return not negated
     elif force:
-        return False
+        return not negated
     else:
-        return False if value == "no" else None
+        return not negated if value == "no" else None
 
 
 def clean_links(content):
