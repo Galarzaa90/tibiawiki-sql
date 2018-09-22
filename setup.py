@@ -4,8 +4,9 @@ import sys
 
 from setuptools import setup, find_packages
 
-if sys.version_info < (3,6):
+if sys.version_info < (3, 6):
     sys.exit('Sorry, Python < 3.6 is not supported')
+
 
 def get_version(package):
     """Return package version as listed in `__version__` in `init.py`."""

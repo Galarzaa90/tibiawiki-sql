@@ -78,6 +78,8 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | drown | `INTEGER` | Percentage of damage the creature receives from this damage type. `0` being completely immune, `100` neutral. May be `NULL` if unknown.
 | hpdrain | `INTEGER` | Percentage of damage the creature receives from this damage type. `0` being completely immune, `100` neutral. May be `NULL` if unknown.
 | abilities | `TEXT` | A summary of a creature's abilities (attacks, spells, healing).
+| walksthrough | `TEXT` | The type of fields the creature will walk through.
+| walksaround | `TEXT` | The type of fields the creature will walk around to avoid when possible.
 | version | `TEXT` | The client version this creature was introduced to the game.
 | image | `BLOB` | The creature's image bytes.
 | last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
