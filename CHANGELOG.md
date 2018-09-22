@@ -1,4 +1,9 @@
 # Changelog
+## Version 1.1.0 (2018-09-22)
+- Added new columns to creatures table:
+    - `walksaround`
+    - `walksthrough`
+
 ## Version 1.0.1 (2018-07-02)
 - Fixed bug caused when a category had a number of articles that was exactly a multiple of 50.
 
