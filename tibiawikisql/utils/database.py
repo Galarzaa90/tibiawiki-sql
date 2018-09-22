@@ -45,6 +45,8 @@ def init_database(name):
             `drown` INTEGER,
             `hpdrain` INTEGER,
             `abilities` TEXT,
+            `walksthrough` TEXT,
+            `walksaround` TEXT,
             `version` TEXT,
             `image` BLOB,
             `last_edit` INTEGER

@@ -60,6 +60,8 @@ def fetch_creature(con):
         "drownDmgMod": ("drown", lambda x: parse_integer(x)),
         "hpDrainDmgMod": ("hpdrain", lambda x: parse_integer(x)),
         "abilities": ("abilities", lambda x: clean_links(x)),
+        "walksthrough": ("walksthrough", lambda x: x),
+        "walksaround": ("walksaround", lambda x: x),
         "implemented": ("version", lambda x: x)
     }  # type: Dict[str, Tuple[str, Callable]]
     c = con.cursor()
