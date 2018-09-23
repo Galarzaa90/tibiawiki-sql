@@ -249,3 +249,23 @@ def parse_astral_sources(content: str) -> Dict[str, int]:
     materials = astral_pattern.findall(content)
     if materials:
         return {item: int(amount) for (item, amount) in materials}
+
+
+def parse_monster_walks(value: str):
+    """Matches the values against a regex to filter typos or bad data on the wiki. Element names followed by any
+    character that is not a comma will be considered unknown and will not be returned.
+
+    Examples\:
+        - "Poison?, fire" will return fire.
+        - "Poison?, fire." will return neither.
+        - "Poison, earth, fire?, [[ice]]" will return poison and earth.
+        - "No", "--", ">", or "None" will return None.
+    """
+    regex = re.compile(r"(physical)(,|$)|(holy)(,|$)|(death)(,|$)|(fire)(,|$)|(ice)(,|$)|(energy)(,|$)|(earth)(,|$)|"
+                       r"(poison)(,|$)")
+    content = ""
+    for match in re.finditer(regex, value.lower().strip()):
+        content += match.group()
+    if not content:
+        return None
+    return content

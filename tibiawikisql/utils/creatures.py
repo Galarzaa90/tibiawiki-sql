@@ -5,9 +5,7 @@ from . import deprecated, fetch_category_list, fetch_article_images, fetch_artic
     parse_timestamp
 from .database import get_row_count
 from .parsers import parse_attributes, parse_maximum_integer, parse_integer, parse_boolean, \
-    clean_links, \
-    parse_loot, \
-    parse_min_max, parse_loot_statistics
+    clean_links, parse_loot, parse_min_max, parse_loot_statistics, parse_monster_walks
 
 creatures = []
 
@@ -60,8 +58,8 @@ def fetch_creature(con):
         "drownDmgMod": ("drown", lambda x: parse_integer(x)),
         "hpDrainDmgMod": ("hpdrain", lambda x: parse_integer(x)),
         "abilities": ("abilities", lambda x: clean_links(x)),
-        "walksthrough": ("walksthrough", lambda x: x),
-        "walksaround": ("walksaround", lambda x: x),
+        "walksthrough": ("walksthrough", lambda x: parse_monster_walks(x)),
+        "walksaround": ("walksaround", lambda x: parse_monster_walks(x)),
         "implemented": ("version", lambda x: x)
     }  # type: Dict[str, Tuple[str, Callable]]
     c = con.cursor()
