@@ -1,4 +1,7 @@
 # Changelog
+## Version 1.1.1 (2018-09-23)
+- Improved parsing of `walksaround` and `walksthrough`
+
 ## Version 1.1.0 (2018-09-22)
 - Added new columns to creatures table:
     - `walksaround`
