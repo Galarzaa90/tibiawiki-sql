@@ -12,7 +12,7 @@ install:
   - pip install mkdocs mkdocs-material pymdown-extensions
 
 "script":
-  - python run.py skipimages
+  - python run.py generate --skip-images
   - cp CHANGELOG.md docs/changelog.md
   - python -m mkdocs build
 

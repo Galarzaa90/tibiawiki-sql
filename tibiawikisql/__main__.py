@@ -7,6 +7,7 @@ from tibiawikisql.parsers import *
 __version__ = "2.0.0"
 DATABASE_FILE = "tibia_database.db"
 
+
 @click.group(context_settings={'help_option_names': ['-h', '--help']})
 @click.version_option(__version__, '-V', '--version')
 def cli():
@@ -14,11 +15,13 @@ def cli():
 
 
 @cli.command(name="generate")
-def generate():
+@click.option('-s', '--skip-images', help="Skip fetching and loading images to the database.", is_flag=True)
+@click.option('-db', '--db-name', help="Name for the database file.", default=DATABASE_FILE)
+def generate(skip_images, db_name):
     """Generates a database file."""
     start_time = time.time()
     print("Running...")
-    con = database.init_database(DATABASE_FILE)
+    con = database.init_database(db_name)
 
     common.fetch_deprecated_list()
 
@@ -50,13 +53,13 @@ def generate():
     quests.fetch_quests(con)
 
     npcs.save_rashid_locations(con)
-
-    creatures.fetch_creature_images(con)
-    items.fetch_item_images(con)
-    npcs.fetch_npc_images(con)
-    spells.fetch_spell_images(con)
-    imbuements.fetch_imbuements_images(con)
-    map.save_maps(con)
+    if not skip_images:
+        creatures.fetch_creature_images(con)
+        items.fetch_item_images(con)
+        npcs.fetch_npc_images(con)
+        spells.fetch_spell_images(con)
+        imbuements.fetch_imbuements_images(con)
+        map.save_maps(con)
 
     database.set_database_info(con, __version__)
 
