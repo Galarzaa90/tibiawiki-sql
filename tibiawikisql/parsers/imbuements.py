@@ -1,8 +1,8 @@
 import time
 
-from . import fetch_category_list, deprecated, fetch_articles, parse_timestamp, log, fetch_article_images
+from .common import fetch_category_list, deprecated, fetch_articles, parse_timestamp, log, fetch_article_images
 from .database import get_row_count
-from .parsers import parse_attributes, parse_effect, parse_astral_sources
+from .utils import parse_attributes, parse_effect, parse_astral_sources
 
 imbuements = []
 

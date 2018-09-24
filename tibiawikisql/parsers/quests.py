@@ -1,9 +1,9 @@
 import html
 import time
 
-from . import fetch_category_list, deprecated, fetch_articles, log, parse_timestamp
+from .common import fetch_category_list, deprecated, fetch_articles, log, parse_timestamp
 from .database import get_row_count
-from .parsers import parse_attributes, parse_integer, parse_boolean, clean_links, parse_links
+from .utils import parse_attributes, parse_integer, parse_boolean, clean_links, parse_links
 
 quests = []
 

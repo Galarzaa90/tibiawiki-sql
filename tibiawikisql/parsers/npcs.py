@@ -3,10 +3,10 @@ import time
 
 import pkg_resources
 
-from . import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, \
+from .common import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, \
     parse_timestamp
 from .database import get_row_count
-from .parsers import parse_attributes, parse_spells, convert_tibiawiki_position, parse_item_offers, \
+from .utils import parse_attributes, parse_spells, convert_tibiawiki_position, parse_item_offers, \
     parse_item_trades, parse_destinations, clean_links
 
 npcs = []

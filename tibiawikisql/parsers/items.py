@@ -2,10 +2,10 @@ import re
 import time
 from typing import Tuple, Dict, Callable
 
-from . import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, \
+from .common import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, \
     parse_timestamp
 from .database import get_row_count
-from .parsers import parse_attributes, parse_boolean, parse_float, parse_integer, clean_links
+from .utils import parse_attributes, parse_boolean, parse_float, parse_integer, clean_links
 
 items = []
 keys = []

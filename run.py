@@ -1,3 +1,3 @@
 from tibiawikisql import __main__
 
-__main__.main()
+__main__.cli()

@@ -1,10 +1,10 @@
 import time
 from typing import Tuple, Callable, Dict
 
-from . import fetch_category_list, deprecated, fetch_article_images, fetch_articles, log, \
+from .common import fetch_category_list, deprecated, fetch_article_images, fetch_articles, log, \
     parse_timestamp
 from .database import get_row_count
-from .parsers import parse_attributes, parse_boolean, parse_integer
+from .utils import parse_attributes, parse_boolean, parse_integer
 
 spells = []
 

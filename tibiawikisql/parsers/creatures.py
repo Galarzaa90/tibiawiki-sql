@@ -1,10 +1,10 @@
 import time
 from typing import Dict, Tuple, Callable
 
-from . import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, \
+from .common import deprecated, fetch_category_list, fetch_article_images, fetch_articles, log, \
     parse_timestamp
 from .database import get_row_count
-from .parsers import parse_attributes, parse_maximum_integer, parse_integer, parse_boolean, \
+from .utils import parse_attributes, parse_maximum_integer, parse_integer, parse_boolean, \
     clean_links, parse_loot, parse_min_max, parse_loot_statistics, parse_monster_walks
 
 creatures = []

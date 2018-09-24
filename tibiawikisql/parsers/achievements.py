@@ -1,8 +1,8 @@
 import time
 
-from . import fetch_category_list, deprecated, fetch_articles, log, parse_timestamp
+from .common import fetch_category_list, fetch_articles, parse_timestamp, deprecated
 from .database import get_row_count
-from .parsers import parse_attributes, parse_integer, parse_boolean, clean_links
+from .utils import parse_integer, parse_boolean, clean_links, parse_attributes
 
 achievements = []
 
@@ -21,7 +21,6 @@ def fetch_achievement_list():
 
 
 def fetch_achievements(con):
-    print("Fetching achievements information...")
     start_time = time.time()
     exception_count = 0
     attribute_map = {
@@ -52,7 +51,7 @@ def fetch_achievements(con):
             c.execute(f"INSERT INTO achievements({','.join(columns)}) VALUES({','.join(['?']*len(values))})", values)
 
         except Exception:
-            log.exception(f"Unknown exception found for {article['title']}")
+            # log.exception(f"Unknown exception found for {article['title']}")
             exception_count += 1
             continue
 

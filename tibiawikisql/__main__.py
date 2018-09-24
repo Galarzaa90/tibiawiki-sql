@@ -1,23 +1,26 @@
-import sys
 import time
 
-from tibiawikisql.utils import database, fetch_deprecated_list, spells, items, npcs, achievements, houses, quests, \
-    creatures, map, imbuements
+import click
 
+from tibiawikisql.parsers import *
+
+__version__ = "2.0.0"
 DATABASE_FILE = "tibia_database.db"
-SKIP_IMAGES = "skipimages" in sys.argv
 
-__version__ = "1.1.1"
+@click.group(context_settings={'help_option_names': ['-h', '--help']})
+@click.version_option(__version__, '-V', '--version')
+def cli():
+    pass
 
 
-def main():
+@cli.command(name="generate")
+def generate():
+    """Generates a database file."""
     start_time = time.time()
     print("Running...")
-    if SKIP_IMAGES:
-        print("Image skipping enabled")
     con = database.init_database(DATABASE_FILE)
 
-    fetch_deprecated_list()
+    common.fetch_deprecated_list()
 
     spells.fetch_spells_list()
     spells.fetch_spells(con)
@@ -48,13 +51,12 @@ def main():
 
     npcs.save_rashid_locations(con)
 
-    if not SKIP_IMAGES:
-        creatures.fetch_creature_images(con)
-        items.fetch_item_images(con)
-        npcs.fetch_npc_images(con)
-        spells.fetch_spell_images(con)
-        imbuements.fetch_imbuements_images(con)
-        map.save_maps(con)
+    creatures.fetch_creature_images(con)
+    items.fetch_item_images(con)
+    npcs.fetch_npc_images(con)
+    spells.fetch_spell_images(con)
+    imbuements.fetch_imbuements_images(con)
+    map.save_maps(con)
 
     database.set_database_info(con, __version__)
 
@@ -62,4 +64,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    cli()
