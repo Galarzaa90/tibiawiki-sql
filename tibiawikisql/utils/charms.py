@@ -47,7 +47,7 @@ def fetch_images_from_name(con):
         except TypeError:
             print("Charms Error: fetching images failed.")
             return
-        for article_id, article in image_pages.items():
+        for article in image_pages.values():
             charm_name = article["title"].replace("File:", "").replace(extension, "")
             img_url = article["imageinfo"][0]["url"]
             try:
