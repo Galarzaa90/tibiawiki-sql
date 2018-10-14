@@ -2,12 +2,12 @@ import sys
 import time
 
 from tibiawikisql.utils import database, fetch_deprecated_list, spells, items, npcs, achievements, houses, quests, \
-    creatures, map, imbuements
+    creatures, map, imbuements, charms
 
 DATABASE_FILE = "tibia_database.db"
 SKIP_IMAGES = "skipimages" in sys.argv
 
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 
 
 def main():
@@ -48,6 +48,8 @@ def main():
 
     npcs.save_rashid_locations(con)
 
+    charms.save_charm_list(con)
+
     if not SKIP_IMAGES:
         creatures.fetch_creature_images(con)
         items.fetch_item_images(con)
@@ -55,6 +57,7 @@ def main():
         spells.fetch_spell_images(con)
         imbuements.fetch_imbuements_images(con)
         map.save_maps(con)
+        charms.fetch_charm_images(con)
 
     database.set_database_info(con, __version__)
 
