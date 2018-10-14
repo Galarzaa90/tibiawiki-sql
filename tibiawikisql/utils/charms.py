@@ -11,6 +11,8 @@ from tibiawikisql.utils import ENDPOINT, headers
 
 
 def save_charm_list(con):
+    print("Parsing charm information from json...")
+    start_time = time.time()
     with open(pkg_resources.resource_filename(__name__, "charms.json")) as file:
         charms = json.load(file)
     c = con.cursor()
@@ -19,6 +21,7 @@ def save_charm_list(con):
                   (charm["name"], charm["type"], charm["description"], charm["points"]))
     con.commit()
     c.close()
+    print(f"Parsing done in {time.time()-start_time:.3f} seconds.")
 
 
 def fetch_charm_images(con):
