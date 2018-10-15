@@ -318,6 +318,18 @@ def init_database(name):
             FOREIGN KEY(`item_id`) REFERENCES `items`(`id`)
          );
          """)
+
+        con.execute("DROP TABLE IF EXISTS charm")
+        con.execute("""
+                    CREATE TABLE `charm` (
+                        `id` INTEGER PRIMARY KEY,
+                        `name` TEXT,
+                        `type` TEXT,
+                        `description` TEXT,
+                        `points` INTEGER,
+                        `image` BLOB
+                     );
+                     """)
     return con
 
 
