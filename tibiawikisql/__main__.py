@@ -7,7 +7,7 @@ from tibiawikisql.utils import database, fetch_deprecated_list, spells, items, n
 DATABASE_FILE = "tibia_database.db"
 SKIP_IMAGES = "skipimages" in sys.argv
 
-__version__ = "1.1.1"
+__version__ = "1.2.0"
 
 
 def main():

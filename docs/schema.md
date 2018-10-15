@@ -5,6 +5,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | Table | Description |
 | ----- | ----------- |
 | [achievements](#achievements) | Contains information for all achievements.
+| [charm](#charm) | Contains information for all charms.
 | [creatures](#creatures) | Contains information for all creatures.
 | [creatures_drops](#creatures_drops) | Contains all the items dropped by creatures.
 | [database_info](#database_info) | Contains information about the database itself.
@@ -42,6 +43,17 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | premium | `INTEGER` | Whether this achievement requires premium. `0` or `1`.
 | version | `TEXT` | Client version this achievement was implemented in.
 | last_edit | `INTEGER` | Unix timestamp of the UTC time of the last edit made to this article.
+
+### charm
+
+| Column | Type | Description |
+| ------ | ---- | ----------- |
+| id | `INTEGER` | Autoincremented id of the entry.
+| name | `TEXT` | The name of the charm
+| grade | `INTEGER` | The charm's category: `Offensive`, `Defensive` or `Passive`.
+| description | `TEXT` | The effect of this charm.
+| points | `INTEGER` | The number of points need to acquire this charm..
+| image | `TEXT` | The charm's image bytes.
 
 ### creatures 
 
