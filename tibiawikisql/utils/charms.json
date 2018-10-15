@@ -3,96 +3,96 @@
     "name": "Wound",
     "type": "Offensive",
     "description": "Wounds the creature and deals 5% of its initial hit points as Physical Damage.",
-    "points": "600"
+    "points": 600
   },
   {
     "name": "Enflame",
     "type": "Offensive",
     "description": "Burns the creature and deals 5% of its initial hit points as Fire Damage.",
-    "points": "1000"
+    "points": 1000
   },
   {
     "name": "Poison",
     "type": "Offensive",
     "description": "Poisons the creature and deals 5% of its initial hit points as Earth Damage.",
-    "points": "600"
+    "points": 600
   },
   {
     "name": "Freeze",
     "type": "Offensive",
     "description": "Freezes the creature and deals 5% of its initial hit points as Ice Damage.",
-    "points": "800"
+    "points": 800
   },
   {
     "name": "Zap",
     "type": "Offensive",
     "description": "Electrifies the creature and deals 5% of its initial hit points as Energy Damage.",
-    "points": "800"
+    "points": 800
   },
   {
     "name": "Curse",
     "type": "Offensive",
     "description": "Curses the creature and deals 5% of its initial hit points as Death Damage.",
-    "points": "900"
+    "points": 900
   },
   {
     "name": "Cripple",
     "type": "Offensive",
     "description": "Cripples the creature and paralyses it for 10 seconds, even if it's immune to the Paralyse Rune.",
-    "points": "500"
+    "points": 500
   },
   {
     "name": "Parry",
     "type": "Defensive",
     "description": "Any damage taken is reflected to the aggressor with a certain chance.",
-    "points": "1000"
+    "points": 1000
   },
   {
     "name": "Dodge",
     "type": "Defensive",
     "description": "Dodges an attack without taking any damage at all.",
-    "points": "600"
+    "points": 600
   },
   {
     "name": "Adrenaline Burst",
     "type": "Defensive",
     "description": "Bursts of adrenaline enhance your reflexes after you get hit and let you move more than twice as faster for 10 seconds.",
-    "points": "500"
+    "points": 500
   },
   {
     "name": "Numb",
     "type": "Defensive",
     "description": "Numbs the creature after its attack and paralyses the creature for 10 seconds, even if it's immune to the Paralyse Rune.",
-    "points": "500"
+    "points": 500
   },
   {
     "name": "Cleanse",
     "type": "Defensive",
     "description": "Cleanses you from within after you get hit and removes one random active negative Status Condition and temporarily makes you immune against it.",
-    "points": "700"
+    "points": 700
   },
   {
     "name": "Bless",
     "type": "Passive",
     "description": "Blesses you and reduces skill and xp loss by 3% when killed by the chosen creature.",
-    "points": "2000"
+    "points": 2000
   },
   {
     "name": "Scavenge",
     "type": "Passive",
     "description": "Enhances your chances to successfully skin a skinnable creature. Applies to Skinning and Dusting.",
-    "points": "1500"
+    "points": 1500
   },
   {
     "name": "Gut",
     "type": "Passive",
     "description": "Gutting the creature yields 10% more Creature Products.",
-    "points": "2000"
+    "points": 2000
   },
   {
     "name": "Low Blow",
     "type": "Passive",
     "description": "Adds 3% critical hit chance to attacks with Critical Hit weapons.",
-    "points": "2000"
+    "points": 2000
   }
 ]
