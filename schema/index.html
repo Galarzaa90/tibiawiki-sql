@@ -311,6 +311,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#charm" title="charm" class="md-nav__link">
+    charm
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#creatures" title="creatures" class="md-nav__link">
     creatures
   </a>
@@ -514,6 +521,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#charm" title="charm" class="md-nav__link">
+    charm
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#creatures" title="creatures" class="md-nav__link">
     creatures
   </a>
@@ -690,6 +704,10 @@
 <td>Contains information for all achievements.</td>
 </tr>
 <tr>
+<td><a href="#charm">charm</a></td>
+<td>Contains information for all charms.</td>
+</tr>
+<tr>
 <td><a href="#creatures">creatures</a></td>
 <td>Contains information for all creatures.</td>
 </tr>
@@ -831,6 +849,48 @@
 <td>last_edit</td>
 <td><code>INTEGER</code></td>
 <td>Unix timestamp of the UTC time of the last edit made to this article.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="charm">charm</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td><code>INTEGER</code></td>
+<td>Autoincremented id of the entry.</td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>TEXT</code></td>
+<td>The name of the charm</td>
+</tr>
+<tr>
+<td>grade</td>
+<td><code>INTEGER</code></td>
+<td>The charm's category: <code>Offensive</code>, <code>Defensive</code> or <code>Passive</code>.</td>
+</tr>
+<tr>
+<td>description</td>
+<td><code>TEXT</code></td>
+<td>The effect of this charm.</td>
+</tr>
+<tr>
+<td>points</td>
+<td><code>INTEGER</code></td>
+<td>The number of points need to acquire this charm.</td>
+</tr>
+<tr>
+<td>image</td>
+<td><code>TEXT</code></td>
+<td>The charm's image bytes.</td>
 </tr>
 </tbody>
 </table>
