@@ -52,7 +52,7 @@ The output of this script is a SQLite file named `tibia_database.db`.
 | name | `TEXT` | The name of the charm
 | grade | `INTEGER` | The charm's category: `Offensive`, `Defensive` or `Passive`.
 | description | `TEXT` | The effect of this charm.
-| points | `INTEGER` | The number of points need to acquire this charm..
+| points | `INTEGER` | The number of points need to acquire this charm.
 | image | `TEXT` | The charm's image bytes.
 
 ### creatures 
