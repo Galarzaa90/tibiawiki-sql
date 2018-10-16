@@ -1,4 +1,7 @@
 # Changelog
+## Version 1.2.0 (2018-10-16)
+- New `charm` table, contains information about all charms.
+
 ## Version 1.1.1 (2018-09-23)
 - Improved parsing of `walksaround` and `walksthrough`
 
