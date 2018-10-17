@@ -1,3 +1,4 @@
+import sqlite3
 import sys
 import time
 
@@ -15,51 +16,54 @@ def main():
     print("Running...")
     if SKIP_IMAGES:
         print("Image skipping enabled")
-    con = database.init_database(DATABASE_FILE)
 
-    fetch_deprecated_list()
+    con = sqlite3.connect(DATABASE_FILE)
+    with con:
+        database.init_database(con)
 
-    spells.fetch_spells_list()
-    spells.fetch_spells(con)
+        fetch_deprecated_list()
 
-    items.fetch_items_list()
-    items.fetch_items(con)
-    items.fetch_keys_list()
-    items.fetch_keys(con)
+        spells.fetch_spells_list()
+        spells.fetch_spells(con)
 
-    imbuements.fetch_imbuements_list()
-    imbuements.fetch_imbuements(con)
+        items.fetch_items_list()
+        items.fetch_items(con)
+        items.fetch_keys_list()
+        items.fetch_keys(con)
 
-    npcs.fetch_npc_list()
-    npcs.fetch_npcs(con)
+        imbuements.fetch_imbuements_list()
+        imbuements.fetch_imbuements(con)
 
-    creatures.fetch_creature_list()
-    creatures.fetch_creature(con)
-    creatures.fetch_drop_statistics(con)
+        npcs.fetch_npc_list()
+        npcs.fetch_npcs(con)
 
-    houses.fetch_house_list()
-    houses.fetch_houses(con)
+        creatures.fetch_creature_list()
+        creatures.fetch_creature(con)
+        creatures.fetch_drop_statistics(con)
 
-    achievements.fetch_achievement_list()
-    achievements.fetch_achievements(con)
+        houses.fetch_house_list()
+        houses.fetch_houses(con)
 
-    quests.fetch_quest_list()
-    quests.fetch_quests(con)
+        achievements.fetch_achievement_list()
+        achievements.fetch_achievements(con)
 
-    npcs.save_rashid_locations(con)
+        quests.fetch_quest_list()
+        quests.fetch_quests(con)
 
-    charms.save_charm_list(con)
+        npcs.save_rashid_locations(con)
 
-    if not SKIP_IMAGES:
-        creatures.fetch_creature_images(con)
-        items.fetch_item_images(con)
-        npcs.fetch_npc_images(con)
-        spells.fetch_spell_images(con)
-        imbuements.fetch_imbuements_images(con)
-        map.save_maps(con)
-        charms.fetch_charm_images(con)
+        charms.save_charm_list(con)
 
-    database.set_database_info(con, __version__)
+        if not SKIP_IMAGES:
+            creatures.fetch_creature_images(con)
+            items.fetch_item_images(con)
+            npcs.fetch_npc_images(con)
+            spells.fetch_spell_images(con)
+            imbuements.fetch_imbuements_images(con)
+            map.save_maps(con)
+            charms.fetch_charm_images(con)
+
+        database.set_database_info(con, __version__)
 
     print(f"Done in {time.time()-start_time:.3f} seconds.")
 
