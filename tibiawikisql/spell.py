@@ -1,12 +1,11 @@
 import re
 
-from tibiawikisql import schema
-from tibiawikisql.models import abc, Model
+from tibiawikisql import schema, abc
 from tibiawikisql.parsers.utils import parse_integer, parse_boolean
 
 
-class SpellParser(abc.Parser):
-    map = {
+class Spell(abc.Model, abc.Parseable, table=schema.Spell):
+    _map = {
         "name": ("name", lambda x: x),
         "words": ("words", lambda x: x),
         "type": ("type", lambda x: x),
@@ -19,16 +18,18 @@ class SpellParser(abc.Parser):
         "levelrequired": ("level", lambda x: parse_integer(x)),
         "premium": ("premium", lambda x: parse_boolean(x)),
     }
-    pattern = re.compile(r"Infobox[\s_]Spell")
+    _pattern = re.compile(r"Infobox[\s_]Spell")
 
-    @classmethod
-    def extra_parsing(mcs, row, attributes):
-        if "voc" in attributes:
-            for vocation in ["knight", "sorcerer", "druid", "paladin"]:
-                if vocation in attributes["voc"].lower():
-                    row["vocation"] = 1
-
-
-class Spell(Model, schema.Spell):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+    @classmethod
+    def from_article(cls, article):
+        spell = super().from_article(article)
+        if not spell:
+            return None
+        if "voc" in article.attributes:
+            for vocation in ["knight", "sorcerer", "druid", "paladin"]:
+                if vocation in article.attributes["voc"].lower():
+                    setattr(spell, vocation, True)
+        return spell

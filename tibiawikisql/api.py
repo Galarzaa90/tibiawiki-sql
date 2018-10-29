@@ -10,13 +10,45 @@ headers = {
 }
 
 
-class Article:
-    """
-    A TibiaWiki article.
+class WikiEntry:
+    """A TibiaWiki entry.
 
     Attributes
     ----------
-    article_id: int
+    id: int
+        The article's entry id.
+    title : str
+        The article's title.
+    timestamp : datetime.datetime
+        The date of the entry's last edit.
+    """
+
+    def __init__(self, id_, title, timestamp=None):
+        self.id = id_
+        self.title = title
+        if timestamp:
+            self.timestamp = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+
+    def __repr__(self):
+        return "%s(id=%d,title=%r)" % (self.__class__.__name__, self.id, self.title)
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id == other.id
+        return False
+
+    @property
+    def unix_timestamp(self):
+        return int(self.timestamp.timestamp())
+
+
+class Article(WikiEntry):
+    """
+    A TibiaWiki text article.
+
+    Attributes
+    ----------
+    id: int
         The article's internal id.
     title : str
         The article's title.
@@ -25,32 +57,19 @@ class Article:
     content: str
         The article's content.
     """
-    def __init__(self, article_id, title, *, timestamp=None, content=None):
-        self.article_id = article_id
-        self.title = title
-        if timestamp:
-            self.timestamp = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+
+    def __init__(self, id_, title, *, timestamp=None, content=None):
+        super().__init__(id_, title, timestamp)
         self.content = content
 
-    def __repr__(self):
-        return "Article(%d, %s)" % (self.article_id, repr(self.title))
 
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.article_id == other.article_id
-        return False
-
-    @property
-    def unix_timestamp(self):
-        return int(self.timestamp.timestamp())
-
-class Image:
+class Image(WikiEntry):
     """
     A TibiaWiki image
 
     Attributes
     ----------
-    article_id: int
+    id: int
         The image's internal id.
     title : str
         The image's title.
@@ -59,11 +78,8 @@ class Image:
     url: str
         The image's url.
     """
-    def __init__(self, article_id, title, *, timestamp=None, url=None):
-        self.article_id = article_id
-        self.title = title
-        if timestamp:
-            self.timestamp = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    def __init__(self, id_, title, *, timestamp=None, url=None):
+        super().__init__(id_, title, timestamp)
         self.url = url
 
     @property
@@ -78,9 +94,6 @@ class Image:
     def file_name(self):
         """:class:`str`: The image's file extension."""
         return self.title.replace("File:", "")
-
-    def __repr__(self):
-        return "Image(%d, %s)" % (self.article_id, repr(self.title))
 
 
 def get_category_members(name, skip_index=True):
@@ -118,7 +131,7 @@ def get_category_members(name, skip_index=True):
         for member in data["query"]["categorymembers"]:
             if member["sortkeyprefix"] == "*" and skip_index:
                 continue
-            member = Article(member["pageid"], member["title"], timestamp=member["timestamp"])
+            member = WikiEntry(member["pageid"], member["title"], timestamp=member["timestamp"])
             yield member
         try:
             cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]

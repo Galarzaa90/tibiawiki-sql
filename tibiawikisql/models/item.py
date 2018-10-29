@@ -1,12 +1,11 @@
 import re
 
-from tibiawikisql import schema
-from tibiawikisql.models import abc
+from tibiawikisql import abc
 from tibiawikisql.parsers.utils import parse_float, parse_boolean, parse_integer
 
 
-class ItemParser(abc.Parser):
-    map = {
+class ItemParseable(abc.Parseable):
+    _map = {
         "article": ("article", lambda x: x),
         "actualname": ("name", lambda x: x),
         "weight": ("weight", lambda x: parse_float(x)),
@@ -19,7 +18,7 @@ class ItemParser(abc.Parser):
         "implemented": ("version", lambda x: x),
         "itemid": ("client_id", lambda x: parse_integer(x))
     }
-    pattern = re.compile(r"Infobox[\s_]Item")
+    _pattern = re.compile(r"Infobox[\s_]Item")
     extra_map = {
         "level": "levelrequired",
         "attack": "attack",

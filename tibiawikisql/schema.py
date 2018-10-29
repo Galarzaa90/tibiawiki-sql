@@ -1,17 +1,18 @@
-from .database import Table, Integer, Text, Column, Blob, Real, ForeignKey
+from .database import Table, Integer, Text, Column, Blob, Real, ForeignKey, Boolean
 
 
 class Achievement(Table):
     id = Column(Integer, primary_key=True)
+    title = Column(Text)
     name = Column(Text)
     grade = Column(Integer)
     points = Column(Integer)
     description = Column(Text)
-    spoiler = Column(Integer)
+    spoiler = Column(Text)
     secret = Column(Integer)
     premium = Column(Integer)
     version = Column(Text)
-    last_edit = Column(Integer)
+    timestamp = Column(Integer)
 
 
 class Charm(Table):
@@ -59,7 +60,7 @@ class Creature(Table):
     walksaround = Column(Text)
     version = Column(Text)
     image = Column(Blob)
-    last_edit = Column(Integer)
+    timestamp = Column(Integer)
 
 
 class Item(Table):
@@ -77,7 +78,7 @@ class Item(Table):
     version = Column(Text)
     client_id = Column(Integer)
     image = Column(Blob)
-    last_edit = Column(Integer)
+    timestamp = Column(Integer)
 
 
 class CreatureDrop(Table, table_name="creature_drop"):
@@ -114,7 +115,7 @@ class House(Table):
     z = Column(Integer)
     guildhall = Column(Integer)
     version = Column(Text)
-    last_edit = Column(Text)
+    timestamp = Column(Text)
 
 
 class Imbuement(Table):
@@ -125,7 +126,7 @@ class Imbuement(Table):
     effect = Column(Text)
     version = Column(Text)
     image = Column(Blob)
-    last_edit = Column(Integer)
+    timestamp = Column(Integer)
 
 
 class ImbuementMaterial(Table, table_name="imbuement_material"):
@@ -143,7 +144,7 @@ class ItemKey(Table, table_name="item_key"):
     origin = Column(Text)
     notes = Column(Text)
     version = Column(Text)
-    last_edit = Column(Integer)
+    timestamp = Column(Integer)
 
 
 class Map(Table):
@@ -165,12 +166,12 @@ class Spell(Table):
     premium = Column(Integer)
     price = Column(Integer)
     cooldown = Column(Integer)
-    knight = Column(Integer, default=0)
-    sorcerer = Column(Integer, default=0)
-    druid = Column(Integer, default=0)
-    paladin = Column(Integer, default=0)
+    knight = Column(Boolean, default=False)
+    sorcerer = Column(Boolean, default=False)
+    druid = Column(Boolean, default=False)
+    paladin = Column(Boolean, default=False)
     image = Column(Blob)
-    last_edit = Column(Integer)
+    timestamp = Column(Integer)
 
 
 class Npc(Table):
@@ -184,7 +185,7 @@ class Npc(Table):
     y = Column(Integer)
     z = Column(Integer)
     image = Column(Blob)
-    last_edit = Column(Integer)
+    timestamp = Column(Integer)
 
 
 class NpcBuying(Table, table_name="npc_buying"):
@@ -226,7 +227,7 @@ class Quest(Table):
     level_recommended = Column(Integer)
     premium = Column(Integer)
     version = Column(Text)
-    last_edit = Column(Integer)
+    timestamp = Column(Integer)
 
 
 class QuestDanger(Table, table_name="quest_danger"):

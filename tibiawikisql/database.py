@@ -298,9 +298,7 @@ class Table(metaclass=TableMeta):
 
         sql = 'INSERT INTO {0} ({1}) VALUES ({2});'.format(cls.__tablename__, ', '.join(verified),
                                                            ', '.join('?' for _ in verified))
-
         c.execute(sql, tuple(verified.values()))
-
 
     @classmethod
     def drop(cls):
