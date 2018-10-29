@@ -70,6 +70,13 @@ class Blob(SQLType):
         return "BLOB"
 
 
+class Boolean(SQLType):
+    python = bool
+
+    def to_sql(self):
+        return "BOOLEAN"
+
+
 class ForeignKey(SQLType):
     def __init__(self, sql_type, table, column):
         if not table or not isinstance(table, str):

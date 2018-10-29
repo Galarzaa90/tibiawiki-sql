@@ -1,6 +1,7 @@
 import re
 
-from tibiawikisql.models import abc
+from tibiawikisql import schema
+from tibiawikisql.models import abc, Model
 from tibiawikisql.parsers.utils import parse_integer, parse_boolean
 
 
@@ -26,3 +27,8 @@ class SpellParser(abc.Parser):
             for vocation in ["knight", "sorcerer", "druid", "paladin"]:
                 if vocation in attributes["voc"].lower():
                     row["vocation"] = 1
+
+
+class Spell(Model, schema.Spell):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
