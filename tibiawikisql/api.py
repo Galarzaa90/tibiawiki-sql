@@ -35,6 +35,14 @@ class Article:
     def __repr__(self):
         return "Article(%d, %s)" % (self.article_id, repr(self.title))
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.article_id == other.article_id
+        return False
+
+    @property
+    def unix_timestamp(self):
+        return int(self.timestamp.timestamp())
 
 class Image:
     """
@@ -75,161 +83,170 @@ class Image:
         return "Image(%d, %s)" % (self.article_id, repr(self.title))
 
 
-class TibiaWiki:
-    def __init__(self, format):
-        if format not in ["xml", "json"]:
-            raise TypeError("Invalid format provided.")
-        self.format = format
+def get_category_members(name, skip_index=True):
+    """
+    Gets the articles with a certain category.
 
-    def get_category_members(self, name, skip_index=True):
-        """
-        Gets the articles with a certain category.
+    Parameters
+    ----------
+    name: str
+        The category's name. 'Category:' prefix is not necessary.
+    skip_index: bool
+        Whether to skip Index articles or not.
 
-        Parameters
-        ----------
-        name: str
-            The category's name. 'Category:' prefix is not necessary.
-        skip_index: bool
-            Whether to skip Index articles or not.
-
-        Yields
-        -------
-        dict
-            Articles with this category.
-        """
-
-        cmcontinue = None
-        while True:
-            params = {
-                "action": "query",
-                "list": "categorymembers",
-                "cmtitle": "Category:%s" % name,
-                "cmlimit": 500,
-                "cmtype": "page",
-                "cmprop": "ids|title|sortkeyprefix|timestamp",
-                "format": self.format,
-                "cmcontinue": cmcontinue
-            }
-            r = requests.get(ENDPOINT, headers=headers, params=params)
-            data = json.loads(r.text)
-            for member in data["query"]["categorymembers"]:
-                if member["sortkeyprefix"] == "*" and skip_index:
-                    continue
-                member = Article(member["pageid"], member["title"], timestamp=member["timestamp"])
-                yield member
-            try:
-                cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
-            except KeyError:
-                # If there's no "cmcontinue", means we reached the end of the list.
-                break
-
-    def get_image_info(self, name):
-        """
-        Gets an image's info.
-
-        Parameters
-        ----------
-        name: str
-            The name of the image. File prefix is not necessary.
-            Extension is required.
-
-        Returns
-        -------
-        :class:`Image`
-            The image's information.
-        """
+    Yields
+    -------
+    dict
+        Articles with this category.
+    """
+    s = requests.Session()
+    s.headers.update(headers)
+    cmcontinue = None
+    params = {
+        "action": "query",
+        "list": "categorymembers",
+        "cmtitle": "Category:%s" % name,
+        "cmlimit": 500,
+        "cmtype": "page",
+        "cmprop": "ids|title|sortkeyprefix|timestamp",
+        "format": "json",
+    }
+    while True:
+        params["cmcontinue"] = cmcontinue
+        r = s.get(ENDPOINT, params=params)
+        data = json.loads(r.text)
+        for member in data["query"]["categorymembers"]:
+            if member["sortkeyprefix"] == "*" and skip_index:
+                continue
+            member = Article(member["pageid"], member["title"], timestamp=member["timestamp"])
+            yield member
         try:
-            gen = self.get_images_info([name])
-            return next(gen)
-        except StopIteration:
-            return None
+            cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
+        except KeyError:
+            # If there's no "cmcontinue", means we reached the end of the list.
+            break
 
-    def get_images_info(self, names):
-        """
-        Gets the information of a list of image names.
 
-        Parameters
-        ----------
-        names: list[:class:`str`]
-            A list of names of images to get the info of.
+def get_category_members_titles(name, skip_index=True):
+    for member in get_category_members(name, skip_index):
+        yield member.title
 
-        Yields
-        -------
-        :class:`dict[str, Any]`
-            An image's information-
-        """
-        i = 0
-        while True:
-            if i > len(names):
-                break
-            params = {
-                "action": "query",
-                "prop": "imageinfo",
-                "iiprop": "url|timestamp",
-                "format": self.format,
-                "titles": "|".join("File:%s" % n for n in names[i:min(i+50, len(names))])
-            }
-            i += 50
-            r = requests.get(ENDPOINT, headers=headers, params=params)
-            data = json.loads(r.text)
-            for pageid, image in data["query"]["pages"].items():
-                if "missing" in image:
-                    continue
-                image = Image(image["pageid"], image["title"], timestamp=image["imageinfo"][0]["timestamp"],
-                              url=image["imageinfo"][0]["url"])
-                yield image
 
-    def get_articles(self, names):
-        """
-        Gets the information of a list of articles by name.
+def get_image_info(name):
+    """
+    Gets an image's info.
 
-        Parameters
-        ----------
-        names: list[:class:`str`]
-            A list of names of articles to get the info of.
+    Parameters
+    ----------
+    name: str
+        The name of the image. File prefix is not necessary.
+        Extension is required.
 
-        Yields
-        -------
-        :class:`dict[str, Any]`
-            An image's information-
-        """
-        i = 0
-        while True:
-            if i > len(names):
-                break
-            params = {
-                "action": "query",
-                "prop": "revisions",
-                "rvprop": "content|timestamp",
-                "format": self.format,
-                "titles": "|".join(names[i:min(i+50, len(names))])
-            }
-            i += 50
-            r = requests.get(ENDPOINT, headers=headers, params=params)
-            data = json.loads(r.text)
-            for pageid, article in data["query"]["pages"].items():
-                if "missing" in article:
-                    continue
-                article = Article(article["pageid"], article["title"], timestamp=article["timestamp"],
-                                  content=article["revisions"][0]["*"])
-                yield article
+    Returns
+    -------
+    :class:`Image`
+        The image's information.
+    """
+    try:
+        gen = get_images_info([name])
+        return next(gen)
+    except StopIteration:
+        return None
 
-    def get_article(self, name):
-        """
-        Gets an article's info.
 
-        Parameters
-        ----------
-        name: str
-            The name of the image.
+def get_images_info(names):
+    """
+    Gets the information of a list of image names.
 
-        Returns
-        -------
-        :class:`dict[str, Any]`
-            The article's information.
-        """
-        try:
-            gen = self.get_articles([name])
-            return next(gen)
-        except StopIteration:
-            return None
+    Parameters
+    ----------
+    names: list[:class:`str`]
+        A list of names of images to get the info of.
+
+    Yields
+    -------
+    :class:`dict[str, Any]`
+        An image's information-
+    """
+    i = 0
+    s = requests.Session()
+    s.headers.update(headers)
+    params = {
+        "action": "query",
+        "prop": "imageinfo",
+        "iiprop": "url|timestamp",
+        "format": "json"
+    }
+    while True:
+        if i > len(names):
+            break
+        params["titles"] = "|".join("File:%s" % n for n in names[i:min(i+50, len(names))])
+        i += 50
+        r = s.get(ENDPOINT, params=params)
+        data = json.loads(r.text)
+        print(r.url)
+        for pageid, image in data["query"]["pages"].items():
+            if "missing" in image:
+                yield None
+            image = Image(image["pageid"], image["title"], timestamp=image["imageinfo"][0]["timestamp"],
+                          url=image["imageinfo"][0]["url"])
+            yield image
+
+
+def get_articles(names):
+    """
+    Gets the information of a list of articles by name.
+
+    Parameters
+    ----------
+    names: list[:class:`str`]
+        A list of names of articles to get the info of.
+
+    Yields
+    -------
+    :class:`dict[str, Any]`
+        An image's information-
+    """
+    i = 0
+    s = requests.Session()
+    s.headers.update(headers)
+    params = {
+        "action": "query",
+        "prop": "revisions",
+        "rvprop": "content|timestamp",
+        "format": "json"
+    }
+    while True:
+        if i > len(names):
+            break
+        params["titles"] = "|".join(names[i:min(i+50, len(names))])
+        i += 50
+        r = s.get(ENDPOINT, params=params)
+        data = json.loads(r.text)
+        for pageid, article in data["query"]["pages"].items():
+            if "missing" in article:
+                yield None
+            article = Article(article["pageid"], article["title"], timestamp=article["revisions"][0]["timestamp"],
+                              content=article["revisions"][0]["*"])
+            yield article
+
+
+def get_article(name):
+    """
+    Gets an article's info.
+
+    Parameters
+    ----------
+    name: str
+        The name of the image.
+
+    Returns
+    -------
+    :class:`dict[str, Any]`
+        The article's information.
+    """
+    try:
+        gen = get_articles([name])
+        return next(gen)
+    except StopIteration:
+        return None

@@ -7,6 +7,7 @@ from .database import get_row_count
 from .utils import parse_attributes, parse_maximum_integer, parse_integer, parse_boolean, \
     clean_links, parse_loot, parse_min_max, parse_loot_statistics, parse_monster_walks
 
+
 creatures = []
 
 

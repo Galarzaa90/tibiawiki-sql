@@ -9,6 +9,8 @@ from .utils import parse_attributes, parse_boolean, parse_integer
 spells = []
 
 
+
+
 def fetch_spells_list():
     print("Fetching spells list... ")
     start_time = time.time()
@@ -21,23 +23,28 @@ def fetch_spells_list():
     print(f"\tDone in {time.time()-start_time:.3f} seconds.")
 
 
+def from_article(article):
+    if article is None or "Infobox Spell" not in article.content:
+        return None
+    row = {"id": article.article_id, "last_edit": article.unix_timestamp, "title": article.title}
+    attributes = parse_attributes(article.content)
+    for attribute, value in attributes.items():
+        if attribute not in attribute_map:
+            continue
+        column, func = attribute_map[attribute]
+        row[column] = func(value)
+    if "voc" in attributes:
+        for vocation in ["knight", "sorcerer", "druid", "paladin"]:
+            if vocation in attributes["voc"].lower():
+                row[vocation] = 1
+    return row
+
+
 def fetch_spells(con):
     print("Fetching spells information...")
     exception_count = 0
     start_time = time.time()
-    attribute_map = {
-        "name": ("name", lambda x: x),
-        "words": ("words", lambda x: x),
-        "type": ("type", lambda x: x),
-        "subclass": ("class", lambda x: x),
-        "damagetype": ("element", lambda x: x),
-        "mana": ("mana", lambda x: parse_integer(x, -1)),
-        "soul": ("soul", lambda x: parse_integer(x, 0)),
-        "spellcost": ("price", lambda x: parse_integer(x)),
-        "cooldown": ("cooldown", lambda x: parse_integer(x)),
-        "levelrequired": ("level", lambda x: parse_integer(x)),
-        "premium": ("premium", lambda x: parse_boolean(x)),
-    }  # type: Dict[str, Tuple[str, Callable]]
+
     c = con.cursor()
     for article_id, article in fetch_articles(spells):
         try:

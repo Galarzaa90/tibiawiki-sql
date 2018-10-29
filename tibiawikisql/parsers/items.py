@@ -60,69 +60,7 @@ def fetch_items(con):
                 columns.append(column)
                 values.append(func(value))
             c.execute(f"INSERT INTO items({','.join(columns)}) VALUES({','.join(['?']*len(values))})", values)
-            item_id = c.lastrowid
-            extra_attributes = {
-                "level": "levelrequired",
-                "attack": "attack",
-                "elemental_attack": "elementattack",
-                "defense": "defense",
-                "defense_modifier": "defensemod",
-                "armor": "armor",
-                "hands": "hands",
-                "imbue_slots": "imbueslots",
-                "attack+": "atk_mod",
-                "hit%+": "hit_mod",
-                "range": "range",
-                "damage_type": "damagetype",
-                "damage": "damage",
-                "mana": "mana",
-                "magic_level": "mlrequired",
-                "words": "words",
-                "critical_chance": "crithit_ch",
-                "critical%": "critextra_dmg",
-                "hpleech_chance": "hpleech_ch",
-                "hpleech%": "hpleech_am",
-                "manaleech_chance": "manaleech_ch",
-                "manaleech%": "manaleech_am",
-                "volume": "volume",
-                "charges": "charges",
-                "food_time": "regenseconds",
-                "duration": "duration",
-            }
-            extra_data = []
-            for sql_attr, wiki_attr in extra_attributes.items():
-                if wiki_attr in item and item[wiki_attr]:
-                    extra_data.append((item_id, sql_attr, item[wiki_attr]))
-            # These attributes require some extra processing
-            if "resist" in item and item["resist"]:
-                resistances = item["resist"].split(",")
-                for element in resistances:
-                    element = element.strip()
-                    m = re.search(r'([a-zA-Z0-9_ ]+) +(-?\+?\d+)%', element)
-                    if m:
-                        attribute = m.group(1) + "%"
-                        try:
-                            value = int(m.group(2))
-                        except ValueError:
-                            value = 0
-                        extra_data.append((item_id, attribute, value))
-            if "attrib" in item and item["attrib"]:
-                attribs = item["attrib"].split(",")
-                for attr in attribs:
-                    attr = attr.strip()
-                    m = re.search(r'([\s\w]+)\s([+\-\d]+)', attr)
-                    if m:
-                        attribute = m.group(1).replace("fighting", "").replace("level", "").strip()
-                        value = m.group(2)
-                        extra_data.append((item_id, attribute, value))
-            if "imbuements" in item and item["imbuements"]:
-                imbuements = item["imbuements"].split(",")
-                for imbuement in imbuements:
-                    imbuement = imbuement.strip()
-                    extra_data.append((item_id, "imbuement", imbuement))
-            if "vocrequired" in item and item["vocrequired"] and item["vocrequired"] != "None":
-                vocation = item['vocrequired'].replace(' and ', '+')
-                extra_data.append((item_id, "vocation", vocation))
+
             c.executemany("INSERT INTO items_attributes(item_id, attribute, value) VALUES(?,?,?)", extra_data)
         except Exception:
             log.exception(f"Unknown exception found for {article['title']}")
