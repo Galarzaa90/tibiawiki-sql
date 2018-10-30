@@ -1,11 +1,11 @@
 import re
 
-from tibiawikisql import abc
+from tibiawikisql import abc, schema
 from tibiawikisql.parsers.utils import parse_boolean, parse_integer, parse_maximum_integer, clean_links, \
     parse_monster_walks
 
 
-class ItemParseable(abc.Parseable):
+class Creature(abc.Model, abc.Parseable, table=schema.Spell):
     _map = {
         "name": ("title", lambda x: x),
         "article": ("article", lambda x: x),
@@ -41,9 +41,12 @@ class ItemParseable(abc.Parseable):
         "walksaround": ("walksaround", lambda x: parse_monster_walks(x)),
         "implemented": ("version", lambda x: x)
     }
-    _pattern = re.compile(r"Infobox[\s_]Craeture")
+    _pattern = re.compile(r"Infobox[\s_]Creature")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     @classmethod
-    def extra_parsing(mcs, row, attributes, extra_data=None):
-        if "actualname" not in attributes:
-            attributes["actualname"] = attributes["name"].lower()
+    def from_article(cls, article):
+        creature = super().from_article(article)
+        return creature

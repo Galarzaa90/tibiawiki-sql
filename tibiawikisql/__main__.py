@@ -4,9 +4,9 @@ import time
 import click
 from colorama import init
 
-from tibiawikisql import api, Achievement
+from tibiawikisql import api, Achievement, Creature, Spell
 from tibiawikisql import schema
-from tibiawikisql.spell import Spell
+from tibiawikisql.schema import Item
 
 __version__ = "2.0.0"
 DATABASE_FILE = "tibia_database.db"
@@ -26,8 +26,8 @@ def cli():
 
 categories = {
     "spells": {"category": "Spells", "model": Spell},
-    # "items": {"category": "Items", "parser": ItemParseable, "schema": schema.Item},
-    # "creatures": {"category": "Creatures"},
+    "items": {"category": "Items", "model": Item},
+    "creatures": {"category": "Creatures", "model": Creature},
     # "keys": {"category": "Keys"},
     # "npcs": {"category": "NPCs"},
     "achievements": {"category": "Achievements", "model": Achievement},

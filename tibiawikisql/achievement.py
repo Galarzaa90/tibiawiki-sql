@@ -22,5 +22,5 @@ class Achievement(abc.Model, abc.Parseable, table=schema.Achievement):
 
     @classmethod
     def from_article(cls, article):
-        spell = super().from_article(article)
-        return spell
+        achievement = super().from_article(article)
+        return achievement
