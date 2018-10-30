@@ -1,0 +1,76 @@
+{
+    "query": {
+        "categorymembers": [
+            {
+                "pageid": 6974,
+                "ns": 0,
+                "title": "Creature Spells",
+                "sortkeyprefix": "*",
+                "timestamp": "2017-11-13T05:44:47Z"
+            },
+            {
+                "pageid": 21602,
+                "ns": 0,
+                "title": "Ultimate Spells",
+                "sortkeyprefix": "*",
+                "timestamp": "2017-11-13T05:42:20Z"
+            },
+            {
+                "pageid": 1917,
+                "ns": 0,
+                "title": "Animate Dead",
+                "sortkeyprefix": "",
+                "timestamp": "2014-09-20T15:56:10Z"
+            },
+            {
+                "pageid": 61903,
+                "ns": 0,
+                "title": "Apprentice's Strike",
+                "sortkeyprefix": "",
+                "timestamp": "2014-09-20T15:14:55Z"
+            },
+            {
+                "pageid": 5549,
+                "ns": 0,
+                "title": "Armageddon Spell",
+                "sortkeyprefix": "",
+                "timestamp": "2010-08-30T16:58:37Z"
+            },
+            {
+                "pageid": 68921,
+                "ns": 0,
+                "title": "Arrow Call",
+                "sortkeyprefix": "",
+                "timestamp": "2014-09-20T17:41:13Z"
+            },
+            {
+                "pageid": 19931,
+                "ns": 0,
+                "title": "Avalanche",
+                "sortkeyprefix": "",
+                "timestamp": "2014-09-20T15:59:03Z"
+            },
+            {
+                "pageid": 815,
+                "ns": 0,
+                "title": "Berserk",
+                "sortkeyprefix": "",
+                "timestamp": "2014-09-20T15:15:16Z"
+            },
+            {
+                "pageid": 30160,
+                "ns": 0,
+                "title": "Blood Rage",
+                "sortkeyprefix": "",
+                "timestamp": "2014-09-20T15:15:36Z"
+            },
+            {
+                "pageid": 68875,
+                "ns": 0,
+                "title": "Bruise Bane",
+                "sortkeyprefix": "",
+                "timestamp": "2014-09-20T15:04:27Z"
+            }
+        ]
+    }
+}

@@ -1,14 +1,44 @@
 image: python:3.6
 
-pages:
+stages:
+  - build
+  - test
+  - deploy
+
+before_script:
+  - pip install -r requirements.txt
+  - pip install -U setuptools wheel
+
+docs:
+  stage: build
   before_script:
-    - python -m pip install mkdocs mkdocs-material pymdown-extensions
+    - pip install -r requirements-docs.txt
   script:
-    - cp CHANGELOG.md docs/changelog.md
     - python -m mkdocs build -d public
-  only:
-    refs:
-      - dev
+  artifacts:
+    - public/
+
+coverage:
+  stage: test
+  script:
+      - pip install coverage
+      - coverage run setup.py test
+      - coverage report
+      - coverage html
+  artifacts:
+    name: Coverage_Report
+    paths:
+      - htmlcov/
+
+pages:
+  stage: deploy
+  dependencies:
+    - docs
+    - coverage
+  script:
+    - mv htmlcov/ public/coverage/
   artifacts:
     paths:
       - public
+  only:
+    - master
