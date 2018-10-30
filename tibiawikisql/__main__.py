@@ -6,6 +6,10 @@ from colorama import init
 
 from tibiawikisql import api, Achievement, Creature, Spell, Item
 from tibiawikisql import schema
+from tibiawikisql.imbuement import Imbuement
+from tibiawikisql.key import Key
+from tibiawikisql.npc import Npc
+from tibiawikisql.quest import Quest
 
 __version__ = "2.0.0"
 DATABASE_FILE = "tibia_database.db"
@@ -27,11 +31,11 @@ categories = {
     "spells": {"category": "Spells", "model": Spell},
     "items": {"category": "Items", "model": Item},
     "creatures": {"category": "Creatures", "model": Creature},
-    # "keys": {"category": "Keys"},
-    # "npcs": {"category": "NPCs"},
+    "keys": {"category": "Keys", "model": Key},
+    "npcs": {"category": "NPCs", "model": Npc},
     "achievements": {"category": "Achievements", "model": Achievement},
-    # "imbuements": {"category": "Imbuements"},
-    # "quests": {"category": "Quest Overview Pages"},
+    "imbuements": {"category": "Imbuements", "model": Imbuement},
+    "quests": {"category": "Quest Overview Pages", "model": Quest},
 }
 
 

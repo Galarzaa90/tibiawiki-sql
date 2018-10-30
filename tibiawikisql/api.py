@@ -3,7 +3,7 @@ import json
 
 import requests
 
-ENDPOINT = "http://tibia.wikia.com/api.php"
+ENDPOINT = "https://tibia.fandom.com/api.php"
 
 headers = {
     'User-Agent': 'tibiawikisql v1.1.1'

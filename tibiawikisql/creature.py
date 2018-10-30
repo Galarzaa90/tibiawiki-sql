@@ -5,7 +5,7 @@ from tibiawikisql.parsers.utils import parse_boolean, parse_integer, parse_maxim
     parse_monster_walks
 
 
-class Creature(abc.Model, abc.Parseable, table=schema.Spell):
+class Creature(abc.Model, abc.Parseable, table=schema.Creature):
     _map = {
         "name": ("title", lambda x: x),
         "article": ("article", lambda x: x),
