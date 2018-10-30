@@ -16,7 +16,8 @@ docs:
   script:
     - python -m mkdocs build -d public
   artifacts:
-    - public/
+    paths:
+      - public/
 
 coverage:
   stage: test
