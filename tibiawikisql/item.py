@@ -4,7 +4,7 @@ from tibiawikisql import abc, schema
 from tibiawikisql.parsers.utils import parse_float, parse_boolean, parse_integer
 
 
-class ItemParseable(abc.Model, abc.Parseable, table=schema.Item):
+class Item(abc.Model, abc.Parseable, table=schema.Item):
     _map = {
         "article": ("article", lambda x: x),
         "actualname": ("name", lambda x: x),

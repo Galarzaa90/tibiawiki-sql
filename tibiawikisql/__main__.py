@@ -4,9 +4,8 @@ import time
 import click
 from colorama import init
 
-from tibiawikisql import api, Achievement, Creature, Spell
+from tibiawikisql import api, Achievement, Creature, Spell, Item
 from tibiawikisql import schema
-from tibiawikisql.schema import Item
 
 __version__ = "2.0.0"
 DATABASE_FILE = "tibia_database.db"
