@@ -25,8 +25,8 @@ class Spell(abc.Model, abc.Parseable, table=schema.Spell):
         spell = super().from_article(article)
         if not spell:
             return None
-        if "voc" in article.attributes:
+        if "voc" in spell.raw_attributes:
             for vocation in ["knight", "sorcerer", "druid", "paladin"]:
-                if vocation in article.attributes["voc"].lower():
+                if vocation in spell.raw_attributes["voc"].lower():
                     setattr(spell, vocation, True)
         return spell

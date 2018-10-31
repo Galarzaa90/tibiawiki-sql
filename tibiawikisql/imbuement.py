@@ -29,8 +29,8 @@ class Imbuement(abc.Model, abc.Parseable, table=schema.Imbuement):
         imbuement = super().from_article(article)
         if imbuement is None:
             return None
-        if "astralsources" in imbuement.attributes:
-            materials = parse_astral_sources(imbuement.attributes["astralsources"])
+        if "astralsources" in imbuement.raw_attributes:
+            materials = parse_astral_sources(imbuement.raw_attributes["astralsources"])
             imbuement.materials = []
             for name, amount in materials.items():
                 imbuement.materials.append(ImbuementMaterial(name=name, amount=amount, imbuement_id=imbuement.id))

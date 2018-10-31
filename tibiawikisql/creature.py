@@ -48,8 +48,8 @@ class Creature(abc.Model, abc.Parseable, table=schema.Creature):
         creature = super().from_article(article)
         if creature is None:
             return None
-        if "loot" in creature.attributes:
-            loot = parse_loot(creature.attributes["loot"])
+        if "loot" in creature.raw_attributes:
+            loot = parse_loot(creature.raw_attributes["loot"])
             loot_items = []
             for item in loot:
                 if not item[0]:

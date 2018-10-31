@@ -16,9 +16,10 @@ class Parseable(metaclass=abc.ABCMeta):
             return None
         row = {"id": article.id, "timestamp": article.unix_timestamp, "title": article.title, "attributes": {}}
         attributes = parse_attributes(article.content)
+        row["raw_attributes"] = {}
         for attribute, value in attributes.items():
             if attribute not in cls._map:
-                row["attributes"][attribute] = value
+                row["raw_attributes"][attribute] = value
                 continue
             column, func = cls._map[attribute]
             row[column] = func(value)
@@ -29,8 +30,8 @@ class Model(metaclass=abc.ABCMeta):
     def __init__(self, **kwargs):
         for c in self.table.columns:
             setattr(self, c.name, kwargs.get(c.name, c.default))
-        if kwargs.get("attributes"):
-            self.attributes = kwargs.get("attributes")
+        if kwargs.get("raw_attributes"):
+            self.raw_attributes = kwargs.get("raw_attributes")
 
     def __init_subclass__(cls, table=None):
         cls.table = table
