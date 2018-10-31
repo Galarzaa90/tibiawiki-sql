@@ -1,6 +1,7 @@
 [run]
 include =
     tibiawikisql/*.py
+omit = */__main__.py
 
 [report]
 exclude_lines =
@@ -11,3 +12,4 @@ exclude_lines =
     def __len__
     def __lt__
     def __gt__
+    raise NotImplementedError

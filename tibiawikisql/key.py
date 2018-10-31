@@ -15,6 +15,3 @@ class Key(abc.Model, abc.Parseable, table=schema.ItemKey):
         "implemented": ("version", lambda x: x),
     }
     _pattern = re.compile(r"Infobox[\s_]Key")
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)

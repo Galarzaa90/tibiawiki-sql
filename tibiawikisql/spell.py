@@ -20,9 +20,6 @@ class Spell(abc.Model, abc.Parseable, table=schema.Spell):
     }
     _pattern = re.compile(r"Infobox[\s_]Spell")
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
     @classmethod
     def from_article(cls, article):
         spell = super().from_article(article)

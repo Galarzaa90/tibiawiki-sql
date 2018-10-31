@@ -27,13 +27,14 @@ def progress_bar(iterable, label, length):
 def cli():
     pass
 
+
 categories = {
+    "achievements": {"category": "Achievements", "model": Achievement},
     "spells": {"category": "Spells", "model": Spell},
-    "items": {"category": "Items", "model": Item},
     "creatures": {"category": "Creatures", "model": Creature},
+    "items": {"category": "Items", "model": Item},
     "keys": {"category": "Keys", "model": Key},
     "npcs": {"category": "NPCs", "model": Npc},
-    "achievements": {"category": "Achievements", "model": Achievement},
     "imbuements": {"category": "Imbuements", "model": Imbuement},
     "quests": {"category": "Quest Overview Pages", "model": Quest},
 }

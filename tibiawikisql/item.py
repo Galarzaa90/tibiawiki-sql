@@ -20,15 +20,5 @@ class Item(abc.Model, abc.Parseable, table=schema.Item):
     }
     _pattern = re.compile(r"Infobox[\s_]Item")
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-    @classmethod
-    def from_article(cls, article):
-        item = super().from_article(article)
-        return item
-
-
-
 
 

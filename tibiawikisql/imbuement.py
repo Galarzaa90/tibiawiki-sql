@@ -13,6 +13,3 @@ class Imbuement(abc.Model, abc.Parseable, table=schema.Imbuement):
         "implemented": ("version", lambda x: x),
     }
     _pattern = re.compile(r"Infobox[\s_]Imbuement")
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)

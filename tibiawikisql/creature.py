@@ -43,10 +43,6 @@ class Creature(abc.Model, abc.Parseable, table=schema.Creature):
     }
     _pattern = re.compile(r"Infobox[\s_]Creature")
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
 
-    @classmethod
-    def from_article(cls, article):
-        creature = super().from_article(article)
-        return creature
+class CreatureDrop(abc.Model, table=schema.CreatureDrop):
+    pass
