@@ -5,8 +5,8 @@ from tibiawikisql.parsers.utils import parse_boolean, parse_integer, parse_maxim
     parse_monster_walks, parse_loot, parse_min_max
 
 
-class Creature(abc.Model, abc.Parseable, table=schema.Creature):
-    _map = {
+class Creature(abc.Row, abc.Parseable, table=schema.Creature):
+    map = {
         "name": ("title", lambda x: x),
         "article": ("article", lambda x: x),
         "actualname": ("name", lambda x: x),
@@ -41,7 +41,7 @@ class Creature(abc.Model, abc.Parseable, table=schema.Creature):
         "walksaround": ("walks_around", lambda x: parse_monster_walks(x)),
         "implemented": ("version", lambda x: x)
     }
-    _pattern = re.compile(r"Infobox[\s_]Creature")
+    pattern = re.compile(r"Infobox[\s_]Creature")
 
     @classmethod
     def from_article(cls, article):
@@ -61,7 +61,7 @@ class Creature(abc.Model, abc.Parseable, table=schema.Creature):
         return creature
 
 
-class CreatureDrop(abc.Model, table=schema.CreatureDrop):
+class CreatureDrop(abc.Row, table=schema.CreatureDrop):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.name = kwargs.get("name")

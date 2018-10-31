@@ -9,15 +9,25 @@ before_script:
   - pip install -r requirements.txt
   - pip install -U setuptools wheel
 
+build:
+  stage: build
+  script:
+    - python setup.py sdist bdist_wheel
+  artifacts:
+    name: tibiawikisql-dist
+    paths:
+      - dist/
+
 docs:
   stage: build
-  before_script:
-    - pip install -r requirements-docs.txt
   script:
-    - python -m mkdocs build -d public
+    - pip install Sphinx
+    - cd docs
+    - make html
   artifacts:
+    name: tibiawikisql-docs
     paths:
-      - public/
+      - docs/_build/
 
 coverage:
   stage: test
@@ -37,9 +47,12 @@ pages:
     - docs
     - coverage
   script:
+    - mkdir public
     - mv htmlcov/ public/coverage/
+    - mv docs/_build/html/* public/
   artifacts:
     paths:
       - public
   only:
     - master
+    - dev

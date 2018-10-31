@@ -4,8 +4,8 @@ from tibiawikisql import schema, abc
 from tibiawikisql.parsers.utils import parse_integer, parse_boolean, clean_links
 
 
-class Achievement(abc.Model, abc.Parseable, table=schema.Achievement):
-    _map = {
+class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
+    map = {
         "name": ("name", lambda x: x),
         "actualname": ("name", lambda x: x),
         "grade": ("grade", lambda x: parse_integer(x, None)),
@@ -16,4 +16,4 @@ class Achievement(abc.Model, abc.Parseable, table=schema.Achievement):
         "secret": ("secret", lambda x: parse_boolean(x)),
         "implemented": ("version", lambda x: x),
     }
-    _pattern = re.compile(r"Infobox[\s_]Achievement")
+    pattern = re.compile(r"Infobox[\s_]Achievement")

@@ -4,12 +4,8 @@ import time
 import click
 from colorama import init
 
-from tibiawikisql import api, Achievement, Creature, Spell, Item
-from tibiawikisql import schema
-from tibiawikisql.imbuement import Imbuement
-from tibiawikisql.key import Key
-from tibiawikisql.npc import Npc
-from tibiawikisql.quest import Quest
+from tibiawikisql import WikiClient
+from tibiawikisql import schema, models
 
 __version__ = "2.0.0"
 DATABASE_FILE = "tibia_database.db"
@@ -29,14 +25,14 @@ def cli():
 
 
 categories = {
-    "achievements": {"category": "Achievements", "model": Achievement},
-    "spells": {"category": "Spells", "model": Spell},
-    "creatures": {"category": "Creatures", "model": Creature},
-    "items": {"category": "Items", "model": Item},
-    "keys": {"category": "Keys", "model": Key},
-    "npcs": {"category": "NPCs", "model": Npc},
-    "imbuements": {"category": "Imbuements", "model": Imbuement},
-    "quests": {"category": "Quest Overview Pages", "model": Quest},
+    "achievements": {"category": "Achievements", "model": models.Achievement},
+    "spells": {"category": "Spells", "model": models.Spell},
+    "creatures": {"category": "Creatures", "model": models.Creature},
+    "items": {"category": "Items", "model": models.Item},
+    "keys": {"category": "Keys", "model": models.Key},
+    "npcs": {"category": "NPCs", "model": models.Npc},
+    "imbuements": {"category": "Imbuements", "model": models.Imbuement},
+    "quests": {"category": "Quest Overview Pages", "model": models.Quest},
 }
 
 
@@ -62,7 +58,7 @@ def generate(skip_images, db_name):
         model = value["model"]
         unparsed = []
         start = time.perf_counter()
-        generator = api.get_articles(titles)
+        generator = WikiClient.get_articles(titles)
         with conn:
             with progress_bar(generator, f"Parsing {key}", len(titles)) as bar:
                 for i, article in enumerate(bar):
@@ -84,7 +80,7 @@ def get_articles(category, data_store, key=None):
     print(f"Fetching articles in \33[94mCategory:{category}\033[0m...")
     data_store[key] = []
     start = time.perf_counter()
-    for article in api.get_category_members(category):
+    for article in WikiClient.get_category_members(category):
         if article not in data_store.get("deprecated", []):
             data_store[key].append(article)
     dt = (time.perf_counter() - start)

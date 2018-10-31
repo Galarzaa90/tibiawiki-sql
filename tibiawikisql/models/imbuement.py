@@ -11,15 +11,15 @@ def parse_astral_sources(content: str):
         return {item: int(amount) for (item, amount) in materials}
 
 
-class Imbuement(abc.Model, abc.Parseable, table=schema.Imbuement):
-    _map = {
+class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
+    map = {
         "name": ("name", lambda x: x),
         "prefix": ("tier", lambda x: x),
         "type": ("type", lambda x: x),
         "effect": ("effect", lambda x: parse_effect(x)),
         "implemented": ("version", lambda x: x)
     }
-    _pattern = re.compile(r"Infobox[\s_]Imbuement")
+    pattern = re.compile(r"Infobox[\s_]Imbuement")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -43,7 +43,7 @@ class Imbuement(abc.Model, abc.Parseable, table=schema.Imbuement):
             material.insert(c)
 
 
-class ImbuementMaterial(abc.Model, table=schema.ImbuementMaterial):
+class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.name = kwargs.get("name")

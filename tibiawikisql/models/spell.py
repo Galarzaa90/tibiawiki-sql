@@ -4,8 +4,8 @@ from tibiawikisql import schema, abc
 from tibiawikisql.parsers.utils import parse_integer, parse_boolean
 
 
-class Spell(abc.Model, abc.Parseable, table=schema.Spell):
-    _map = {
+class Spell(abc.Row, abc.Parseable, table=schema.Spell):
+    map = {
         "name": ("name", lambda x: x),
         "words": ("words", lambda x: x),
         "type": ("type", lambda x: x),
@@ -18,7 +18,7 @@ class Spell(abc.Model, abc.Parseable, table=schema.Spell):
         "levelrequired": ("level", lambda x: parse_integer(x)),
         "premium": ("premium", lambda x: parse_boolean(x)),
     }
-    _pattern = re.compile(r"Infobox[\s_]Spell")
+    pattern = re.compile(r"Infobox[\s_]Spell")
 
     @classmethod
     def from_article(cls, article):

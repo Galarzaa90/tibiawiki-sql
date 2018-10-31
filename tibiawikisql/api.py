@@ -3,23 +3,24 @@ import json
 
 import requests
 
-ENDPOINT = "https://tibia.fandom.com/api.php"
-
-headers = {
-    'User-Agent': 'tibiawikisql v1.1.1'
-}
-
 
 class WikiEntry:
     """A TibiaWiki entry.
 
+    This is a partial object that is obtained when fetching category members.
+
+    The following implement classes implement this:
+
+    - :class:`Article`
+    - :class:`Image`
+
     Attributes
     ----------
-    id: int
-        The article's entry id.
-    title : str
-        The article's title.
-    timestamp : datetime.datetime
+    id: :class:`int`
+        The entry's id.
+    title: :class:`str`
+        The entry's title.
+    timestamp : :class:`datetime.datetime`
         The date of the entry's last edit.
     """
 
@@ -39,23 +40,24 @@ class WikiEntry:
 
     @property
     def unix_timestamp(self):
+        """:class:`int`: The unix timestamp of the article's last edit date."""
         return int(self.timestamp.timestamp())
 
 
 class Article(WikiEntry):
     """
-    A TibiaWiki text article.
+    Represents a text article.
 
     Attributes
     ----------
-    id: int
+    id: :class:`int`
         The article's internal id.
-    title : str
+    title : :class:`str`
         The article's title.
-    timestamp : datetime.datetime
+    timestamp : :class:`datetime.datetime`
         The date of the article's last edit.
-    content: str
-        The article's content.
+    content: :class:`str`
+        The article's source content.
     """
 
     def __init__(self, id_, title, *, timestamp=None, content=None):
@@ -65,7 +67,7 @@ class Article(WikiEntry):
 
 class Image(WikiEntry):
     """
-    A TibiaWiki image
+    Represents an image info
 
     Attributes
     ----------
@@ -75,12 +77,12 @@ class Image(WikiEntry):
         The image's title.
     timestamp : datetime.datetime
         The date of the image's last edit.
-    url: str
+    file_url: str
         The image's url.
     """
-    def __init__(self, id_, title, *, timestamp=None, url=None):
+    def __init__(self, id_, title, *, timestamp=None, file_url=None):
         super().__init__(id_, title, timestamp)
-        self.url = url
+        self.url = file_url
 
     @property
     def extension(self):
@@ -92,174 +94,199 @@ class Image(WikiEntry):
 
     @property
     def file_name(self):
-        """:class:`str`: The image's file extension."""
+        """:class:`str`: The image's file name."""
         return self.title.replace("File:", "")
 
 
-def get_category_members(name, skip_index=True):
+class WikiClient:
     """
-    Gets the articles with a certain category.
-
-    Parameters
-    ----------
-    name: str
-        The category's name. 'Category:' prefix is not necessary.
-    skip_index: bool
-        Whether to skip Index articles or not.
-
-    Yields
-    -------
-    dict
-        Articles with this category.
+    Contains methods to communicate with TibiaWiki's API.
     """
-    s = requests.Session()
-    s.headers.update(headers)
-    cmcontinue = None
-    params = {
-        "action": "query",
-        "list": "categorymembers",
-        "cmtitle": "Category:%s" % name,
-        "cmlimit": 500,
-        "cmtype": "page",
-        "cmprop": "ids|title|sortkeyprefix|timestamp",
-        "format": "json",
+    ENDPOINT = "https://tibia.fandom.com/api.php"
+
+    headers = {
+        'User-Agent': 'tibiawikisql v1.1.1'
     }
-    while True:
-        params["cmcontinue"] = cmcontinue
-        r = s.get(ENDPOINT, params=params)
-        data = json.loads(r.text)
-        for member in data["query"]["categorymembers"]:
-            if member["sortkeyprefix"] == "*" and skip_index:
-                continue
-            member = WikiEntry(member["pageid"], member["title"], timestamp=member["timestamp"])
-            yield member
+
+    @classmethod
+    def get_category_members(cls, name, skip_index=True):
+        """
+        Generator that obtains entries in a certain category.
+
+        Parameters
+        ----------
+        name: :class:`str`
+            The category's name. 'Category:' prefix is not necessary.
+        skip_index: :class:`bool`
+            Whether to skip index articles or not.
+
+        Yields
+        -------
+        :class:`WikiEntry`
+            Articles in this category.
+        """
+        s = requests.Session()
+        s.headers.update(cls.headers)
+        cmcontinue = None
+        params = {
+            "action": "query",
+            "list": "categorymembers",
+            "cmtitle": "Category:%s" % name,
+            "cmlimit": 500,
+            "cmtype": "page",
+            "cmprop": "ids|title|sortkeyprefix|timestamp",
+            "format": "json",
+        }
+        while True:
+            params["cmcontinue"] = cmcontinue
+            r = s.get(cls.ENDPOINT, params=params)
+            data = json.loads(r.text)
+            for member in data["query"]["categorymembers"]:
+                if member["sortkeyprefix"] == "*" and skip_index:
+                    continue
+                member = WikiEntry(member["pageid"], member["title"], timestamp=member["timestamp"])
+                yield member
+            try:
+                cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
+            except KeyError:
+                # If there's no "cmcontinue", means we reached the end of the list.
+                break
+
+    @classmethod
+    def get_category_members_titles(cls, name, skip_index=True):
+        """
+        Generator that obtains a list of article titles in a category.
+
+        Parameters
+        ----------
+        name: :class:`str`
+            The category's name. 'Category:' prefix is not necessary.
+        skip_index: :class:`bool`
+            Whether to skip index articles or not.
+
+        Yields
+        -------
+        :class:`str`
+            Titles of articles in this category.
+        """
+        for member in cls.get_category_members(name, skip_index):
+            yield member.title
+
+    @classmethod
+    def get_image_info(cls, name):
+        """
+        Gets an image's info.
+
+        Parameters
+        ----------
+        name: :class:`str`
+            The name of the image. 'File:' prefix is not necessary. Extension is required.
+
+        Returns
+        -------
+        :class:`Image`
+            The image's information.
+        """
         try:
-            cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
-        except KeyError:
-            # If there's no "cmcontinue", means we reached the end of the list.
-            break
+            gen = cls.get_images_info([name])
+            return next(gen)
+        except StopIteration:
+            return None
 
+    @classmethod
+    def get_images_info(cls, names):
+        """
+        Gets the information of a list of image names.
 
-def get_category_members_titles(name, skip_index=True):
-    for member in get_category_members(name, skip_index):
-        yield member.title
+        Parameters
+        ----------
+        names: list[:class:`str`]
+            A list of names of images to get the info of.
 
+        Yields
+        -------
+        :class:`Image`
+            An image's information.
+        """
+        i = 0
+        s = requests.Session()
+        s.headers.update(cls.headers)
+        params = {
+            "action": "query",
+            "prop": "imageinfo",
+            "iiprop": "url|timestamp",
+            "format": "json"
+        }
+        while True:
+            if i > len(names):
+                break
+            params["titles"] = "|".join("File:%s" % n for n in names[i:min(i+50, len(names))])
+            i += 50
+            r = s.get(cls.ENDPOINT, params=params)
+            data = json.loads(r.text)
+            print(r.url)
+            for pageid, image in data["query"]["pages"].items():
+                if "missing" in image:
+                    yield None
+                image = Image(image["pageid"], image["title"], timestamp=image["imageinfo"][0]["timestamp"],
+                              file_url=image["imageinfo"][0]["url"])
+                yield image
 
-def get_image_info(name):
-    """
-    Gets an image's info.
+    @classmethod
+    def get_articles(cls, names):
+        """
+        Generator that obtains a list of articles given their titles.
 
-    Parameters
-    ----------
-    name: str
-        The name of the image. File prefix is not necessary.
-        Extension is required.
+        Parameters
+        ----------
+        names: list[:class:`str`]
+            A list of names of articles to get the info of.
 
-    Returns
-    -------
-    :class:`Image`
-        The image's information.
-    """
-    try:
-        gen = get_images_info([name])
-        return next(gen)
-    except StopIteration:
-        return None
+        Yields
+        -------
+        :class:`Article`
+            An article in the list of names.
+        """
+        i = 0
+        s = requests.Session()
+        s.headers.update(cls.headers)
+        params = {
+            "action": "query",
+            "prop": "revisions",
+            "rvprop": "content|timestamp",
+            "format": "json"
+        }
+        while True:
+            if i > len(names):
+                break
+            params["titles"] = "|".join(names[i:min(i+50, len(names))])
+            i += 50
+            r = s.get(cls.ENDPOINT, params=params)
+            data = json.loads(r.text)
+            for pageid, article in data["query"]["pages"].items():
+                if "missing" in article:
+                    yield None
+                article = Article(article["pageid"], article["title"], timestamp=article["revisions"][0]["timestamp"],
+                                  content=article["revisions"][0]["*"])
+                yield article
 
+    @classmethod
+    def get_article(cls, name):
+        """
+        Gets an article's info.
 
-def get_images_info(names):
-    """
-    Gets the information of a list of image names.
+        Parameters
+        ----------
+        name: str
+            The name of the Article.
 
-    Parameters
-    ----------
-    names: list[:class:`str`]
-        A list of names of images to get the info of.
-
-    Yields
-    -------
-    :class:`dict[str, Any]`
-        An image's information-
-    """
-    i = 0
-    s = requests.Session()
-    s.headers.update(headers)
-    params = {
-        "action": "query",
-        "prop": "imageinfo",
-        "iiprop": "url|timestamp",
-        "format": "json"
-    }
-    while True:
-        if i > len(names):
-            break
-        params["titles"] = "|".join("File:%s" % n for n in names[i:min(i+50, len(names))])
-        i += 50
-        r = s.get(ENDPOINT, params=params)
-        data = json.loads(r.text)
-        print(r.url)
-        for pageid, image in data["query"]["pages"].items():
-            if "missing" in image:
-                yield None
-            image = Image(image["pageid"], image["title"], timestamp=image["imageinfo"][0]["timestamp"],
-                          url=image["imageinfo"][0]["url"])
-            yield image
-
-
-def get_articles(names):
-    """
-    Gets the information of a list of articles by name.
-
-    Parameters
-    ----------
-    names: list[:class:`str`]
-        A list of names of articles to get the info of.
-
-    Yields
-    -------
-    :class:`dict[str, Any]`
-        An image's information-
-    """
-    i = 0
-    s = requests.Session()
-    s.headers.update(headers)
-    params = {
-        "action": "query",
-        "prop": "revisions",
-        "rvprop": "content|timestamp",
-        "format": "json"
-    }
-    while True:
-        if i > len(names):
-            break
-        params["titles"] = "|".join(names[i:min(i+50, len(names))])
-        i += 50
-        r = s.get(ENDPOINT, params=params)
-        data = json.loads(r.text)
-        for pageid, article in data["query"]["pages"].items():
-            if "missing" in article:
-                yield None
-            article = Article(article["pageid"], article["title"], timestamp=article["revisions"][0]["timestamp"],
-                              content=article["revisions"][0]["*"])
-            yield article
-
-
-def get_article(name):
-    """
-    Gets an article's info.
-
-    Parameters
-    ----------
-    name: str
-        The name of the image.
-
-    Returns
-    -------
-    :class:`dict[str, Any]`
-        The article's information.
-    """
-    try:
-        gen = get_articles([name])
-        return next(gen)
-    except StopIteration:
-        return None
+        Returns
+        -------
+        :class:`Article`
+            The article matching the title.
+        """
+        try:
+            gen = cls.get_articles([name])
+            return next(gen)
+        except StopIteration:
+            return None

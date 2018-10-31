@@ -4,8 +4,8 @@ from tibiawikisql import schema, abc
 from tibiawikisql.parsers.utils import convert_tibiawiki_position
 
 
-class Npc(abc.Model, abc.Parseable, table=schema.Npc):
-    _map = {
+class Npc(abc.Row, abc.Parseable, table=schema.Npc):
+    map = {
         "name": ("title", lambda x: x),
         "actualname": ("name", lambda x: x),
         "job": ("job", lambda x: x),
@@ -15,4 +15,4 @@ class Npc(abc.Model, abc.Parseable, table=schema.Npc):
         "posz": ("z", lambda x: int(x)),
         "implemented": ("version", lambda x: x)
     }
-    _pattern = re.compile(r"Infobox[\s_]NPC")
+    pattern = re.compile(r"Infobox[\s_]NPC")

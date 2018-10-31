@@ -5,8 +5,8 @@ from tibiawikisql import schema, abc
 from tibiawikisql.parsers.utils import parse_integer, parse_boolean, clean_links
 
 
-class Quest(abc.Model, abc.Parseable, table=schema.Quest):
-    _map = {
+class Quest(abc.Row, abc.Parseable, table=schema.Quest):
+    map = {
         "name": ("name", lambda x: html.unescape(x)),
         "location": ("location", lambda x: clean_links(x)),
         "legend": ("legend", lambda x: clean_links(x)),
@@ -15,4 +15,4 @@ class Quest(abc.Model, abc.Parseable, table=schema.Quest):
         "premium": ("premium", lambda x: parse_boolean(x)),
         "implemented": ("version", lambda x: x),
     }
-    _pattern = re.compile(r"Infobox[\s_]Quest")
+    pattern = re.compile(r"Infobox[\s_]Quest")
