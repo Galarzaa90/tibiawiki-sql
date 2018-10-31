@@ -2,7 +2,7 @@ import os
 import unittest
 from unittest.mock import MagicMock
 
-from tibiawikisql import api
+from tibiawikisql import api, WikiClient
 
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 RESOURCES_PATH = os.path.join(BASE_PATH, "resources/")
@@ -18,9 +18,9 @@ class TestWikiApi(unittest.TestCase):
         json_response = self._load_resource("response_category_without_continue.json")
         api.requests.Session.get = MagicMock()
         api.requests.Session.get.return_value.text = json_response
-        members = list(api.get_category_members("Spells"))
+        members = list(WikiClient.get_category_members("Spells"))
         self.assertIsInstance(members[0], api.WikiEntry)
         self.assertEqual(len(members), 8)
 
-        members = list(api.get_category_members("Spells", False))
+        members = list(WikiClient.get_category_members("Spells", False))
         self.assertEqual(len(members), 10)
