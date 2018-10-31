@@ -14,14 +14,14 @@ class Parseable(metaclass=abc.ABCMeta):
 
         if article is None or (cls._pattern and not cls._pattern.search(article.content)):
             return None
-        row = {"id": article.id, "timestamp": article.unix_timestamp, "title": article.title}
+        row = {"id": article.id, "timestamp": article.unix_timestamp, "title": article.title, "attributes": {}}
         attributes = parse_attributes(article.content)
         for attribute, value in attributes.items():
             if attribute not in cls._map:
+                row["attributes"][attribute] = value
                 continue
             column, func = cls._map[attribute]
             row[column] = func(value)
-        article.attributes = attributes
         return cls(**row)
 
 
@@ -29,6 +29,8 @@ class Model(metaclass=abc.ABCMeta):
     def __init__(self, **kwargs):
         for c in self.table.columns:
             setattr(self, c.name, kwargs.get(c.name, c.default))
+        if kwargs.get("attributes"):
+            self.attributes = kwargs.get("attributes")
 
     def __init_subclass__(cls, table=None):
         cls.table = table

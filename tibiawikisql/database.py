@@ -132,6 +132,9 @@ class Column:
         if self.auto_increment:
             self.primary_key = True
 
+        if self.primary_key:
+            self.nullable = False
+
         if not isinstance(self.column_type, Integer) and self.auto_increment:
             raise SchemaError('Only Integer columns can be auotincrement')
 

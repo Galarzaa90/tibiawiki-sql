@@ -2,7 +2,7 @@ import re
 
 from tibiawikisql import abc, schema
 from tibiawikisql.parsers.utils import parse_boolean, parse_integer, parse_maximum_integer, clean_links, \
-    parse_monster_walks
+    parse_monster_walks, parse_loot, parse_min_max
 
 
 class Creature(abc.Model, abc.Parseable, table=schema.Creature):
@@ -43,6 +43,25 @@ class Creature(abc.Model, abc.Parseable, table=schema.Creature):
     }
     _pattern = re.compile(r"Infobox[\s_]Creature")
 
+    @classmethod
+    def from_article(cls, article):
+        creature = super().from_article(article)
+        if creature is None:
+            return None
+        if "loot" in creature.attributes:
+            loot = parse_loot(creature.attributes["loot"])
+            loot_items = []
+            for item in loot:
+                if not item[0]:
+                    _min, _max = 0, 1
+                else:
+                    _min, _max = parse_min_max(item[0])
+                loot_items.append(CreatureDrop(creature_id=creature.id, name=item[1], min=_min, max=_max))
+            creature.loot = loot_items
+        return creature
+
 
 class CreatureDrop(abc.Model, table=schema.CreatureDrop):
-    pass
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.name = kwargs.get("name")
