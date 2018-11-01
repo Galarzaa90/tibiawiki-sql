@@ -102,6 +102,7 @@ class DatabaseInfo(Table, table_name="database_info"):
 
 class House(Table):
     id = Column(Integer, primary_key=True)
+    title = Column(Text)
     name = Column(Text)
     city = Column(Text)
     street = Column(Text)
@@ -115,7 +116,7 @@ class House(Table):
     z = Column(Integer)
     guildhall = Column(Integer)
     version = Column(Text)
-    timestamp = Column(Text)
+    timestamp = Column(Integer)
 
 
 class Imbuement(Table):

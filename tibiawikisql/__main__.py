@@ -33,6 +33,7 @@ categories = {
     "npcs": {"category": "NPCs", "model": models.Npc},
     "imbuements": {"category": "Imbuements", "model": models.Imbuement},
     "quests": {"category": "Quest Overview Pages", "model": models.Quest},
+    "house": {"category": "Player-Ownable Buildings", "model": models.House},
 }
 
 

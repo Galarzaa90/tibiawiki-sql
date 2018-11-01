@@ -85,6 +85,13 @@ CreatureDrop
    :members:
    :inherited-members:
 
+House
+-----------------
+.. autoclass:: tibiawikisql.models.House()
+   :members:
+   :inherited-members:
+
+
 Imbuement
 -----------------
 .. autoclass:: tibiawikisql.models.Imbuement()
