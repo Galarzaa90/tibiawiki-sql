@@ -5,6 +5,7 @@ from tibiawikisql.parsers.utils import parse_effect
 
 astral_pattern = re.compile(r"\s*([^:]+):\s*(\d+),*")
 
+
 def parse_astral_sources(content: str):
     materials = astral_pattern.findall(content)
     if materials:

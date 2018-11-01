@@ -68,7 +68,7 @@ class Item(Table):
     title = Column(Text)
     name = Column(Text)
     article = Column(Text)
-    stackable = Column(Integer, nullable=True)
+    stackable = Column(Boolean, nullable=True)
     value = Column(Integer)
     price = Column(Integer)
     weight = Column(Real)
@@ -91,7 +91,7 @@ class CreatureDrop(Table, table_name="creature_drop"):
 
 class ItemAttribute(Table, table_name="item_attribute"):
     item_id = Column(ForeignKey(Integer, "item", "id"))
-    attribute = Column(Text)
+    name = Column(Text)
     value = Column(Text)
 
 

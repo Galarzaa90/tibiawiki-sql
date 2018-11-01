@@ -103,6 +103,12 @@ Item
    :members:
    :inherited-members:
 
+ItemAttribute
+-----------------
+.. autoclass:: tibiawikisql.models.ItemAttribute()
+   :members:
+   :inherited-members:
+
 
 Key
 -----------------

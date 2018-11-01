@@ -97,7 +97,9 @@ class ForeignKey(SQLType):
         if not sql_type.is_real_type():
             raise SchemaError('sql_type must be a "real" type')
 
+        self.python = sql_type.python
         self.sql_type = sql_type.to_sql()
+
 
     def is_real_type(self):
         return False

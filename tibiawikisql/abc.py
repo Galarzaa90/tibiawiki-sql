@@ -1,7 +1,7 @@
 import abc
 
-from tibiawikisql.api import Article
-from tibiawikisql.parsers.utils import parse_attributes
+from .api import Article
+from .parsers.utils import parse_attributes
 
 
 class Parseable(Article, metaclass=abc.ABCMeta):
@@ -23,12 +23,12 @@ class Parseable(Article, metaclass=abc.ABCMeta):
 
         Parameters
         ----------
-        article: :class:`Article`
+        article: :class:`api.Article`
             The article from where the model is parsed.
 
         Returns
         -------
-        :class:`Type[Parseable]`
+        :class:`Type[abc.Parseable]`
             An inherited model object for the current article.
         """
         if cls.map is None:
