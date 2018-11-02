@@ -196,7 +196,7 @@ class NpcBuying(Table, table_name="npc_buying"):
     currency = Column(ForeignKey(Integer, "item", "id"))
 
 
-class NpcSelling(Table, table_name="npc_buying"):
+class NpcSelling(Table, table_name="npc_selling"):
     npc_id = Column(ForeignKey(Integer, "npc", "id"))
     item_id = Column(ForeignKey(Integer, "item", "id"))
     value = Column(Integer)
