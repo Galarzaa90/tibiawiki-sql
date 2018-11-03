@@ -205,7 +205,7 @@ class NpcSelling(Table, table_name="npc_selling"):
 
 class NpcDestination(Table, table_name="npc_destination"):
     npc_id = Column(ForeignKey(Integer, "npc", "id"))
-    destination = Column(Text)
+    name = Column(Text)
     price = Column(Integer)
     notes = Column(Text)
 

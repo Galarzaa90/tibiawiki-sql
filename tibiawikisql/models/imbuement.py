@@ -55,8 +55,5 @@ class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
         else:
             query = f"""INSERT INTO {self.table.__tablename__}({','.join(c.name for c in self.table.columns)})
                         VALUES(?, (SELECT id from item WHERE title = ?), ?)"""
-            try:
-                c.execute(query, (self.imbuement_id, self.name, self.amount))
-            except AttributeError:
-                print("here")
+            c.execute(query, (self.imbuement_id, self.name, self.amount))
 
