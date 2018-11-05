@@ -182,7 +182,7 @@ class Column:
             if isinstance(default, str) and isinstance(self.column_type, Text):
                 builder.append("'%s'" % default)
             elif isinstance(default, bool):
-                builder.append(str(default).upper())
+                builder.append(str(int(default)))
             else:
                 builder.append("%s" % default)
         elif self.primary_key:

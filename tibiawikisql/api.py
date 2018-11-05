@@ -82,7 +82,7 @@ class Image(WikiEntry):
     """
     def __init__(self, id_, title, *, timestamp=None, file_url=None):
         super().__init__(id_, title, timestamp)
-        self.url = file_url
+        self.file_url = file_url
 
     @property
     def extension(self):
@@ -96,6 +96,11 @@ class Image(WikiEntry):
     def file_name(self):
         """:class:`str`: The image's file name."""
         return self.title.replace("File:", "")
+
+    @property
+    def clean_name(self):
+        """:class:`str`: The image's name without extension and prefix."""
+        return self.file_name.replace(self.extension,"")
 
 
 class WikiClient:
@@ -224,10 +229,10 @@ class WikiClient:
             i += 50
             r = s.get(cls.ENDPOINT, params=params)
             data = json.loads(r.text)
-            print(r.url)
             for pageid, image in data["query"]["pages"].items():
                 if "missing" in image:
                     yield None
+                    continue
                 image = Image(image["pageid"], image["title"], timestamp=image["imageinfo"][0]["timestamp"],
                               file_url=image["imageinfo"][0]["url"])
                 yield image

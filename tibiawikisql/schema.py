@@ -121,6 +121,7 @@ class House(Table):
 
 class Imbuement(Table):
     id = Column(Integer, primary_key=True)
+    title = Column(Text)
     name = Column(Text)
     tier = Column(Text)
     type = Column(Text)
