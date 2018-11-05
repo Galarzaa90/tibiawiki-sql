@@ -191,16 +191,16 @@ class Npc(Table):
 
 class NpcBuying(Table, table_name="npc_buying"):
     npc_id = Column(ForeignKey(Integer, "npc", "id"))
-    item_id = Column(ForeignKey(Integer, "item", "id"))
-    value = Column(Integer)
-    currency = Column(ForeignKey(Integer, "item", "id"))
+    item_id = Column(ForeignKey(Integer, "item", "id"), nullable=False)
+    value = Column(Integer, nullable=False)
+    currency_id = Column(ForeignKey(Integer, "item", "id"), nullable=False)
 
 
 class NpcSelling(Table, table_name="npc_selling"):
     npc_id = Column(ForeignKey(Integer, "npc", "id"))
-    item_id = Column(ForeignKey(Integer, "item", "id"))
-    value = Column(Integer)
-    currency = Column(ForeignKey(Integer, "item", "id"))
+    item_id = Column(ForeignKey(Integer, "item", "id"), nullable=False)
+    value = Column(Integer, nullable=False)
+    currency_id = Column(ForeignKey(Integer, "item", "id"), nullable=False)
 
 
 class NpcDestination(Table, table_name="npc_destination"):
