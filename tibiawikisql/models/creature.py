@@ -60,8 +60,22 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
             creature.loot = loot_items
         return creature
 
+    def insert(self, c):
+        super().insert(c)
+        for attribute in getattr(self, "loot", []):
+            attribute.insert(c)
+
 
 class CreatureDrop(abc.Row, table=schema.CreatureDrop):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.name = kwargs.get("name")
+
+    def insert(self, c):
+        if getattr(self, "item_id", None):
+            super().insert(c)
+        else:
+            query = f"""INSERT INTO {self.table.__tablename__}(creature_id, item_id, min, max)
+                        VALUES(?, (SELECT id from item WHERE title = ?), ?, ?)"""
+            c.execute(query, (self.creature_id, self.name, self.min, self.max))
+

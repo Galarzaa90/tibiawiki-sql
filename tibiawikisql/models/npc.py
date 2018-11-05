@@ -73,9 +73,9 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                         sorcerer = True
                     else:
                         def in_jobs(vocation, _npc):
-                            return vocation in _npc.get("job", "").lower() \
-                                   or vocation in _npc.get("job2", "").lower() \
-                                   or vocation in _npc.get("job3", "").lower()
+                            return vocation in _npc.raw_attributes.get("job", "").lower() \
+                                   or vocation in _npc.raw_attributes.get("job2", "").lower() \
+                                   or vocation in _npc.raw_attributes.get("job3", "").lower()
                         knight = in_jobs("knight", npc)
                         paladin = in_jobs("paladin", npc)
                         druid = in_jobs("druid", npc)

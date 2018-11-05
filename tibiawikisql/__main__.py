@@ -27,8 +27,8 @@ def cli():
 categories = {
     "achievements": {"category": "Achievements", "model": models.Achievement},
     "spells": {"category": "Spells", "model": models.Spell},
-    "creatures": {"category": "Creatures", "model": models.Creature},
     "items": {"category": "Items", "model": models.Item},
+    "creatures": {"category": "Creatures", "model": models.Creature},
     "keys": {"category": "Keys", "model": models.Key},
     "npcs": {"category": "NPCs", "model": models.Npc},
     "imbuements": {"category": "Imbuements", "model": models.Imbuement},
