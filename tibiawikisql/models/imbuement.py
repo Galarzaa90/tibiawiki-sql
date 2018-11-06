@@ -1,7 +1,7 @@
 import re
 
 from tibiawikisql import schema, abc
-from tibiawikisql.parsers.utils import parse_effect
+from tibiawikisql.utils import parse_effect
 
 astral_pattern = re.compile(r"\s*([^:]+):\s*(\d+),*")
 

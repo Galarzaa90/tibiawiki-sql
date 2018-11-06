@@ -1,7 +1,7 @@
 import re
 
 from tibiawikisql import abc, schema
-from tibiawikisql.parsers.utils import parse_boolean, parse_integer, parse_maximum_integer, clean_links, \
+from tibiawikisql.utils import parse_boolean, parse_integer, parse_maximum_integer, clean_links, \
     parse_monster_walks, parse_loot, parse_min_max
 
 

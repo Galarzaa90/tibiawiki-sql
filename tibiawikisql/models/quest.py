@@ -2,7 +2,7 @@ import html
 import re
 
 from tibiawikisql import schema, abc
-from tibiawikisql.parsers.utils import parse_integer, parse_boolean, clean_links, parse_links
+from tibiawikisql.utils import parse_integer, parse_boolean, clean_links, parse_links
 
 
 class Quest(abc.Row, abc.Parseable, table=schema.Quest):

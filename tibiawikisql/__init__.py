@@ -1,3 +1,3 @@
-from . import abc
-from . import models
-from .api import WikiClient, WikiEntry, Article, Image
+from tibiawikisql import abc
+from tibiawikisql import models
+from tibiawikisql.api import WikiClient, WikiEntry, Article, Image

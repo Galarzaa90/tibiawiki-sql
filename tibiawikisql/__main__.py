@@ -6,8 +6,11 @@ import click
 import requests
 from colorama import init
 
-from tibiawikisql import WikiClient
+from tibiawikisql import WikiClient, abc
 from tibiawikisql import schema, models
+from tibiawikisql.models.charm import charms
+from tibiawikisql.models.npc import rashid_positions
+from tibiawikisql.utils import parse_loot_statistics, parse_min_max
 
 __version__ = "2.0.0"
 DATABASE_FILE = "tibia_database.db"
@@ -36,6 +39,7 @@ categories = {
     "imbuements": {"category": "Imbuements", "model": models.Imbuement, "extension": ".png"},
     "quests": {"category": "Quest Overview Pages", "model": models.Quest, "images": False},
     "house": {"category": "Player-Ownable Buildings", "model": models.House, "images": False},
+    "charm": {"model": models.Charm, "extension": ".png", "no_title": True},
 }
 
 
@@ -53,12 +57,17 @@ def generate(skip_images, db_name):
     get_articles("Deprecated", data_store)
 
     for key, value in categories.items():
-        get_articles(value["category"], data_store, key)
+        try:
+            get_articles(value["category"], data_store, key)
+        except KeyError:
+            pass
 
     print("Parsing articles...")
     for key, value in categories.items():
-        titles = [a.title for a in data_store[key]]
         model = value["model"]
+        if not issubclass(model, abc.Parseable):
+            continue
+        titles = [a.title for a in data_store[key]]
         unparsed = []
         start = time.perf_counter()
         generator = WikiClient.get_articles(titles)
@@ -76,6 +85,57 @@ def generate(skip_images, db_name):
             dt = (time.perf_counter() - start)
             print(f"\33[32m\tParsed articles in {dt:.2f} seconds.\033[0m")
 
+    for position in rashid_positions:
+        position.insert(conn)
+    for charm in charms:
+        charm.insert(conn)
+
+    c = conn.cursor()
+    try:
+        results = conn.execute("SELECT title FROM creature")
+        titles = [f"Loot Statistics:{t[0]}" for t in results]
+        start_time = time.perf_counter()
+        with progress_bar(WikiClient.get_articles(titles), "Fetching loot statistics", len(titles)) as bar:
+            for article in bar:
+                if article is None:
+                    continue
+                creature_title = article.title.replace("Loot Statistics:", "")
+                c.execute("SELECT id from creature WHERE title = ?", (creature_title,))
+                result = c.fetchone()
+                if result is None:
+                    # This could happen if a creature's article was deleted but its Loot Statistics weren't
+                    continue
+                creature_id = result[0]
+                # Most loot statistics contain stats for older versions too, we onl care about the latest version.
+                try:
+                    start = article.content.index("Loot2")
+                    end = article.content.index("}}", start)
+                    content = article.content[start:end]
+                except ValueError:
+                    # Article contains no loot
+                    continue
+                kills, loot_stats = parse_loot_statistics(content)
+                loot_items = []
+                for item, times, amount in loot_stats:
+                    c.execute("SELECT id FROM item WHERE title LIKE ?", (item,))
+                    result = c.fetchone()
+                    if result is None:
+                        continue
+                    item_id = result[0]
+                    percentage = min(int(times) / kills * 100, 100)
+                    _min, _max = parse_min_max(amount)
+                    loot_items.append((creature_id, item_id, percentage, _min, _max))
+                    # We delete any duplicate record that was added from the creature's article's loot if it exists
+                    c.execute("DELETE FROM creature_drop WHERE creature_id = ? AND item_id = ?",
+                              (creature_id, item_id))
+                c.executemany(f"INSERT INTO creature_drop(creature_id, item_id, chance, min, max) VALUES(?,?,?,?,?)",
+                              loot_items)
+        dt = (time.perf_counter() - start_time)
+        print(f"\33[32m\tParsed loot statistics in {dt:.2f} seconds.\033[0m")
+    finally:
+        conn.commit()
+        c.close()
+
     if not skip_images:
         with conn:
             for key, value in categories.items():
@@ -83,7 +143,10 @@ def generate(skip_images, db_name):
                     continue
                 extension = value.get("extension", ".gif")
                 table = value["model"].table.__tablename__
-                results = conn.execute(f"SELECT title FROM {table}")
+                if value.get("no_title", False):
+                    results = conn.execute(f"SELECT name FROM {table}")
+                else:
+                    results = conn.execute(f"SELECT title FROM {table}")
                 titles = [f"{r[0]}{extension}" for r in results]
                 os.makedirs(f"images/{table}", exist_ok=True)
                 cache_count = 0
@@ -106,10 +169,14 @@ def generate(skip_images, db_name):
                                 f.write(image_bytes)
                         except requests.HTTPError:
                             continue
-                        conn.execute(f"UPDATE {table} SET image = ? WHERE title = ?", (image_bytes, image.clean_name))
+                        if value.get("no_title", False):
+                            conn.execute(f"UPDATE {table} SET image = ? WHERE name = ?", (image_bytes, image.clean_name))
+                        else:
+                            conn.execute(f"UPDATE {table} SET image = ? WHERE title = ?", (image_bytes, image.clean_name))
                 dt = (time.perf_counter() - start)
                 print(f"\33[32m\tParsed {key} images in {dt:.2f} seconds."
                       f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
+            save_maps(conn)
 
 
 def get_articles(category, data_store, key=None):
@@ -123,6 +190,24 @@ def get_articles(category, data_store, key=None):
             data_store[key].append(article)
     dt = (time.perf_counter() - start)
     print(f"\33[32m\tFound {len(data_store[key]):,} articles in {dt:.2f} seconds.\033[0m")
+
+
+def save_maps(con):
+    url = "https://tibiamaps.github.io/tibia-map-data/floor-{0:02d}-map.png"
+    os.makedirs(f"images/map", exist_ok=True)
+    for z in range(16):
+        try:
+            with open(f"images/map/{z}.png", "rb") as f:
+                image = f.read()
+        except FileNotFoundError:
+            r = requests.get(url.format(z))
+            r.raise_for_status()
+            image = r.content
+            with open(f"images/map/{z}.png", "wb") as f:
+                f.write(image)
+        except requests.HTTPError:
+            continue
+        con.execute(f"INSERT INTO map(z, image) VALUES(?,?)", (z, image))
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 from tibiawikisql import schema, abc
-from tibiawikisql.parsers.utils import parse_integer, convert_tibiawiki_position
+from tibiawikisql.utils import parse_integer, convert_tibiawiki_position
 
 
 class House(abc.Row, abc.Parseable, table=schema.House):

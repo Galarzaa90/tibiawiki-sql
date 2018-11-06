@@ -1,7 +1,7 @@
 import abc
 
+from tibiawikisql.utils import parse_attributes
 from .api import Article
-from .parsers.utils import parse_attributes
 
 
 class Parseable(Article, metaclass=abc.ABCMeta):

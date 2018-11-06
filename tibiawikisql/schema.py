@@ -247,7 +247,6 @@ class QuestReward(Table, table_name="quest_reward"):
 
 class RashidPosition(Table, table_name="rashid_position"):
     day = Column(Integer, primary_key=True)
-    day_name = Column(Text)
     city = Column(Text)
     x = Column(Integer)
     y = Column(Integer)

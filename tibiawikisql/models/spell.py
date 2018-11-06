@@ -1,7 +1,7 @@
 import re
 
 from tibiawikisql import schema, abc
-from tibiawikisql.parsers.utils import parse_integer, parse_boolean
+from tibiawikisql.utils import parse_integer, parse_boolean
 
 
 class Spell(abc.Row, abc.Parseable, table=schema.Spell):

@@ -1,7 +1,7 @@
 import re
 
 from tibiawikisql import abc, schema
-from tibiawikisql.parsers.utils import parse_float, parse_boolean, parse_integer, clean_links
+from tibiawikisql.utils import parse_float, parse_boolean, parse_integer, clean_links
 
 
 class Item(abc.Row, abc.Parseable, table=schema.Item):

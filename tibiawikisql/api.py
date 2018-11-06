@@ -223,7 +223,7 @@ class WikiClient:
             "format": "json"
         }
         while True:
-            if i > len(names):
+            if i >= len(names):
                 break
             params["titles"] = "|".join("File:%s" % n for n in names[i:min(i+50, len(names))])
             i += 50
@@ -262,7 +262,7 @@ class WikiClient:
             "format": "json"
         }
         while True:
-            if i > len(names):
+            if i >= len(names):
                 break
             params["titles"] = "|".join(names[i:min(i+50, len(names))])
             i += 50
@@ -271,6 +271,7 @@ class WikiClient:
             for pageid, article in data["query"]["pages"].items():
                 if "missing" in article:
                     yield None
+                    continue
                 article = Article(article["pageid"], article["title"], timestamp=article["revisions"][0]["timestamp"],
                                   content=article["revisions"][0]["*"])
                 yield article

@@ -1,7 +1,7 @@
 import re
 
 from tibiawikisql import schema, abc
-from tibiawikisql.parsers.utils import parse_integer, parse_boolean, clean_links
+from tibiawikisql.utils import parse_integer, parse_boolean, clean_links
 
 
 class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
