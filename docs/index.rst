@@ -129,6 +129,19 @@ Npc
    :members:
    :inherited-members:
 
+NpcSellOffer
+-----------------
+.. autoclass:: tibiawikisql.models.NpcSellOffer()
+   :members:
+   :inherited-members:
+
+
+NpcBuyOffer
+-----------------
+.. autoclass:: tibiawikisql.models.NpcBuyOffer()
+   :members:
+   :inherited-members:
+
 
 Spell
 -----------------

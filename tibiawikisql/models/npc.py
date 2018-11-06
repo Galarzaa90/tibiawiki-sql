@@ -7,6 +7,37 @@ from tibiawikisql.parsers.utils import convert_tibiawiki_position, parse_item_of
 
 
 class Npc(abc.Row, abc.Parseable, table=schema.Npc):
+    """
+    Represents a non-playable character.
+
+    Attributes
+    ----------
+    id: :class:`int`
+        The id of the  containing article.
+    title: :class:`str`
+        The title of the containing article.
+    timestamp: :class:`int`
+        The last time the containing article was edited.
+    raw_attributes: :class:`dict`
+        A dictionary containing attributes that couldn't be parsed.
+    name: :class:`str`
+        The in-game name of the NPC.
+    job: :class:`str`
+        The NPC's job.
+    city: :class:`str`
+        The city where the NPC is located.
+    x: :class:`int`
+        The x coordinates of the NPC.
+    y: :class:`int`
+        The y coordinates of the NPC.
+    z: :class:`int`
+        The z coordinates of the NPC.
+    version: :class:`str`
+        The client version where the NPC was implemented.
+    image: :class:`bytes`
+        The npc's image in bytes.
+    sells: list[:class:`NpcSellOffer`]
+    """
     map = {
         "name": ("name", lambda x: x),
         "actualname": ("name", lambda x: x),
@@ -136,6 +167,9 @@ class NpcOffer:
 
 
 class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
+    """
+    Representes an item sellable by an NPC.
+    """
     def insert(self, c):
         try:
             if getattr(self, "item_id", None) and getattr(self, "value", None) and getattr(self, "currency_id", None):
