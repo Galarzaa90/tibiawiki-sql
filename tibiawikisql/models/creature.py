@@ -50,7 +50,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         Whether the creature can be illusioned into using `Creature Illusion`.
     pushable: :class:`bool`
         Whether the creature can be pushed or not.
-    see_invisible: :class:`bool`
+    sees_invisible: :class:`bool`
         Whether the creature can see invisible players or not.
     paralyzable: :class:`bool`
         Whether the creature can be paralyzed or not.
@@ -103,7 +103,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "convince": ("convince_cost", parse_integer),
         "illusionable": ("illusionable", parse_boolean),
         "pushable": ("pushable", parse_boolean),
-        "senseinvis": ("see_invisible", parse_boolean),
+        "senseinvis": ("sees_invisible", parse_boolean),
         "paraimmune": ("paralysable", lambda x: not parse_boolean(x, None)),
         "isboss": ("boss", parse_boolean),
         "physicalDmgMod": ("modifier_physical", parse_integer),
