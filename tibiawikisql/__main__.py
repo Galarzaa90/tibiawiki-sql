@@ -88,26 +88,28 @@ def generate(skip_images, db_name):
                 os.makedirs(f"images/{table}", exist_ok=True)
                 cache_count = 0
                 fetch_count = 0
+                start = time.perf_counter()
                 with progress_bar(WikiClient.get_images_info(titles), f"Fetching {key} images", len(titles)) as bar:
                     for image in bar:
                         if image is None:
                             continue
                         try:
-                            if os.path.exists(f"images/{table}/{image.file_name}"):
-                                with open(f"images/{table}/{image.file_name}", "rb") as f:
-                                    image_bytes = f.read()
-                                    cache_count += 1
-                            else:
-                                r = requests.get(image.file_url)
-                                r.raise_for_status()
-                                image_bytes = r.content
-                                fetch_count += 1
-                                with open(f"images/{table}/{image.file_name}", "wb") as f:
-                                    f.write(image_bytes)
-                            conn.execute(f"UPDATE {table} SET image = ? WHERE title = ?", (image_bytes, image.clean_name))
+                            with open(f"images/{table}/{image.file_name}", "rb") as f:
+                                image_bytes = f.read()
+                            cache_count += 1
+                        except FileNotFoundError:
+                            r = requests.get(image.file_url)
+                            r.raise_for_status()
+                            image_bytes = r.content
+                            fetch_count += 1
+                            with open(f"images/{table}/{image.file_name}", "wb") as f:
+                                f.write(image_bytes)
                         except requests.HTTPError:
-                            print(f"HTTP Error fetching image for {image.title}")
                             continue
+                        conn.execute(f"UPDATE {table} SET image = ? WHERE title = ?", (image_bytes, image.clean_name))
+                dt = (time.perf_counter() - start)
+                print(f"\33[32m\tParsed {key} images in {dt:.2f} seconds."
+                      f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
 
 
 def get_articles(category, data_store, key=None):

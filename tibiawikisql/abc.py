@@ -10,6 +10,17 @@ class Parseable(Article, metaclass=abc.ABCMeta):
     This class is inherited by Models that are parsed directly from a TibiaWiki article.
 
     Classes implementing this must override :py:attr:`map`
+
+    Attributes
+    ----------
+    id: :class:`int`
+        The id of the  containing article.
+    title: :class:`str`
+        The title of the containing article.
+    timestamp: :class:`int`
+        The last time the containing article was edited.
+    raw_attributes: :class:`dict`
+        A dictionary containing attributes that couldn't be parsed.
     """
     map = None
     """map: :class:`dict` A dictionary mapping the article's attributes to object attributes."""

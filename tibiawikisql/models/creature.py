@@ -6,6 +6,85 @@ from tibiawikisql.parsers.utils import parse_boolean, parse_integer, parse_maxim
 
 
 class Creature(abc.Row, abc.Parseable, table=schema.Creature):
+    """Represents a creature.
+
+    Attributes
+    ----------
+    id: :class:`int`
+        The id of the  containing article.
+    title: :class:`str`
+        The title of the containing article.
+    timestamp: :class:`int`
+        The last time the containing article was edited.
+    raw_attributes: :class:`dict`
+        A dictionary containing attributes that couldn't be parsed.
+    article: :class:`str`
+        The article that goes before the name when looking at the creature.
+    name: :class:`str`
+        The name of the creature, as displayed in-game.
+    class: :class:`str`
+        The creature's classification.
+    type: :class:`str`
+        The creature's type.
+    bestiary_class: :class:`str`
+        The creature's bestiary class, if applicable.
+    bestiary_level: :class:`str`
+        The creature's bestiary level, from 'Trivial' to 'Hard'
+    bestiary_occurrence: :class:`str`
+        The creature's bestiary occurrence, from 'Common'  to 'Very Rare'.
+    hitpoints: :class:`int`
+        The creature's hitpoints, may be `None` if unknown.
+    experience: :class:`int`
+        Experience points yielded by the creature. Might be `None` if unknown.
+    armor: :class:`int`
+        The creature's armor value.
+    speed: :class:`int`
+        The creature's speed value.
+    max_damage: :class:`int`
+        The maximum amount of damage the creature can do in a single turn.
+    summon_cost: :class:`int`
+        The mana needed to summon this creature. 0 if not summonable.
+    convince_cost: :class:`int`
+        The mana needed to convince this creature. 0 if not convincible.
+    illusionable: :class:`bool`
+        Whether the creature can be illusioned into using `Creature Illusion`.
+    pushable: :class:`bool`
+        Whether the creature can be pushed or not.
+    see_invisible: :class:`bool`
+        Whether the creature can see invisible players or not.
+    paralyzable: :class:`bool`
+        Whether the creature can be paralyzed or not.
+    boss: :class:`bool`
+        Whether the creature is a boss or not.
+    modifier_physical: :class:`int`
+        The percentage of damage received of physical damage. `None` if unknown.
+    modifier_earth: :class:`int`
+        The percentage of damage received of earth damage. `None` if unknown.
+    modifier_fire: :class:`int`
+        The percentage of damage received of fire damage. `None` if unknown.
+    modifier_energy: :class:`int`
+        The percentage of damage received of energy damage. `None` if unknown.
+    modifier_ice: :class:`int`
+        The percentage of damage received of ice damage. `None` if unknown.
+    modifier_death: :class:`int`
+        The percentage of damage received of death damage. `None` if unknown.
+    modifier_holy: :class:`int`
+        The percentage of damage received of holy damage. `None` if unknown.
+    modifier_drown: :class:`int`
+        The percentage of damage received of drown damage. `None` if unknown.
+    modifier_lifedrain: :class:`int`
+        The percentage of damage received of life drain damage. `None` if unknown.
+    abilities: :class:`str`
+        A brief description of the creature's abilities.
+    walks_through: :class:`str`
+        The field types the creature will walk through, separated by commas.
+    walks_around: :class:`str`
+        The field types the creature will walk around, separated by commas.
+    version: :class:`str`
+        The client version where this creature was first implemented.
+    image: :class:`bytes`
+        The creature's image in bytes.
+    """
     map = {
         "name": ("title", lambda x: x),
         "article": ("article", lambda x: x),
@@ -27,15 +106,15 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "senseinvis": ("see_invisible", lambda x: parse_boolean(x)),
         "paraimmune": ("paralysable", lambda x: parse_boolean(x, negated=True)),
         "isboss": ("boss", lambda x: parse_boolean(x)),
-        "physicalDmgMod": ("modifer_physical", lambda x: parse_integer(x)),
-        "earthDmgMod": ("modifer_earth", lambda x: parse_integer(x)),
-        "fireDmgMod": ("modifer_fire", lambda x: parse_integer(x)),
-        "iceDmgMod": ("modifer_ice", lambda x: parse_integer(x)),
-        "energyDmgMod": ("modifer_energy", lambda x: parse_integer(x)),
-        "deathDmgMod": ("modifer_death", lambda x: parse_integer(x)),
-        "holyDmgMod": ("modifer_holy", lambda x: parse_integer(x)),
-        "drownDmgMod": ("modifer_drown", lambda x: parse_integer(x)),
-        "hpDrainDmgMod": ("modifer_hpdrain", lambda x: parse_integer(x)),
+        "physicalDmgMod": ("modifier_physical", lambda x: parse_integer(x)),
+        "earthDmgMod": ("modifier_earth", lambda x: parse_integer(x)),
+        "fireDmgMod": ("modifier_fire", lambda x: parse_integer(x)),
+        "iceDmgMod": ("modifier_ice", lambda x: parse_integer(x)),
+        "energyDmgMod": ("modifier_energy", lambda x: parse_integer(x)),
+        "deathDmgMod": ("modifier_death", lambda x: parse_integer(x)),
+        "holyDmgMod": ("modifier_holy", lambda x: parse_integer(x)),
+        "drownDmgMod": ("modifier_drown", lambda x: parse_integer(x)),
+        "hpDrainDmgMod": ("modifier_hpdrain", lambda x: parse_integer(x)),
         "abilities": ("abilities", lambda x: clean_links(x)),
         "walksthrough": ("walks_through", lambda x: parse_monster_walks(x)),
         "walksaround": ("walks_around", lambda x: parse_monster_walks(x)),
@@ -45,6 +124,21 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
 
     @classmethod
     def from_article(cls, article):
+        """
+        Parses an article into a TibiaWiki model.
+
+        This method is overridden to parse extra attributes like loot.
+
+        Parameters
+        ----------
+        article: :class:`api.Article`
+            The article from where the model is parsed.
+
+        Returns
+        -------
+        :class:`Creature`
+            The creature represented by the current article.
+        """
         creature = super().from_article(article)
         if creature is None:
             return None
@@ -56,26 +150,67 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
                     _min, _max = 0, 1
                 else:
                     _min, _max = parse_min_max(item[0])
-                loot_items.append(CreatureDrop(creature_id=creature.id, name=item[1], min=_min, max=_max))
+                loot_items.append(CreatureDrop(creature_id=creature.id, item_name=item[1], min=_min, max=_max))
             creature.loot = loot_items
         return creature
 
     def insert(self, c):
+        """
+        Inserts the current model into its respective database.
+
+        This method is overridden to insert elements of child rows.
+
+        Parameters
+        ----------
+        c: Union[:class:`sqlite3.Cursor`, :class:`sqlite3.Connection`]
+            A cursor or connection of the database.
+        """
         super().insert(c)
         for attribute in getattr(self, "loot", []):
             attribute.insert(c)
 
 
 class CreatureDrop(abc.Row, table=schema.CreatureDrop):
+    """
+    Represents an item dropped by a creature.
+
+    Attributes
+    ----------
+    creature_id: :class:`int`
+        The article id of the creature the drop belongs to.
+    creature_name: :class:`str`
+        The name of the creature that drops the item.
+    item_id: :class:`int`
+        The article id of the item.
+    item_name: :class:`str`
+        The name of the dropped item.
+    min: :class:`int`
+        The minimum possible amount of the dropped item.
+    max: :class:`int`
+        The maximum possible amount of the dropped item.
+    chance: :class:`float`
+        The chance percentage of getting this item dropped by this creature.
+    """
+    __slots__ = {"creature_id", "creature_name", "item_id", "item_name", "min", "max", "chance"}
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.name = kwargs.get("name")
+        self.item_name = kwargs.get("item_name")
 
     def insert(self, c):
+        """Inserts the current model into its respective database.
+
+        Overridden to insert using a subquery to get the item's id from the name.
+
+        Parameters
+        ----------
+        c: Union[:class:`sqlite3.Cursor`, :class:`sqlite3.Connection`]
+            A cursor or connection of the database.
+        """
         if getattr(self, "item_id", None):
             super().insert(c)
         else:
             query = f"""INSERT INTO {self.table.__tablename__}(creature_id, item_id, min, max)
                         VALUES(?, (SELECT id from item WHERE title = ?), ?, ?)"""
-            c.execute(query, (self.creature_id, self.name, self.min, self.max))
+            c.execute(query, (self.creature_id, self.item_name, self.min, self.max))
 
