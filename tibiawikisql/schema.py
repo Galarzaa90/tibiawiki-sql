@@ -102,6 +102,7 @@ class DatabaseInfo(Table, table_name="database_info"):
 
 class House(Table):
     id = Column(Integer, primary_key=True)
+    house_id = Column(Integer)
     title = Column(Text)
     name = Column(Text)
     city = Column(Text)
@@ -138,6 +139,8 @@ class ImbuementMaterial(Table, table_name="imbuement_material"):
 
 
 class ItemKey(Table, table_name="item_key"):
+    id = Column(Integer)
+    title = Column(Text)
     number = Column(Integer, primary_key=True)
     item_id = Column(ForeignKey(Integer, "item", "id"))
     name = Column(Text)

@@ -57,23 +57,23 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
     boss: :class:`bool`
         Whether the creature is a boss or not.
     modifier_physical: :class:`int`
-        The percentage of damage received of physical damage. `None` if unknown.
+        The percentage of damage received of physical damage. ``None`` if unknown.
     modifier_earth: :class:`int`
-        The percentage of damage received of earth damage. `None` if unknown.
+        The percentage of damage received of earth damage. ``None`` if unknown.
     modifier_fire: :class:`int`
-        The percentage of damage received of fire damage. `None` if unknown.
+        The percentage of damage received of fire damage. ``None`` if unknown.
     modifier_energy: :class:`int`
-        The percentage of damage received of energy damage. `None` if unknown.
+        The percentage of damage received of energy damage. ``None`` if unknown.
     modifier_ice: :class:`int`
-        The percentage of damage received of ice damage. `None` if unknown.
+        The percentage of damage received of ice damage. ``None`` if unknown.
     modifier_death: :class:`int`
-        The percentage of damage received of death damage. `None` if unknown.
+        The percentage of damage received of death damage. ``None`` if unknown.
     modifier_holy: :class:`int`
-        The percentage of damage received of holy damage. `None` if unknown.
+        The percentage of damage received of holy damage. ``None`` if unknown.
     modifier_drown: :class:`int`
-        The percentage of damage received of drown damage. `None` if unknown.
+        The percentage of damage received of drown damage. ``None`` if unknown.
     modifier_lifedrain: :class:`int`
-        The percentage of damage received of life drain damage. `None` if unknown.
+        The percentage of damage received of life drain damage. ``None`` if unknown.
     abilities: :class:`str`
         A brief description of the creature's abilities.
     walks_through: :class:`str`
@@ -98,26 +98,26 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "exp": ("experience", lambda x: parse_integer(x, None)),
         "armor": ("armor", lambda x: parse_integer(x, None)),
         "speed": ("speed", lambda x: parse_integer(x, None)),
-        "maxdmg": ("max_damage", lambda x: parse_maximum_integer(x)),
-        "summon": ("summon_cost", lambda x: parse_integer(x)),
-        "convince": ("convince_cost", lambda x: parse_integer(x)),
-        "illusionable": ("illusionable", lambda x: parse_boolean(x)),
-        "pushable": ("pushable", lambda x: parse_boolean(x)),
-        "senseinvis": ("see_invisible", lambda x: parse_boolean(x)),
-        "paraimmune": ("paralysable", lambda x: parse_boolean(x, negated=True)),
-        "isboss": ("boss", lambda x: parse_boolean(x)),
-        "physicalDmgMod": ("modifier_physical", lambda x: parse_integer(x)),
-        "earthDmgMod": ("modifier_earth", lambda x: parse_integer(x)),
-        "fireDmgMod": ("modifier_fire", lambda x: parse_integer(x)),
-        "iceDmgMod": ("modifier_ice", lambda x: parse_integer(x)),
-        "energyDmgMod": ("modifier_energy", lambda x: parse_integer(x)),
-        "deathDmgMod": ("modifier_death", lambda x: parse_integer(x)),
-        "holyDmgMod": ("modifier_holy", lambda x: parse_integer(x)),
-        "drownDmgMod": ("modifier_drown", lambda x: parse_integer(x)),
-        "hpDrainDmgMod": ("modifier_hpdrain", lambda x: parse_integer(x)),
-        "abilities": ("abilities", lambda x: clean_links(x)),
-        "walksthrough": ("walks_through", lambda x: parse_monster_walks(x)),
-        "walksaround": ("walks_around", lambda x: parse_monster_walks(x)),
+        "maxdmg": ("max_damage", parse_maximum_integer),
+        "summon": ("summon_cost", parse_integer),
+        "convince": ("convince_cost", parse_integer),
+        "illusionable": ("illusionable", parse_boolean),
+        "pushable": ("pushable", parse_boolean),
+        "senseinvis": ("see_invisible", parse_boolean),
+        "paraimmune": ("paralysable", lambda x: not parse_boolean(x, None)),
+        "isboss": ("boss", parse_boolean),
+        "physicalDmgMod": ("modifier_physical", parse_integer),
+        "earthDmgMod": ("modifier_earth", parse_integer),
+        "fireDmgMod": ("modifier_fire", parse_integer),
+        "iceDmgMod": ("modifier_ice", parse_integer),
+        "energyDmgMod": ("modifier_energy", parse_integer),
+        "deathDmgMod": ("modifier_death", parse_integer),
+        "holyDmgMod": ("modifier_holy", parse_integer),
+        "drownDmgMod": ("modifier_drown", parse_integer),
+        "hpDrainDmgMod": ("modifier_hpdrain", parse_integer),
+        "abilities": ("abilities", clean_links),
+        "walksthrough": ("walks_through", parse_monster_walks),
+        "walksaround": ("walks_around", parse_monster_walks),
         "implemented": ("version", lambda x: x)
     }
     pattern = re.compile(r"Infobox[\s_]Creature")

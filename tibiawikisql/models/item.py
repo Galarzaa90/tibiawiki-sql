@@ -35,15 +35,15 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     map = {
         "article": ("article", lambda x: x),
         "actualname": ("name", lambda x: x),
-        "weight": ("weight", lambda x: parse_float(x)),
-        "stackable": ("stackable", lambda x: parse_boolean(x)),
-        "npcvalue": ("value", lambda x: parse_integer(x)),
-        "npcprice": ("price", lambda x: parse_integer(x)),
+        "weight": ("weight", parse_float),
+        "stackable": ("stackable", parse_boolean),
+        "npcvalue": ("value", parse_integer),
+        "npcprice": ("price", parse_integer),
         "flavortext": ("flavor_text", lambda x: x),
         "itemclass": ("class", lambda x: x),
         "primarytype": ("type", lambda x: x),
         "implemented": ("version", lambda x: x),
-        "itemid": ("client_id", lambda x: parse_integer(x))
+        "itemid": ("client_id", parse_integer)
     }
     pattern = re.compile(r"Infobox[\s_]Item")
 
@@ -65,16 +65,59 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
 
 
 class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
+    """
+    Represents a key item.
+
+    Attributes
+    ----------
+    id: :class:`int`
+        The id of the  containing article.
+    title: :class:`str`
+        The title of the containing article.
+    timestamp: :class:`int`
+        The last time the containing article was edited.
+    raw_attributes: :class:`dict`
+        A dictionary containing attributes that couldn't be parsed.
+    name: :class:`str`
+        The name of the creature, as displayed in-game.
+    number: :class:`int`
+        The key's number.
+    item_id: :class:`int`
+        The article id of the item this key is based on.
+    material: :class:`str`
+        The key's material.
+    location: :class:`str`
+        The key's location-
+    notes: :class:`str`
+        Notes about the key.
+    origin: :class:`str
+        Notes about the origin of the key.
+    version: :class:`str`
+        The client version where this creature was first implemented.
+    """
+    __slots__ = {"id", "title", "timestamp", "raw_attributes", "name", "number", "item_id", "material",
+                 "notes", "origin", "version", "location"}
     map = {
-        "aka": ("name", lambda x: clean_links(x)),
-        "number": ("number", lambda x: int(x)),
+        "aka": ("name", clean_links),
+        "number": ("number", int),
         "primarytype": ("material", lambda x: x),
-        "location": ("location", lambda x: clean_links(x)),
-        "origin": ("origin", lambda x: clean_links(x)),
-        "shortnotes": ("notes", lambda x: clean_links(x)),
+        "location": ("location", clean_links),
+        "origin": ("origin", clean_links),
+        "shortnotes": ("notes", clean_links),
         "implemented": ("version", lambda x: x),
     }
     pattern = re.compile(r"Infobox[\s_]Key")
+
+    def insert(self, c):
+        if getattr(self, "item_id", None):
+            super().insert(c)
+            return
+        else:
+            query = f"""INSERT INTO {self.table.__tablename__}(id, title, number, item_id, name, material, 
+                        location, origin, notes, version, timestamp)
+                        VALUES(?, ?, ?, (SELECT id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?)"""
+            c.execute(query, (self.id, self.title, self.number, self.material + " Key", self.name, self.material,
+                              self.location, self.origin, self.notes, self.version, self.timestamp))
 
 
 class ItemAttribute(abc.Row, table=schema.ItemAttribute):
@@ -118,6 +161,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "food_time": "regenseconds",
         "duration": "duration",
     }
+    __slots__ = {"item_id", "name", "value"}
 
     def insert(self, c):
         columns = dict(item_id=self.item_id, name=self.name, value=str(self.value))

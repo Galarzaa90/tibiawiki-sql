@@ -72,7 +72,22 @@ def parse_min_max(value):
         return 0, parse_integer(value, 1)
 
 
-def parse_integer(value: str, default=0):
+def parse_integer(value, default=0):
+    """
+    Parses an integer from a string. Extra characters are ignored.
+
+    Parameters
+    ----------
+    value:  :class:`str`
+        The string containing an integer.
+    default: :class:`int`, optional
+        The value to return if no integer is found.
+
+    Returns
+    -------
+    :class:`int`:
+        The numeric value found, or the default value provided.
+    """
     if value is None:
         return default
     match = int_pattern.search(value)
@@ -82,7 +97,21 @@ def parse_integer(value: str, default=0):
         return default
 
 
-def parse_float(value: str, default=0):
+def parse_float(value, default=0):
+    """
+    From a string, parses a floating value.
+    Parameters
+    ----------
+    value: :class:`str`
+        The string containing the floating number.
+    default: :class:`float`, optional
+        The value to return if no float is found.
+
+    Returns
+    -------
+    :class:`float`
+        The floating number found, or the default value provided.
+    """
     if value is None:
         return default
     match = float_pattern.search(value)
@@ -92,7 +121,19 @@ def parse_float(value: str, default=0):
         return default
 
 
-def parse_maximum_integer(value: str) -> Optional[int]:
+def parse_maximum_integer(value):
+    """
+    From a string, finds the highest integer found.
+    Parameters
+    ----------
+    value: :class:`str`
+        The string containing integers.
+
+    Returns
+    -------
+    :class:`int`, optional:
+        The highest number found, or None if no number is found.
+    """
     if value is None:
         return None
     matches = int_pattern.findall(value)
@@ -102,15 +143,46 @@ def parse_maximum_integer(value: str) -> Optional[int]:
         return None
 
 
-def parse_boolean(value: str, negated=False) -> Optional[bool]:
+def parse_boolean(value: str, default=False):
+    """
+    Parses a boolean value from a string.
+    String must contain "yes" to be considered True.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        The string containing an integer.
+    default: :class:`bool`, optional
+        The value to return if no boolean string is found.
+
+    Returns
+    -------
+    :class:`bool`
+        The boolean value parsed in the string, or default if it doesn't match yes or no.
+    """
     value = value.strip().lower()
     if value == "yes":
-        return not negated
+        return True
+    elif value == "no":
+        return False
     else:
-        return negated
+        return default
 
 
 def clean_links(content):
+    """
+    Removes any links from the string, changing them for their plan version.
+
+    Parameters
+    ----------
+    content: :class:`str`
+        The string to clean.
+
+    Returns
+    -------
+    :class:`str`:
+        The clean string, with no links.
+    """
     if content is None:
         return None
     # Named links
@@ -175,10 +247,21 @@ def parse_spells(value):
     return result
 
 
-def convert_tibiawiki_position(pos) -> int:
+def convert_tibiawiki_position(pos):
     """Converts from TibiaWiki position system to regular numeric coordinates
 
-    TibiaWiki takes the coordinates and splits in two bytes, represented in decimal, separated by a period."""
+    TibiaWiki takes the coordinates and splits in two bytes, represented in decimal, separated by a period.
+
+    Parameters
+    ----------
+    pos : :class:`str`
+        A string containing a coordinate.
+
+    Returns
+    -------
+    :class:`int`
+        The coordinate value.
+    """
     position_splits = pos.strip().split(".")
     try:
         coordinate = int(position_splits[0]) << 8
@@ -194,6 +277,18 @@ def parse_links(value):
 
 
 def parse_effect(effect):
+    """Parses TibiaWiki's effect template into a string effect.
+
+    Parameters
+    ----------
+    effect: class:`str`
+        The string containing the template.
+
+    Returns
+    -------
+    :class:`str`:
+        The effect string.
+    """
     m = effect_pattern.search(effect)
     category, amount = m.groups()
     if category == "Bash":
@@ -249,15 +344,26 @@ def parse_astral_sources(content: str) -> Dict[str, int]:
         return {item: int(amount) for (item, amount) in materials}
 
 
-def parse_monster_walks(value: str):
-    """Matches the values against a regex to filter typos or bad data on the wiki. Element names followed by any
-    character that is not a comma will be considered unknown and will not be returned.
+def parse_monster_walks(value):
+    """
+    Matches the values against a regex to filter typos or bad data on the wiki.
+    Element names followed by any character that is not a comma will be considered unknown and will not be returned.
 
     Examples\:
-        - "Poison?, fire" will return fire.
-        - "Poison?, fire." will return neither.
-        - "Poison, earth, fire?, [[ice]]" will return poison and earth.
-        - "No", "--", ">", or "None" will return None.
+        - ``Poison?, fire`` will return ``fire``.
+        - ``Poison?, fire.`` will return neither.
+        - ``Poison, earth, fire?, [[ice]]`` will return ``poison,earth``.
+        - ``No``, ``--``, ``>``, or ``None`` will return ``None``.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        The string containing possible field types.
+
+    Returns
+    -------
+    :class:`str`, optional
+        A list of field types, separated by commas.
     """
     regex = re.compile(r"(physical)(,|$)|(holy)(,|$)|(death)(,|$)|(fire)(,|$)|(ice)(,|$)|(energy)(,|$)|(earth)(,|$)|"
                        r"(poison)(,|$)")

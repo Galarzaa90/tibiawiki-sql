@@ -135,3 +135,9 @@ Spell
 .. autoclass:: tibiawikisql.models.Spell()
    :members:
    :inherited-members:
+
+
+Utility Functions
+=================
+.. automodule:: tibiawikisql.parsers.utils
+    :members:

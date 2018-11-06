@@ -19,7 +19,7 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
     raw_attributes: :class:`dict`
         A dictionary containing attributes that couldn't be parsed.
     name: :class:`str`
-        The achivement's name.
+        The achievement's name.
     grade: :class:`int`
         The achievement's grade, from 1 to 3. Also know as 'stars'.
     points: :class:`int`
@@ -34,14 +34,16 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         The client version where this was first implemented.
     """
     map = {
-        "name": ("name", lambda x: x),
-        "actualname": ("name", lambda x: x),
+        "name": ("name", lambda x: x.strip()),
+        "actualname": ("name", lambda x: x.strip()),
         "grade": ("grade", lambda x: parse_integer(x, None)),
         "points": ("points", lambda x: parse_integer(x, None)),
-        "premium": ("premium", lambda x: parse_boolean(x)),
-        "description": ("description", lambda x: x),
-        "spoiler": ("spoiler", lambda x: clean_links(x)),
-        "secret": ("secret", lambda x: parse_boolean(x)),
+        "premium": ("premium", parse_boolean),
+        "description": ("description", lambda x: x.strip()),
+        "spoiler": ("spoiler", clean_links),
+        "secret": ("secret", parse_boolean),
         "implemented": ("version", lambda x: x),
     }
     pattern = re.compile(r"Infobox[\s_]Achievement")
+    __slots__ = {"id", "title", "timestamp", "raw_attributes", "name", "grade", "points", "description",
+                 "spoiler", "secret", "version"}
