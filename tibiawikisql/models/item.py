@@ -21,8 +21,10 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         The article that goes before the name when looking at the item.
     stackable: :class:`bool`
         Whether the item can be stacked or not.
-    value: :class:`value`
-        The NPC value of this item.
+    value: :class:`int`
+        The highest price an NPC will buy this item for.
+    price: :class:`int`
+        The lowest price an NPC will sell this item for.
     class: :class:`str`
         The item class the item belongs to.
     type: :class:`str`

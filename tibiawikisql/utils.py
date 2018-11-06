@@ -29,8 +29,30 @@ npc_destinations = re.compile(r"\|([^,]+),\s?(\d+)(?:;\s?([^|]+))?")
 astral_pattern = re.compile(r"\s*([^:]+):\s*(\d+),*")
 effect_pattern = re.compile(r"Effect/([^|]+)\|([^}|]+)")
 
+ilink_pattern = re.compile(r"{{Ilink\|([^}]+)}}")
 
-def parse_item_offers(value: str) -> List:
+
+def remove_ilinks(value):
+    return ilink_pattern.sub("[[\g<1>]]", value)
+
+
+def parse_item_offers(value):
+    """
+    Parses NPC item offers into a list of tuples.
+
+    The tuple contains the item's name, price and currency.
+    Price and currency may not be present.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        The string  containing NPC offers.
+
+    Returns
+    -------
+    list(:class:`tuple`)
+        A list of tuples containing the parsed offers.
+    """
     match = price_to_template.search(value)
     if match:
         return npc_offers.findall(match.group(1))
@@ -39,7 +61,19 @@ def parse_item_offers(value: str) -> List:
 
 
 def parse_item_trades(value: str) -> List:
+    """
+    Parses an NPC
+
+    Parameters
+    ----------
+    value
+
+    Returns
+    -------
+
+    """
     result = []
+    value = remove_ilinks(value)
     for note, trades in trades_sell_template.findall(value):
         result.extend(npc_trades.findall(trades))
     return result
@@ -124,6 +158,7 @@ def parse_float(value, default=0):
 def parse_maximum_integer(value):
     """
     From a string, finds the highest integer found.
+
     Parameters
     ----------
     value: :class:`str`

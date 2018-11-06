@@ -68,7 +68,7 @@ class Item(Table):
     title = Column(Text)
     name = Column(Text)
     article = Column(Text)
-    stackable = Column(Boolean, nullable=True)
+    stackable = Column(Boolean, default=False)
     value = Column(Integer)
     price = Column(Integer)
     weight = Column(Real)

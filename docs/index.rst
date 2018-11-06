@@ -181,5 +181,5 @@ Spell
 
 Utility Functions
 =================
-.. automodule:: tibiawikisql.parsers.utils
-    :members:
+.. automodule:: tibiawikisql.utils
+   :members:

@@ -92,10 +92,10 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                 item = item.split(";")[0]
                 value = None
                 if price.strip():
-                    value = int(price)
+                    value = abs(int(price))
                 if not currency.strip():
                     currency = "Gold Coin"
-                npc.selling.append(NpcSellOffer(item_name=item.strip(), currency_name=currency,value=value, npc_id=npc.id))
+                npc.selling.append(NpcSellOffer(item_name=item.strip(), currency_name=currency, value=value, npc_id=npc.id))
             spell_list = parse_spells(npc.raw_attributes["sells"])
             npc.teachable_spells = []
             for group, spells in spell_list:
@@ -260,7 +260,7 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
                                         VALUES(
                                         ?,
                                         (SELECT id from item WHERE title = ?),
-                                        (SELECT price from item WHERE title = ?),
+                                        (SELECT value from item WHERE title = ?),
                                         (SELECT id from item WHERE title = ?))"""
                 c.execute(query, (self.npc_id, self.item_name, self.item_name, self.currency_name))
         except sqlite3.IntegrityError:
