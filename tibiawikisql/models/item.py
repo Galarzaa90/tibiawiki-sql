@@ -10,11 +10,11 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     Attributes
     ----------
     id: :class:`int`
-        The article id of this item.
+        The id of the  containing article.
     title: :class:`str`
-        The title of the article containing this item.
-    timestamp:
-        The last time the item was edited.
+        The title of the containing article.
+    timestamp: :class:`int`
+        The last time the containing article was edited.
     name: :class:`str`
         The in-game name of the item.
     article: :class:`str`

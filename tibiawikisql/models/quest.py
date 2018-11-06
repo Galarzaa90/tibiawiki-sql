@@ -6,13 +6,37 @@ from tibiawikisql.parsers.utils import parse_integer, parse_boolean, clean_links
 
 
 class Quest(abc.Row, abc.Parseable, table=schema.Quest):
+    """
+    Represents a quest
+
+    Attributes
+    ----------
+    id: :class:`int`
+        The id of the  containing article.
+    title: :class:`str`
+        The title of the containing article.
+    timestamp: :class:`int`
+        The last time the containing article was edited.
+    name: :class:`str`
+        The name of the quest.
+    location: :class:`str`
+        The location of the quest.
+    legend: :class:`str
+        The legend of the quest.
+    level_required: :class:`int`
+        The level required to finish the quest.
+    level_recommended: :class:`int^
+        The recommended level to finish the quest.
+    version: :class:`str`
+        The client version where this item was first implemented.
+    """
     map = {
-        "name": ("name", lambda x: html.unescape(x)),
-        "location": ("location", lambda x: clean_links(x)),
-        "legend": ("legend", lambda x: clean_links(x)),
-        "lvl": ("level_required", lambda x: parse_integer(x)),
-        "lvlrec": ("level_recommended", lambda x: parse_integer(x)),
-        "premium": ("premium", lambda x: parse_boolean(x)),
+        "name": ("name", html.unescape),
+        "location": ("location", clean_links),
+        "legend": ("legend", clean_links),
+        "lvl": ("level_required", parse_integer),
+        "lvlrec": ("level_recommended", parse_integer),
+        "premium": ("premium", parse_boolean),
         "implemented": ("version", lambda x: x),
     }
     pattern = re.compile(r"Infobox[\s_]Quest")
@@ -43,6 +67,19 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
 
 
 class QuestReward(abc.Row, table=schema.QuestReward):
+    """Represents an item obtained in the quest.
+
+    Attributes
+    ----------
+    quest_id: :class:`int`
+        The article id of the quest.
+    item_id: :class:`int`
+        The article id of the rewarded item.
+    item_name: :class:`str`
+        The name of the rewarded item.
+    """
+    __slots__ = ("quest_id", "item_id", "item_name")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.item_name = kwargs.get("item_name")
@@ -57,6 +94,19 @@ class QuestReward(abc.Row, table=schema.QuestReward):
 
 
 class QuestDanger(abc.Row, table=schema.QuestDanger):
+    """Represents a creature found in the quest.
+
+        Attributes
+        ----------
+        quest_id: :class:`int`
+            The article id of the quest.
+        creature_id: :class:`int`
+            The article id of the found creature.
+        creature_name: :class:`str`
+            The name of the found creature.
+        """
+    __slots__ = ("quest_id", "creature_id", "creature_name")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.creature_name = kwargs.get("creature_name")

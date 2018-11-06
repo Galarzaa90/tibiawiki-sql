@@ -129,12 +129,11 @@ Npc
    :members:
    :inherited-members:
 
-NpcSellOffer
+NpcDestination
 -----------------
-.. autoclass:: tibiawikisql.models.NpcSellOffer()
+.. autoclass:: tibiawikisql.models.NpcDestination()
    :members:
    :inherited-members:
-
 
 NpcBuyOffer
 -----------------
@@ -142,6 +141,36 @@ NpcBuyOffer
    :members:
    :inherited-members:
 
+NpcSellOffer
+-----------------
+.. autoclass:: tibiawikisql.models.NpcSellOffer()
+   :members:
+   :inherited-members:
+
+
+NpcSpell
+-----------------
+.. autoclass:: tibiawikisql.models.NpcSpell()
+   :members:
+   :inherited-members:
+
+Quest
+-----------------
+.. autoclass:: tibiawikisql.models.Quest()
+   :members:
+   :inherited-members:
+
+QuestDanger
+-----------------
+.. autoclass:: tibiawikisql.models.QuestDanger()
+   :members:
+   :inherited-members:
+
+QuestReward
+-----------------
+.. autoclass:: tibiawikisql.models.QuestReward()
+   :members:
+   :inherited-members:
 
 Spell
 -----------------

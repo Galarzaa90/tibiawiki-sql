@@ -1,6 +1,6 @@
 import re
 
-from typing import Optional, Dict, List
+from typing import Dict, List
 
 creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
 min_max_pattern = re.compile(r"(\d+)-(\d+)")
@@ -273,6 +273,19 @@ def convert_tibiawiki_position(pos):
 
 
 def parse_links(value):
+    """
+    Finds all the links in a string and returns a list of them.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        A string containing links.
+
+    Returns
+    -------
+    list(:class:`str`):
+        The links found in the string.
+    """
     return list(link_pattern.findall(value))
 
 

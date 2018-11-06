@@ -37,6 +37,13 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
     image: :class:`bytes`
         The npc's image in bytes.
     sells: list[:class:`NpcSellOffer`]
+        Items sold by the NPC.
+    buys: list[:class:`NpcSellOffer`]
+        Items bought by the NPC.
+    destinations: list[:class:`NpcSellOffer`]
+        Places where the NPC can travel to.
+    teachable_spells: list[:class:`NpcSpell`]
+        Spells teached by the NPC.
     """
     map = {
         "name": ("name", lambda x: x),
@@ -90,7 +97,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                     currency = "Gold Coin"
                 npc.selling.append(NpcSellOffer(item_name=item.strip(), currency_name=currency,value=value, npc_id=npc.id))
             spell_list = parse_spells(npc.raw_attributes["sells"])
-            npc.teachable_spell = []
+            npc.teachable_spells = []
             for group, spells in spell_list:
                 for spell in spells:
                     spell = spell.strip()
@@ -120,14 +127,14 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                         paladin = druid = sorcerer = knight = True
                     elif npc.name == "Elathriel":
                         druid = True
-                    for j, s in enumerate(npc.teachable_spell):
+                    for j, s in enumerate(npc.teachable_spells):
                         # Spell was already in list, so we update vocations
                         if s.spell_name == spell:
-                            npc.teachable_spell[j] = NpcSpell(npc_id=npc.id,spell_name=spell, knight=knight or s.knight, paladin=paladin or s.paladin, druid=druid or s.druid, sorcerer=sorcerer or s.sorcerer)
+                            npc.teachable_spells[j] = NpcSpell(npc_id=npc.id,spell_name=spell, knight=knight or s.knight, paladin=paladin or s.paladin, druid=druid or s.druid, sorcerer=sorcerer or s.sorcerer)
                             exists = True
                             break
                     if not exists:
-                        npc.teachable_spell.append(NpcSpell(npc_id=npc.id, spell_name=spell, knight=knight, paladin=paladin, druid=druid, sorcerer=sorcerer))
+                        npc.teachable_spells.append(NpcSpell(npc_id=npc.id, spell_name=spell, knight=knight, paladin=paladin, druid=druid, sorcerer=sorcerer))
         destinations = []
         if "notes" in npc.raw_attributes and "{{Transport" in npc.raw_attributes["notes"]:
             destinations.extend(parse_destinations(npc.raw_attributes["notes"]))
@@ -149,7 +156,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             offer.insert(c)
         for offer in getattr(self, "selling", []):
             offer.insert(c)
-        for spell in getattr(self, "teachable_spell", []):
+        for spell in getattr(self, "teachable_spells", []):
             spell.insert(c)
         for destination in getattr(self, "destinations", []):
             destination.insert(c)
@@ -168,8 +175,27 @@ class NpcOffer:
 
 class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
     """
-    Representes an item sellable by an NPC.
+    Represents an item sellable by an NPC.
+
+    Attributes
+    ----------
+    npc_id: :class:`int`
+        The article id of the npc that sells the item.
+    npc_name: :class:`str`
+        The name of the npc that sells the item.
+    item_id: :class:`int`
+        The id of the item sold by the npc.
+    item_name: :class:`str`
+        The name of the item sold by the npc.
+    currency_id: :class:`int`
+        The item id of the currency used to buy the item.
+    currency_name: :class:`str`
+        The name of the currency used to buy the item
+    value: :class:`str`
+        The value of the item in the specified currency.
     """
+    __slots__ = ("npc_id", "npc_name", "item_id", "item_name", "currency_id", "currency_name", "currency_value")
+
     def insert(self, c):
         try:
             if getattr(self, "item_id", None) and getattr(self, "value", None) and getattr(self, "currency_id", None):
@@ -195,6 +221,28 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
 
 
 class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
+    """
+        Represents an item buyable by an NPC.
+
+        Attributes
+        ----------
+        npc_id: :class:`int`
+            The article id of the npc that buys the item.
+        npc_name: :class:`str`
+            The name of the npc that buys the item.
+        item_id: :class:`int`
+            The id of the item bought by the npc.
+        item_name: :class:`str`
+            The name of the item bought by the npc.
+        currency_id: :class:`int`
+            The item id of the currency used to sell the item.
+        currency_name: :class:`str`
+            The name of the currency used to sell the item
+        value: :class:`str`
+            The value of the item in the specified currency.
+        """
+    __slots__ = ("npc_id", "npc_name", "item_id", "item_name", "currency_id", "currency_name", "currency_value")
+
     def insert(self, c):
         try:
             if getattr(self, "item_id", None) and getattr(self, "value", None) and getattr(self, "currency_id", None):
@@ -220,6 +268,30 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
 
 
 class NpcSpell(abc.Row, table=schema.NpcSpell):
+    """
+    Represents a spell that a NPC can teach.
+
+    Attributes
+    ----------
+    npc_id: :class:`int`
+        The article id of the npc that teaches the spell.
+    npc_name: :class:`str`
+        The name of the npc that teaches the spell.
+    spell_id: :class:`int`
+        The article id of the spell taught by the npc.
+    spell_name: :class:`str`
+        The name of the spell taught by the npc.
+    knight: :class:`bool`
+        If the spell is taught to knights.
+    paladin: :class:`bool`
+        If the spell is taught to paladins.
+    druid: :class:`bool`
+        If the spell is taught to druids.
+    sorcerer: :class:`bool`
+        If the spell is taught to sorcerers.
+    """
+    __slots__ = ("npc_id", "npc_name", "spell_id", "spell_name", "knight", "sorcerer", "paladin", "druid")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.npc_name = kwargs.get("npc_name")
@@ -241,6 +313,22 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
 
 
 class NpcDestination(abc.Row, table=schema.NpcDestination):
+    """
+    Represents a NPC's travel destination
+
+    Attributes
+    ----------
+    npc_id: :class:`int`
+        The article id of the NPC.
+    npc_name: :class:`str`
+        The name of the NPC.
+    name: :class:`str`
+        The name of the destination
+    price: :class:`int`
+        The price in gold to travel.
+    notes: :class:`str`
+        Notes about the destination, such as requirements.
+    """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.npc_name = kwargs.get("npc_name")
