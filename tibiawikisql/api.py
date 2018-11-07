@@ -20,15 +20,17 @@ class WikiEntry:
         The entry's id.
     title: :class:`str`
         The entry's title.
-    timestamp : :class:`datetime.datetime`
-        The date of the entry's last edit.
+    timestamp : :class:`int`
+        The date of the entry's last edit, represented as a unix timestamp.
     """
 
     def __init__(self, id_, title, timestamp=None):
         self.id = id_
         self.title = title
-        if timestamp:
-            self.timestamp = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+        if isinstance(timestamp, str):
+            self.timestamp = int(datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ").timestamp())
+        if isinstance(timestamp, datetime.datetime):
+            self.timestamp = int(timestamp.timestamp())
 
     def __repr__(self):
         return "%s(id=%d,title=%r)" % (self.__class__.__name__, self.id, self.title)
@@ -37,11 +39,6 @@ class WikiEntry:
         if isinstance(other, self.__class__):
             return self.id == other.id
         return False
-
-    @property
-    def unix_timestamp(self):
-        """:class:`int`: The unix timestamp of the article's last edit date."""
-        return int(self.timestamp.timestamp())
 
 
 class Article(WikiEntry):

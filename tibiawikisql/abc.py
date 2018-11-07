@@ -5,7 +5,7 @@ from tibiawikisql.api import Article
 
 def parse_attributes(content):
     """
-    Parses the attributes of an infobox template.
+    Parses the attributes of an Infobox template.
 
     Parameters
     ----------
@@ -78,6 +78,7 @@ class Parseable(Article, metaclass=abc.ABCMeta):
     """map: :class:`dict` A dictionary mapping the article's attributes to object attributes."""
     pattern = None
     """:class:`re.Pattern` A compiled pattern to filter out articles by their content."""
+    __slots__ = ("id", "title", "timestamp", "raw_attributes")
 
     @classmethod
     def from_article(cls, article):
@@ -99,7 +100,7 @@ class Parseable(Article, metaclass=abc.ABCMeta):
 
         if article is None or (cls.pattern and not cls.pattern.search(article.content)):
             return None
-        row = {"id": article.id, "timestamp": article.unix_timestamp, "title": article.title, "attributes": {}}
+        row = {"id": article.id, "timestamp": article.timestamp, "title": article.title, "attributes": {}}
         attributes = parse_attributes(article.content)
         row["raw_attributes"] = {}
         for attribute, value in attributes.items():
