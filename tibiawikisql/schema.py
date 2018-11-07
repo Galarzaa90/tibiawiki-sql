@@ -10,7 +10,7 @@ class Achievement(Table):
     description = Column(Text)
     spoiler = Column(Text)
     secret = Column(Boolean)
-    premium = Column(Integer)
+    premium = Column(Boolean)
     version = Column(Text)
     timestamp = Column(Integer)
 
