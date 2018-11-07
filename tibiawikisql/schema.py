@@ -230,7 +230,7 @@ class Quest(Table):
     legend = Column(Text)
     level_required = Column(Integer)
     level_recommended = Column(Integer)
-    premium = Column(Integer)
+    premium = Column(Boolean)
     version = Column(Text)
     timestamp = Column(Integer)
 

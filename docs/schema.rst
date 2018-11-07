@@ -63,7 +63,7 @@ achievement
 +=============+=============+=====================================================+
 | id          | ``INTEGER`` | The id of the article containing this achievement.  |
 +-------------+-------------+-----------------------------------------------------+
-| title       | ``TEXT``    | The title of the article containing the achievement |
+| title       | ``TEXT``    | The title of the article containing the achievement.|
 +-------------+-------------+-----------------------------------------------------+
 | name        | ``TEXT``    | The name of the achievement.                        |
 +-------------+-------------+-----------------------------------------------------+
@@ -480,169 +480,142 @@ map
 
 npc
 ~~~
-+-------------------+------------+------------------------------------+
-| Column            | Type       | Description                        |
-+===================+============+====================================+
-| id                | ``INTEGER` | The article id of this entry on    |
-|                   | `          | TibiaWiki. used for relations with |
-|                   |            | other tables.                      |
-+-------------------+------------+------------------------------------+
-| title             | ``TEXT``   | The title of the TibiaWiki article |
-|                   |            | that refers to this npc. Title     |
-|                   |            | cased and may contain parenthesis  |
-|                   |            | to differentiate from other        |
-|                   |            | objects (e.g. ``Cobra (NPC)``).    |
-+-------------------+------------+------------------------------------+
-| name              | ``TEXT``   | The actual name of the npc         |
-|                   |            | in-game.                           |
-+-------------------+------------+------------------------------------+
-| job               | ``INTEGER` | The NPC’s job                      |
-|                   | `          |                                    |
-+-------------------+------------+------------------------------------+
-| city              | ``TEXT``   | City where the NPC is found.       |
-+-------------------+------------+------------------------------------+
-| x                 | ``INTEGER` | The x position where the NPC is    |
-|                   | `          | usually located.                   |
-+-------------------+------------+------------------------------------+
-| y                 | ``INTEGER` | The y position where the NPC is    |
-|                   | `          | usually located.                   |
-+-------------------+------------+------------------------------------+
-| z                 | ``INTEGER` | The z position where the NPC is    |
-|                   | `          | usually located.                   |
-+-------------------+------------+------------------------------------+
-| version           | ``TEXT``   | The client version this item was   |
-|                   |            | introduced to the game.            |
-+-------------------+------------+------------------------------------+
-| image             | ``BLOB``   | The npc’s image bytes.             |
-+-------------------+------------+------------------------------------+
-| last_edit         | ``INTEGER` | Unix timestamp of the UTC time of  |
-|                   | `          | the last edit made to this         |
-|                   |            | article.                           |
-+-------------------+------------+------------------------------------+
++-----------+-------------+--------------------------------------------------+
+|  Column   |    Type     |                   Description                    |
++===========+=============+==================================================+
+| id        | ``INTEGER`  | The id of the article containing this npc.       |
++-----------+-------------+--------------------------------------------------+
+| title     | ``TEXT``    | The title of the article containing the npcs.    |
++-----------+-------------+--------------------------------------------------+
+| name      | ``TEXT``    | The actual name of the npc in-game.              |
++-----------+-------------+--------------------------------------------------+
+| job       | ``TEXT``    | The npc job                                      |
++-----------+-------------+--------------------------------------------------+
+| city      | ``TEXT``    | City where the npc is found.                     |
++-----------+-------------+--------------------------------------------------+
+| x         | ``INTEGER`` | The x position where the NPC is usually located. |
++-----------+-------------+--------------------------------------------------+
+| y         | ``INTEGER`` | The y position where the NPC is usually located. |
++-----------+-------------+--------------------------------------------------+
+| z         | ``INTEGER`` | The z position where the NPC is usually located. |
++-----------+-------------+--------------------------------------------------+
+| version   | ``TEXT``    | The client version this npc was inroduced to     |
+|           |             | to the game.                                     |
++-----------+-------------+--------------------------------------------------+
+| image     | ``BLOB``    | The npc’s image bytes.                           |
++-----------+-------------+--------------------------------------------------+
+| timestamp | ``INTEGER`` | Unix timestamp of the article's last edit.       |
++-----------+-------------+--------------------------------------------------+
 
 npc_buying
 ~~~~~~~~~~
-+-------------------+------------+------------------------------------+
-| Column            | Type       | Description                        |
-+===================+============+====================================+
-| npc_id            | ``INTEGER` | The id of the npc this offer       |
-|                   | `          | belongs to                         |
-+-------------------+------------+------------------------------------+
-| item_id           | ``INTEGER` | The id of the item this offer      |
-|                   | `          | refers to                          |
-+-------------------+------------+------------------------------------+
-| value             | ``TEXT``   | The value of the offer             |
-+-------------------+------------+------------------------------------+
-| currency          | ``INTEGER` | The id of the item used as         |
-|                   | `          | currency in this offer. In most    |
-|                   |            | cases this is the id of “gold      |
-|                   |            | coin”.                             |
-+-------------------+------------+------------------------------------+
++----------+-------------+---------------------------------+
+|  Column  |    Type     |           Description           |
++==========+=============+=================================+
+| npc_id   | ``INTEGER`` | The id of the npc this offer    |
+|          |             | belongs to                      |
++----------+-------------+---------------------------------+
+| item_id  | ``INTEGER`` | The id of the item this offer   |
+|          |             | refers to                       |
++----------+-------------+---------------------------------+
+| value    | ``TEXT``    | The value of the offer          |
++----------+-------------+---------------------------------+
+| currency | ``INTEGER`` | The id of the item used as      |
+|          |             | currency in this offer. In most |
+|          |             | cases this is the id of gold    |
+|          |             | coins.                          |
++----------+-------------+---------------------------------+
 
 npc_destination
 ~~~~~~~~~~~~~~~
-+-------------------+------------+------------------------------------+
-| Column            | Type       | Description                        |
-+===================+============+====================================+
-| npc_id            | ``INTEGER` | The id of the npc this destination |
-|                   | `          | belongs to.                        |
-+-------------------+------------+------------------------------------+
-| destination       | ``INTEGER` | The name of the place this npc can |
-|                   | `          | take you to.                       |
-+-------------------+------------+------------------------------------+
-| price             | ``TEXT``   | The price to travel to the         |
-|                   |            | destination with this npc.         |
-+-------------------+------------+------------------------------------+
-| notes             | ``INTEGER` | Extra notes for this destination,  |
-|                   | `          | like extra requirements or         |
-|                   |            | exceptions.                        |
-+-------------------+------------+------------------------------------+
++--------+-------------+------------------------------------+
+| Column |    Type     |            Description             |
++========+=============+====================================+
+| npc_id | ``INTEGER`  | The id of the npc this destination |
+|        | `           | belongs to.                        |
++--------+-------------+------------------------------------+
+| name   | ``TEXT``    | The name of the place this npc can |
+|        |             | take you to.                       |
++--------+-------------+------------------------------------+
+| price  | ``TEXT``    | The price to travel to the         |
+|        |             | destination with this npc.         |
++--------+-------------+------------------------------------+
+| notes  | ``INTEGER`` | Extra notes for this destination,  |
+|        |             | like extra requirements or         |
+|        |             | exceptions.                        |
++--------+-------------+------------------------------------+
 
 npc_selling
 ~~~~~~~~~~~
-+-------------------+------------+------------------------------------+
-| Column            | Type       | Description                        |
-+===================+============+====================================+
-| npc_id            | ``INTEGER` | The id of the npc this offer       |
-|                   | `          | belongs to                         |
-+-------------------+------------+------------------------------------+
-| item_id           | ``INTEGER` | The id of the item this offer      |
-|                   | `          | refers to                          |
-+-------------------+------------+------------------------------------+
-| value             | ``TEXT``   | The value of the offer             |
-+-------------------+------------+------------------------------------+
-| currency          | ``INTEGER` | The id of the item used as         |
-|                   | `          | currency in this offer. In most    |
-|                   |            | cases this is the id of “gold      |
-|                   |            | coin”.                             |
-+-------------------+------------+------------------------------------+
++----------+-------------+---------------------------------+
+|  Column  |    Type     |           Description           |
++==========+=============+=================================+
+| npc_id   | ``INTEGER`` | The id of the npc this offer    |
+|          |             | belongs to                      |
++----------+-------------+---------------------------------+
+| item_id  | ``INTEGER`` | The id of the item this offer   |
+|          |             | refers to                       |
++----------+-------------+---------------------------------+
+| value    | ``TEXT``    | The value of the offer          |
++----------+-------------+---------------------------------+
+| currency | ``INTEGER`` | The id of the item used as      |
+|          |             | currency in this offer. In most |
+|          |             | cases this is the id of gold    |
+|          |             | coins.                          |
++----------+-------------+---------------------------------+
 
 npc_spell
 ~~~~~~~~~
-+-----------------------+-----------------------+-----------------------+
-| Column                | Type                  | Description           |
-+=======================+=======================+=======================+
-| npc_id                | ``INTEGER``           | The id of the npc     |
-|                       |                       | that teaches this     |
-|                       |                       | spell                 |
-+-----------------------+-----------------------+-----------------------+
-| spell_id              | ``INTEGER``           | The id of the spell   |
-|                       |                       | this npc teaches      |
-+-----------------------+-----------------------+-----------------------+
-| knight                | ``INTEGER``           | Whether this NPC      |
-|                       |                       | teaches this spell to |
-|                       |                       | knights. ``0`` or     |
-|                       |                       | ``1``.                |
-+-----------------------+-----------------------+-----------------------+
-| sorcerer              | ``INTEGER``           | Whether this NPC      |
-|                       |                       | teaches this spell to |
-|                       |                       | sorcerers. ``0`` or   |
-|                       |                       | ``1``.                |
-+-----------------------+-----------------------+-----------------------+
-| druid                 | ``INTEGER``           | Whether this NPC      |
-|                       |                       | teaches this spell to |
-|                       |                       | druids. ``0`` or      |
-|                       |                       | ``1``.                |
-+-----------------------+-----------------------+-----------------------+
-| paladin               | ``INTEGER``           | Whether this NPC      |
-|                       |                       | teaches this spell to |
-|                       |                       | paladins. ``0`` or    |
-|                       |                       | ``1``.                |
-+-----------------------+-----------------------+-----------------------+
++----------+-------------+--------------------------------------------+
+|  Column  |    Type     |                Description                 |
++==========+=============+============================================+
+| npc_id   | ``INTEGER`` | The id of the npc that teaches this spell. |
++----------+-------------+--------------------------------------------+
+| spell_id | ``INTEGER`` | The id of the spell this npc teaches.      |
++----------+-------------+--------------------------------------------+
+| knight   | ``BOOLEAN`` | Whether this NPC teaches this spell to     |
+|          |             | knights.                                   |
++----------+-------------+--------------------------------------------+
+| sorcerer | ``BOOLEAN`` | Whether this NPC teaches this spell to     |
+|          |             | sorcerers.                                 |
++----------+-------------+--------------------------------------------+
+| druid    | ``BOOLEAN`` | Whether this NPC teaches this spell to     |
+|          |             | druids.                                    |
++----------+-------------+--------------------------------------------+
+| paladin  | ``BOOLEAN`` | Whether this NPC teaches this spell to     |
+|          |             | paladins.                                  |
++----------+-------------+--------------------------------------------+
 
 quest
 ~~~~~
-+-------------------+------------+------------------------------------+
-| Column            | Type       | Description                        |
-+===================+============+====================================+
-| id                | ``INTEGER` | The article id of this entry on    |
-|                   | `          | TibiaWiki. used for relations with |
-|                   |            | other tables.                      |
-+-------------------+------------+------------------------------------+
-| name              | ``TEXT``   | The name of the quest.             |
-+-------------------+------------+------------------------------------+
-| location          | ``TEXT``   | Location where the quest starts or |
-|                   |            | takes place.                       |
-+-------------------+------------+------------------------------------+
-| legend            | ``TEXT``   | Short description of the quest.    |
-+-------------------+------------+------------------------------------+
-| level_required    | ``INTEGER` | The level required to finish the   |
-|                   | `          | quest.                             |
-+-------------------+------------+------------------------------------+
-| level_recommended | ``INTEGER` | The level recommended to finish    |
-|                   | `          | the quest.                         |
-+-------------------+------------+------------------------------------+
-| premium           | ``INTEGER` | Whether premium account is         |
-|                   | `          | required to finish the quest.      |
-|                   |            | ``0`` or ``1``.                    |
-+-------------------+------------+------------------------------------+
-| version           | ``TEXT``   | Client version where this quest    |
-|                   |            | was implemented.                   |
-+-------------------+------------+------------------------------------+
-| last_edit         | ``INTEGER` | Unix timestamp of the UTC time of  |
-|                   | `          | the last edit made to this         |
-|                   |            | article.                           |
-+-------------------+------------+------------------------------------+
++-------------------+-------------+----------------------------------------------+
+|      Column       |    Type     |                 Description                  |
++===================+=============+==============================================+
+| id                | ``INTEGER`` | The id of the article containing this quest. |
++-------------------+-------------+----------------------------------------------+
+| name              | ``TEXT``    | The name of the quest.                       |
++-------------------+-------------+----------------------------------------------+
+| location          | ``TEXT``    | Location where the quest starts or           |
+|                   |             | takes place.                                 |
++-------------------+-------------+----------------------------------------------+
+| legend            | ``TEXT``    | Short description of the quest.              |
++-------------------+-------------+----------------------------------------------+
+| level_required    | ``INTEGER`` | The level required to finish the             |
+|                   |             | quest.                                       |
++-------------------+-------------+----------------------------------------------+
+| level_recommended | ``INTEGER`` | The level recommended to finish              |
+|                   |             | the quest.                                   |
++-------------------+-------------+----------------------------------------------+
+| premium           | ``BOOLEAN`` | Whether premium account is                   |
+|                   |             | required to finish the quest.                |
++-------------------+-------------+----------------------------------------------+
+| version           | ``TEXT``    | Client version where this quest              |
+|                   |             | was implemented.                             |
++-------------------+-------------+----------------------------------------------+
+| timestamp         | ``INTEGER`` | Unix timestamp of the UTC time of            |
+|                   |             | the last edit made to this                   |
+|                   |             | article.                                     |
++-------------------+-------------+----------------------------------------------+
 
 quest_danger
 ~~~~~~~~~~~~
@@ -671,8 +644,6 @@ rashid_position
 +==========+=============+==========================================+
 | day      | ``INTEGER`` | Day of the week, where Monday is ``0``.  |
 +----------+-------------+------------------------------------------+
-| day_name | ``TEXT``    | Name of the weekday.                     |
-+----------+-------------+------------------------------------------+
 | city     | ``TEXT``    | Name of the city Rashid is located.      |
 +----------+-------------+------------------------------------------+
 | x        | ``INTEGER`` | The x position where Rashid is that day. |
@@ -684,61 +655,54 @@ rashid_position
 
 spell
 ~~~~~
-+-------------------+------------+------------------------------------+
-| Column            | Type       | Description                        |
-+===================+============+====================================+
-| id                | ``INTEGER` | The article id of this entry on    |
-|                   | `          | TibiaWiki. used for relations with |
-|                   |            | other tables.                      |
-+-------------------+------------+------------------------------------+
-| name              | ``TEXT``   | The spell’s name                   |
-+-------------------+------------+------------------------------------+
-| words             | ``TEXT``   | Words used to cast the spell       |
-+-------------------+------------+------------------------------------+
-| type              | ``TEXT``   | Whether the spell is instant or a  |
-|                   |            | rune spell.                        |
-+-------------------+------------+------------------------------------+
-| class             | ``TEXT``   | The spell’s class (e.g.            |
-|                   |            | ``Attack``, ``Support``)           |
-+-------------------+------------+------------------------------------+
-| element           | ``TEXT``   | The type of damage this spell      |
-|                   |            | deals if applicable.               |
-+-------------------+------------+------------------------------------+
-| level             | ``INTEGER` | Level required to cast this spell  |
-|                   | `          |                                    |
-+-------------------+------------+------------------------------------+
-| mana              | ``INTEGER` | Mana required to cast this spell.  |
-|                   | `          | ``-1`` means special conditions    |
-|                   |            | apply.                             |
-+-------------------+------------+------------------------------------+
-| soul              | ``INTEGER` | Soul points required to cast this  |
-|                   | `          | spell.                             |
-+-------------------+------------+------------------------------------+
-| premium           | ``INTEGER` | Whether this spell requires        |
-|                   | `          | premium account or not. ``0`` or   |
-|                   |            | ``1``.                             |
-+-------------------+------------+------------------------------------+
-| price             | ``INTEGER` | Price in gold coins of this spell  |
-|                   | `          |                                    |
-+-------------------+------------+------------------------------------+
-| cooldown          | ``INTEGER` | Cooldown in seconds of this spell  |
-|                   | `          |                                    |
-+-------------------+------------+------------------------------------+
-| knight            | ``INTEGER` | Whether this spell can be used by  |
-|                   | `          | knights or not. ``0`` or ``1``.    |
-+-------------------+------------+------------------------------------+
-| sorcerer          | ``INTEGER` | Whether this spell can be used by  |
-|                   | `          | sorcerers or not. ``0`` or ``1``.  |
-+-------------------+------------+------------------------------------+
-| druid             | ``INTEGER` | Whether this spell can be used by  |
-|                   | `          | druids or not. ``0`` or ``1``.     |
-+-------------------+------------+------------------------------------+
-| paladin           | ``INTEGER` | Whether this spell can be used by  |
-|                   | `          | paladins or not. ``0`` or ``1``.   |
-+-------------------+------------+------------------------------------+
-| image             | ``BLOB``   | The spell’s image bytes.           |
-+-------------------+------------+------------------------------------+
-| last_edit         | ``INTEGER` | Unix timestamp of the UTC time of  |
-|                   | `          | the last edit made to this         |
-|                   |            | article.                           |
-+-------------------+------------+------------------------------------+
++-----------+-------------+-------------------------------------------------------+
+|  Column   |    Type     |                      Description                      |
++===========+=============+=======================================================+
+| id        | ``INTEGER`  | The id of the article containing this achievement.    |
++-----------+-------------+-------------------------------------------------------+
+| title     | ``TEXT``    | The title of the article containing the achievement.  |
++-----------+-------------+-------------------------------------------------------+
+| name      | ``TEXT``    | The name of the spell.                                |
++-----------+-------------+-------------------------------------------------------+
+| words     | ``TEXT``    | The words used to cast the spell                      |
++-----------+-------------+-------------------------------------------------------+
+| type      | ``TEXT``    | Whether the spell is ``Instant`` or a ``Rune`` spell. |
++-----------+-------------+-------------------------------------------------------+
+| class     | ``TEXT``    | The spell’s class (e.g. ``Attack``, ``Support``)      |
++-----------+-------------+-------------------------------------------------------+
+| element   | ``TEXT``    | The type of damage this spell deals, if applicable.   |
++-----------+-------------+-------------------------------------------------------+
+| level     | ``INTEGER`` | Level required to cast this spell                     |
+|           |             |                                                       |
++-----------+-------------+-------------------------------------------------------+
+| mana      | ``INTEGER`` | Mana required to cast this spell.                     |
+|           |             | ``0`` means special conditions apply.                 |
++-----------+-------------+-------------------------------------------------------+
+| soul      | ``INTEGER`` | Soul points required to cast this spell.              |
++-----------+-------------+-------------------------------------------------------+
+| premium   | ``BOOLEAN`` | Whether this spell requires                           |
+|           |             | premium account or not. ``0`` or                      |
+|           |             | ``1``.                                                |
++-----------+-------------+-------------------------------------------------------+
+| price     | ``INTEGER`` | Price in gold coins of this spell                     |
+|           |             |                                                       |
++-----------+-------------+-------------------------------------------------------+
+| cooldown  | ``INTEGER`` | Cooldown in seconds of this spell                     |
+|           |             |                                                       |
++-----------+-------------+-------------------------------------------------------+
+| knight    | ``BOOLEAN`` | Whether this spell can be used by                     |
+|           |             | knights or not.                                       |
++-----------+-------------+-------------------------------------------------------+
+| sorcerer  | ``BOOLEAN`` | Whether this spell can be used by                     |
+|           |             | sorcerers or not.                                     |
++-----------+-------------+-------------------------------------------------------+
+| druid     | ``BOOLEAN`  | Whether this spell can be used by                     |
+|           |             | druids or not.                                        |
++-----------+-------------+-------------------------------------------------------+
+| paladin   | ``BOOLEAN`  | Whether this spell can be used by                     |
+|           |             | paladins or not.                                      |
++-----------+-------------+-------------------------------------------------------+
+| image     | ``BLOB``    | The spell’s image bytes.                              |
++-----------+-------------+-------------------------------------------------------+
+| timestamp | ``INTEGER`` | Unix timestamp of the article's last edit.            |
++-----------+-------------+-------------------------------------------------------+

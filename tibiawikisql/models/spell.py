@@ -44,7 +44,7 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         "type": ("type", lambda x: x),
         "subclass": ("class", lambda x: x),
         "damagetype": ("element", lambda x: x),
-        "mana": ("mana", lambda x: parse_integer(x, -1)),
+        "mana": ("mana", parse_integer),
         "soul": ("soul", parse_integer),
         "spellcost": ("price", parse_integer),
         "cooldown": ("cooldown", parse_integer),
