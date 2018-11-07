@@ -1,8 +1,28 @@
 import html
 import re
+import sqlite3
 
 from tibiawikisql import schema, abc
-from tibiawikisql.utils import parse_integer, parse_boolean, clean_links, parse_links
+from tibiawikisql.utils import parse_integer, parse_boolean, clean_links
+
+link_pattern = re.compile(r'\[\[([^|\]]+)')
+
+
+def parse_links(value):
+    """
+    Finds all the links in a string and returns a list of them.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        A string containing links.
+
+    Returns
+    -------
+    list(:class:`str`):
+        The links found in the string.
+    """
+    return list(link_pattern.findall(value))
 
 
 class Quest(abc.Row, abc.Parseable, table=schema.Quest):
@@ -88,9 +108,12 @@ class QuestReward(abc.Row, table=schema.QuestReward):
         if getattr(self, "item_id", None):
             super().insert(c)
             return
-        c.execute(f"""INSERT INTO {self.table.__tablename__}(quest_id, item_id)
+        try:
+            c.execute(f"""INSERT INTO {self.table.__tablename__}(quest_id, item_id)
                       VALUES(?, (SELECT id FROM item WHERE title = ?))""",
-                  (self.quest_id, self.item_name))
+                      (self.quest_id, self.item_name))
+        except sqlite3.IntegrityError:
+            pass
 
 
 class QuestDanger(abc.Row, table=schema.QuestDanger):
@@ -115,7 +138,10 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
         if getattr(self, "creature_id", None):
             super().insert(c)
             return
-        c.execute(f"""INSERT INTO {self.table.__tablename__}(quest_id, creature_id)
+        try:
+            c.execute(f"""INSERT INTO {self.table.__tablename__}(quest_id, creature_id)
                       VALUES(?, (SELECT id FROM creature WHERE title = ?))""",
-                  (self.quest_id, self.creature_name))
+                      (self.quest_id, self.creature_name))
+        except sqlite3.IntegrityError:
+            pass
 

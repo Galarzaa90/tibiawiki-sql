@@ -1,7 +1,59 @@
 import abc
 
-from tibiawikisql.utils import parse_attributes
-from .api import Article
+from tibiawikisql.api import Article
+
+
+def parse_attributes(content):
+    """
+    Parses the attributes of an infobox template.
+
+    Parameters
+    ----------
+    content: :class:`str`
+        A string containing an Infobox template.
+
+    Returns
+    -------
+    :class:`dict[str, str]`:
+        A dictionary with every attribute as key.
+    """
+    attributes = dict()
+    depth = 0
+    parse_value = False
+    attribute = ""
+    value = ""
+    for i in range(len(content)):
+        if content[i] == '{' or content[i] == '[':
+            depth += 1
+            if depth >= 3:
+                if parse_value:
+                    value = value + content[i]
+                else:
+                    attribute = attribute + content[i]
+        elif content[i] == '}' or content[i] == ']':
+            if depth >= 3:
+                if parse_value:
+                    value = value + content[i]
+                else:
+                    attribute = attribute + content[i]
+            if depth == 2:
+                attributes[attribute.strip()] = value.strip()
+                parse_value = False
+                attribute = ""
+                value = ""
+            depth -= 1
+        elif content[i] == '=' and depth == 2:
+            parse_value = True
+        elif content[i] == '|' and depth == 2:
+            attributes[attribute.strip()] = value.strip()
+            parse_value = False
+            attribute = ""
+            value = ""
+        elif parse_value:
+            value = value + content[i]
+        else:
+            attribute = attribute + content[i]
+    return dict((k, v.strip()) for k, v in attributes.items() if v.strip())
 
 
 class Parseable(Article, metaclass=abc.ABCMeta):

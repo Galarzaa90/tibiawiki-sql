@@ -1,8 +1,80 @@
 import re
 
 from tibiawikisql import abc, schema
-from tibiawikisql.utils import parse_boolean, parse_integer, parse_maximum_integer, clean_links, \
-    parse_monster_walks, parse_loot, parse_min_max
+from tibiawikisql.utils import parse_boolean, parse_integer, clean_links, parse_min_max, int_pattern
+
+creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
+
+
+def parse_maximum_integer(value):
+    """
+    From a string, finds the highest integer found.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        The string containing integers.
+
+    Returns
+    -------
+    :class:`int`, optional:
+        The highest number found, or None if no number is found.
+    """
+    if value is None:
+        return None
+    matches = int_pattern.findall(value)
+    try:
+        return max(list(map(int, matches)))
+    except ValueError:
+        return None
+
+
+def parse_loot(value):
+    """
+    Gets every item drop entry of a creature's drops.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        A string containing item drops.
+
+    Returns
+    -------
+    tuple:
+        A tuple containing the amounts and the item name.
+    """
+    return creature_loot_pattern.findall(value)
+
+
+def parse_monster_walks(value):
+    """
+    Matches the values against a regex to filter typos or bad data on the wiki.
+    Element names followed by any character that is not a comma will be considered unknown and will not be returned.
+
+    Examples\:
+        - ``Poison?, fire`` will return ``fire``.
+        - ``Poison?, fire.`` will return neither.
+        - ``Poison, earth, fire?, [[ice]]`` will return ``poison,earth``.
+        - ``No``, ``--``, ``>``, or ``None`` will return ``None``.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        The string containing possible field types.
+
+    Returns
+    -------
+    :class:`str`, optional
+        A list of field types, separated by commas.
+    """
+    regex = re.compile(r"(physical)(,|$)|(holy)(,|$)|(death)(,|$)|(fire)(,|$)|(ice)(,|$)|(energy)(,|$)|(earth)(,|$)|"
+                       r"(poison)(,|$)")
+    content = ""
+    for match in re.finditer(regex, value.lower().strip()):
+        content += match.group()
+    if not content:
+        return None
+    return content
 
 
 class Creature(abc.Row, abc.Parseable, table=schema.Creature):
@@ -145,12 +217,12 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         if "loot" in creature.raw_attributes:
             loot = parse_loot(creature.raw_attributes["loot"])
             loot_items = []
-            for item in loot:
-                if not item[0]:
+            for amounts, item in loot:
+                if not amounts:
                     _min, _max = 0, 1
                 else:
-                    _min, _max = parse_min_max(item[0])
-                loot_items.append(CreatureDrop(creature_id=creature.id, item_name=item[1], min=_min, max=_max))
+                    _min, _max = parse_min_max(amounts)
+                loot_items.append(CreatureDrop(creature_id=creature.id, item_name=item, min=_min, max=_max))
             creature.loot = loot_items
         return creature
 

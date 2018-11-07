@@ -1,4 +1,4 @@
-from .database import Table, Integer, Text, Column, Blob, Real, ForeignKey, Boolean
+from tibiawikisql.database import Table, Integer, Text, Column, Blob, Real, ForeignKey, Boolean
 
 
 class Achievement(Table):
@@ -237,12 +237,12 @@ class Quest(Table):
 
 class QuestDanger(Table, table_name="quest_danger"):
     quest_id = Column(ForeignKey(Integer, "quest", "id"))
-    creature_id = Column(ForeignKey(Integer, "creature", "id"))
+    creature_id = Column(ForeignKey(Integer, "creature", "id"), nullable=False)
 
 
 class QuestReward(Table, table_name="quest_reward"):
     quest_id = Column(ForeignKey(Integer, "quest", "id"))
-    item_id = Column(ForeignKey(Integer, "item", "id"))
+    item_id = Column(ForeignKey(Integer, "item", "id"), nullable=False)
 
 
 class RashidPosition(Table, table_name="rashid_position"):

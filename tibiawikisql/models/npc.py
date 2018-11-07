@@ -2,8 +2,128 @@ import re
 import sqlite3
 
 from tibiawikisql import schema, abc
-from tibiawikisql.utils import convert_tibiawiki_position, parse_item_offers, parse_item_trades, parse_spells, \
-    parse_destinations, clean_links
+from tibiawikisql.utils import convert_tibiawiki_position, clean_links
+
+price_to_template = re.compile(r"{{Price to (?:Buy|Sell)\s*([^}]+)}}")
+npc_offers = re.compile(r"\|([^|:\[]+)(?::\s?(\d+))?(?:\s?\[\[([^\]]+))?")
+
+teaches_template = re.compile(r"{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}")
+spells_pattern = re.compile(r"\|([^|]+)")
+
+trades_sell_template = re.compile(r"{{Trades/Sells\s*(?:\|note=([^|]+))?([^}]+)}}")
+npc_trades = re.compile(r"\|([^|,\[]+)(?:,\s?([+-]?\d+))?(?:\s?\[\[([^\]]+))?")
+
+transport_template = re.compile(r"{{Transport\s*(?:\|discount=([^|]+))?([^}]+)}}")
+npc_destinations = re.compile(r"\|([^,]+),\s?(\d+)(?:;\s?([^|]+))?")
+
+ilink_pattern = re.compile(r"{{Ilink\|([^}]+)}}")
+
+
+def parse_destinations(value):
+    """
+        Parses an NPC destinations into a list of tuples.
+
+        The tuple contains the  destination's name, price and notes.
+        Price and notes may not be present.
+
+        Parameters
+        ----------
+        value: :class:`str`
+            A string containing destinations.
+
+        Returns
+        -------
+        list(:class:`tuple`)
+            A list of tuples containing the parsed destinations.
+        """
+    result = []
+    for __, destinations in transport_template.findall(value):
+        result.extend(npc_destinations.findall(destinations))
+    return result
+
+
+def parse_item_offers(value):
+    """
+    Parses NPC item offers into a list of tuples.
+
+    The tuple contains the item's name, price and currency.
+    Price and currency may not be present.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        The string  containing NPC offers.
+
+    Returns
+    -------
+    list(:class:`tuple`)
+        A list of tuples containing the parsed offers.
+    """
+    match = price_to_template.search(value)
+    if match:
+        return npc_offers.findall(match.group(1))
+    else:
+        return []
+
+
+def parse_item_trades(value):
+    """
+    Parses an NPC item trades into a list of tuples.
+
+    The tuple contains the item's name, price and currency.
+    Price and currency may not be present.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        A string containing item trades.
+
+    Returns
+    -------
+    list(:class:`tuple`)
+        A list of tuples containing the parsed offers.
+    """
+    result = []
+    value = replace_ilinks(value)
+    for note, trades in trades_sell_template.findall(value):
+        result.extend(npc_trades.findall(trades))
+    return result
+
+
+def parse_spells(value):
+    """Parses an NPC's teacheable spells.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        A string containing teachable spells.
+
+    Returns
+    -------
+    A list of spells grouped by vocation.
+    """
+    result = []
+    for name, spell_list in teaches_template.findall(value):
+        spells = spells_pattern.findall(spell_list)
+        spells = [s.strip() for s in spells]
+        result.append((name, spells))
+    return result
+
+
+def replace_ilinks(value):
+    """Replaces the ILink template with a regular link.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        A string containing ILink templates.
+
+    Returns
+    -------
+    :class:`str`
+        The string with regular links instead of ILink templates.
+    """
+    return ilink_pattern.sub("[[\g<1>]]", value)
 
 
 class Npc(abc.Row, abc.Parseable, table=schema.Npc):
@@ -63,78 +183,10 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         if npc is None:
             return None
         if "buys" in npc.raw_attributes:
-            buy_items = parse_item_offers(npc.raw_attributes["buys"])
-            npc.buying = []
-            for item, price, currency in buy_items:
-                # Some items have extra requirements, separated with ;, so we remove them
-                item = item.split(";")[0]
-                if not currency.strip():
-                    currency = "Gold Coin"
-                value = None
-                if price.strip():
-                    value = int(price)
-                npc.buying.append(NpcBuyOffer(item_name=item.strip(), currency_name=currency, value=value, npc_id=npc.id))
+            cls._parse_buy_offers(npc)
         if "sells" in npc.raw_attributes:
-            sell_items = parse_item_offers(npc.raw_attributes["sells"])
-            npc.selling = []
-            for item, price, currency in sell_items:
-                # Some items have extra requirements, separated with ;, so we remove them
-                item = item.split(";")[0]
-                if not currency.strip():
-                    currency = "Gold Coin"
-                value = None
-                if price.strip():
-                    value = int(price)
-                npc.selling.append(NpcSellOffer(item_name=item.strip(), currency_name=currency, value=value, npc_id=npc.id))
-            # Items traded by npcs (these have a different template)
-            trade_items = parse_item_trades(npc.raw_attributes["sells"])
-            for item, price, currency in trade_items:
-                item = item.split(";")[0]
-                value = None
-                if price.strip():
-                    value = abs(int(price))
-                if not currency.strip():
-                    currency = "Gold Coin"
-                npc.selling.append(NpcSellOffer(item_name=item.strip(), currency_name=currency, value=value, npc_id=npc.id))
-            spell_list = parse_spells(npc.raw_attributes["sells"])
-            npc.teachable_spells = []
-            for group, spells in spell_list:
-                for spell in spells:
-                    spell = spell.strip()
-                    knight = paladin = sorcerer = druid = False
-                    if "knight" in group.lower():
-                        knight = True
-                    elif "paladin" in group.lower():
-                        paladin = True
-                    elif "druid" in group.lower():
-                        druid = True
-                    elif "sorcerer" in group.lower():
-                        sorcerer = True
-                    else:
-                        def in_jobs(vocation, _npc):
-                            return vocation in _npc.raw_attributes.get("job", "").lower() \
-                                   or vocation in _npc.raw_attributes.get("job2", "").lower() \
-                                   or vocation in _npc.raw_attributes.get("job3", "").lower()
-                        knight = in_jobs("knight", npc)
-                        paladin = in_jobs("paladin", npc)
-                        druid = in_jobs("druid", npc)
-                        sorcerer = in_jobs("sorcerer", npc)
-                    exists = False
-                    # Exceptions:
-                    if npc.name == "Ursula":
-                        paladin = True
-                    elif npc.name == "Eliza":
-                        paladin = druid = sorcerer = knight = True
-                    elif npc.name == "Elathriel":
-                        druid = True
-                    for j, s in enumerate(npc.teachable_spells):
-                        # Spell was already in list, so we update vocations
-                        if s.spell_name == spell:
-                            npc.teachable_spells[j] = NpcSpell(npc_id=npc.id,spell_name=spell, knight=knight or s.knight, paladin=paladin or s.paladin, druid=druid or s.druid, sorcerer=sorcerer or s.sorcerer)
-                            exists = True
-                            break
-                    if not exists:
-                        npc.teachable_spells.append(NpcSpell(npc_id=npc.id, spell_name=spell, knight=knight, paladin=paladin, druid=druid, sorcerer=sorcerer))
+            cls._parse_sell_offers(npc)
+            cls._parse_spells(npc)
         destinations = []
         if "notes" in npc.raw_attributes and "{{Transport" in npc.raw_attributes["notes"]:
             destinations.extend(parse_destinations(npc.raw_attributes["notes"]))
@@ -149,6 +201,90 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                 notes = None
             npc.destinations.append(NpcDestination(npc_id=npc.id, name=destination, price=price, notes=notes))
         return npc
+
+    @classmethod
+    def _parse_buy_offers(cls, npc):
+        buy_items = parse_item_offers(npc.raw_attributes["buys"])
+        npc.buying = []
+        for item, price, currency in buy_items:
+            # Some items have extra requirements, separated with ;, so we remove them
+            item = item.split(";")[0]
+            if not currency.strip():
+                currency = "Gold Coin"
+            value = None
+            if price.strip():
+                value = int(price)
+            npc.buying.append(NpcBuyOffer(item_name=item.strip(), currency_name=currency, value=value, npc_id=npc.id))
+
+    @classmethod
+    def _parse_sell_offers(cls, npc):
+        sell_items = parse_item_offers(npc.raw_attributes["sells"])
+        npc.selling = []
+        for item, price, currency in sell_items:
+            # Some items have extra requirements, separated with ;, so we remove them
+            item = item.split(";")[0]
+            if not currency.strip():
+                currency = "Gold Coin"
+            value = None
+            if price.strip():
+                value = int(price)
+            npc.selling.append(NpcSellOffer(item_name=item.strip(), currency_name=currency, value=value, npc_id=npc.id))
+        # Items traded by npcs (these have a different template)
+        trade_items = parse_item_trades(npc.raw_attributes["sells"])
+        for item, price, currency in trade_items:
+            item = item.split(";")[0]
+            value = None
+            if price.strip():
+                value = abs(int(price))
+            if not currency.strip():
+                currency = "Gold Coin"
+            npc.selling.append(NpcSellOffer(item_name=item.strip(), currency_name=currency, value=value, npc_id=npc.id))
+
+    @classmethod
+    def _parse_spells(cls, npc):
+        spell_list = parse_spells(npc.raw_attributes["sells"])
+        npc.teachable_spells = []
+        for group, spells in spell_list:
+            for spell in spells:
+                spell = spell.strip()
+                knight = paladin = sorcerer = druid = False
+                if "knight" in group.lower():
+                    knight = True
+                elif "paladin" in group.lower():
+                    paladin = True
+                elif "druid" in group.lower():
+                    druid = True
+                elif "sorcerer" in group.lower():
+                    sorcerer = True
+                else:
+                    def in_jobs(vocation, _npc):
+                        return vocation in _npc.job.lower() \
+                               or vocation in _npc.raw_attributes.get("job2", "").lower() \
+                               or vocation in _npc.raw_attributes.get("job3", "").lower()
+
+                    knight = in_jobs("knight", npc)
+                    paladin = in_jobs("paladin", npc)
+                    druid = in_jobs("druid", npc)
+                    sorcerer = in_jobs("sorcerer", npc)
+                exists = False
+                # Exceptions:
+                if npc.name == "Ursula":
+                    paladin = True
+                elif npc.name == "Eliza":
+                    paladin = druid = sorcerer = knight = True
+                elif npc.name == "Elathriel":
+                    druid = True
+                for j, s in enumerate(npc.teachable_spells):
+                    # Spell was already in list, so we update vocations
+                    if s.spell_name == spell:
+                        npc.teachable_spells[j] = NpcSpell(npc_id=npc.id, spell_name=spell,
+                                                           knight=knight or s.knight, paladin=paladin or s.paladin,
+                                                           druid=druid or s.druid, sorcerer=sorcerer or s.sorcerer)
+                        exists = True
+                        break
+                if not exists:
+                    npc.teachable_spells.append(NpcSpell(npc_id=npc.id, spell_name=spell, knight=knight,
+                                                         paladin=paladin, druid=druid, sorcerer=sorcerer))
 
     def insert(self, c):
         super().insert(c)
