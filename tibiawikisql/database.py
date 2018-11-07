@@ -100,7 +100,6 @@ class ForeignKey(SQLType):
         self.python = sql_type.python
         self.sql_type = sql_type.to_sql()
 
-
     def is_real_type(self):
         return False
 
@@ -115,7 +114,6 @@ class Column:
 
     def __init__(self, column_type, *, index=False, primary_key=False,
                  nullable=True, default=None, name=None, auto_increment=None):
-
         if inspect.isclass(column_type):
             column_type = column_type()
 

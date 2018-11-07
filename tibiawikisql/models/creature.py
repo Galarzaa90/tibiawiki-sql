@@ -158,8 +158,8 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The creature's image in bytes.
     """
     map = {
-        "name": ("title", lambda x: x),
         "article": ("article", lambda x: x),
+        "name": ("name", lambda x: x),
         "actualname": ("name", lambda x: x),
         "creatureclass": ("class", lambda x: x),
         "bestiaryclass": ("bestiary_class", lambda x: x),

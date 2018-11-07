@@ -170,9 +170,9 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         "actualname": ("name", lambda x: x),
         "job": ("job", lambda x: x),
         "city": ("city", lambda x: x),
-        "posx": ("x", lambda x: convert_tibiawiki_position(x)),
-        "posy": ("y", lambda x: convert_tibiawiki_position(x)),
-        "posz": ("z", lambda x: int(x)),
+        "posx": ("x", convert_tibiawiki_position),
+        "posy": ("y", convert_tibiawiki_position),
+        "posz": ("z", int),
         "implemented": ("version", lambda x: x)
     }
     pattern = re.compile(r"Infobox[\s_]NPC")

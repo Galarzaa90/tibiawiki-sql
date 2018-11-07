@@ -229,7 +229,7 @@ class WikiClient:
             i += 50
             r = s.get(cls.ENDPOINT, params=params)
             data = json.loads(r.text)
-            for pageid, image in data["query"]["pages"].items():
+            for _, image in data["query"]["pages"].items():
                 if "missing" in image:
                     yield None
                     continue
@@ -268,7 +268,7 @@ class WikiClient:
             i += 50
             r = s.get(cls.ENDPOINT, params=params)
             data = json.loads(r.text)
-            for pageid, article in data["query"]["pages"].items():
+            for _, article in data["query"]["pages"].items():
                 if "missing" in article:
                     yield None
                     continue
