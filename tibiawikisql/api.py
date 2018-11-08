@@ -9,7 +9,7 @@ class WikiEntry:
 
     This is a partial object that is obtained when fetching category members.
 
-    The following implement classes implement this:
+    The following classes implement this:
 
     - :class:`Article`
     - :class:`Image`
@@ -51,8 +51,8 @@ class Article(WikiEntry):
         The article's internal id.
     title : :class:`str`
         The article's title.
-    timestamp : :class:`datetime.datetime`
-        The date of the article's last edit.
+    timestamp : :class:`int`
+        The date of the entry's last edit, represented as a unix timestamp.
     content: :class:`str`
         The article's source content.
     """
@@ -72,8 +72,8 @@ class Image(WikiEntry):
         The image's internal id.
     title : str
         The image's title.
-    timestamp : datetime.datetime
-        The date of the image's last edit.
+    timestamp : :class:`int`
+        The date of the entry's last edit, represented as a unix timestamp.
     file_url: str
         The image's url.
     """

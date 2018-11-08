@@ -41,11 +41,11 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
         The name of the quest.
     location: :class:`str`
         The location of the quest.
-    legend: :class:`str
+    legend: :class:`str`
         The legend of the quest.
     level_required: :class:`int`
         The level required to finish the quest.
-    level_recommended: :class:`int^
+    level_recommended: :class:`int`
         The recommended level to finish the quest.
     version: :class:`str`
         The client version where this item was first implemented.

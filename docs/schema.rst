@@ -470,9 +470,9 @@ npc
 +-----------+-------------+--------------------------------------------------+
 |  Column   |    Type     |                   Description                    |
 +===========+=============+==================================================+
-| id        | ``INTEGER`  | The id of the article containing this npc.       |
+| id        | ``INTEGER`` | The id of the article containing this npc.       |
 +-----------+-------------+--------------------------------------------------+
-| title     | ``TEXT``    | The title of the article containing the npc.    |
+| title     | ``TEXT``    | The title of the article containing the npc.     |
 +-----------+-------------+--------------------------------------------------+
 | name      | ``TEXT``    | The actual name of the npc in-game.              |
 +-----------+-------------+--------------------------------------------------+

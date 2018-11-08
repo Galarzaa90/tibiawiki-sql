@@ -89,10 +89,10 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
     material: :class:`str`
         The key's material.
     location: :class:`str`
-        The key's location-
+        The key's location.
     notes: :class:`str`
         Notes about the key.
-    origin: :class:`str
+    origin: :class:`str`
         Notes about the origin of the key.
     version: :class:`str`
         The client version where this creature was first implemented.

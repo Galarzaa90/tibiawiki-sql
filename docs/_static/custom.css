@@ -9,3 +9,7 @@ dl.exception > dt {
   background-color: #eff0f2;
   padding: 1px 10px;
 }
+
+h1.logo {
+  font-size: 1.8em;
+}
