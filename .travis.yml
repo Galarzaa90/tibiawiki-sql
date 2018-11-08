@@ -1,6 +1,7 @@
 language: python
 python:
   - "3.6"
+  - "3.7-dev"
 
 cache: pip
 
@@ -9,12 +10,26 @@ git:
 
 install:
   - pip install -U -r requirements.txt
-  - pip install mkdocs mkdocs-material pymdown-extensions
+  - pip install -U setuptools wheel
+  - pip install coverage
+  - pip install -U Sphinx
 
-"script":
-  - python run.py skipimages
-  - cp CHANGELOG.md docs/changelog.md
-  - python -m mkdocs build
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+script:
+  - python setup.py sdist bdist_wheel
+  - coverage run setup.py test
+  - cd docs
+  - make html
+  - cd ..
+
+after_script:
+  - coverage report
+  - coverage xml
+  - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
 
 deploy:
   provider: pages
@@ -25,3 +40,4 @@ deploy:
   verbose: true
   on:
     branch: master
+    python: 3.6
