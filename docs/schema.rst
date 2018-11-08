@@ -1,6 +1,14 @@
-Database Schema
+Database
 ===============
-The generated database has the following schema:
+
+The SQLite database contains a series of tables dedicated to each of the model types. Following SQL best practices where possible.
+
+The database can be accessed through the API provided by this module, or directly any SQLite API using queries.
+
+The generated database has the following tables.
+
+Tables
+------
 
 +-----------------------+-------------------------------------------------+
 |         Table         |                   Description                   |
@@ -53,8 +61,14 @@ The generated database has the following schema:
 | `spell`_              | Contains information for all spells.            |
 +-----------------------+-------------------------------------------------+
 
-Tables
-------
+
+Table schemas
+-------------
+
+.. note::
+
+    | SQLite does not have an actual Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true).
+    | This is not much of an issue in Python, but it might be an issue on more strict typed langauges.
 
 achievement
 ~~~~~~~~~~~
@@ -282,82 +296,69 @@ database_info
 
 house
 ~~~~~
-+-------------------+------------+------------------------------------+
-| Column            | Type       | Description                        |
-+===================+============+====================================+
-| id                | ``INTEGER` | The house’s internal id in         |
-|                   | `          | Tibia.com.                         |
-+-------------------+------------+------------------------------------+
-| name              | ``TEXT``   | The name of the house.             |
-+-------------------+------------+------------------------------------+
-| city              | ``TEXT``   | The city the house belongs to.     |
-+-------------------+------------+------------------------------------+
-| street            | ``TEXT``   | The street this house is located.  |
-+-------------------+------------+------------------------------------+
-| beds              | ``INTEGER` | The number of beds the house has.  |
-|                   | `          |                                    |
-+-------------------+------------+------------------------------------+
-| rent              | ``INTEGER` | The monthly rent of this house.    |
-|                   | `          |                                    |
-+-------------------+------------+------------------------------------+
-| size              | ``INTEGER` | The number of tiles this house     |
-|                   | `          | has.                               |
-+-------------------+------------+------------------------------------+
-| rooms             | ``INTEGER` | The number of rooms or divisions   |
-|                   | `          | this house has.                    |
-+-------------------+------------+------------------------------------+
-| floors            | ``INTEGER` | The number of floors this house    |
-|                   | `          | has.                               |
-+-------------------+------------+------------------------------------+
-| x                 | ``INTEGER` | The x position of the door’s       |
-|                   | `          | entrance for this house.           |
-+-------------------+------------+------------------------------------+
-| y                 | ``INTEGER` | The y position of the door’s       |
-|                   | `          | entrance for this house.           |
-+-------------------+------------+------------------------------------+
-| z                 | ``INTEGER` | The z position of the door’s       |
-|                   | `          | entrance for this house.           |
-+-------------------+------------+------------------------------------+
-| guildhall         | ``INTEGER` | Whether this house is a guildhall  |
-|                   | `          | or not. ``0`` or ``1``.            |
-+-------------------+------------+------------------------------------+
-| version           | ``TEXT``   | The client version this was        |
-|                   |            | implemented in.                    |
-+-------------------+------------+------------------------------------+
-| last_edit         | ``INTEGER` | Unix timestamp of the UTC time of  |
-|                   | `          | the last edit made to this         |
-|                   |            | article.                           |
-+-------------------+------------+------------------------------------+
++-----------+-------------+-------------------------------------------------+
+|  Column   |    Type     |                   Description                   |
++===========+=============+=================================================+
+| id        | ``INTEGER`` | The id of the article containing this house.    |
++-----------+-------------+-------------------------------------------------+
+| title     | ``TEXT``    | The title of the article containing this house. |
++-----------+-------------+-------------------------------------------------+
+| name      | ``TEXT``    | The name of the house.                          |
++-----------+-------------+-------------------------------------------------+
+| city      | ``TEXT``    | The city the house belongs to.                  |
++-----------+-------------+-------------------------------------------------+
+| street    | ``TEXT``    | The street this house is located in.            |
++-----------+-------------+-------------------------------------------------+
+| beds      | ``INTEGER`` | The number of beds the house has.               |
++-----------+-------------+-------------------------------------------------+
+| rent      | ``INTEGER`` | The monthly rent of this house.                 |
++-----------+-------------+-------------------------------------------------+
+| size      | ``INTEGER`` | The number of tiles this house has.             |
++-----------+-------------+-------------------------------------------------+
+| rooms     | ``INTEGER`` | The number of rooms or divisions has.           |
++-----------+-------------+-------------------------------------------------+
+| floors    | ``INTEGER`` | The number of floors this house has.            |
++-----------+-------------+-------------------------------------------------+
+| x         | ``INTEGER`  | The x position of the house.                    |
+|           |             |                                                 |
++-----------+-------------+-------------------------------------------------+
+| y         | ``INTEGER`  | The y position of the house.                    |
+|           |             |                                                 |
++-----------+-------------+-------------------------------------------------+
+| z         | ``INTEGER`  | The z position of the house.                    |
+|           |             |                                                 |
++-----------+-------------+-------------------------------------------------+
+| guildhall | ``BOOLEAN`` | Whether this house is a guildhall or not.       |
++-----------+-------------+-------------------------------------------------+
+| version   | ``TEXT``    | The client version this was implemented in.     |
++-----------+-------------+-------------------------------------------------+
+| timestamp | ``INTEGER`` | Unix timestamp of the article's last edit.      |
++-----------+-------------+-------------------------------------------------+
 
 imbuement
 ~~~~~~~~~
-+-------------------+------------+------------------------------------+
-| Column            | Type       | Description                        |
-+===================+============+====================================+
-| id                | ``INTEGER` | The article id of this entry on    |
-|                   | `          | TibiaWiki. used for relations with |
-|                   |            | other tables.                      |
-+-------------------+------------+------------------------------------+
-| name              | ``TEXT``   | The name of the imbuement.         |
-+-------------------+------------+------------------------------------+
-| tier              | ``TEXT``   | The imbuement’s tier: ``Basic``,   |
-|                   |            | ``Intricate``, ``Powerful``.       |
-+-------------------+------------+------------------------------------+
-| type              | ``TEXT``   | The imbuement’s type, e.g.         |
-|                   |            | ``Void``, ``Frost``, etc.          |
-+-------------------+------------+------------------------------------+
-| effect            | ``TEXT``   | The effect given by this           |
-|                   |            | imbuement.                         |
-+-------------------+------------+------------------------------------+
-| version           | ``TEXT``   | The client version this imbuement  |
-|                   |            | was introduced to the game.        |
-+-------------------+------------+------------------------------------+
-| image             | ``BLOB``   | The imbuement’s image bytes.       |
-+-------------------+------------+------------------------------------+
-| last_edit         | ``INTEGER` | Unix timestamp of the UTC time of  |
-|                   | `          | the last edit made to this         |
-|                   |            | article.                           |
-+-------------------+------------+------------------------------------+
++-----------+-------------+----------------------------------------------------------------+
+|  Column   |    Type     |                          Description                           |
++===========+=============+================================================================+
+| id        | ``INTEGER`` | The id of the article containing this imbuement.               |
++-----------+-------------+----------------------------------------------------------------+
+| title     | ``TEXT``    | The title of the article containing this imbuement.            |
++-----------+-------------+----------------------------------------------------------------+
+| name      | ``TEXT``    | The name of the imbuement.                                     |
++-----------+-------------+----------------------------------------------------------------+
+| tier      | ``TEXT``    | The imbuement’s tier: ``Basic``,  ``Intricate``, ``Powerful``. |
++-----------+-------------+----------------------------------------------------------------+
+| type      | ``TEXT``    | The imbuement’s type, e.g.  ``Void``, ``Frost``, etc.          |
++-----------+-------------+----------------------------------------------------------------+
+| effect    | ``TEXT``    | The effect given by this imbuement.                            |
++-----------+-------------+----------------------------------------------------------------+
+| version   | ``TEXT``    | The client version this imbuement                              |
+|           |             | was introduced to the game.                                    |
++-----------+-------------+----------------------------------------------------------------+
+| image     | ``BLOB``    | The imbuement’s image bytes.                                   |
++-----------+-------------+----------------------------------------------------------------+
+| timestamp | ``INTEGER`` | Unix timestamp of the article's last edit.                     |
++-----------+-------------+----------------------------------------------------------------+
 
 imbuement_material
 ~~~~~~~~~~~~~~~~~~
@@ -373,100 +374,86 @@ imbuement_material
 
 item
 ~~~~
-+-------------------+------------+------------------------------------+
-| Column            | Type       | Description                        |
-+===================+============+====================================+
-| id                | ``INTEGER` | The article id of this entry on    |
-|                   | `          | TibiaWiki. used for relations with |
-|                   |            | other tables.                      |
-+-------------------+------------+------------------------------------+
-| title             | ``TEXT``   | The title of the TibiaWiki article |
-|                   |            | that refers to this item. Title    |
-|                   |            | cased and may contain parenthesis  |
-|                   |            | to differentiate item variations   |
-|                   |            | (e.g. ``Surprise Bag (Red)``) or   |
-|                   |            | to differentiate from other        |
-|                   |            | objects (e.g.                      |
-|                   |            | ``Black Skull (Item)``).           |
-+-------------------+------------+------------------------------------+
-| name              | ``TEXT``   | The actual name of the item        |
-|                   |            | in-game.                           |
-+-------------------+------------+------------------------------------+
-| stackable         | ``INTEGER` | Whether this item is stackable or  |
-|                   | `          | not.                               |
-+-------------------+------------+------------------------------------+
-| value             | ``INTEGER` | The maximum value of this item     |
-|                   | `          | when sold to NPCs                  |
-+-------------------+------------+------------------------------------+
-| price             | ``INTEGER` | The maximum price of this item     |
-|                   | `          | when bought from NPCs.             |
-+-------------------+------------+------------------------------------+
-| weight            | ``REAL``   | The weight of this item in ounces. |
-+-------------------+------------+------------------------------------+
-| class             | ``TEXT``   | The class this item belongs to     |
-|                   |            | (e.g. ``Body Equipment``           |
-|                   |            | ,\ ``Weapons``).                   |
-+-------------------+------------+------------------------------------+
-| type              | ``TEXT``   | The category this item belongs to  |
-|                   |            | (e.g. ``Helmets``,                 |
-|                   |            | ``Club Weapons``).                 |
-+-------------------+------------+------------------------------------+
-| flavor_text       | ``TEXT``   | The extra text that is displayed   |
-|                   |            | when some items are looked at.     |
-+-------------------+------------+------------------------------------+
-| version           | ``TEXT``   | The client version this item was   |
-|                   |            | introduced to the game.            |
-+-------------------+------------+------------------------------------+
-| image             | ``BLOB``   | The item’s image bytes.            |
-+-------------------+------------+------------------------------------+
-| last_edit         | ``INTEGER` | Unix timestamp of the UTC time of  |
-|                   | `          | the last edit made to this         |
-|                   |            | article.                           |
-+-------------------+------------+------------------------------------+
++-------------+-------------+------------------------------------------------+
+|   Column    |    Type     |                  Description                   |
++=============+=============+================================================+
+| id          | ``INTEGER`` | The id of the article containing this item.    |
++-------------+-------------+------------------------------------------------+
+| title       | ``TEXT``    | The title of the article containing this item. |
++-------------+-------------+------------------------------------------------+
+| name        | ``TEXT``    | The actual name of the item in-game.           |
++-------------+-------------+------------------------------------------------+
+| stackable   | ``BOOLEAN`` | Whether this item is stackable or not.         |
++-------------+-------------+------------------------------------------------+
+| value       | ``INTEGER`` | The maximum value of this item                 |
+|             |             | when sold to NPCs                              |
++-------------+-------------+------------------------------------------------+
+| price       | ``INTEGER`` | The maximum price of this item                 |
+|             |             | when bought from NPCs.                         |
++-------------+-------------+------------------------------------------------+
+| weight      | ``REAL``    | The weight of this item in ounces.             |
++-------------+-------------+------------------------------------------------+
+| class       | ``TEXT``    | The class this item belongs to                 |
+|             |             | (e.g. ``Body Equipment`` , ``Weapons``).       |
++-------------+-------------+------------------------------------------------+
+| type        | ``TEXT``    | The category this item belongs to              |
+|             |             | (e.g. ``Helmets``, ``Club Weapons``).          |
++-------------+-------------+------------------------------------------------+
+| flavor_text | ``TEXT``    | The extra text that is displayed               |
+|             |             | when some items are looked at.                 |
++-------------+-------------+------------------------------------------------+
+| client_id   | ``INTEGER`` | The client id of the item.                     |
++-------------+-------------+------------------------------------------------+
+| version     | ``TEXT``    | The client version this item was               |
+|             |             | introduced to the game.                        |
++-------------+-------------+------------------------------------------------+
+| image       | ``BLOB``    | The item’s image bytes.                        |
++-------------+-------------+------------------------------------------------+
+| timestamp   | ``INTEGER`` | Unix timestamp of the article's last edit.     |
++-------------+-------------+------------------------------------------------+
 
 item_attribute
 ~~~~~~~~~~~~~~
-+-----------+-------------+-----------------------------------------------+
-| Column    | Type        | Description                                   |
-+===========+=============+===============================================+
-| item_id   | ``INTEGER`` | The id of the item this attribute belongs to. |
-+-----------+-------------+-----------------------------------------------+
-| attribute | ``TEXT``    | The name of the attribute.                    |
-+-----------+-------------+-----------------------------------------------+
-| value     | ``TEXT``    | The value of the attribute.                   |
-+-----------+-------------+-----------------------------------------------+
++---------+-------------+-----------------------------------------------+
+| Column  |    Type     |                  Description                  |
++=========+=============+===============================================+
+| item_id | ``INTEGER`` | The id of the item this attribute belongs to. |
++---------+-------------+-----------------------------------------------+
+| name    | ``TEXT``    | The name of the attribute.                    |
++---------+-------------+-----------------------------------------------+
+| value   | ``TEXT``    | The value of the attribute.                   |
++---------+-------------+-----------------------------------------------+
 
 item_key
 ~~~~~~~~
-+-------------------+------------+------------------------------------+
-| Column            | Type       | Description                        |
-+===================+============+====================================+
-| number            | ``INTEGER` | The number of this key, without    |
-|                   | `          | padding (e.g. Key 0555’s           |
-|                   |            | ``number`` would be ``555``).      |
-+-------------------+------------+------------------------------------+
-| item_id           | ``INTEGER` | The item id of the key.            |
-|                   | `          |                                    |
-+-------------------+------------+------------------------------------+
-| name              | ``TEXT``   | Name(s) this key usually receives  |
-|                   |            | by players.                        |
-+-------------------+------------+------------------------------------+
-| material          | ``TEXT``   | The material this key is made of.  |
-+-------------------+------------+------------------------------------+
-| location          | ``TEXT``   | General location of this key.      |
-+-------------------+------------+------------------------------------+
-| origin            | ``TEXT``   | How this key is obtained.          |
-+-------------------+------------+------------------------------------+
-| notes             | ``TEXT``   | Where this key is used or other    |
-|                   |            | notes.                             |
-+-------------------+------------+------------------------------------+
-| version           | ``TEXT``   | The client version this item was   |
-|                   |            | introduced to the game.            |
-+-------------------+------------+------------------------------------+
-| last_edit         | ``INTEGER` | Unix timestamp of the UTC time of  |
-|                   | `          | the last edit made to this         |
-|                   |            | article.                           |
-+-------------------+------------+------------------------------------+
++-----------+-------------+-----------------------------------------------+
+|  Column   |    Type     |                  Description                  |
++===========+=============+===============================================+
+| id        | ``INTEGER`` | The id of the article containing this key.    |
++-----------+-------------+-----------------------------------------------+
+| title     | ``TEXT``    | The title of the article containing this key. |
++-----------+-------------+-----------------------------------------------+
+| number    | ``INTEGER`` | The number of this key, without padding       |
+|           |             | (e.g. Key 0555’s                              |
+|           |             | ``number`` would be ``555``).                 |
++-----------+-------------+-----------------------------------------------+
+| item_id   | ``INTEGER`` | The item id of the key.                       |
++-----------+-------------+-----------------------------------------------+
+| name      | ``TEXT``    | Name(s) this key usually receives by players. |
++-----------+-------------+-----------------------------------------------+
+| material  | ``TEXT``    | The material this key is made of.             |
++-----------+-------------+-----------------------------------------------+
+| location  | ``TEXT``    | General location of this key.                 |
++-----------+-------------+-----------------------------------------------+
+| origin    | ``TEXT``    | How this key is obtained.                     |
++-----------+-------------+-----------------------------------------------+
+| notes     | ``TEXT``    | Where this key is used or other notes.        |
++-----------+-------------+-----------------------------------------------+
+| version   | ``TEXT``    | The client version this key was               |
+|           |             | introduced to the game.                       |
++-----------+-------------+-----------------------------------------------+
+| timestamp | ``INTEGER`` | Unix timestamp of the article's last edit.    |
++-----------+-------------+-----------------------------------------------+
 
 map
 ~~~
@@ -485,7 +472,7 @@ npc
 +===========+=============+==================================================+
 | id        | ``INTEGER`  | The id of the article containing this npc.       |
 +-----------+-------------+--------------------------------------------------+
-| title     | ``TEXT``    | The title of the article containing the npcs.    |
+| title     | ``TEXT``    | The title of the article containing the npc.    |
 +-----------+-------------+--------------------------------------------------+
 | name      | ``TEXT``    | The actual name of the npc in-game.              |
 +-----------+-------------+--------------------------------------------------+
@@ -531,8 +518,8 @@ npc_destination
 +--------+-------------+------------------------------------+
 | Column |    Type     |            Description             |
 +========+=============+====================================+
-| npc_id | ``INTEGER`  | The id of the npc this destination |
-|        | `           | belongs to.                        |
+| npc_id | ``INTEGER`` | The id of the npc this destination |
+|        |             | belongs to.                        |
 +--------+-------------+------------------------------------+
 | name   | ``TEXT``    | The name of the place this npc can |
 |        |             | take you to.                       |
