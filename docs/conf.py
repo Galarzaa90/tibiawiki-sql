@@ -160,7 +160,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'TibiaWikiSQL', 'TibiaWikiSQL Documentation',
-     author, 'TibiaWikiSQL', 'One line description of project.',
+     author, 'TibiaWikiSQL', 'SQLite generator for TibiaWiki.',
      'Miscellaneous'),
 ]
 
