@@ -183,7 +183,10 @@ class Npc(Table):
     id = Column(Integer, primary_key=True)
     title = Column(Text)
     name = Column(Text)
+    race = Column(Text)
+    gender = Column(Text)
     city = Column(Text)
+    location = Column(Text)
     job = Column(Text)
     version = Column(Text)
     x = Column(Integer)
@@ -193,14 +196,14 @@ class Npc(Table):
     timestamp = Column(Integer)
 
 
-class NpcBuying(Table, table_name="npc_buying"):
+class NpcBuying(Table, table_name="npc_offer_buy"):
     npc_id = Column(ForeignKey(Integer, "npc", "id"))
     item_id = Column(ForeignKey(Integer, "item", "id"), nullable=False)
     value = Column(Integer, nullable=False)
     currency_id = Column(ForeignKey(Integer, "item", "id"), nullable=False)
 
 
-class NpcSelling(Table, table_name="npc_selling"):
+class NpcSelling(Table, table_name="npc_offer_sell"):
     npc_id = Column(ForeignKey(Integer, "npc", "id"))
     item_id = Column(ForeignKey(Integer, "item", "id"), nullable=False)
     value = Column(Integer, nullable=False)

@@ -78,6 +78,7 @@ class Parseable(Article, metaclass=abc.ABCMeta):
     """map: :class:`dict` A dictionary mapping the article's attributes to object attributes."""
     pattern = None
     """:class:`re.Pattern` A compiled pattern to filter out articles by their content."""
+
     __slots__ = ("id", "title", "timestamp", "raw_attributes")
 
     @classmethod
@@ -140,11 +141,11 @@ class Row(metaclass=abc.ABCMeta):
 
     def insert(self, c):
         """
-        Inserts the current model into its respective database.
+        Inserts the current model into its respective database table.
 
         Parameters
         ----------
-        c: Union[:class:`sqlite3.Cursor`, :class:`sqlite3.Connection`]
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
             A cursor or connection of the database.
         """
         rows = {}

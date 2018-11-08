@@ -29,15 +29,15 @@ def clean_links(content):
     if content is None:
         return None
     # Named links
-    content = named_links_pattern.sub('\g<1>', content)
+    content = named_links_pattern.sub(r'\g<1>', content)
     # Links
-    content = links_pattern.sub('\g<1>', content)
+    content = links_pattern.sub(r'\g<1>', content)
     # External links
     content = external_links_pattern.sub('', content)
     # Double spaces
     content = content.replace('  ', ' ')
     # No wiki
-    content = no_wiki_pattern.sub('\g<1>', content)
+    content = no_wiki_pattern.sub(r'\g<1>', content)
     return content
 
 

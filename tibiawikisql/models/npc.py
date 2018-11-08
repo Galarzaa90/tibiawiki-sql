@@ -138,12 +138,16 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         The title of the containing article.
     timestamp: :class:`int`
         The last time the containing article was edited.
-    raw_attributes: :class:`dict`
-        A dictionary containing attributes that couldn't be parsed.
     name: :class:`str`
         The in-game name of the NPC.
+    gender: :class:`str`
+        The gender of the NPC.
+    race: :class:`str`
+        The race of the NPC.
     job: :class:`str`
         The NPC's job.
+    location: :class:`str`
+        The location of the NPC.
     city: :class:`str`
         The city where the NPC is located.
     x: :class:`int`
@@ -155,19 +159,24 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
     version: :class:`str`
         The client version where the NPC was implemented.
     image: :class:`bytes`
-        The npc's image in bytes.
-    sells: list[:class:`NpcSellOffer`]
+        The NPC's image in bytes.
+    sells: list of :class:`NpcSellOffer`
         Items sold by the NPC.
-    buys: list[:class:`NpcSellOffer`]
+    buys: list of :class:`NpcBuyOffer`
         Items bought by the NPC.
-    destinations: list[:class:`NpcSellOffer`]
+    destinations: list of :class:`NpcSellOffer`
         Places where the NPC can travel to.
-    teachable_spells: list[:class:`NpcSpell`]
-        Spells teached by the NPC.
+    teachable_spells: list of :class:`NpcSpell`
+        Spells this NPC can teach.
     """
+    __slots__ = ("id", "title", "timestamp", "name", "gender", "race", "job", "location", "city", "x", "y", "z",
+                 "version", "image", "sells", "buys", "desinations", "teacheable_spells")
     map = {
         "name": ("name", lambda x: x),
         "actualname": ("name", lambda x: x),
+        "location": ("location", clean_links),
+        "gender": ("gender", lambda x: x),
+        "race": ("race", lambda x: x),
         "job": ("job", lambda x: x),
         "city": ("city", lambda x: x),
         "posx": ("x", convert_tibiawiki_position),
@@ -247,33 +256,20 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         for group, spells in spell_list:
             for spell in spells:
                 spell = spell.strip()
-                knight = paladin = sorcerer = druid = False
-                if "knight" in group.lower():
-                    knight = True
-                elif "paladin" in group.lower():
-                    paladin = True
-                elif "druid" in group.lower():
-                    druid = True
-                elif "sorcerer" in group.lower():
-                    sorcerer = True
-                else:
+                knight = "knight" in group.lower() or npc.name == "Eliza"
+                paladin = "paladin" in group.lower() or npc.name == "Ursula" or npc.name == "Eliza"
+                druid = "druid" in group.lower() or npc.name == "Elathriel" or npc.name == "Eliza"
+                sorcerer = "sorcerer" in group.lower() or npc.name == "Eliza"
+                if not(knight or paladin or druid or sorcerer):
                     def in_jobs(vocation, _npc):
-                        return vocation in _npc.job.lower() \
-                               or vocation in _npc.raw_attributes.get("job2", "").lower() \
-                               or vocation in _npc.raw_attributes.get("job3", "").lower()
+                        return vocation in (_npc.job+_npc.raw_attributes.get("job2", "") +
+                                            _npc.raw_attributes.get("job3", "")).lower()
 
                     knight = in_jobs("knight", npc)
                     paladin = in_jobs("paladin", npc)
                     druid = in_jobs("druid", npc)
                     sorcerer = in_jobs("sorcerer", npc)
                 exists = False
-                # Exceptions:
-                if npc.name == "Ursula":
-                    paladin = True
-                elif npc.name == "Eliza":
-                    paladin = druid = sorcerer = knight = True
-                elif npc.name == "Elathriel":
-                    druid = True
                 for j, s in enumerate(npc.teachable_spells):
                     # Spell was already in list, so we update vocations
                     if s.spell_name == spell:
@@ -337,7 +333,7 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
             if getattr(self, "item_id", None) and getattr(self, "value", None) and getattr(self, "currency_id", None):
                 super().insert(c)
             elif getattr(self, "value", 0):
-                query = f"""INSERT INTO {self.table.__tablename__}({','.join(c.name for c in self.table.columns)})
+                query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
                             VALUES(
                             ?,
                             (SELECT id from item WHERE title = ?),
@@ -345,7 +341,7 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
                             (SELECT id from item WHERE title = ?))"""
                 c.execute(query, (self.npc_id, self.item_name, self.value, self.currency_name))
             else:
-                query = f"""INSERT INTO {self.table.__tablename__}({','.join(c.name for c in self.table.columns)})
+                query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
                                         VALUES(
                                         ?,
                                         (SELECT id from item WHERE title = ?),
@@ -384,7 +380,7 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
             if getattr(self, "item_id", None) and getattr(self, "value", None) and getattr(self, "currency_id", None):
                 super().insert(c)
             elif getattr(self, "value", 0):
-                query = f"""INSERT INTO {self.table.__tablename__}({','.join(c.name for c in self.table.columns)})
+                query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
                             VALUES(
                             ?,
                             (SELECT id from item WHERE title = ?),
@@ -392,7 +388,7 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
                             (SELECT id from item WHERE title = ?))"""
                 c.execute(query, (self.npc_id, self.item_name, self.value, self.currency_name))
             else:
-                query = f"""INSERT INTO {self.table.__tablename__}({','.join(c.name for c in self.table.columns)})
+                query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
                                         VALUES(
                                         ?,
                                         (SELECT id from item WHERE title = ?),
@@ -465,13 +461,15 @@ class NpcDestination(abc.Row, table=schema.NpcDestination):
     notes: :class:`str`
         Notes about the destination, such as requirements.
     """
+    __slots__ = ("npc_id", "npc_name", "name", "price", "notes")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.npc_name = kwargs.get("npc_name")
 
 
 class RashidPosition(abc.Row, table=schema.RashidPosition):
-    """Represents a Rashid position
+    """Represents a Rashid position.
 
     Attributes
     -----------
@@ -486,6 +484,7 @@ class RashidPosition(abc.Row, table=schema.RashidPosition):
     city: :class:`str`
         The city where Rashid is that day.
     """
+    __slots__ = ("day", "x", "y", "z", "city")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -40,11 +40,11 @@ Tables
 +-----------------------+-------------------------------------------------+
 | `npc`_                | Contains information for all NPCs.              |
 +-----------------------+-------------------------------------------------+
-| `npc_buying`_         | Contains all the NPCs’ buy offers.              |
-+-----------------------+-------------------------------------------------+
 | `npc_destination`_    | Contains all the NPCs’ travel destinations.     |
 +-----------------------+-------------------------------------------------+
-| `npc_selling`_        | Contains all the NPCs’ sell offers.             |
+| `npc_offer_buy`_      | Contains all the NPCs’ buy offers.              |
++-----------------------+-------------------------------------------------+
+| `npc_offer_sell`_     | Contains all the NPCs’ sell offers.             |
 +-----------------------+-------------------------------------------------+
 | `npc_spell`_          | Contains all the spells NPCs teach.             |
 +-----------------------+-------------------------------------------------+
@@ -470,15 +470,21 @@ npc
 +-----------+-------------+--------------------------------------------------+
 |  Column   |    Type     |                   Description                    |
 +===========+=============+==================================================+
-| id        | ``INTEGER`` | The id of the article containing this npc.       |
+| id        | ``INTEGER`` | The id of the article containing this NPC.       |
 +-----------+-------------+--------------------------------------------------+
-| title     | ``TEXT``    | The title of the article containing the npc.     |
+| title     | ``TEXT``    | The title of the article containing the NPC.     |
 +-----------+-------------+--------------------------------------------------+
-| name      | ``TEXT``    | The actual name of the npc in-game.              |
+| name      | ``TEXT``    | The actual name of the NPC in-game.              |
 +-----------+-------------+--------------------------------------------------+
-| job       | ``TEXT``    | The npc job                                      |
+| gender    | ``TEXT``    | The actual gender of the NPC in-game.            |
++-----------+-------------+--------------------------------------------------+
+| race      | ``TEXT``    | The actual race of the NPC in-game.              |
++-----------+-------------+--------------------------------------------------+
+| job       | ``TEXT``    | The NPC job                                      |
 +-----------+-------------+--------------------------------------------------+
 | city      | ``TEXT``    | City where the npc is found.                     |
++-----------+-------------+--------------------------------------------------+
+| location  | ``TEXT``    | The location where the NPC is found.             |
 +-----------+-------------+--------------------------------------------------+
 | x         | ``INTEGER`` | The x position where the NPC is usually located. |
 +-----------+-------------+--------------------------------------------------+
@@ -486,32 +492,13 @@ npc
 +-----------+-------------+--------------------------------------------------+
 | z         | ``INTEGER`` | The z position where the NPC is usually located. |
 +-----------+-------------+--------------------------------------------------+
-| version   | ``TEXT``    | The client version this npc was inroduced to     |
+| version   | ``TEXT``    | The client version this NPC was introduced to    |
 |           |             | to the game.                                     |
 +-----------+-------------+--------------------------------------------------+
-| image     | ``BLOB``    | The npc’s image bytes.                           |
+| image     | ``BLOB``    | The NPC's image bytes.                           |
 +-----------+-------------+--------------------------------------------------+
 | timestamp | ``INTEGER`` | Unix timestamp of the article's last edit.       |
 +-----------+-------------+--------------------------------------------------+
-
-npc_buying
-~~~~~~~~~~
-+----------+-------------+---------------------------------+
-|  Column  |    Type     |           Description           |
-+==========+=============+=================================+
-| npc_id   | ``INTEGER`` | The id of the npc this offer    |
-|          |             | belongs to                      |
-+----------+-------------+---------------------------------+
-| item_id  | ``INTEGER`` | The id of the item this offer   |
-|          |             | refers to                       |
-+----------+-------------+---------------------------------+
-| value    | ``TEXT``    | The value of the offer          |
-+----------+-------------+---------------------------------+
-| currency | ``INTEGER`` | The id of the item used as      |
-|          |             | currency in this offer. In most |
-|          |             | cases this is the id of gold    |
-|          |             | coins.                          |
-+----------+-------------+---------------------------------+
 
 npc_destination
 ~~~~~~~~~~~~~~~
@@ -532,7 +519,26 @@ npc_destination
 |        |             | exceptions.                        |
 +--------+-------------+------------------------------------+
 
-npc_selling
+npc_offer_buy
+~~~~~~~~~~
++----------+-------------+---------------------------------+
+|  Column  |    Type     |           Description           |
++==========+=============+=================================+
+| npc_id   | ``INTEGER`` | The id of the npc this offer    |
+|          |             | belongs to                      |
++----------+-------------+---------------------------------+
+| item_id  | ``INTEGER`` | The id of the item this offer   |
+|          |             | refers to                       |
++----------+-------------+---------------------------------+
+| value    | ``TEXT``    | The value of the offer          |
++----------+-------------+---------------------------------+
+| currency | ``INTEGER`` | The id of the item used as      |
+|          |             | currency in this offer. In most |
+|          |             | cases this is the id of gold    |
+|          |             | coins.                          |
++----------+-------------+---------------------------------+
+
+npc_offer_sell
 ~~~~~~~~~~~
 +----------+-------------+---------------------------------+
 |  Column  |    Type     |           Description           |
