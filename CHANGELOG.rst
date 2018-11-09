@@ -2,6 +2,7 @@ Changelog
 =========
 Version 2.0.0 (Unreleased)
 --------------------------
+
 - The database structure has changed:
 
     - Renamed tables:
@@ -35,11 +36,17 @@ Version 2.0.0 (Unreleased)
             - ``walksaround`` -> ``walks_around``
             - All element columns now have ``modifier`` at the beginning
               (e.g. ``phyisical`` -> ``modifier_phyisical``)
-        - Table: ``house``
-            - ``id`` ->
+        - Table: ``item``
+            - ``value`` -> ``value_sell``
+            - ``price`` -> ``value_buy``
+        - ``id`` -> ``house_id`` in table `house`
+        - ``attribute`` -> ``value`` in table `item_attribute`
+        - ``destination`` -> ``name`` in table ``npc_destination``
     - Added columns:
-        - Table ``achievement``:
-            - ``title``
+        - ``title`` in all tables, except child tables and `charm`, `rashid_position` and `map`:
+        - ``client_id`` in table ``item``
+    - Removed columns:
+        - ``day_name`` from ``rashid_position``
 
 
 Version 1.2.0 (2018-10-16)

@@ -21,9 +21,9 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         The article that goes before the name when looking at the item.
     stackable: :class:`bool`
         Whether the item can be stacked or not.
-    value: :class:`int`
+    value_sell: :class:`int`
         The highest price an NPC will buy this item for.
-    price: :class:`int`
+    value_buy: :class:`int`
         The lowest price an NPC will sell this item for.
     class: :class:`str`
         The item class the item belongs to.
@@ -39,8 +39,8 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "actualname": ("name", lambda x: x),
         "weight": ("weight", parse_float),
         "stackable": ("stackable", parse_boolean),
-        "npcvalue": ("value", parse_integer),
-        "npcprice": ("price", parse_integer),
+        "npcvalue": ("value_sell", parse_integer),
+        "npcprice": ("value_buy", parse_integer),
         "flavortext": ("flavor_text", lambda x: x),
         "itemclass": ("class", lambda x: x),
         "primarytype": ("type", lambda x: x),

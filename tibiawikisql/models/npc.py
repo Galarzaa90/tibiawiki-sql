@@ -345,7 +345,7 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
                                         VALUES(
                                         ?,
                                         (SELECT id from item WHERE title = ?),
-                                        (SELECT price from item WHERE title = ?),
+                                        (SELECT value_buy from item WHERE title = ?),
                                         (SELECT id from item WHERE title = ?))"""
                 c.execute(query, (self.npc_id, self.item_name, self.item_name, self.currency_name))
         except sqlite3.IntegrityError:
@@ -392,7 +392,7 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
                                         VALUES(
                                         ?,
                                         (SELECT id from item WHERE title = ?),
-                                        (SELECT value from item WHERE title = ?),
+                                        (SELECT value_sell from item WHERE title = ?),
                                         (SELECT id from item WHERE title = ?))"""
                 c.execute(query, (self.npc_id, self.item_name, self.item_name, self.currency_name))
         except sqlite3.IntegrityError:

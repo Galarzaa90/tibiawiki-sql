@@ -1,4 +1,6 @@
+import datetime
 import os
+import platform
 import sqlite3
 import time
 
@@ -177,6 +179,13 @@ def generate(skip_images, db_name):
                 print(f"\33[32m\tParsed {key} images in {dt:.2f} seconds."
                       f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
             save_maps(conn)
+    with conn:
+        gen_time = datetime.datetime.utcnow()
+        schema.DatabaseInfo.insert(conn, **{"key": "timestamp", "value": str(gen_time.timestamp())})
+        schema.DatabaseInfo.insert(conn, **{"key": "generate_time", "value": str(gen_time)})
+        schema.DatabaseInfo.insert(conn, **{"key": "version", "value": __version__})
+        schema.DatabaseInfo.insert(conn, **{"key": "python_version", "value": platform.python_version()})
+        schema.DatabaseInfo.insert(conn, **{"key": "platform", "value": platform.platform()})
 
 
 def get_articles(category, data_store, key=None):
