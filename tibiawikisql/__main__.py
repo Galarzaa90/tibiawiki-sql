@@ -8,13 +8,12 @@ import click
 import requests
 from colorama import init
 
-from tibiawikisql import WikiClient, abc
+from tibiawikisql import WikiClient, abc, __version__
 from tibiawikisql import schema, models
 from tibiawikisql.models.charm import charms
 from tibiawikisql.models.npc import rashid_positions
 from tibiawikisql.utils import parse_loot_statistics, parse_min_max
 
-__version__ = "2.0.0"
 DATABASE_FILE = "tibia_database.db"
 
 init()

@@ -14,7 +14,7 @@ class TestWikiApi(unittest.TestCase):
         with open(os.path.join(RESOURCES_PATH, resource)) as f:
             return f.read()
 
-    def testGetCategoryMember(self):
+    def testCategoryFunctions(self):
         json_response = self._load_resource("response_category_without_continue.json")
         api.requests.Session.get = MagicMock()
         api.requests.Session.get.return_value.text = json_response
@@ -24,3 +24,39 @@ class TestWikiApi(unittest.TestCase):
 
         members = list(WikiClient.get_category_members("Spells", False))
         self.assertEqual(len(members), 10)
+
+        titles = list(WikiClient.get_category_members_titles("Spells"))
+        self.assertIsInstance(titles[0], str)
+        self.assertEqual(len(titles), 8)
+
+    def testArticleFunctions(self):
+        json_response = self._load_resource("response_revisions.json")
+        api.requests.Session.get = MagicMock()
+        api.requests.Session.get.return_value.text = json_response
+        # Response is mocked, so this doesn't affect the output, but this matches the order in the mocked response.
+        titles = ["Golden Armor", "Golden Shield"]
+        articles = list(WikiClient.get_articles(titles))
+        self.assertIsInstance(articles[0], api.Article)
+        self.assertEqual(articles[0].title, titles[0])
+        self.assertIsNone(articles[1])
+
+        article = WikiClient.get_article(titles[0])
+        self.assertIsInstance(article, api.Article)
+        self.assertEqual(article.title, titles[0])
+
+    def testImageFunctions(self):
+        json_response = self._load_resource("response_image_info.json")
+        api.requests.Session.get = MagicMock()
+        api.requests.Session.get.return_value.text = json_response
+        # Response is mocked, so this doesn't affect the output, but this matches the order in the mocked response.
+        titles = ["Golden Armor.gif", "Golden Shield.gif"]
+        images = list(WikiClient.get_images_info(titles))
+        self.assertIsInstance(images[0], api.Image)
+        self.assertEqual(images[0].file_name, titles[0])
+        self.assertIsNone(images[1])
+
+        image = WikiClient.get_image_info(titles[0])
+        self.assertIsInstance(image, api.Image)
+        self.assertEqual(image.file_name, titles[0])
+        self.assertEqual(image.extension, ".gif")
+        self.assertEqual(image.clean_name, "Golden Armor")

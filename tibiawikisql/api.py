@@ -118,7 +118,7 @@ class WikiClient:
         Parameters
         ----------
         name: :class:`str`
-            The category's name. 'Category:' prefix is not necessary.
+            The category's name. ``Category:`` prefix is not necessary.
         skip_index: :class:`bool`
             Whether to skip index articles or not.
 
@@ -162,7 +162,7 @@ class WikiClient:
         Parameters
         ----------
         name: :class:`str`
-            The category's name. 'Category:' prefix is not necessary.
+            The category's name. ``Category:`` prefix is not necessary.
         skip_index: :class:`bool`
             Whether to skip index articles or not.
 
@@ -179,26 +179,31 @@ class WikiClient:
         """
         Gets an image's info.
 
+        It is not required to prefix the name with ``File:``, but the extension is required.
+
         Parameters
         ----------
         name: :class:`str`
-            The name of the image. 'File:' prefix is not necessary. Extension is required.
+            The name of the image.
 
         Returns
         -------
         :class:`Image`
             The image's information.
         """
-        try:
-            gen = cls.get_images_info([name])
-            return next(gen)
-        except StopIteration:
-            return None
+        gen = cls.get_images_info([name])
+        return next(gen)
 
     @classmethod
     def get_images_info(cls, names):
         """
         Gets the information of a list of image names.
+
+        It is not required to prefix the name with ``File:``, but the extension is required.
+
+        .. warning ::
+
+            The order of the returned articles might not match the order of the provided names due to an API limitation.
 
         Parameters
         ----------
@@ -238,6 +243,10 @@ class WikiClient:
     def get_articles(cls, names):
         """
         Generator that obtains a list of articles given their titles.
+
+        .. warning ::
+
+            The order of the returned articles might not match the order of the provided names due to an API limitation.
 
         Parameters
         ----------
@@ -288,8 +297,5 @@ class WikiClient:
         :class:`Article`
             The article matching the title.
         """
-        try:
-            gen = cls.get_articles([name])
-            return next(gen)
-        except StopIteration:
-            return None
+        gen = cls.get_articles([name])
+        return next(gen)
