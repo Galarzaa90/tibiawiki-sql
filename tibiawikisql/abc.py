@@ -1,4 +1,5 @@
 import abc
+import sqlite3
 
 from tibiawikisql.api import Article
 
@@ -158,3 +159,23 @@ class Row(metaclass=abc.ABCMeta):
             except AttributeError:
                 continue
         self.table.insert(c, **rows)
+
+    @classmethod
+    def from_row(cls, row):
+        """
+        Returns an instance of the model from a database table.
+
+        Parameters
+        ----------
+        row: :class:`dict`, :class:`sqlite3.Row`
+            A dict representing a row or a Row object.
+
+        Returns
+        -------
+        any:
+            An instance of the class, based on the row
+        """
+        if isinstance(row, sqlite3.Row):
+            row = dict(row)
+        return cls(**row)
+
