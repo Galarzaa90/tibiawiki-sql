@@ -1,21 +1,13 @@
-import os
 import unittest
 from unittest.mock import MagicMock
 
+from tests import load_resource
 from tibiawikisql import api, WikiClient
-
-BASE_PATH = os.path.abspath(os.path.dirname(__file__))
-RESOURCES_PATH = os.path.join(BASE_PATH, "resources/")
 
 
 class TestWikiApi(unittest.TestCase):
-    @staticmethod
-    def _load_resource(resource):
-        with open(os.path.join(RESOURCES_PATH, resource)) as f:
-            return f.read()
-
     def testCategoryFunctions(self):
-        json_response = self._load_resource("response_category_without_continue.json")
+        json_response = load_resource("response_category_without_continue.json")
         api.requests.Session.get = MagicMock()
         api.requests.Session.get.return_value.text = json_response
         members = list(WikiClient.get_category_members("Spells"))
@@ -30,7 +22,7 @@ class TestWikiApi(unittest.TestCase):
         self.assertEqual(len(titles), 8)
 
     def testArticleFunctions(self):
-        json_response = self._load_resource("response_revisions.json")
+        json_response = load_resource("response_revisions.json")
         api.requests.Session.get = MagicMock()
         api.requests.Session.get.return_value.text = json_response
         # Response is mocked, so this doesn't affect the output, but this matches the order in the mocked response.
@@ -45,7 +37,7 @@ class TestWikiApi(unittest.TestCase):
         self.assertEqual(article.title, titles[0])
 
     def testImageFunctions(self):
-        json_response = self._load_resource("response_image_info.json")
+        json_response = load_resource("response_image_info.json")
         api.requests.Session.get = MagicMock()
         api.requests.Session.get.return_value.text = json_response
         # Response is mocked, so this doesn't affect the output, but this matches the order in the mocked response.
