@@ -157,7 +157,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
     image: :class:`bytes`
         The creature's image in bytes.
     """
-    map = {
+    _map = {
         "article": ("article", lambda x: x),
         "name": ("name", lambda x: x),
         "actualname": ("name", lambda x: x),
@@ -192,7 +192,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "walksaround": ("walks_around", parse_monster_walks),
         "implemented": ("version", lambda x: x)
     }
-    pattern = re.compile(r"Infobox[\s_]Creature")
+    _pattern = re.compile(r"Infobox[\s_]Creature")
 
     @classmethod
     def from_article(cls, article):

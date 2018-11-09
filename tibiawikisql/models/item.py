@@ -34,7 +34,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     image: :class:`bytes`
         The item's image in bytes.
     """
-    map = {
+    _map = {
         "article": ("article", lambda x: x),
         "actualname": ("name", lambda x: x),
         "weight": ("weight", parse_float),
@@ -47,7 +47,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "implemented": ("version", lambda x: x),
         "itemid": ("client_id", parse_integer)
     }
-    pattern = re.compile(r"Infobox[\s_]Item")
+    _pattern = re.compile(r"Infobox[\s_]Item")
 
     @classmethod
     def from_article(cls, article):
@@ -55,7 +55,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         if item is None:
             return None
         item.attributes = []
-        for name, attribute in ItemAttribute.map.items():
+        for name, attribute in ItemAttribute._map.items():
             if attribute in item.raw_attributes and item.raw_attributes[attribute]:
                 item.attributes.append(ItemAttribute(item_id=item.id, name=name, value=item.raw_attributes[attribute]))
         return item
@@ -99,7 +99,7 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
     """
     __slots__ = {"id", "title", "timestamp", "raw_attributes", "name", "number", "item_id", "material",
                  "notes", "origin", "version", "location"}
-    map = {
+    _map = {
         "aka": ("name", clean_links),
         "number": ("number", int),
         "primarytype": ("material", lambda x: x),
@@ -108,7 +108,7 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
         "shortnotes": ("notes", clean_links),
         "implemented": ("version", lambda x: x),
     }
-    pattern = re.compile(r"Infobox[\s_]Key")
+    _pattern = re.compile(r"Infobox[\s_]Key")
 
     def insert(self, c):
         if getattr(self, "item_id", None):
@@ -135,7 +135,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
     value: :class:`str`
         The value of the attribute.
     """
-    map = {
+    _map = {
         "level": "levelrequired",
         "attack": "attack",
         "elemental_attack": "elementattack",

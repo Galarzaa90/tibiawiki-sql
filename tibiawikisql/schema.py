@@ -3,7 +3,7 @@ from tibiawikisql.database import Table, Integer, Text, Column, Blob, Real, Fore
 
 class Achievement(Table):
     id = Column(Integer, primary_key=True)
-    title = Column(Text)
+    title = Column(Text, unique=True)
     name = Column(Text)
     grade = Column(Integer)
     points = Column(Integer)
@@ -17,7 +17,7 @@ class Achievement(Table):
 
 class Charm(Table):
     id = Column(Integer, auto_increment=True)
-    name = Column(Text)
+    name = Column(Text, unique=True)
     type = Column(Text)
     description = Column(Text)
     points = Column(Integer)
@@ -26,7 +26,7 @@ class Charm(Table):
 
 class Creature(Table):
     id = Column(Integer, primary_key=True)
-    title = Column(Text)
+    title = Column(Text, unique=True)
     name = Column(Text)
     article = Column(Text)
     hitpoints = Column(Integer)
@@ -65,7 +65,7 @@ class Creature(Table):
 
 class Item(Table):
     id = Column(Integer, primary_key=True)
-    title = Column(Text)
+    title = Column(Text, unique=True)
     name = Column(Text)
     article = Column(Text)
     stackable = Column(Boolean, default=False)
@@ -102,9 +102,9 @@ class DatabaseInfo(Table, table_name="database_info"):
 
 class House(Table):
     id = Column(Integer, primary_key=True)
-    house_id = Column(Integer)
-    title = Column(Text)
-    name = Column(Text)
+    house_id = Column(Integer, unique=True)
+    title = Column(Text, unique=True)
+    name = Column(Text, unique=True)
     city = Column(Text)
     street = Column(Text)
     beds = Column(Integer)
@@ -122,8 +122,8 @@ class House(Table):
 
 class Imbuement(Table):
     id = Column(Integer, primary_key=True)
-    title = Column(Text)
-    name = Column(Text)
+    title = Column(Text, unique=True)
+    name = Column(Text, unique=True)
     tier = Column(Text)
     type = Column(Text)
     effect = Column(Text)
@@ -139,9 +139,9 @@ class ImbuementMaterial(Table, table_name="imbuement_material"):
 
 
 class ItemKey(Table, table_name="item_key"):
-    id = Column(Integer)
-    title = Column(Text)
-    number = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    title = Column(Text, unique=True)
+    number = Column(Integer, unique=True)
     item_id = Column(ForeignKey(Integer, "item", "id"))
     name = Column(Text)
     material = Column(Text)
@@ -159,7 +159,7 @@ class Map(Table):
 
 class Spell(Table):
     id = Column(Integer, primary_key=True)
-    title = Column(Text)
+    title = Column(Text, unique=True)
     name = Column(Text)
     words = Column(Text)
     type = Column(Text)
@@ -181,7 +181,7 @@ class Spell(Table):
 
 class Npc(Table):
     id = Column(Integer, primary_key=True)
-    title = Column(Text)
+    title = Column(Text, unique=True)
     name = Column(Text)
     race = Column(Text)
     gender = Column(Text)
@@ -261,7 +261,7 @@ def create_tables(conn):
     Creates all the tables in the database.
     Parameters
     ----------
-    conn: sqlite3.Connection
+    conn: sqlite3.Connection, sqlite3.Cursor
 
     """
     for table in Table.all_tables():

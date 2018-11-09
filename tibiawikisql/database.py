@@ -112,8 +112,8 @@ class Column:
     __slots__ = ( 'column_type', 'index', 'primary_key', 'nullable',
                   'default', 'unique', 'name', 'index_name', 'auto_increment')
 
-    def __init__(self, column_type, *, index=False, primary_key=False,
-                 nullable=True, default=None, name=None, auto_increment=None):
+    def __init__(self, column_type, name=None, *, unique=False, primary_key=False, nullable=True, default=None,
+                 auto_increment=None):
         if inspect.isclass(column_type):
             column_type = column_type()
 
@@ -121,12 +121,11 @@ class Column:
             raise TypeError('Cannot have a non-SQLType derived column_type')
 
         self.column_type = column_type
-        self.index = index
+        self.unique = unique
         self.primary_key = primary_key
         self.nullable = nullable
         self.default = default
         self.name = name
-        self.index_name = None # to be filled later
         self.auto_increment = auto_increment
 
         if self.auto_increment:
@@ -138,16 +137,14 @@ class Column:
         if not isinstance(self.column_type, Integer) and self.auto_increment:
             raise SchemaError('Only Integer columns can be auotincrement')
 
-        if sum(map(bool, (primary_key, default is not None))) > 1:
-            raise SchemaError("'primary_key', and 'default' are mutually exclusive.")
+        if sum(map(bool, (unique, primary_key, default is not None))) > 1:
+            raise SchemaError("'unique', 'primary_key', and 'default' are mutually exclusive.")
 
     @classmethod
     def from_dict(cls, data):
-        index_name = data.pop('index_name', None)
         column_type = data.pop('column_type')
         column_type = SQLType.from_dict(column_type)
         self = cls(column_type=column_type, **data)
-        self.index_name = index_name
         return self
 
     @property
@@ -183,6 +180,9 @@ class Column:
                 builder.append(str(int(default)))
             else:
                 builder.append("%s" % default)
+        elif self.unique:
+            builder.append('UNIQUE')
+
         elif self.primary_key:
             builder.append('PRIMARY KEY')
 
@@ -214,10 +214,6 @@ class TableMeta(type):
             if isinstance(value, Column):
                 if value.name is None:
                     value.name = elem
-
-                if value.index:
-                    value.index_name = '%s_%s_idx' % (table_name, value.name)
-
                 columns.append(value)
 
         dct['columns'] = columns
@@ -241,23 +237,16 @@ class Table(metaclass=TableMeta):
         builder.append('(%s)' % ', '.join(c._create_table() for c in cls.columns))
         statements.append(' '.join(builder) + ';')
 
-        # handle the index creations
-        for column in cls.columns:
-            if column.index:
-                fmt = 'CREATE INDEX IF NOT EXISTS {1.index_name} ON {0} ({1.name});'.format(cls.__tablename__, column)
-                statements.append(fmt)
-
         return '\n'.join(statements)
 
     @classmethod
     def to_dict(cls):
-        x = {}
-        x['name'] = cls.__tablename__
-        x['__meta__'] = cls.__module__ + '.' + cls.__qualname__
+        x = {'name': cls.__tablename__,
+             '__meta__': cls.__module__ + '.' + cls.__qualname__,
+             'columns': [a._to_dict() for a in cls.columns]}
 
         # nb: columns is ordered due to the ordered dict usage
         #     this is used to help detect renames
-        x['columns'] = [a._to_dict() for a in cls.columns]
         return x
 
     @classmethod

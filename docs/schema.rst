@@ -319,14 +319,11 @@ house
 +-----------+-------------+-------------------------------------------------+
 | floors    | ``INTEGER`` | The number of floors this house has.            |
 +-----------+-------------+-------------------------------------------------+
-| x         | ``INTEGER`  | The x position of the house.                    |
-|           |             |                                                 |
+| x         | ``INTEGER``  | The x position of the house.                   |
 +-----------+-------------+-------------------------------------------------+
-| y         | ``INTEGER`  | The y position of the house.                    |
-|           |             |                                                 |
+| y         | ``INTEGER``  | The y position of the house.                   |
 +-----------+-------------+-------------------------------------------------+
-| z         | ``INTEGER`  | The z position of the house.                    |
-|           |             |                                                 |
+| z         | ``INTEGER``  | The z position of the house.                   |
 +-----------+-------------+-------------------------------------------------+
 | guildhall | ``BOOLEAN`` | Whether this house is a guildhall or not.       |
 +-----------+-------------+-------------------------------------------------+
@@ -520,7 +517,7 @@ npc_destination
 +--------+-------------+------------------------------------+
 
 npc_offer_buy
-~~~~~~~~~~
+~~~~~~~~~~~~~
 +----------+-------------+---------------------------------+
 |  Column  |    Type     |           Description           |
 +==========+=============+=================================+
@@ -539,7 +536,7 @@ npc_offer_buy
 +----------+-------------+---------------------------------+
 
 npc_offer_sell
-~~~~~~~~~~~
+~~~~~~~~~~~~~~
 +----------+-------------+---------------------------------+
 |  Column  |    Type     |           Description           |
 +==========+=============+=================================+
@@ -651,7 +648,7 @@ spell
 +-----------+-------------+-------------------------------------------------------+
 |  Column   |    Type     |                      Description                      |
 +===========+=============+=======================================================+
-| id        | ``INTEGER`  | The id of the article containing this achievement.    |
+| id        | ``INTEGER`` | The id of the article containing this achievement.    |
 +-----------+-------------+-------------------------------------------------------+
 | title     | ``TEXT``    | The title of the article containing the achievement.  |
 +-----------+-------------+-------------------------------------------------------+
@@ -689,10 +686,10 @@ spell
 | sorcerer  | ``BOOLEAN`` | Whether this spell can be used by                     |
 |           |             | sorcerers or not.                                     |
 +-----------+-------------+-------------------------------------------------------+
-| druid     | ``BOOLEAN`  | Whether this spell can be used by                     |
+| druid     | ``BOOLEAN`` | Whether this spell can be used by                     |
 |           |             | druids or not.                                        |
 +-----------+-------------+-------------------------------------------------------+
-| paladin   | ``BOOLEAN`  | Whether this spell can be used by                     |
+| paladin   | ``BOOLEAN`` | Whether this spell can be used by                     |
 |           |             | paladins or not.                                      |
 +-----------+-------------+-------------------------------------------------------+
 | image     | ``BLOB``    | The spell’s image bytes.                              |

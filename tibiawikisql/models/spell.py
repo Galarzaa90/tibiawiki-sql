@@ -38,7 +38,7 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
     premium: :class:`bool`
         Whether the spell is premium only or not.
     """
-    map = {
+    _map = {
         "name": ("name", lambda x: x),
         "words": ("words", lambda x: x),
         "type": ("type", lambda x: x),
@@ -51,7 +51,7 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         "levelrequired": ("level", parse_integer),
         "premium": ("premium", parse_boolean),
     }
-    pattern = re.compile(r"Infobox[\s_]Spell")
+    _pattern = re.compile(r"Infobox[\s_]Spell")
 
     @classmethod
     def from_article(cls, article):

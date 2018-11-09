@@ -45,7 +45,7 @@ class House(abc.Row, abc.Parseable, table=schema.House):
     version: :class:`str`
         The client version where this creature was first implemented.
     """
-    map = {
+    _map = {
         "houseid": ("house_id", parse_integer),
         "name": ("name", lambda x: x),
         "type": ("guildhall", lambda x: x is not None and "guildhall" in x.lower()),

@@ -33,7 +33,7 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
     version: :class:`str`
         The client version where this was first implemented.
     """
-    map = {
+    _map = {
         "name": ("name", lambda x: x.strip()),
         "actualname": ("name", lambda x: x.strip()),
         "grade": ("grade", lambda x: parse_integer(x, None)),
@@ -44,6 +44,6 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         "secret": ("secret", parse_boolean),
         "implemented": ("version", lambda x: x),
     }
-    pattern = re.compile(r"Infobox[\s_]Achievement")
+    _pattern = re.compile(r"Infobox[\s_]Achievement")
     __slots__ = {"id", "title", "timestamp", "raw_attributes", "name", "grade", "points", "description",
                  "spoiler", "secret", "version"}

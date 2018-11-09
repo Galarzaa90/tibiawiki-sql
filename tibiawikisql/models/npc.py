@@ -171,7 +171,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
     """
     __slots__ = ("id", "title", "timestamp", "name", "gender", "race", "job", "location", "city", "x", "y", "z",
                  "version", "image", "sells", "buys", "desinations", "teacheable_spells")
-    map = {
+    _map = {
         "name": ("name", lambda x: x),
         "actualname": ("name", lambda x: x),
         "location": ("location", clean_links),
@@ -184,7 +184,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         "posz": ("z", int),
         "implemented": ("version", lambda x: x)
     }
-    pattern = re.compile(r"Infobox[\s_]NPC")
+    _pattern = re.compile(r"Infobox[\s_]NPC")
 
     @classmethod
     def from_article(cls, article):

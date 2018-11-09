@@ -1,6 +1,7 @@
 import abc
 import sqlite3
 
+from tibiawikisql import database
 from tibiawikisql.api import Article
 
 
@@ -75,10 +76,10 @@ class Parseable(Article, metaclass=abc.ABCMeta):
     raw_attributes: :class:`dict`
         A dictionary containing attributes that couldn't be parsed.
     """
-    map = None
-    """map: :class:`dict` A dictionary mapping the article's attributes to object attributes."""
-    pattern = None
-    """:class:`re.Pattern` A compiled pattern to filter out articles by their content."""
+    _map = None
+    """map: :class:`dict`: A dictionary mapping the article's attributes to object attributes."""
+    _pattern = None
+    """:class:`re.Pattern`: A compiled pattern to filter out articles by their content."""
 
     __slots__ = ("id", "title", "timestamp", "raw_attributes")
 
@@ -97,19 +98,19 @@ class Parseable(Article, metaclass=abc.ABCMeta):
         :class:`Type[abc.Parseable]`
             An inherited model object for the current article.
         """
-        if cls.map is None:
+        if cls._map is None:
             raise NotImplementedError("Inherited class must override map")
 
-        if article is None or (cls.pattern and not cls.pattern.search(article.content)):
+        if article is None or (cls._pattern and not cls._pattern.search(article.content)):
             return None
         row = {"id": article.id, "timestamp": article.timestamp, "title": article.title, "attributes": {}}
         attributes = parse_attributes(article.content)
         row["raw_attributes"] = {}
         for attribute, value in attributes.items():
-            if attribute not in cls.map:
+            if attribute not in cls._map:
                 row["raw_attributes"][attribute] = value
                 continue
-            column, func = cls.map[attribute]
+            column, func = cls._map[attribute]
             row[column] = func(value)
         return cls(**row)
 
@@ -125,7 +126,11 @@ class Row(metaclass=abc.ABCMeta):
     """
     def __init__(self, **kwargs):
         for c in self.table.columns:
-            setattr(self, c.name, kwargs.get(c.name, c.default))
+            value = kwargs.get(c.name, c.default)
+            # SQLite Booleans are actually stored as 0 or 1, so we convert to true boolean.
+            if isinstance(c.column_type, database.Boolean):
+                value = bool(value)
+            setattr(self, c.name, value)
         if kwargs.get("raw_attributes"):
             self.raw_attributes = kwargs.get("raw_attributes")
 
@@ -163,7 +168,7 @@ class Row(metaclass=abc.ABCMeta):
     @classmethod
     def from_row(cls, row):
         """
-        Returns an instance of the model from a database table.
+        Returns an instance of the model from a row or dictionary.
 
         Parameters
         ----------
@@ -173,7 +178,7 @@ class Row(metaclass=abc.ABCMeta):
         Returns
         -------
         any:
-            An instance of the class, based on the row
+            An instance of the class, based on the row.
         """
         if isinstance(row, sqlite3.Row):
             row = dict(row)

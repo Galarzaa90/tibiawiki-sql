@@ -50,7 +50,7 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
     version: :class:`str`
         The client version where this item was first implemented.
     """
-    map = {
+    _map = {
         "name": ("name", html.unescape),
         "location": ("location", clean_links),
         "legend": ("legend", clean_links),
@@ -59,7 +59,7 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
         "premium": ("premium", parse_boolean),
         "implemented": ("version", lambda x: x),
     }
-    pattern = re.compile(r"Infobox[\s_]Quest")
+    _pattern = re.compile(r"Infobox[\s_]Quest")
 
     @classmethod
     def from_article(cls, article):
