@@ -253,10 +253,10 @@ creature
 |                     |             | abilities (attacks, spells,                         |
 |                     |             | healing).                                           |
 +---------------------+-------------+-----------------------------------------------------+
-| walksthrough        | ``TEXT``    | The type of fields the creature                     |
+| walks_through        | ``TEXT``    | The type of fields the creature                     |
 |                     |             | will walk through.                                  |
 +---------------------+-------------+-----------------------------------------------------+
-| walksaround         | ``TEXT``    | The type of fields the creature                     |
+| walks_around         | ``TEXT``    | The type of fields the creature                     |
 |                     |             | will walk around to avoid when                      |
 |                     |             | possible.                                           |
 +---------------------+-------------+-----------------------------------------------------+

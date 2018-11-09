@@ -1,5 +1,46 @@
 Changelog
 =========
+Version 2.0.0 (Unreleased)
+--------------------------
+- The database structure has changed:
+
+    - Renamed tables:
+        - ``achievements`` -> ``achievement``
+        - ``creatures`` -> ``creature``
+        - ``creatures_drops`` -> ``creature_drop``
+        - ``houses`` - ``house``
+        - ``imbuements`` -> ``imbuement``
+        - ``imbuements_materials`` -> ``imbuement_material``
+        - ``items`` -> ``item``
+        - ``items_attributes`` -> ``item_attribute``
+        - ``npcs`` -> ``npc``
+        - ``npcs_buying`` -> ``npc_offer_buy``
+        - ``npcs_selling`` -> ``npc_offer_sell``
+        - ``npcs_destinations`` -> ``npc_destination``
+        - ``npcs_spells`` -> ``npc_spell``
+        - ``quests`` -> ``quest``
+        - ``quests_dangers`` -> ``quest_danger``
+        - ``quests_rewards`` -> ``quest_reward``
+        - ``rashid_positions`` -> ``rashid_position``
+        - ``spells`` -> ``spell``
+    - Renamed columns:
+        - All tables:
+            - ``last_edit`` -> ``timestamp``
+        - Table: ``creature``:
+            - ``summon`` -> ``summon_cost``
+            - ``convince`` -> ``convince_cost``
+            - ``occurrence`` -> ``bestiary_occurrence``
+            - ``see_invisible`` -> ``sees_invisible``
+            - ``walkthrough`` -> `` walks_through``
+            - ``walksaround`` -> ``walks_around``
+            - All element columns now have ``modifier`` at the beginning
+              (e.g. ``phyisical`` -> ``modifier_phyisical``)
+        - Table: ``house``
+            - ``id`` ->
+    - Added columns:
+        - Table ``achievement``:
+            - ``title``
+
 
 Version 1.2.0 (2018-10-16)
 --------------------------
@@ -12,6 +53,7 @@ Version 1.1.1 (2018-09-23)
 Version 1.1.0 (2018-09-22)
 --------------------------
 -  Added new columns to creatures table:
+
    -  ``walksaround``
    -  ``walksthrough``
 
@@ -27,6 +69,7 @@ Version 1.0.0 (2018-07-01)
 -  New tables ``imbuements`` and ``imbuements_materials``.
 -  Unknown creature attributes are no longer parsed as ``False``, but ``None``.
 -  New columns in creatures table:
+
    -  ``bestiary_class``
    -  ``bestiary_level``
    -  ``occurrence``
@@ -77,9 +120,4 @@ Features
 -  NPCs table with their information, including spawn location.
 -  NPCs sell and buy offers
 -  Achievements, with their spoiler info
--  Quests basic information, including their rewards and creatures faced
-   (dangers)
--  House and guildhall list, including their positions
--  World Map images embedded into database
--  Downloaded images are saved to a folder to save resources on
-   subsequent fetches.
+-  Quests basic infor
