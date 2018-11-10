@@ -36,3 +36,16 @@ class TestWikiApi(unittest.TestCase):
         db_item = models.Item.from_row(row)
 
         self.assertIsInstance(db_item, models.Item)
+
+    def testNpc(self):
+        article = Article(5432, "Yaman", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_npc.txt"))
+        npc = models.Npc.from_article(article)
+        self.assertIsInstance(npc, models.Npc)
+
+        npc.insert(self.conn)
+        c = self.conn.execute("SELECT * FROM %s" % npc.table.__tablename__)
+        row = c.fetchone()
+        db_npc = models.Npc.from_row(row)
+
+        self.assertIsInstance(db_npc, models.Npc)
