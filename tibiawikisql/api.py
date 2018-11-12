@@ -16,7 +16,7 @@ class WikiEntry:
 
     Attributes
     ----------
-    id: :class:`int`
+    article_id: :class:`int`
         The entry's id.
     title: :class:`str`
         The entry's title.
@@ -24,8 +24,8 @@ class WikiEntry:
         The date of the entry's last edit, represented as a unix timestamp.
     """
 
-    def __init__(self, id_, title, timestamp=None):
-        self.id = id_
+    def __init__(self, article_id, title, timestamp=None):
+        self.article_id = article_id
         self.title = title
         if isinstance(timestamp, str):
             self.timestamp = int(datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ").timestamp())
@@ -33,11 +33,11 @@ class WikiEntry:
             self.timestamp = int(timestamp.timestamp())
 
     def __repr__(self):
-        return "%s(id=%d,title=%r)" % (self.__class__.__name__, self.id, self.title)
+        return "%s(article_id=%d,title=%r)" % (self.__class__.__name__, self.article_id, self.title)
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
-            return self.id == other.id
+            return self.article_id == other.article_id
         return False
 
 
@@ -47,7 +47,7 @@ class Article(WikiEntry):
 
     Attributes
     ----------
-    id: :class:`int`
+    article_id: :class:`int`
         The article's internal id.
     title : :class:`str`
         The article's title.
@@ -57,8 +57,8 @@ class Article(WikiEntry):
         The article's source content.
     """
 
-    def __init__(self, id_, title, *, timestamp=None, content=None):
-        super().__init__(id_, title, timestamp)
+    def __init__(self, article_id, title, *, timestamp=None, content=None):
+        super().__init__(article_id, title, timestamp)
         self.content = content
 
 
@@ -68,7 +68,7 @@ class Image(WikiEntry):
 
     Attributes
     ----------
-    id: int
+    article_id: int
         The image's internal id.
     title : str
         The image's title.
@@ -77,8 +77,8 @@ class Image(WikiEntry):
     file_url: str
         The image's url.
     """
-    def __init__(self, id_, title, *, timestamp=None, file_url=None):
-        super().__init__(id_, title, timestamp)
+    def __init__(self, article_id, title, *, timestamp=None, file_url=None):
+        super().__init__(article_id, title, timestamp)
         self.file_url = file_url
 
     @property

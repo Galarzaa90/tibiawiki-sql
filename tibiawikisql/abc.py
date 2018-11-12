@@ -67,7 +67,7 @@ class Parseable(Article, metaclass=abc.ABCMeta):
 
     Attributes
     ----------
-    id: :class:`int`
+    article_id: :class:`int`
         The id of the  containing article.
     title: :class:`str`
         The title of the containing article.
@@ -80,8 +80,6 @@ class Parseable(Article, metaclass=abc.ABCMeta):
     """map: :class:`dict`: A dictionary mapping the article's attributes to object attributes."""
     _pattern = None
     """:class:`re.Pattern`: A compiled pattern to filter out articles by their content."""
-
-    __slots__ = ("id", "title", "timestamp", "raw_attributes")
 
     @classmethod
     def from_article(cls, article):
@@ -103,7 +101,7 @@ class Parseable(Article, metaclass=abc.ABCMeta):
 
         if article is None or (cls._pattern and not cls._pattern.search(article.content)):
             return None
-        row = {"id": article.id, "timestamp": article.timestamp, "title": article.title, "attributes": {}}
+        row = {"article_id": article.article_id, "timestamp": article.timestamp, "title": article.title, "attributes": {}}
         attributes = parse_attributes(article.content)
         row["raw_attributes"] = {}
         for attribute, value in attributes.items():
@@ -143,7 +141,7 @@ class Row(metaclass=abc.ABCMeta):
         if not value:
             key = "name"
             value = getattr(self, key, "")
-        return "%s (id=%d,%s=%r)" % (self.__class__.__name__, getattr(self, "id", 0), key, value)
+        return "%s (article_id=%d,%s=%r)" % (self.__class__.__name__, getattr(self, "article_id", 0), key, value)
 
     def insert(self, c):
         """

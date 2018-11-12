@@ -6,7 +6,7 @@ class Charm(abc.Row, table=schema.Charm):
 
     Attributes
     ----------
-    id: :class:`int`
+    article_id: :class:`int`
         Auto incremented identifier for the charm.
     name: :class:`str`
         The name of the charm.

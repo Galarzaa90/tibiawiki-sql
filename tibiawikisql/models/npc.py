@@ -132,7 +132,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
 
     Attributes
     ----------
-    id: :class:`int`
+    article_id: :class:`int`
         The id of the  containing article.
     title: :class:`str`
         The title of the containing article.
@@ -169,7 +169,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
     teachable_spells: list of :class:`NpcSpell`
         Spells this NPC can teach.
     """
-    __slots__ = ("id", "title", "timestamp", "name", "gender", "race", "job", "location", "city", "x", "y", "z",
+    __slots__ = ("article_id", "title", "timestamp", "name", "gender", "race", "job", "location", "city", "x", "y", "z",
                  "version", "image", "sells", "buys", "desinations", "teacheable_spells")
     _map = {
         "name": ("name", lambda x: x),
@@ -208,7 +208,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             price = int(price)
             if not notes:
                 notes = None
-            npc.destinations.append(NpcDestination(npc_id=npc.id, name=destination, price=price, notes=notes))
+            npc.destinations.append(NpcDestination(npc_id=npc.article_id, name=destination, price=price, notes=notes))
         return npc
 
     @classmethod
@@ -223,7 +223,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             value = None
             if price.strip():
                 value = int(price)
-            npc.buying.append(NpcBuyOffer(item_name=item.strip(), currency_name=currency, value=value, npc_id=npc.id))
+            npc.buying.append(NpcBuyOffer(item_name=item.strip(), currency_name=currency, value=value,
+                                          npc_id=npc.article_id))
 
     @classmethod
     def _parse_sell_offers(cls, npc):
@@ -237,7 +238,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             value = None
             if price.strip():
                 value = int(price)
-            npc.selling.append(NpcSellOffer(item_name=item.strip(), currency_name=currency, value=value, npc_id=npc.id))
+            npc.selling.append(NpcSellOffer(item_name=item.strip(), currency_name=currency, value=value,
+                                            npc_id=npc.article_id))
         # Items traded by npcs (these have a different template)
         trade_items = parse_item_trades(npc.raw_attributes["sells"])
         for item, price, currency in trade_items:
@@ -247,7 +249,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                 value = abs(int(price))
             if not currency.strip():
                 currency = "Gold Coin"
-            npc.selling.append(NpcSellOffer(item_name=item.strip(), currency_name=currency, value=value, npc_id=npc.id))
+            npc.selling.append(NpcSellOffer(item_name=item.strip(), currency_name=currency, value=value,
+                                            npc_id=npc.article_id))
 
     @classmethod
     def _parse_spells(cls, npc):
@@ -273,13 +276,13 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                 for j, s in enumerate(npc.teachable_spells):
                     # Spell was already in list, so we update vocations
                     if s.spell_name == spell:
-                        npc.teachable_spells[j] = NpcSpell(npc_id=npc.id, spell_name=spell,
+                        npc.teachable_spells[j] = NpcSpell(npc_id=npc.article_id, spell_name=spell,
                                                            knight=knight or s.knight, paladin=paladin or s.paladin,
                                                            druid=druid or s.druid, sorcerer=sorcerer or s.sorcerer)
                         exists = True
                         break
                 if not exists:
-                    npc.teachable_spells.append(NpcSpell(npc_id=npc.id, spell_name=spell, knight=knight,
+                    npc.teachable_spells.append(NpcSpell(npc_id=npc.article_id, spell_name=spell, knight=knight,
                                                          paladin=paladin, druid=druid, sorcerer=sorcerer))
 
     def insert(self, c):
@@ -336,17 +339,17 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
                 query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
                             VALUES(
                             ?,
-                            (SELECT id from item WHERE title = ?),
+                            (SELECT article_id from item WHERE title = ?),
                             ?,
-                            (SELECT id from item WHERE title = ?))"""
+                            (SELECT article_id from item WHERE title = ?))"""
                 c.execute(query, (self.npc_id, self.item_name, self.value, self.currency_name))
             else:
                 query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
                                         VALUES(
                                         ?,
-                                        (SELECT id from item WHERE title = ?),
+                                        (SELECT article_id from item WHERE title = ?),
                                         (SELECT value_buy from item WHERE title = ?),
-                                        (SELECT id from item WHERE title = ?))"""
+                                        (SELECT article_id from item WHERE title = ?))"""
                 c.execute(query, (self.npc_id, self.item_name, self.item_name, self.currency_name))
         except sqlite3.IntegrityError:
             pass
@@ -383,17 +386,17 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
                 query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
                             VALUES(
                             ?,
-                            (SELECT id from item WHERE title = ?),
+                            (SELECT article_id from item WHERE title = ?),
                             ?,
-                            (SELECT id from item WHERE title = ?))"""
+                            (SELECT article_id from item WHERE title = ?))"""
                 c.execute(query, (self.npc_id, self.item_name, self.value, self.currency_name))
             else:
                 query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
                                         VALUES(
                                         ?,
-                                        (SELECT id from item WHERE title = ?),
+                                        (SELECT article_id from item WHERE title = ?),
                                         (SELECT value_sell from item WHERE title = ?),
-                                        (SELECT id from item WHERE title = ?))"""
+                                        (SELECT article_id from item WHERE title = ?))"""
                 c.execute(query, (self.npc_id, self.item_name, self.item_name, self.currency_name))
         except sqlite3.IntegrityError:
             pass
@@ -440,7 +443,7 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
             super().insert(c)
         else:
             query = f"""INSERT INTO {self.table.__tablename__}({','.join(c.name for c in self.table.columns)})
-                        VALUES(?, (SELECT id from spell WHERE title = ?), ?, ?, ?, ?)"""
+                        VALUES(?, (SELECT article_id from spell WHERE title = ?), ?, ?, ?, ?)"""
             c.execute(query, (self.npc_id, self.spell_name, self.knight, self.sorcerer, self.paladin, self.druid))
 
 
