@@ -57,7 +57,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         item.attributes = []
         for name, attribute in ItemAttribute._map.items():
             if attribute in item.raw_attributes and item.raw_attributes[attribute]:
-                item.attributes.append(ItemAttribute(item_id=item.id, name=name, value=item.raw_attributes[attribute]))
+                item.attributes.append(ItemAttribute(item_id=item.article_id, name=name, value=item.raw_attributes[attribute]))
         return item
 
     def insert(self, c):
@@ -72,7 +72,7 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
 
     Attributes
     ----------
-    id: :class:`int`
+    article_id: :class:`int`
         The id of the  containing article.
     title: :class:`str`
         The title of the containing article.
@@ -97,7 +97,7 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
     version: :class:`str`
         The client version where this creature was first implemented.
     """
-    __slots__ = {"id", "title", "timestamp", "raw_attributes", "name", "number", "item_id", "material",
+    __slots__ = {"article_id", "title", "timestamp", "raw_attributes", "name", "number", "item_id", "material",
                  "notes", "origin", "version", "location"}
     _map = {
         "aka": ("name", clean_links),
@@ -115,11 +115,11 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
             super().insert(c)
             return
         else:
-            query = f"""INSERT INTO {self.table.__tablename__}(id, title, number, item_id, name, material, 
+            query = f"""INSERT INTO {self.table.__tablename__}(article_id, title, number, item_id, name, material, 
                         location, origin, notes, version, timestamp)
-                        VALUES(?, ?, ?, (SELECT id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?)"""
-            c.execute(query, (self.id, self.title, self.number, self.material + " Key", self.name, self.material,
-                              self.location, self.origin, self.notes, self.version, self.timestamp))
+                        VALUES(?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?)"""
+            c.execute(query, (self.article_id, self.title, self.number, self.material + " Key", self.name,
+                              self.material, self.location, self.origin, self.notes, self.version, self.timestamp))
 
 
 class ItemAttribute(abc.Row, table=schema.ItemAttribute):

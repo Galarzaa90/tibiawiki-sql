@@ -10,8 +10,8 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
 
     Attributes
     ----------
-    id: :class:`int`
-        The id of the  containing article.
+    article_id: :class:`int`
+        The id of the containing article.
     title: :class:`str`
         The title of the containing article.
     timestamp: :class:`int`
@@ -45,5 +45,5 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         "implemented": ("version", lambda x: x),
     }
     _pattern = re.compile(r"Infobox[\s_]Achievement")
-    __slots__ = {"id", "title", "timestamp", "raw_attributes", "name", "grade", "points", "description",
+    __slots__ = {"article_id", "title", "timestamp", "raw_attributes", "name", "grade", "points", "description",
                  "spoiler", "secret", "version"}

@@ -31,7 +31,7 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
 
     Attributes
     ----------
-    id: :class:`int`
+    article_id: :class:`int`
         The id of the  containing article.
     title: :class:`str`
         The title of the containing article.
@@ -70,12 +70,12 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
             rewards = parse_links(quest.raw_attributes["reward"])
             quest.rewards = []
             for reward in rewards:
-                quest.rewards.append(QuestReward(quest_id=quest.id, item_name=reward.strip()))
+                quest.rewards.append(QuestReward(quest_id=quest.article_id, item_name=reward.strip()))
         if "dangers" in quest.raw_attributes:
             dangers = parse_links(quest.raw_attributes["dangers"])
             quest.dangers = []
             for danger in dangers:
-                quest.dangers.append(QuestDanger(quest_id=quest.id, creature_name=danger.strip()))
+                quest.dangers.append(QuestDanger(quest_id=quest.article_id, creature_name=danger.strip()))
         return quest
 
     def insert(self, c):
@@ -110,7 +110,7 @@ class QuestReward(abc.Row, table=schema.QuestReward):
             return
         try:
             c.execute(f"""INSERT INTO {self.table.__tablename__}(quest_id, item_id)
-                      VALUES(?, (SELECT id FROM item WHERE title = ?))""",
+                      VALUES(?, (SELECT article_id FROM item WHERE title = ?))""",
                       (self.quest_id, self.item_name))
         except sqlite3.IntegrityError:
             pass
@@ -140,7 +140,7 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
             return
         try:
             c.execute(f"""INSERT INTO {self.table.__tablename__}(quest_id, creature_id)
-                      VALUES(?, (SELECT id FROM creature WHERE title = ?))""",
+                      VALUES(?, (SELECT article_id FROM creature WHERE title = ?))""",
                       (self.quest_id, self.creature_name))
         except sqlite3.IntegrityError:
             pass

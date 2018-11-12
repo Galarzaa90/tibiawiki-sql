@@ -222,7 +222,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
                     _min, _max = 0, 1
                 else:
                     _min, _max = parse_min_max(amounts)
-                loot_items.append(CreatureDrop(creature_id=creature.id, item_name=item, min=_min, max=_max))
+                loot_items.append(CreatureDrop(creature_id=creature.article_id, item_name=item, min=_min, max=_max))
             creature.loot = loot_items
         return creature
 
@@ -283,6 +283,6 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
             super().insert(c)
         else:
             query = f"""INSERT INTO {self.table.__tablename__}(creature_id, item_id, min, max)
-                        VALUES(?, (SELECT id from item WHERE title = ?), ?, ?)"""
+                        VALUES(?, (SELECT article_id from item WHERE title = ?), ?, ?)"""
             c.execute(query, (self.creature_id, self.item_name, self.min, self.max))
 

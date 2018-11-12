@@ -92,7 +92,7 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
 
     Attributes
     ----------
-    id: :class:`int`
+    article_id: :class:`int`
         The id of the  containing article.
     title: :class:`str`
         The title of the containing article.
@@ -132,7 +132,8 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
             materials = parse_astral_sources(imbuement.raw_attributes["astralsources"])
             imbuement.materials = []
             for name, amount in materials.items():
-                imbuement.materials.append(ImbuementMaterial(item_name=name, amount=amount, imbuement_id=imbuement.id))
+                imbuement.materials.append(ImbuementMaterial(item_name=name, amount=amount,
+                                                             imbuement_id=imbuement.article_id))
 
         return imbuement
 
@@ -170,6 +171,6 @@ class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
             super().insert(c)
         else:
             query = f"""INSERT INTO {self.table.__tablename__}({','.join(c.name for c in self.table.columns)})
-                        VALUES(?, (SELECT id from item WHERE title = ?), ?)"""
+                        VALUES(?, (SELECT article_id from item WHERE title = ?), ?)"""
             c.execute(query, (self.imbuement_id, self.item_name, self.amount))
 

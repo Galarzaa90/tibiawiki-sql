@@ -101,7 +101,7 @@ def generate(skip_images, db_name):
                 if article is None:
                     continue
                 creature_title = article.title.replace("Loot Statistics:", "")
-                c.execute("SELECT id from creature WHERE title = ?", (creature_title,))
+                c.execute("SELECT article_id from creature WHERE title = ?", (creature_title,))
                 result = c.fetchone()
                 if result is None:
                     # This could happen if a creature's article was deleted but its Loot Statistics weren't
@@ -118,7 +118,7 @@ def generate(skip_images, db_name):
                 kills, loot_stats = parse_loot_statistics(content)
                 loot_items = []
                 for item, times, amount in loot_stats:
-                    c.execute("SELECT id FROM item WHERE title LIKE ?", (item,))
+                    c.execute("SELECT article_id FROM item WHERE title LIKE ?", (item,))
                     result = c.fetchone()
                     if result is None:
                         continue

@@ -9,7 +9,7 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
 
     Attributes
     ----------
-    id: :class:`int`
+    article_id: :class:`int`
         The id of the  containing article.
     title: :class:`str`
         The title of the containing article.

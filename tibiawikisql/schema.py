@@ -2,7 +2,7 @@ from tibiawikisql.database import Table, Integer, Text, Column, Blob, Real, Fore
 
 
 class Achievement(Table):
-    id = Column(Integer, primary_key=True)
+    article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     name = Column(Text)
     grade = Column(Integer)
@@ -16,7 +16,6 @@ class Achievement(Table):
 
 
 class Charm(Table):
-    id = Column(Integer, auto_increment=True)
     name = Column(Text, unique=True)
     type = Column(Text)
     description = Column(Text)
@@ -25,7 +24,7 @@ class Charm(Table):
 
 
 class Creature(Table):
-    id = Column(Integer, primary_key=True)
+    article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     name = Column(Text)
     article = Column(Text)
@@ -64,7 +63,7 @@ class Creature(Table):
 
 
 class Item(Table):
-    id = Column(Integer, primary_key=True)
+    article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     name = Column(Text)
     article = Column(Text)
@@ -82,15 +81,15 @@ class Item(Table):
 
 
 class CreatureDrop(Table, table_name="creature_drop"):
-    creature_id = Column(ForeignKey(Integer, table="creature", column="id"))
-    item_id = Column(ForeignKey(Integer, table="item", column="id"))
+    creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"))
+    item_id = Column(ForeignKey(Integer, table="item", column="article_id"))
     chance = Column(Real)
     min = Column(Integer)
     max = Column(Integer)
 
 
 class ItemAttribute(Table, table_name="item_attribute"):
-    item_id = Column(ForeignKey(Integer, "item", "id"))
+    item_id = Column(ForeignKey(Integer, "item", "article_id"))
     name = Column(Text)
     value = Column(Text)
 
@@ -101,7 +100,7 @@ class DatabaseInfo(Table, table_name="database_info"):
 
 
 class House(Table):
-    id = Column(Integer, primary_key=True)
+    article_id = Column(Integer, primary_key=True)
     house_id = Column(Integer, unique=True)
     title = Column(Text, unique=True)
     name = Column(Text, unique=True)
@@ -121,7 +120,7 @@ class House(Table):
 
 
 class Imbuement(Table):
-    id = Column(Integer, primary_key=True)
+    article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     name = Column(Text, unique=True)
     tier = Column(Text)
@@ -133,16 +132,16 @@ class Imbuement(Table):
 
 
 class ImbuementMaterial(Table, table_name="imbuement_material"):
-    imbuement_id = Column(ForeignKey(Integer, "imbuement", "id"))
-    item_id = Column(ForeignKey(Integer, "item", "id"))
+    imbuement_id = Column(ForeignKey(Integer, "imbuement", "article_id"))
+    item_id = Column(ForeignKey(Integer, "item", "article_id"))
     amount = Column(Integer)
 
 
 class ItemKey(Table, table_name="item_key"):
-    id = Column(Integer, primary_key=True)
+    article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     number = Column(Integer, unique=True)
-    item_id = Column(ForeignKey(Integer, "item", "id"))
+    item_id = Column(ForeignKey(Integer, "item", "article_id"))
     name = Column(Text)
     material = Column(Text)
     location = Column(Text)
@@ -158,7 +157,7 @@ class Map(Table):
 
 
 class Spell(Table):
-    id = Column(Integer, primary_key=True)
+    article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     name = Column(Text)
     words = Column(Text)
@@ -180,7 +179,7 @@ class Spell(Table):
 
 
 class Npc(Table):
-    id = Column(Integer, primary_key=True)
+    article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     name = Column(Text)
     race = Column(Text)
@@ -197,29 +196,29 @@ class Npc(Table):
 
 
 class NpcBuying(Table, table_name="npc_offer_buy"):
-    npc_id = Column(ForeignKey(Integer, "npc", "id"))
-    item_id = Column(ForeignKey(Integer, "item", "id"), nullable=False)
+    npc_id = Column(ForeignKey(Integer, "npc", "article_id"))
+    item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
     value = Column(Integer, nullable=False)
-    currency_id = Column(ForeignKey(Integer, "item", "id"), nullable=False)
+    currency_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
 
 
 class NpcSelling(Table, table_name="npc_offer_sell"):
-    npc_id = Column(ForeignKey(Integer, "npc", "id"))
-    item_id = Column(ForeignKey(Integer, "item", "id"), nullable=False)
+    npc_id = Column(ForeignKey(Integer, "npc", "article_id"))
+    item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
     value = Column(Integer, nullable=False)
-    currency_id = Column(ForeignKey(Integer, "item", "id"), nullable=False)
+    currency_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
 
 
 class NpcDestination(Table, table_name="npc_destination"):
-    npc_id = Column(ForeignKey(Integer, "npc", "id"))
+    npc_id = Column(ForeignKey(Integer, "npc", "article_id"))
     name = Column(Text)
     price = Column(Integer)
     notes = Column(Text)
 
 
 class NpcSpell(Table, table_name="npc_spell"):
-    npc_id = Column(ForeignKey(Integer, "npc", "id"))
-    spell_id = Column(ForeignKey(Integer, "spell", "id"))
+    npc_id = Column(ForeignKey(Integer, "npc", "article_id"))
+    spell_id = Column(ForeignKey(Integer, "spell", "article_id"))
     knight = Column(Integer)
     sorcerer = Column(Integer)
     paladin = Column(Integer)
@@ -227,7 +226,7 @@ class NpcSpell(Table, table_name="npc_spell"):
 
 
 class Quest(Table):
-    id = Column(Integer, primary_key=True)
+    article_id = Column(Integer, primary_key=True)
     name = Column(Text)
     location = Column(Text)
     legend = Column(Text)
@@ -239,13 +238,13 @@ class Quest(Table):
 
 
 class QuestDanger(Table, table_name="quest_danger"):
-    quest_id = Column(ForeignKey(Integer, "quest", "id"))
-    creature_id = Column(ForeignKey(Integer, "creature", "id"), nullable=False)
+    quest_id = Column(ForeignKey(Integer, "quest", "article_id"))
+    creature_id = Column(ForeignKey(Integer, "creature", "article_id"), nullable=False)
 
 
 class QuestReward(Table, table_name="quest_reward"):
-    quest_id = Column(ForeignKey(Integer, "quest", "id"))
-    item_id = Column(ForeignKey(Integer, "item", "id"), nullable=False)
+    quest_id = Column(ForeignKey(Integer, "quest", "article_id"))
+    item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
 
 
 class RashidPosition(Table, table_name="rashid_position"):
