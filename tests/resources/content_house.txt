@@ -1,0 +1,27 @@
+{{Infobox Building|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name          = Crystal Glance
+| implemented   = 8.0
+| type          = Guildhall
+| location      = north part of [[Svargrond]] at the stairs to the magic carpet
+| posx          = 125.246
+| posy          = 121.142
+| posz          = 7
+| street        = Arena Walk
+| houseid       = 55302
+| size          = 315
+| beds          = 24
+| rent          = 19625
+| city          = Svargrond
+| openwindows   = 17
+| floors        = 5
+| rooms         = 15
+| furnishings   = [[Beer Cask]], 2x5 [[Big Table (Object)|Big Table]], 3 [[Chalk Board]]s, 3 [[Dustbin]]s, [[Locker (Object)|Locker]], 4x11 [[Red Carpet]], 10sqm [[Table]], 5 [[Torch Bearer (Metal)|Torch Bearer]]s, 15 [[Wall Lamp]]s, [[Wine Cask]]
+| notes         = Guild depot is [http://tibia.wikia.com/wiki/Mapper?coords=125.244-121.149-8-8-1-1 here].
+| image         = <gallery>
+Crystal Glance (-1).png|Basement floor
+Crystal Glance (0).png|Ground floor
+Crystal Glance (+1).png|First floor
+Crystal Glance (+2).png|Second floor
+Crystal Glance (+3).png|Third floor
+</gallery>
+}}

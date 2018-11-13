@@ -8,8 +8,9 @@ import click
 import requests
 from colorama import init
 
-from tibiawikisql import WikiClient, abc, __version__
+from tibiawikisql import WikiClient, __version__
 from tibiawikisql import schema, models
+from tibiawikisql.models import abc
 from tibiawikisql.models.charm import charms
 from tibiawikisql.models.npc import rashid_positions
 from tibiawikisql.utils import parse_loot_statistics, parse_min_max

@@ -2,7 +2,8 @@ import html
 import re
 import sqlite3
 
-from tibiawikisql import schema, abc
+from tibiawikisql import schema
+from tibiawikisql.models import abc
 from tibiawikisql.utils import parse_integer, parse_boolean, clean_links
 
 link_pattern = re.compile(r'\[\[([^|\]]+)')

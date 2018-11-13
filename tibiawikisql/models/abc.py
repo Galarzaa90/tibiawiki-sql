@@ -122,6 +122,8 @@ class Row(metaclass=abc.ABCMeta):
     table: :class:`database.Table`
         The SQL table where this model is stored.
     """
+    table = None
+
     def __init__(self, **kwargs):
         for c in self.table.columns:
             value = kwargs.get(c.name, c.default)
@@ -181,4 +183,15 @@ class Row(metaclass=abc.ABCMeta):
         if isinstance(row, sqlite3.Row):
             row = dict(row)
         return cls(**row)
+
+    @classmethod
+    def _get_by_field(cls, c, field, value, use_like=False):
+        operator = "LIKE" if use_like else "="
+        query = "SELECT * FROM %s WHERE %s %s ? LIMIT 1" % (cls.table.__tablename__, field, operator)
+        c = c.execute(query, (value,))
+        c.row_factory = sqlite3.Row
+        row = c.fetchone()
+        if row is None:
+            return None
+        return cls.from_row(row)
 

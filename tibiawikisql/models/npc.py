@@ -1,7 +1,8 @@
 import re
 import sqlite3
 
-from tibiawikisql import schema, abc
+from tibiawikisql import schema
+from tibiawikisql.models import abc
 from tibiawikisql.utils import convert_tibiawiki_position, clean_links
 
 price_to_template = re.compile(r"{{Price to (?:Buy|Sell)\s*([^}]+)}}")

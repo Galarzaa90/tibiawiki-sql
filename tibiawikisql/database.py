@@ -224,6 +224,8 @@ class TableMeta(type):
 
 
 class Table(metaclass=TableMeta):
+    __tablename__ = None
+
     @classmethod
     def create_table(cls, *, exists_ok=True):
         """Generates the CREATE TABLE stub."""

@@ -4,7 +4,7 @@ As of v2.0.0, this module comes with an API to communicate with TibiaWiki or wit
 
 TibiaWiki
 ---------
-The followng are classes used to communicate with TibiaWiki through its MediaWiki API.
+The following are classes used to communicate with TibiaWiki through its MediaWiki API.
 
 WikiClient
 ~~~~~~~~~~

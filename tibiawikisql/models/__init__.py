@@ -1,3 +1,4 @@
+from tibiawikisql.models.abc import Row, Parseable
 from tibiawikisql.models.achievement import Achievement
 from tibiawikisql.models.charm import Charm
 from tibiawikisql.models.creature import Creature, CreatureDrop

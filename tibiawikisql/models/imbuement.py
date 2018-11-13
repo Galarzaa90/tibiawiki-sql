@@ -1,6 +1,8 @@
 import re
+import sqlite3
 
-from tibiawikisql import schema, abc
+from tibiawikisql import schema
+from tibiawikisql.models import abc
 
 astral_pattern = re.compile(r"\s*([^:]+):\s*(\d+),*")
 effect_pattern = re.compile(r"Effect/([^|]+)\|([^}|]+)")
@@ -24,12 +26,39 @@ def parse_astral_sources(content: str):
         return {item: int(amount) for (item, amount) in materials}
 
 
+effect_map = {
+    "Bash": "Club fighting +{}",
+    "Chop": "Axe fighting +{}",
+    "Slash": "Sword fighting +{}",
+    "Precision": "Distance fighting +{}",
+    "Blockade": "Shielding +{}",
+    "Epiphany": "Magic level +{}",
+    "Scorch": "Fire damage {}",
+    "Venom": "Earth damage {}",
+    "Frost": "Ice damage {}",
+    "Electrify": "Energy damage {}",
+    "Reap": "Death damage {}",
+    "Vampirism": "Life leech {}",
+    "Void": " Mana leech {}",
+    "Strike": " Critical hit damage {}",
+    "Lich Shroud": "Death protection {}",
+    "Snake Skin": "Earth protection {}",
+    "Quara Scale": "Ice protection {}",
+    "Dragon Hide": "Fire protection {}",
+    "Cloud Fabric": "Energy protection {}",
+    "Demon Presence": "Holy protection {}",
+    "Swiftness": "Speed +{}",
+    "Featherweight": "Capacity +{}",
+    "Vibrancy": "Remove paralysis chance {}",
+}
+
+
 def parse_effect(effect):
     """Parses TibiaWiki's effect template into a string effect.
 
     Parameters
     ----------
-    effect: class:`str`
+    effect: :class:`str`
         The string containing the template.
 
     Returns
@@ -39,51 +68,10 @@ def parse_effect(effect):
     """
     m = effect_pattern.search(effect)
     category, amount = m.groups()
-    if category == "Bash":
-        return f"Club fighting +{amount}"
-    if category == "Chop":
-        return f"Axe fighting +{amount}"
-    if category == "Slash":
-        return f"Sword fighting +{amount}"
-    if category == "Precision":
-        return f"Distance fighting +{amount}"
-    if category == "Blockade":
-        return f"Shielding +{amount}"
-    if category == "Epiphany":
-        return f"Magic level +{amount}"
-    if category == "Scorch":
-        return f"Fire damage {amount}"
-    if category == "Venom":
-        return f"Earth damage {amount}"
-    if category == "Frost":
-        return f"Ice damage {amount}"
-    if category == "Electrify":
-        return f"Energy damage {amount}"
-    if category == "Reap":
-        return f"Death damage {amount}"
-    if category == "Vampirism":
-        return f"Life leech {amount}"
-    if category == "Void":
-        return f"Mana leech {amount}"
-    if category == "Strike":
-        return f"Critical {amount}"
-    if category == "Lich Shroud":
-        return f"Death protection {amount}"
-    if category == "Snake Skin":
-        return f"Earth protection {amount}"
-    if category == "Quara Scale":
-        return f"Ice protection {amount}"
-    if category == "Dragon Hide":
-        return f"Fire protection {amount}"
-    if category == "Cloud Fabric":
-        return f"Energy protection {amount}"
-    if category == "Demon Presence":
-        return f"Holy protection {amount}"
-    if category == "Swiftness":
-        return f"Speed +{amount}"
-    if category == "Featherweight":
-        return f"Capacity +{amount}"
-    return f"{category} {amount}"
+    try:
+        return effect_map[category].format(amount)
+    except KeyError:
+        return f"{category} {amount}"
 
 
 class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
@@ -102,14 +90,18 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         A dictionary containing attributes that couldn't be parsed.
     name: :class:`str`
         The name of the imbuement.
-    prefix: :class:`str`
-        The prefix of the imbuement, indicating the tier.
+    tier: :class:`str`
+        The tier of the imbuement.
     type: :class:`str`
         The imbuement's type.
     effect: :class:`str`
         The effect given by the imbuement.
     version: :class:`str`
-        The client version where this creature was first implemented.
+        The client version where this imbuement was first implemented.
+    image: :class:`str`
+        The bytes of the imbuement's image.
+    materials: list of :class:`ImbuementMaterial`
+        The materials needed for the imbuement.
     """
     _map = {
         "name": ("name", lambda x: x),
@@ -119,6 +111,9 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         "implemented": ("version", lambda x: x)
     }
     _pattern = re.compile(r"Infobox[\s_]Imbuement")
+
+    __slots__ = ("article_id", "title", "timestamp", "raw_attributes", "name", "tier", "type", "effect", "version",
+                 "image", "materials")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -142,6 +137,50 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         for material in getattr(self, "materials", []):
             material.insert(c)
 
+    @classmethod
+    def _get_by_field(cls, c, field, value, use_like=False):
+        imbuement = super()._get_by_field(c, field, value, use_like)
+        imbuement.materials = ImbuementMaterial.get_by_imbuement_id(c, imbuement.article_id)
+        return imbuement
+
+
+    @classmethod
+    def get_by_article_id(cls, c, article_id):
+        """
+        Gets a imbuement by its article id.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        article_id: :class:`int`
+            The article id to look for.
+
+        Returns
+        -------
+        :class:`Imbuement`
+            The imbuement matching the ID, if any.
+        """
+        return cls._get_by_field(c, "article_id", article_id)
+
+    @classmethod
+    def get_by_name(cls, c, name):
+        """
+        Gets an imbuement by its name.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        name: :class:`str`
+            The name to look for. Case insensitive.
+
+        Returns
+        -------
+        :class:`Imbuement`
+            The imbuement matching the name, if any.
+        """
+        return cls._get_by_field(c, "name", name, True)
 
 class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
     """
@@ -165,6 +204,7 @@ class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.item_name = kwargs.get("item_name")
+        self.imbuement_name = kwargs.get("imbuement_name")
 
     def insert(self, c):
         if getattr(self, "item_id", None):
@@ -173,4 +213,39 @@ class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
             query = f"""INSERT INTO {self.table.__tablename__}({','.join(c.name for c in self.table.columns)})
                         VALUES(?, (SELECT article_id from item WHERE title = ?), ?)"""
             c.execute(query, (self.imbuement_id, self.item_name, self.amount))
+
+    @classmethod
+    def _get_all_by_field(cls, c, field, value, use_like=False):
+        operator = "LIKE" if use_like else "="
+        query = """SELECT %s.*, item.name as item_name, imbuement.name as imbuement_name FROM %s
+                   LEFT JOIN imbuement ON imbuement.article_id = imbuement_id
+                   LEFT JOIN item ON item.article_id = item_id
+                   WHERE %s %s ?""" % (cls.table.__tablename__, cls.table.__tablename__, field, operator)
+        c = c.execute(query, (value,))
+        c.row_factory = sqlite3.Row
+        results = []
+        for row in c.fetchall():
+            result = cls.from_row(row)
+            if result:
+                results.append(result)
+        return results
+
+    @classmethod
+    def get_by_imbuement_id(cls, c, imbuement_id):
+        """
+        Gets all drops matching the imbuement's id.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        imbuement_id: :class:`int`
+            The article id of the imbuement.
+
+        Returns
+        -------
+        list of :class:`ImbuementMaterial`
+            A list of the imbuement's materials.
+        """
+        return cls._get_all_by_field(c, "imbuement_id", imbuement_id)
 

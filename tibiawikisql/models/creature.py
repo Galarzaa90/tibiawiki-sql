@@ -1,6 +1,8 @@
 import re
+import sqlite3
 
-from tibiawikisql import abc, schema
+from tibiawikisql import schema
+from tibiawikisql.models import abc
 from tibiawikisql.utils import parse_boolean, parse_integer, clean_links, parse_min_max, int_pattern
 
 creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
@@ -82,7 +84,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
 
     Attributes
     ----------
-    id: :class:`int`
+    article_id: :class:`int`
         The id of the  containing article.
     title: :class:`str`
         The title of the containing article.
@@ -156,6 +158,8 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The client version where this creature was first implemented.
     image: :class:`bytes`
         The creature's image in bytes.
+    loot: list of :class:`CreatureDrop`
+        The items dropped by this creature.
     """
     _map = {
         "article": ("article", lambda x: x),
@@ -193,6 +197,12 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "implemented": ("version", lambda x: x)
     }
     _pattern = re.compile(r"Infobox[\s_]Creature")
+    __slots__ = ("article_id", "title", "timestamp", "raw_attribute", "article", "name", "class", "type",
+                 "bestiary_level", "bestiary_class", "bestiary_occurrence", "hitpoints", "experience", "armor", "speed",
+                 "max_damage", "summon_cost", "convince_cost", "illusionable", "pushable", "sees_invisible",
+                 "paralyzable", "boss", "modifier_pyhsical", "modifier_earth", "modifier_fire", "modifier_energy",
+                 "modifier_ice", "modifier_death", "modifier_holy", "modifier_lifedrain", "modifier_drown", "abilities",
+                 "walks_through", "walks_around", "version", "image", "loot")
 
     @classmethod
     def from_article(cls, article):
@@ -241,6 +251,52 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         for attribute in getattr(self, "loot", []):
             attribute.insert(c)
 
+    @classmethod
+    def _get_by_field(cls, c, field, value, use_like=False):
+        creature = super()._get_by_field(c, field, value, use_like)
+        if creature is None:
+            return None
+        creature.loot = CreatureDrop.get_by_creature_id(c, creature.article_id)
+        return creature
+
+    @classmethod
+    def get_by_article_id(cls, c, article_id):
+        """
+        Gets a creature by its article id.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        article_id: :class:`int`
+            The article id to look for.
+
+        Returns
+        -------
+        :class:`Creature`
+            The creature matching the ID, if any.
+        """
+        return cls._get_by_field(c, "article_id", article_id)
+
+    @classmethod
+    def get_by_name(cls, c, name):
+        """
+        Gets an creature by its name.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        name: :class:`str`
+            The name to look for. Case insensitive.
+
+        Returns
+        -------
+        :class:`Creature`
+            The creature matching the name, if any.
+        """
+        return cls._get_by_field(c, "name", name, True)
+
 
 class CreatureDrop(abc.Row, table=schema.CreatureDrop):
     """
@@ -263,11 +319,24 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
     chance: :class:`float`
         The chance percentage of getting this item dropped by this creature.
     """
-    __slots__ = {"creature_id", "creature_name", "item_id", "item_name", "min", "max", "chance"}
+    __slots__ = ("creature_id", "creature_name", "item_id", "item_name", "min", "max", "chance")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.item_name = kwargs.get("item_name")
+        self.creature_name = kwargs.get("creature_name")
+
+    def __repr__(self):
+        attributes = []
+        for attr in self.__slots__:
+            try:
+                v = getattr(self, attr)
+                if v is None:
+                    continue
+                attributes.append("%s=%r" % (attr, v))
+            except AttributeError:
+                pass
+        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
 
     def insert(self, c):
         """Inserts the current model into its respective database.
@@ -276,7 +345,7 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
 
         Parameters
         ----------
-        c: Union[:class:`sqlite3.Cursor`, :class:`sqlite3.Connection`]
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
             A cursor or connection of the database.
         """
         if getattr(self, "item_id", None):
@@ -285,4 +354,40 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
             query = f"""INSERT INTO {self.table.__tablename__}(creature_id, item_id, min, max)
                         VALUES(?, (SELECT article_id from item WHERE title = ?), ?, ?)"""
             c.execute(query, (self.creature_id, self.item_name, self.min, self.max))
+
+    @classmethod
+    def _get_all_by_field(cls, c, field, value, use_like=False):
+        operator = "LIKE" if use_like else "="
+        query = """SELECT %s.*, item.name as item_name, creature.name as creature_name FROM %s
+                   LEFT JOIN creature ON creature.article_id = creature_id
+                   LEFT JOIN item ON item.article_id = item_id
+                   WHERE %s %s ?""" % (cls.table.__tablename__, cls.table.__tablename__, field, operator)
+        c = c.execute(query, (value,))
+        c.row_factory = sqlite3.Row
+        results = []
+        for row in c.fetchall():
+            result = cls.from_row(row)
+            if result:
+                results.append(result)
+        return results
+
+    @classmethod
+    def get_by_creature_id(cls, c, creature_id):
+        """
+        Gets all drops matching the creature's id.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        creature_id: :class:`int`
+            The article id of the creature.
+
+        Returns
+        -------
+        list of :class:`CreatureDrop`
+            A list of the creature's drops.
+        """
+        return cls._get_all_by_field(c, "creature_id", creature_id)
+
 
