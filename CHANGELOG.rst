@@ -2,7 +2,10 @@ Changelog
 =========
 Version 2.0.0 (Unreleased)
 --------------------------
-
+- New model classes, to unify the generation process.
+- Live fetching is now possible, obtain data directly from the Wiki.
+- Database generation now shows progress bars and time estimates.
+- The database schema is now generated dynamically.
 - The database structure has changed:
 
     - Renamed tables:
@@ -26,6 +29,7 @@ Version 2.0.0 (Unreleased)
         - ``spells`` -> ``spell``
     - Renamed columns:
         - All tables:
+            - ``id`` -> ``article_id``
             - ``last_edit`` -> ``timestamp``
         - Table: ``creature``:
             - ``summon`` -> ``summon_cost``
