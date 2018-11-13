@@ -123,8 +123,30 @@ class TestWikiApi(unittest.TestCase):
 
         npc.insert(self.conn)
         db_npc = models.Npc.get_by_article_id(self.conn, 1)
-        self.assertGreater(len(db_npc.sells), 0)
-        self.assertGreater(len(db_npc.buys), 0)
 
         self.assertIsInstance(db_npc, models.Npc)
         self.assertEqual(db_npc.name, npc.name)
+
+    def testQuest(self):
+        article = Article(1, "The Annihilator Quest", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_quest.txt"))
+        quest = models.Quest.from_article(article)
+        self.assertIsInstance(quest, models.Quest)
+
+        quest.insert(self.conn)
+        db_quest = models.Quest.get_by_article_id(self.conn, 1)
+
+        self.assertIsInstance(db_quest, models.Quest)
+        self.assertEqual(db_quest.name, quest.name)
+
+    def testSpell(self):
+        article = Article(1, "The Annihilator Spell", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_spell.txt"))
+        spell = models.Spell.from_article(article)
+        self.assertIsInstance(spell, models.Spell)
+
+        spell.insert(self.conn)
+        db_spell = models.Spell.get_by_article_id(self.conn, 1)
+
+        self.assertIsInstance(db_spell, models.Spell)
+        self.assertEqual(db_spell.name, spell.name)

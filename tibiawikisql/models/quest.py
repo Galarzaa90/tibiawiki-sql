@@ -51,6 +51,8 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
     version: :class:`str`
         The client version where this item was first implemented.
     """
+    __slots__ = ("article_id", "title", "timestamp", "name", "location", "legend", "level_required",
+                 "level_recommended", "version", "dangers", "rewards")
     _map = {
         "name": ("name", html.unescape),
         "location": ("location", clean_links),
@@ -61,6 +63,9 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
         "implemented": ("version", lambda x: x),
     }
     _pattern = re.compile(r"Infobox[\s_]Quest")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     @classmethod
     def from_article(cls, article):
@@ -85,6 +90,25 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
             reward.insert(c)
         for danger in getattr(self, "dangers", []):
             danger.insert(c)
+
+    @classmethod
+    def get_by_article_id(cls, c, article_id):
+        """
+        Gets a quest by its article id.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        article_id: :class:`int`
+            The article id to look for.
+
+        Returns
+        -------
+        :class:`Quest`
+            The quest matching the ID, if any.
+        """
+        return cls._get_by_field(c, "article_id", article_id)
 
 
 class QuestReward(abc.Row, table=schema.QuestReward):

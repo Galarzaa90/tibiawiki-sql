@@ -39,6 +39,8 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
     premium: :class:`bool`
         Whether the spell is premium only or not.
     """
+    __slots__ = ("article_id", "title", "extra_attributes", "timestamp", "name", "words", "type", "element", "mana",
+                 "soul", "price", "cooldown", "level", "premium")
     _map = {
         "name": ("name", lambda x: x),
         "words": ("words", lambda x: x),
@@ -54,6 +56,9 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
     }
     _pattern = re.compile(r"Infobox[\s_]Spell")
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     @classmethod
     def from_article(cls, article):
         spell = super().from_article(article)
@@ -64,3 +69,22 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
                 if vocation in spell.raw_attributes["voc"].lower():
                     setattr(spell, vocation, True)
         return spell
+
+    @classmethod
+    def get_by_article_id(cls, c, article_id):
+        """
+        Gets a spell by its article id.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        article_id: :class:`int`
+            The article id to look for.
+
+        Returns
+        -------
+        :class:`Spell`
+            The spell matching the ID, if any.
+        """
+        return cls._get_by_field(c, "article_id", article_id)
