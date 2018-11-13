@@ -390,4 +390,23 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
         """
         return cls._get_all_by_field(c, "creature_id", creature_id)
 
+    @classmethod
+    def get_by_item_id(cls, c, item_id):
+        """
+        Gets all drops matching the item's id.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        item_id: :class:`int`
+            The article id of the item.
+
+        Returns
+        -------
+        list of :class:`CreatureDrop`
+            A list of the creatures that drop the item.
+        """
+        return cls._get_all_by_field(c, "item_id", item_id)
+
 

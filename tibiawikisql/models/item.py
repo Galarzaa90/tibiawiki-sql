@@ -2,7 +2,7 @@ import re
 import sqlite3
 
 from tibiawikisql import schema
-from tibiawikisql.models import abc
+from tibiawikisql.models import abc, CreatureDrop
 from tibiawikisql.utils import parse_float, parse_boolean, parse_integer, clean_links
 
 
@@ -36,6 +36,9 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     image: :class:`bytes`
         The item's image in bytes.
     attributes: list of :class:`ItemAttribute`
+        The item's attributes.
+    dropped_by: list of :class:`CreatureDrop`
+        List of creatures that drop this item, with the chances.
     """
     _map = {
         "article": ("article", lambda x: x),
@@ -53,7 +56,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     _pattern = re.compile(r"Infobox[\s_]Item")
 
     __slots__ = ("article_id", "title", "timestamp", "name", "article", "stackable", "value_sell", "value_buy", "class",
-                 "type", "version", "image", "attributes")
+                 "type", "version", "image", "attributes", "dropped_by")
 
     @classmethod
     def from_article(cls, article):
@@ -73,10 +76,11 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
 
     @classmethod
     def _get_by_field(cls, c, field, value, use_like=False):
-        item = super()._get_by_field(c, field, value, use_like)
+        item: cls = super()._get_by_field(c, field, value, use_like)
         if item is None:
             return None
         item.attributes = ItemAttribute.get_by_item_id(c, item.article_id)
+        item.dropped_by = CreatureDrop.get_by_item_id(c, item.article_id)
         return item
 
     @classmethod
@@ -93,7 +97,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
 
         Returns
         -------
-        :class:`item`
+        :class:`Item`
             The item matching the ID, if any.
         """
         return cls._get_by_field(c, "article_id", article_id)
@@ -112,7 +116,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
 
         Returns
         -------
-        :class:`item`
+        :class:`Item`
             The item matching the name, if any.
         """
         return cls._get_by_field(c, "name", name, True)
@@ -172,6 +176,44 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
                         VALUES(?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?)"""
             c.execute(query, (self.article_id, self.title, self.number, self.material + " Key", self.name,
                               self.material, self.location, self.origin, self.notes, self.version, self.timestamp))
+
+    @classmethod
+    def get_by_article_id(cls, c, article_id):
+        """
+        Gets a key by its article id.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        article_id: :class:`int`
+            The article id to look for.
+
+        Returns
+        -------
+        :class:`Key`
+            The key matching the ID, if any.
+        """
+        return cls._get_by_field(c, "article_id", article_id)
+
+    @classmethod
+    def get_by_number(cls, c, number):
+        """
+        Gets a key by its article id.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        number: :class:`int`
+            The key's number.
+
+        Returns
+        -------
+        :class:`Key`
+            The key matching the number, if any.
+        """
+        return cls._get_by_field(c, "number", number)
 
 
 class ItemAttribute(abc.Row, table=schema.ItemAttribute):
@@ -235,7 +277,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         return results
 
     @classmethod
-    def get_by_item_id(cls, c, creature_id):
+    def get_by_item_id(cls, c, item_id):
         """
         Gets all attributes matching the item's id.
 
@@ -243,7 +285,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         ----------
         c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
             A connection or cursor of the database.
-        creature_id: :class:`int`
+        item_id: :class:`int`
             The article id of the item.
 
         Returns
@@ -251,5 +293,5 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         list of :class:`ItemAttribute`
             A list of the creature's drops.
         """
-        return cls._get_all_by_field(c, "item_id", creature_id)
+        return cls._get_all_by_field(c, "item_id", item_id)
 

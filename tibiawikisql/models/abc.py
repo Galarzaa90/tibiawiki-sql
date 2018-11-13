@@ -177,7 +177,7 @@ class Row(metaclass=abc.ABCMeta):
 
         Returns
         -------
-        any:
+        :class:`cls`:
             An instance of the class, based on the row.
         """
         if isinstance(row, sqlite3.Row):
@@ -194,4 +194,5 @@ class Row(metaclass=abc.ABCMeta):
         if row is None:
             return None
         return cls.from_row(row)
+
 

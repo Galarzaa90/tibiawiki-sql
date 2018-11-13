@@ -100,6 +100,21 @@ class TestWikiApi(unittest.TestCase):
         db_item = models.Item.get_by_name(self.conn, "fire sword")
         self.assertIsInstance(db_item, models.Item)
 
+    def testKey(self):
+        article = Article(1, "Key 3940", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_key.txt"))
+        key = models.Key.from_article(article)
+        self.assertIsInstance(key, models.Key)
+
+        key.insert(self.conn)
+        db_key = models.Key.get_by_article_id(self.conn, 1)
+
+        self.assertIsInstance(db_key, models.Key)
+        self.assertEqual(db_key.name, key.name)
+
+        db_key = models.Key.get_by_number(self.conn, 3940)
+        self.assertIsInstance(db_key, models.Key)
+
     def testNpc(self):
         article = Article(1, "Yaman", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_npc.txt"))
@@ -107,8 +122,9 @@ class TestWikiApi(unittest.TestCase):
         self.assertIsInstance(npc, models.Npc)
 
         npc.insert(self.conn)
-        c = self.conn.execute("SELECT * FROM %s" % npc.table.__tablename__)
-        row = c.fetchone()
-        db_npc = models.Npc.from_row(row)
+        db_npc = models.Npc.get_by_article_id(self.conn, 1)
+        self.assertGreater(len(db_npc.sells), 0)
+        self.assertGreater(len(db_npc.buys), 0)
 
         self.assertIsInstance(db_npc, models.Npc)
+        self.assertEqual(db_npc.name, npc.name)

@@ -1,0 +1,15 @@
+{{Infobox Key|List={{{1|}}}|GetValue={{{GetValue|}}}
+| number         = 3940
+| aka            = Fibula Key
+| primarytype    = Wooden
+| secondarytype  = Copper
+| location       = [[Fibula]]
+| value          = 0 - 800
+| npcvalue       = 0
+| npcprice       = 800
+| buyfrom        = Dermot:2000, Simon the Beggar
+| sellto         = --
+| origin         =
+| shortnotes     = Used to enter/exit the [[Fibula Dungeon]]. Comes in [[Wooden Key|wooden]] and [[Copper Key|copper]] variants.
+| longnotes      = Used to enter/exit the [[Fibula Dungeon]]. When buying the key from [[Simon]] he will first ask you for some money, continue giving him money, and when you have given him 800 [[gp]] he will hand you the key. There is also a copper key with the same number (3940) that works too.
+}}
