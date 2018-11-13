@@ -166,6 +166,9 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
     }
     _pattern = re.compile(r"Infobox[\s_]Key")
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     def insert(self, c):
         if getattr(self, "item_id", None):
             super().insert(c)

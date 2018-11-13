@@ -88,7 +88,7 @@ class Parseable(Article, metaclass=abc.ABCMeta):
 
         Parameters
         ----------
-        article: :class:`api.Article`
+        article: :class:`Article`
             The article from where the model is parsed.
 
         Returns
@@ -177,7 +177,7 @@ class Row(metaclass=abc.ABCMeta):
 
         Returns
         -------
-        :class:`cls`:
+        :class:`cls`
             An instance of the class, based on the row.
         """
         if isinstance(row, sqlite3.Row):

@@ -247,7 +247,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
 
         Parameters
         ----------
-        c: Union[:class:`sqlite3.Cursor`, :class:`sqlite3.Connection`]
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
             A cursor or connection of the database.
         """
         super().insert(c)

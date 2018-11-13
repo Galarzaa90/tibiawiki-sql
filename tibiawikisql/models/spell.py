@@ -1,7 +1,7 @@
 import re
 
 from tibiawikisql import schema
-from tibiawikisql.models import abc
+from tibiawikisql.models import abc, NpcSpell
 from tibiawikisql.utils import parse_integer, parse_boolean
 
 
@@ -38,9 +38,11 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         The level required to use the spell.
     premium: :class:`bool`
         Whether the spell is premium only or not.
+    taught_by: list of :class:`NpcSpell`
+        Npcs that teach this spell.
     """
     __slots__ = ("article_id", "title", "extra_attributes", "timestamp", "name", "words", "type", "element", "mana",
-                 "soul", "price", "cooldown", "level", "premium")
+                 "soul", "price", "cooldown", "level", "premium", "taught_by")
     _map = {
         "name": ("name", lambda x: x),
         "words": ("words", lambda x: x),
@@ -68,6 +70,14 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
             for vocation in ["knight", "sorcerer", "druid", "paladin"]:
                 if vocation in spell.raw_attributes["voc"].lower():
                     setattr(spell, vocation, True)
+        return spell
+
+    @classmethod
+    def _get_by_field(cls, c, field, value, use_like=False):
+        spell: cls = super()._get_by_field(c, field, value, use_like)
+        if spell is None:
+            return None
+        spell.taught_by = NpcSpell.get_by_spell_id(c, spell.article_id)
         return spell
 
     @classmethod

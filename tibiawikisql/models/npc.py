@@ -139,6 +139,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         The title of the containing article.
     timestamp: :class:`int`
         The last time the containing article was edited.
+    raw_attributes: :class:`dict`
+        A dictionary containing attributes that couldn't be parsed.
     name: :class:`str`
         The in-game name of the NPC.
     gender: :class:`str`
@@ -170,8 +172,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
     teaches: list of :class:`NpcSpell`
         Spells this NPC can teach.
     """
-    __slots__ = ("article_id", "title", "timestamp", "name", "gender", "race", "job", "location", "city", "x", "y", "z",
-                 "version", "image", "sells", "buys", "destinations", "teaches")
+    __slots__ = ("article_id", "title", "raw_attributes", "timestamp", "name", "gender", "race", "job", "location",
+                 "city", "x", "y", "z", "version", "image", "sells", "buys", "destinations", "teaches")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -366,6 +368,9 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
     """
     __slots__ = ("npc_id", "npc_name", "item_id", "item_name", "currency_id", "currency_name", "currency_value")
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     def insert(self, c):
         try:
             if getattr(self, "item_id", None) and getattr(self, "value", None) and getattr(self, "currency_id", None):
@@ -447,6 +452,9 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
             The value of the item in the specified currency.
         """
     __slots__ = ("npc_id", "npc_name", "item_id", "item_name", "currency_id", "currency_name", "currency_value")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def insert(self, c):
         try:
@@ -586,6 +594,25 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
         """
         return cls._get_all_by_field(c, "npc_id", npc_id)
 
+    @classmethod
+    def get_by_spell_id(cls, c, spell_id):
+        """
+        Gets all attributes matching the spell's id.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        spell_id: :class:`int`
+            The article id of the spell.
+
+        Returns
+        -------
+        list of :class:`NpcSpell`
+            A list of the npcs that teach the spell.
+        """
+        return cls._get_all_by_field(c, "spell_id", spell_id)
+
 
 class NpcDestination(abc.Row, table=schema.NpcDestination):
     """
@@ -603,6 +630,9 @@ class NpcDestination(abc.Row, table=schema.NpcDestination):
         Notes about the destination, such as requirements.
     """
     __slots__ = ("npc_id", "npc_name", "name", "price", "notes")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     @classmethod
     def _get_all_by_field(cls, c, field, value, use_like=False):
