@@ -204,6 +204,9 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
                  "modifier_ice", "modifier_death", "modifier_holy", "modifier_lifedrain", "modifier_drown", "abilities",
                  "walks_through", "walks_around", "version", "image", "loot")
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     @classmethod
     def from_article(cls, article):
         """

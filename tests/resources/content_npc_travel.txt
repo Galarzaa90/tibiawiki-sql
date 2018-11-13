@@ -1,0 +1,18 @@
+{{Infobox NPC|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name        = Captain Bluebear
+| implemented = 6.4
+| job         = Ship Captain
+| location    = [[Thais]] boat at [[Harbour Street|Harbour]] and [[Main Street]].
+| posx        = 126.54
+| posy        = 125.213
+| posz        = 6
+| gender      = Male
+| race        = Human
+| sounds      = {{Sound List|Passages to Carlin, Ab'Dendriel, Edron, Venore, Port Hope, Liberty Bay, Yalahar, Roshamuul and Svargrond.}}
+| city        = Thais
+| buysell     = no
+| notes       = Captain Bluebear will transport any [[premium]] players by ship to:
+{{Transport |Ab'Dendriel, 130 |Carlin, 110 |Edron, 160 |Liberty Bay, 180 |Port Hope, 160 |Roshamuul, 210 |Oramond, 150 |Svargrond, 180 |Venore, 170 |Yalahar, 200}}
+
+He can also transport anyone to the [[Character World Transfer|world transfer]] island [[Travora]] for 1000 [[gp]], including [[Free Account]] players.
+}}

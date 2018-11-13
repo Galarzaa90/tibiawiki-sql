@@ -1,5 +1,4 @@
 import inspect
-import pydoc
 from collections import OrderedDict
 
 
@@ -9,25 +8,6 @@ class SchemaError(Exception):
 
 class SQLType:
     python = None
-
-    def to_dict(self):
-        o = self.__dict__.copy()
-        cls = self.__class__
-        o['__meta__'] = cls.__module__ + '.' + cls.__qualname__
-        return o
-
-    @classmethod
-    def from_dict(cls, data):
-        meta = data.pop('__meta__')
-        given = cls.__module__ + '.' + cls.__qualname__
-        if given != meta:
-            cls = pydoc.locate(meta)
-            if cls is None:
-                raise RuntimeError('Could not locate "%s".' % meta)
-
-        self = cls.__new__(cls)
-        self.__dict__.update(data)
-        return self
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -140,34 +120,6 @@ class Column:
         if sum(map(bool, (unique, primary_key, default is not None))) > 1:
             raise SchemaError("'unique', 'primary_key', and 'default' are mutually exclusive.")
 
-    @classmethod
-    def from_dict(cls, data):
-        column_type = data.pop('column_type')
-        column_type = SQLType.from_dict(column_type)
-        self = cls(column_type=column_type, **data)
-        return self
-
-    @property
-    def _comparable_id(self):
-        return '-'.join('%s:%s' % (attr, getattr(self, attr)) for attr in self.__slots__)
-
-    def _to_dict(self):
-        d = {
-            attr: getattr(self, attr)
-            for attr in self.__slots__
-        }
-        d['column_type'] = self.column_type.to_dict()
-        return d
-
-    def _qualifiers_dict(self):
-        return {attr: getattr(self, attr) for attr in ('nullable', 'default')}
-
-    def _is_rename(self, other):
-        if self.name == other.name:
-            return False
-
-        return self.unique == other.unique and self.primary_key == other.primary_key
-
     def _create_table(self):
         builder = [self.name, self.column_type.to_sql()]
 
@@ -240,30 +192,6 @@ class Table(metaclass=TableMeta):
         statements.append(' '.join(builder) + ';')
 
         return '\n'.join(statements)
-
-    @classmethod
-    def to_dict(cls):
-        x = {'name': cls.__tablename__,
-             '__meta__': cls.__module__ + '.' + cls.__qualname__,
-             'columns': [a._to_dict() for a in cls.columns]}
-
-        # nb: columns is ordered due to the ordered dict usage
-        #     this is used to help detect renames
-        return x
-
-    @classmethod
-    def from_dict(cls, data):
-        meta = data['__meta__']
-        given = cls.__module__ + '.' + cls.__qualname__
-        if given != meta:
-            cls = pydoc.locate(meta)
-            if cls is None:
-                raise RuntimeError('Could not locate "%s".' % meta)
-
-        self = cls()
-        self.__tablename__ = data['name']
-        self.columns = [Column.from_dict(a) for a in data['columns']]
-        return self
 
     @classmethod
     def all_tables(cls):

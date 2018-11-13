@@ -1,0 +1,160 @@
+__NOWYSIWYG__
+
+{{Loot2
+|version=10.37
+|kills=32045
+|name=Demon
+|Empty, times:99
+|Gold Coin, times:31859, amount:1-200, total:1603957
+|Platinum Coin, times:31857, amount:1-8, total:137370
+|Great Mana Potion, times:8025, amount:1-3, total:16057
+|Great Spirit Potion, times:7969, amount:1-3, total:15866
+|Demon Horn, times:6444, amount:1, total:6444
+|Demonic Essence, times:6338
+|Ultimate Health Potion, times:6327, amount:1-3, total:12683
+|Fire Mushroom, times:6316, amount:1-6, total:22072
+|Assassin Star, times:4936, amount:1-10, total:27234
+|Small Topaz, times:3276, amount:1-5, total:9752
+|Small Ruby, times:3224, amount:1-5, total:9512
+|Small Emerald, times:3140, amount:1-5, total:9401
+|Small Amethyst, times:3128, amount:1-5, total:9517
+|Fire Axe, times:1291, amount:1, total:1291
+|Talon, times:1088, amount:1, total:1088
+|Red Gem, times:948, amount:1, total:948
+|Orb, times:933, amount:1, total:933
+|Ring of Healing, times:850, amount:1, total:850
+|Might Ring, times:798, amount:1, total:798
+|Stealth Ring, times:749, amount:1, total:749
+|Giant Sword, times:634, amount:1, total:634
+|Ice Rapier, times:605, amount:1, total:605
+|Golden Sickle, times:443, amount:1, total:443
+|Purple Tome, times:397, amount:1, total:397
+|Devil Helmet, times:396, amount:1, total:396
+|Gold Ring, times:333, amount:1, total:333
+|Demon Shield, times:244, amount:1, total:244
+|Platinum Amulet, times:228, amount:1, total:228
+|Mastermind Shield, times:153, amount:1, total:153
+|Golden Legs, times:126
+|Demon Trophy, times:29, amount:1, total:29
+|Magic Plate Armor, times:26, amount:1, total:26
+|Small Stone, times:21, amount:1-3, total:38
+|Demonrage Sword, times:20, amount:1, total:20
+|Mouldy Cheese, times:10, amount:1, total:10
+|Leather Armor, times:8, amount:1, total:8
+|Bone, times:7, amount:1, total:7
+}}
+
+{{Loot2
+|version=8.6
+|kills=24276
+|name=Demon
+|Empty, times:305
+|Gold Coin, times:23577, amount:1-199, total:2078775
+|Platinum Coin, times:14435, amount:1, total:14435
+|Fire Mushroom, times:5042, amount:1-6, total:16884
+|Ultimate Health Potion, times:4755, amount:1-3, total:9539
+|Double Axe, times:3994, amount:1, total:3994
+|Great Mana Potion, times:3603, amount:1-3, total:7284
+|Small Emerald, times:2339, amount:1, total:2339
+|Assassin Star, times:1250, amount:1-5, total:3796
+|Fire Axe, times:933, amount:1, total:933
+|Talon, times:865, amount:1, total:865
+|Orb, times:688, amount:1, total:688
+|Giant Sword, times:507, amount:1, total:507
+|Golden Sickle, times:362, amount:1, total:362
+|Stealth Ring, times:336, amount:1, total:336
+|Purple Tome, times:312, amount:1, total:312
+|Devil Helmet, times:294, amount:1, total:294
+|Gold Ring, times:257, amount:1, total:257
+|Platinum Amulet, times:180, amount:1, total:180
+|Ice Rapier, times:169, amount:1, total:169
+|Demon Shield, times:163, amount:1, total:163
+|Demon Horn, times:124, amount:1, total:124
+|Ring of Healing, times:116, amount:1, total:116
+|Golden Legs, times:103
+|Mastermind Shield, times:100, amount:1, total:100
+|Might Ring, times:38, amount:1, total:38
+|Demon Trophy, times:25, amount:1, total:25
+|Demonrage Sword, times:20, amount:1, total:20
+|Magic Plate Armor, times:18, amount:1, total:18
+}}
+
+{{Loot2
+|version=8.54
+|kills=4
+|name=Demon
+|Gold Coin, times:4, amount:71-150, total:432
+|Platinum Coin, times:3, amount:1, total:3
+|Ultimate Health Potion, times:2, amount:1, total:2
+|Double Axe, times:1, amount:1, total:1
+|Fire Mushroom, times:1, amount:6, total:6
+|Orb, times:1, amount:1, total:1
+}}
+
+{{Loot
+|version=8.54
+|kills=745
+|name=Demon
+|Empty, 25
+|[[Gold Coin]], 60623
+|[[Platinum Coin]], 480
+|[[Fire Mushroom]], 445
+|[[Ultimate Health Potion]], 273
+|[[Great Mana Potion]], 183
+|[[Double Axe]], 140
+|[[Assassin Star]], 72
+|[[Small Emerald]], 71
+|[[Fire Axe]], 22
+|[[Talon]], 21
+|[[Small Stone]], 20
+|[[Giant Sword]], 16
+|[[Gold Ring]], 16
+|[[Stealth Ring]], 12
+|[[Orb]], 11
+|[[Purple Tome]], 10
+|[[Platinum Amulet]], 9
+|[[Golden Legs]], 8
+|[[Golden Sickle]], 8
+|[[Demon Shield]], 7
+|[[Ice Rapier]], 6
+|[[Mastermind Shield]], 6
+|[[Devil Helmet]], 5
+|[[Demon Horn]], 3
+|[[Might Ring]], 2
+|[[Ring of Healing]], 2
+|[[Magic Plate Armor]], 1
+}}
+<br/>Average gold: 81.37
+
+{{Loot
+|version=8.5
+|kills=665
+|name=Demon
+|[[Assassin Star]], 103
+|[[Demon Horn]], 3
+|[[Demon Shield]], 5
+|[[Devil Helmet]], 6
+|[[Double Axe]], 139
+|[[Fire Axe]], 40
+|[[Fire Mushroom]], 510
+|[[Giant Sword]], 11
+|[[Gold Coin]], 57124
+|[[Gold Ring]], 6
+|[[Golden Sickle]], 11
+|[[Great Mana Potion]], 199
+|[[Ice Rapier]], 7
+|[[Magic Plate Armor]], 1
+|[[Mastermind Shield]], 2
+|[[Orb]], 20
+|[[Platinum Coin]], 474
+|[[Purple Tome]], 7
+|[[Ring of Healing]], 2
+|[[Small Emerald]], 67
+|[[Stealth Ring]], 6
+|[[Talon]], 22
+|[[Ultimate Health Potion]], 249
+|[[Platinum Amulet]], 5
+|[[Might Ring]], 2
+|[[Demonrage Sword]], 1
+}}
+<br>Average gold: 85.87

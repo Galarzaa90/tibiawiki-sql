@@ -50,6 +50,10 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
         The recommended level to finish the quest.
     version: :class:`str`
         The client version where this item was first implemented.
+    dangers: list of :class:`QuestDanger`
+        Creatures found in the quest.
+    rewards: list of :class:`QuestReward`
+        Items rewarded in the quest.
     """
     __slots__ = ("article_id", "title", "timestamp", "name", "location", "legend", "level_required",
                  "level_recommended", "version", "dangers", "rewards")
@@ -92,6 +96,15 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
             danger.insert(c)
 
     @classmethod
+    def _get_by_field(cls, c, field, value, use_like=False):
+        quest = super()._get_by_field(c, field, value, use_like)
+        if quest is None:
+            return None
+        quest.dangers = QuestDanger.get_by_quest_id(c, quest.article_id)
+        quest.rewards = QuestReward.get_by_quest_id(c, quest.article_id)
+        return quest
+
+    @classmethod
     def get_by_article_id(cls, c, article_id):
         """
         Gets a quest by its article id.
@@ -123,10 +136,11 @@ class QuestReward(abc.Row, table=schema.QuestReward):
     item_name: :class:`str`
         The name of the rewarded item.
     """
-    __slots__ = ("quest_id", "item_id", "item_name")
+    __slots__ = ("quest_id", "quest_name", "item_id", "item_name")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.quest_name = kwargs.get("quest_name")
         self.item_name = kwargs.get("item_name")
 
     def insert(self, c):
@@ -139,6 +153,41 @@ class QuestReward(abc.Row, table=schema.QuestReward):
                       (self.quest_id, self.item_name))
         except sqlite3.IntegrityError:
             pass
+
+    @classmethod
+    def _get_all_by_field(cls, c, field, value, use_like=False):
+        operator = "LIKE" if use_like else "="
+        query = """SELECT %s.*, quest.name as quest_name, item.name as item_name FROM %s
+                           LEFT JOIN item ON item.article_id = item_id
+                           LEFT JOIN quest ON quest.article_id = quest_id
+                           WHERE %s %s ?""" % (cls.table.__tablename__, cls.table.__tablename__, field, operator)
+        c = c.execute(query, (value,))
+        c.row_factory = sqlite3.Row
+        results = []
+        for row in c.fetchall():
+            result = cls.from_row(row)
+            if result:
+                results.append(result)
+        return results
+
+    @classmethod
+    def get_by_quest_id(cls, c, quest_id):
+        """
+        Gets all drops matching the quest's id.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        quest_id: :class:`int`
+            The article id of the quest.
+
+        Returns
+        -------
+        list of :class:`QuestReward`
+            A list of the quest's drops.
+        """
+        return cls._get_all_by_field(c, "quest_id", quest_id)
 
 
 class QuestDanger(abc.Row, table=schema.QuestDanger):
@@ -153,10 +202,11 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
         creature_name: :class:`str`
             The name of the found creature.
         """
-    __slots__ = ("quest_id", "creature_id", "creature_name")
+    __slots__ = ("quest_id", "quest_name", "creature_id", "creature_name")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.quest_name = kwargs.get("quest_name")
         self.creature_name = kwargs.get("creature_name")
 
     def insert(self, c):
@@ -169,4 +219,39 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
                       (self.quest_id, self.creature_name))
         except sqlite3.IntegrityError:
             pass
+
+    @classmethod
+    def _get_all_by_field(cls, c, field, value, use_like=False):
+        operator = "LIKE" if use_like else "="
+        query = """SELECT %s.*, quest.name as quest_name, creature.name as creature_name FROM %s
+                       LEFT JOIN creature ON creature.article_id = creature_id
+                       LEFT JOIN quest ON quest.article_id = quest_id
+                       WHERE %s %s ?""" % (cls.table.__tablename__, cls.table.__tablename__, field, operator)
+        c = c.execute(query, (value,))
+        c.row_factory = sqlite3.Row
+        results = []
+        for row in c.fetchall():
+            result = cls.from_row(row)
+            if result:
+                results.append(result)
+        return results
+
+    @classmethod
+    def get_by_quest_id(cls, c, quest_id):
+        """
+        Gets all drops matching the quest's id.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
+            A connection or cursor of the database.
+        quest_id: :class:`int`
+            The article id of the quest.
+
+        Returns
+        -------
+        list of :class:`QuestDanger`
+            A list of the quest's drops.
+        """
+        return cls._get_all_by_field(c, "quest_id", quest_id)
 

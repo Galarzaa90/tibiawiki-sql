@@ -46,8 +46,11 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         "implemented": ("version", lambda x: x),
     }
     _pattern = re.compile(r"Infobox[\s_]Achievement")
-    __slots__ = {"article_id", "title", "timestamp", "raw_attributes", "name", "grade", "points", "description",
-                 "spoiler", "secret", "version"}
+    __slots__ = ("article_id", "title", "timestamp", "raw_attributes", "name", "grade", "points", "description",
+                 "spoiler", "secret", "version")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     @classmethod
     def get_by_article_id(cls, c, article_id):

@@ -127,6 +127,17 @@ class TestWikiApi(unittest.TestCase):
         self.assertIsInstance(db_npc, models.Npc)
         self.assertEqual(db_npc.name, npc.name)
 
+        article = Article(2, "Captain Bluebear", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_npc_travel.txt"))
+        npc = models.Npc.from_article(article)
+        self.assertIsInstance(npc, models.Npc)
+        self.assertGreater(len(npc.destinations), 0)
+
+        article = Article(3, "Shalmar", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_npc_spells.txt"))
+        npc = models.Npc.from_article(article)
+        self.assertIsInstance(npc, models.Npc)
+
     def testQuest(self):
         article = Article(1, "The Annihilator Quest", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_quest.txt"))

@@ -20,6 +20,9 @@ class Charm(abc.Row, table=schema.Charm):
 
     __slots__ = ("name", "type", "description", "points", "image")
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     @classmethod
     def get_by_name(cls, c, name):
         """
