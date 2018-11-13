@@ -76,13 +76,13 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
         quest = super().from_article(article)
         if quest is None:
             return quest
-        if "reward" in quest.raw_attributes:
-            rewards = parse_links(quest.raw_attributes["reward"])
+        if "reward" in quest._raw_attributes:
+            rewards = parse_links(quest._raw_attributes["reward"])
             quest.rewards = []
             for reward in rewards:
                 quest.rewards.append(QuestReward(quest_id=quest.article_id, item_name=reward.strip()))
-        if "dangers" in quest.raw_attributes:
-            dangers = parse_links(quest.raw_attributes["dangers"])
+        if "dangers" in quest._raw_attributes:
+            dangers = parse_links(quest._raw_attributes["dangers"])
             quest.dangers = []
             for danger in dangers:
                 quest.dangers.append(QuestDanger(quest_id=quest.article_id, creature_name=danger.strip()))
@@ -96,32 +96,13 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
             danger.insert(c)
 
     @classmethod
-    def _get_by_field(cls, c, field, value, use_like=False):
-        quest = super()._get_by_field(c, field, value, use_like)
+    def get_by_field(cls, c, field, value, use_like=False):
+        quest = super().get_by_field(c, field, value, use_like)
         if quest is None:
             return None
-        quest.dangers = QuestDanger.get_by_quest_id(c, quest.article_id)
-        quest.rewards = QuestReward.get_by_quest_id(c, quest.article_id)
+        quest.dangers = QuestDanger.search(c, "quest_id", quest.article_id)
+        quest.rewards = QuestReward.search(c, "quest_id", quest.article_id)
         return quest
-
-    @classmethod
-    def get_by_article_id(cls, c, article_id):
-        """
-        Gets a quest by its article id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        article_id: :class:`int`
-            The article id to look for.
-
-        Returns
-        -------
-        :class:`Quest`
-            The quest matching the ID, if any.
-        """
-        return cls._get_by_field(c, "article_id", article_id)
 
 
 class QuestReward(abc.Row, table=schema.QuestReward):
@@ -155,39 +136,13 @@ class QuestReward(abc.Row, table=schema.QuestReward):
             pass
 
     @classmethod
-    def _get_all_by_field(cls, c, field, value, use_like=False):
-        operator = "LIKE" if use_like else "="
-        query = """SELECT %s.*, quest.name as quest_name, item.name as item_name FROM %s
-                           LEFT JOIN item ON item.article_id = item_id
-                           LEFT JOIN quest ON quest.article_id = quest_id
-                           WHERE %s %s ?""" % (cls.table.__tablename__, cls.table.__tablename__, field, operator)
-        c = c.execute(query, (value,))
-        c.row_factory = sqlite3.Row
-        results = []
-        for row in c.fetchall():
-            result = cls.from_row(row)
-            if result:
-                results.append(result)
-        return results
+    def _is_column(cls, name):
+        return name in cls.__slots__
 
     @classmethod
-    def get_by_quest_id(cls, c, quest_id):
-        """
-        Gets all drops matching the quest's id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        quest_id: :class:`int`
-            The article id of the quest.
-
-        Returns
-        -------
-        list of :class:`QuestReward`
-            A list of the quest's drops.
-        """
-        return cls._get_all_by_field(c, "quest_id", quest_id)
+    def _get_base_query(cls):
+        return """SELECT %s.*, item.name as item_name FROM %s
+                      LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
 
 class QuestDanger(abc.Row, table=schema.QuestDanger):
@@ -221,37 +176,11 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
             pass
 
     @classmethod
-    def _get_all_by_field(cls, c, field, value, use_like=False):
-        operator = "LIKE" if use_like else "="
-        query = """SELECT %s.*, quest.name as quest_name, creature.name as creature_name FROM %s
-                       LEFT JOIN creature ON creature.article_id = creature_id
-                       LEFT JOIN quest ON quest.article_id = quest_id
-                       WHERE %s %s ?""" % (cls.table.__tablename__, cls.table.__tablename__, field, operator)
-        c = c.execute(query, (value,))
-        c.row_factory = sqlite3.Row
-        results = []
-        for row in c.fetchall():
-            result = cls.from_row(row)
-            if result:
-                results.append(result)
-        return results
+    def _is_column(cls, name):
+        return name in cls.__slots__
 
     @classmethod
-    def get_by_quest_id(cls, c, quest_id):
-        """
-        Gets all drops matching the quest's id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        quest_id: :class:`int`
-            The article id of the quest.
-
-        Returns
-        -------
-        list of :class:`QuestDanger`
-            A list of the quest's drops.
-        """
-        return cls._get_all_by_field(c, "quest_id", quest_id)
-
+    def _get_base_query(cls):
+        return """SELECT %s.*, creature.name as creature_name FROM %s
+                  LEFT JOIN creature ON creature.article_id = creature_id""" % (cls.table.__tablename__,
+                                                                                cls.table.__tablename__)

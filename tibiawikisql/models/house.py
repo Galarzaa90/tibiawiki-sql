@@ -15,8 +15,6 @@ class House(abc.Row, abc.Parseable, table=schema.House):
         The title of the containing article.
     timestamp: :class:`int`
         The last time the containing article was edited.
-    raw_attributes: :class:`dict`
-        A dictionary containing attributes that couldn't be parsed.
     house_id: :class:`int`
         The house's id on tibia.com.
     name: :class:`str`
@@ -46,8 +44,8 @@ class House(abc.Row, abc.Parseable, table=schema.House):
     version: :class:`str`
         The client version where this creature was first implemented.
     """
-    __slots__ = ("article_id", "title", "timestamp", "raw_attributes", "house_id", "name", "guildhall", "city",
-                 "street", "beds", "rent", "size", "rooms", "floors", "x", "y", "z", "version")
+    __slots__ = ("article_id", "title", "timestamp", "house_id", "name", "guildhall", "city", "street", "beds", "rent",
+                 "size", "rooms", "floors", "x", "y", "z", "version")
     _map = {
         "houseid": ("house_id", parse_integer),
         "name": ("name", lambda x: x),
@@ -65,40 +63,6 @@ class House(abc.Row, abc.Parseable, table=schema.House):
         "implemented": ("version", lambda x: x),
     }
 
-    @classmethod
-    def get_by_article_id(cls, c, article_id):
-        """
-        Gets a house by its article id.
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        article_id: :class:`int`
-            The article id to look for.
-
-        Returns
-        -------
-        :class:`House`
-            The house matching the ID, if any.
-        """
-        return cls._get_by_field(c, "article_id", article_id)
-
-    @classmethod
-    def get_by_house_id(cls, c, article_id):
-        """
-        Gets a house by its house id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        article_id: :class:`int`
-            The house id to look for.
-
-        Returns
-        -------
-        :class:`House`
-            The house matching the ID, if any.
-        """
-        return cls._get_by_field(c, "house_id", article_id)

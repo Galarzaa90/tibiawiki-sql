@@ -1,8 +1,7 @@
 import re
-import sqlite3
 
 from tibiawikisql import schema
-from tibiawikisql.models import abc, CreatureDrop
+from tibiawikisql.models import abc, CreatureDrop, NpcBuyOffer, NpcSellOffer
 from tibiawikisql.utils import parse_float, parse_boolean, parse_integer, clean_links
 
 
@@ -39,6 +38,10 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         The item's attributes.
     dropped_by: list of :class:`CreatureDrop`
         List of creatures that drop this item, with the chances.
+    sold_by: list of :class:`NpcSellOffer`
+        List of NPCs that sell this item.
+    bought_by: list of :class:`NpcBuyOffer`
+        List of NPCs that buy this item.
     """
     _map = {
         "article": ("article", lambda x: x),
@@ -56,7 +59,10 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     _pattern = re.compile(r"Infobox[\s_]Item")
 
     __slots__ = ("article_id", "title", "timestamp", "name", "article", "stackable", "value_sell", "value_buy", "class",
-                 "type", "version", "image", "attributes", "dropped_by")
+                 "type", "version", "image", "attributes", "dropped_by", "sold_by", "bought_by")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     @classmethod
     def from_article(cls, article):
@@ -65,8 +71,8 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
             return None
         item.attributes = []
         for name, attribute in ItemAttribute._map.items():
-            if attribute in item.raw_attributes and item.raw_attributes[attribute]:
-                item.attributes.append(ItemAttribute(item_id=item.article_id, name=name, value=item.raw_attributes[attribute]))
+            if attribute in item._raw_attributes and item._raw_attributes[attribute]:
+                item.attributes.append(ItemAttribute(item_id=item.article_id, name=name, value=item._raw_attributes[attribute]))
         return item
 
     def insert(self, c):
@@ -75,51 +81,15 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
             attribute.insert(c)
 
     @classmethod
-    def _get_by_field(cls, c, field, value, use_like=False):
-        item: cls = super()._get_by_field(c, field, value, use_like)
+    def get_by_field(cls, c, field, value, use_like=False):
+        item: cls = super().get_by_field(c, field, value, use_like)
         if item is None:
             return None
-        item.attributes = ItemAttribute.get_by_item_id(c, item.article_id)
-        item.dropped_by = CreatureDrop.get_by_item_id(c, item.article_id)
+        item.attributes = ItemAttribute.search(c, "item_id", item.article_id)
+        item.dropped_by = CreatureDrop.search(c, "item_id", item.article_id, sort_by="chance", ascending=False)
+        item.sold_by = NpcSellOffer.search(c, "item_id", item.article_id, sort_by="value", ascending=True)
+        item.bought_by = NpcBuyOffer.search(c, "item_id", item.article_id, sort_by="value", ascending=False)
         return item
-
-    @classmethod
-    def get_by_article_id(cls, c, article_id):
-        """
-        Gets a item by its article id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        article_id: :class:`int`
-            The article id to look for.
-
-        Returns
-        -------
-        :class:`Item`
-            The item matching the ID, if any.
-        """
-        return cls._get_by_field(c, "article_id", article_id)
-
-    @classmethod
-    def get_by_name(cls, c, name):
-        """
-        Gets an item by its name.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        name: :class:`str`
-            The name to look for. Case insensitive.
-
-        Returns
-        -------
-        :class:`Item`
-            The item matching the name, if any.
-        """
-        return cls._get_by_field(c, "name", name, True)
 
 
 class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
@@ -134,8 +104,6 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
         The title of the containing article.
     timestamp: :class:`int`
         The last time the containing article was edited.
-    raw_attributes: :class:`dict`
-        A dictionary containing attributes that couldn't be parsed.
     name: :class:`str`
         The name of the creature, as displayed in-game.
     number: :class:`int`
@@ -153,7 +121,7 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
     version: :class:`str`
         The client version where this creature was first implemented.
     """
-    __slots__ = {"article_id", "title", "timestamp", "raw_attributes", "name", "number", "item_id", "material",
+    __slots__ = {"article_id", "title", "timestamp", "name", "number", "item_id", "material",
                  "notes", "origin", "version", "location"}
     _map = {
         "aka": ("name", clean_links),
@@ -179,44 +147,6 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
                         VALUES(?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?)"""
             c.execute(query, (self.article_id, self.title, self.number, self.material + " Key", self.name,
                               self.material, self.location, self.origin, self.notes, self.version, self.timestamp))
-
-    @classmethod
-    def get_by_article_id(cls, c, article_id):
-        """
-        Gets a key by its article id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        article_id: :class:`int`
-            The article id to look for.
-
-        Returns
-        -------
-        :class:`Key`
-            The key matching the ID, if any.
-        """
-        return cls._get_by_field(c, "article_id", article_id)
-
-    @classmethod
-    def get_by_number(cls, c, number):
-        """
-        Gets a key by its article id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        number: :class:`int`
-            The key's number.
-
-        Returns
-        -------
-        :class:`Key`
-            The key matching the number, if any.
-        """
-        return cls._get_by_field(c, "number", number)
 
 
 class ItemAttribute(abc.Row, table=schema.ItemAttribute):
@@ -265,36 +195,3 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
     def insert(self, c):
         columns = dict(item_id=self.item_id, name=self.name, value=str(self.value))
         self.table.insert(c, **columns)
-
-    @classmethod
-    def _get_all_by_field(cls, c, field, value, use_like=False):
-        operator = "LIKE" if use_like else "="
-        query = "SELECT * FROM %s WHERE %s %s ?" % (cls.table.__tablename__, field, operator)
-        c = c.execute(query, (value,))
-        c.row_factory = sqlite3.Row
-        results = []
-        for row in c.fetchall():
-            result = cls.from_row(row)
-            if result:
-                results.append(result)
-        return results
-
-    @classmethod
-    def get_by_item_id(cls, c, item_id):
-        """
-        Gets all attributes matching the item's id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        item_id: :class:`int`
-            The article id of the item.
-
-        Returns
-        -------
-        list of :class:`ItemAttribute`
-            A list of the creature's drops.
-        """
-        return cls._get_all_by_field(c, "item_id", item_id)
-

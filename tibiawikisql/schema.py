@@ -219,10 +219,10 @@ class NpcDestination(Table, table_name="npc_destination"):
 class NpcSpell(Table, table_name="npc_spell"):
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"))
     spell_id = Column(ForeignKey(Integer, "spell", "article_id"))
-    knight = Column(Integer)
-    sorcerer = Column(Integer)
-    paladin = Column(Integer)
-    druid = Column(Integer)
+    knight = Column(Boolean, nullable=False, default=False)
+    sorcerer = Column(Boolean, nullable=False, default=False)
+    paladin = Column(Boolean, nullable=False, default=False)
+    druid = Column(Boolean, nullable=False, default=False)
 
 
 class Quest(Table):

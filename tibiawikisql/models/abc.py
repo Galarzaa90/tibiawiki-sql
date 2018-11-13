@@ -73,7 +73,7 @@ class Parseable(Article, metaclass=abc.ABCMeta):
         The title of the containing article.
     timestamp: :class:`int`
         The last time the containing article was edited.
-    raw_attributes: :class:`dict`
+    _raw_attributes: :class:`dict`
         A dictionary containing attributes that couldn't be parsed.
     """
     _map = None
@@ -103,10 +103,10 @@ class Parseable(Article, metaclass=abc.ABCMeta):
             return None
         row = {"article_id": article.article_id, "timestamp": article.timestamp, "title": article.title, "attributes": {}}
         attributes = parse_attributes(article.content)
-        row["raw_attributes"] = {}
+        row["_raw_attributes"] = {}
         for attribute, value in attributes.items():
             if attribute not in cls._map:
-                row["raw_attributes"][attribute] = value
+                row["_raw_attributes"][attribute] = value
                 continue
             column, func = cls._map[attribute]
             row[column] = func(value)
@@ -131,8 +131,8 @@ class Row(metaclass=abc.ABCMeta):
             if isinstance(c.column_type, database.Boolean):
                 value = bool(value)
             setattr(self, c.name, value)
-        if kwargs.get("raw_attributes"):
-            self.raw_attributes = kwargs.get("raw_attributes")
+        if kwargs.get("_raw_attributes"):
+            self._raw_attributes = kwargs.get("_raw_attributes")
 
     def __init_subclass__(cls, table=None):
         cls.table = table
@@ -144,6 +144,14 @@ class Row(metaclass=abc.ABCMeta):
             key = "name"
             value = getattr(self, key, "")
         return "%s (article_id=%d,%s=%r)" % (self.__class__.__name__, getattr(self, "article_id", 0), key, value)
+
+    @classmethod
+    def _is_column(cls, name):
+        return name in [c.name for c in cls.table.columns]
+
+    @classmethod
+    def _get_base_query(cls):
+        return "SELECT * FROM %s" % cls.table.__tablename__
 
     def insert(self, c):
         """
@@ -185,7 +193,33 @@ class Row(metaclass=abc.ABCMeta):
         return cls(**row)
 
     @classmethod
-    def _get_by_field(cls, c, field, value, use_like=False):
+    def get_by_field(cls, c, field, value, use_like=False):
+        """
+        Gets an element by a specific field's value.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Connection`, :class:`sqlite3.Cursor`
+            A connection or cursor of the database.
+        field: :class:`str`
+            The field to filter with.
+        value:
+            The value to look for.
+        use_like: :class:`bool`
+            Whether to use ``LIKE`` as a comparator instead of ``=``.
+        Returns
+        -------
+        :class:`cls`
+            The object found, or ``None``.
+
+        Raises
+        ------
+        ValueError
+            The specified field doesn't exist in the table.
+        """
+        # This is used to protect the query from possible SQL Injection.
+        if not cls._is_column(field):
+            raise ValueError("Field '%s' doesn't exist." % field)
         operator = "LIKE" if use_like else "="
         query = "SELECT * FROM %s WHERE %s %s ? LIMIT 1" % (cls.table.__tablename__, field, operator)
         c = c.execute(query, (value,))
@@ -194,5 +228,62 @@ class Row(metaclass=abc.ABCMeta):
         if row is None:
             return None
         return cls.from_row(row)
+
+    @classmethod
+    def search(cls, c, field=None, value=None, use_like=False, sort_by=None, ascending=True):
+        """
+        Finds elements matching the provided values.
+
+        If no values are provided, it will return all elements.
+
+        Note that this won't get values found in child tables.
+
+        Parameters
+        ----------
+        c: :class:`sqlite3.Connection`, :class:`sqlite3.Cursor`
+            A connection or cursor of the database.
+        field: :class:`str`, optional
+            The field to filter by.
+        value: optional
+            The value to filter by.
+        use_like: :class:`bool`, optional
+            Whether to use ``LIKE`` as a comparator instead of ``=``.
+        sort_by: :class:`str`, optional
+            The column to sort by.
+        ascending: :class:`bool`, optional
+            Whether to sort ascending or descending.
+
+        Returns
+        -------
+        list of :class:`cls`
+            A list containing all matching objects.
+
+        Raises
+        ------
+        ValueError
+            The specified field doesn't exist in the table.
+        """
+        if field is not None and not cls._is_column(field):
+            raise ValueError("Field '%s' doesn't exist." % field)
+        if sort_by is not None and not cls._is_column(sort_by):
+            raise ValueError("Field '%s' doesn't exist." % sort_by)
+        operator = "LIKE" if use_like else "="
+        query = cls._get_base_query()
+        tup = tuple()
+        if field is not None:
+            query += "\nWHERE %s %s ?" % (field, operator)
+            tup = (value,)
+        if sort_by is not None:
+            query += "\nORDER BY %s %s" % (sort_by, "ASC" if ascending else "DESC")
+        c = c.execute(query, tup)
+        c.row_factory = sqlite3.Row
+        results = []
+        for row in c.fetchall():
+            row = cls.from_row(row)
+            if row is not None:
+                results.append(row)
+        return results
+
+
 
 

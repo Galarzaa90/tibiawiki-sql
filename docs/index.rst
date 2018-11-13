@@ -14,6 +14,7 @@ Documentation Contents
 -----------------------
 * :ref:`genindex`
 * :ref:`search`
+
 .. toctree::
    :maxdepth: 2
    

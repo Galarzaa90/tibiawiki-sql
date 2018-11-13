@@ -17,8 +17,6 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         The title of the containing article.
     timestamp: :class:`int`
         The last time the containing article was edited.
-    raw_attributes: :class:`dict`
-        A dictionary containing attributes that couldn't be parsed.
     name: :class:`str`
         The achievement's name.
     grade: :class:`int`
@@ -46,47 +44,11 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         "implemented": ("version", lambda x: x),
     }
     _pattern = re.compile(r"Infobox[\s_]Achievement")
-    __slots__ = ("article_id", "title", "timestamp", "raw_attributes", "name", "grade", "points", "description",
-                 "spoiler", "secret", "version")
+    __slots__ = ("article_id", "title", "timestamp", "name", "grade", "points", "description", "spoiler", "secret",
+                 "version")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    @classmethod
-    def get_by_article_id(cls, c, article_id):
-        """
-        Gets an achievement by its article id.
 
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        article_id: :class:`int`
-            The article id to look for.
-
-        Returns
-        -------
-        :class:`Achievement`
-            The achievement matching the ID, if any.
-        """
-        return cls._get_by_field(c, "article_id", article_id)
-
-    @classmethod
-    def get_by_name(cls, c, name):
-        """
-        Gets an achievement by its name.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        name: :class:`str`
-            The name to look for. Case insensitive.
-
-        Returns
-        -------
-        :class:`Achievement`
-            The achievement matching the name, if any.
-        """
-        return cls._get_by_field(c, "name", name, True)
 

@@ -139,8 +139,6 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         The title of the containing article.
     timestamp: :class:`int`
         The last time the containing article was edited.
-    raw_attributes: :class:`dict`
-        A dictionary containing attributes that couldn't be parsed.
     name: :class:`str`
         The in-game name of the NPC.
     gender: :class:`str`
@@ -172,7 +170,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
     teaches: list of :class:`NpcSpell`
         Spells this NPC can teach.
     """
-    __slots__ = ("article_id", "title", "raw_attributes", "timestamp", "name", "gender", "race", "job", "location",
+    __slots__ = ("article_id", "title", "timestamp", "name", "gender", "race", "job", "location",
                  "city", "x", "y", "z", "version", "image", "sells", "buys", "destinations", "teaches")
 
     def __init__(self, **kwargs):
@@ -198,16 +196,16 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         npc = super().from_article(article)
         if npc is None:
             return None
-        if "buys" in npc.raw_attributes:
+        if "buys" in npc._raw_attributes:
             cls._parse_buy_offers(npc)
-        if "sells" in npc.raw_attributes:
+        if "sells" in npc._raw_attributes:
             cls._parse_sell_offers(npc)
             cls._parse_spells(npc)
         destinations = []
-        if "notes" in npc.raw_attributes and "{{Transport" in npc.raw_attributes["notes"]:
-            destinations.extend(parse_destinations(npc.raw_attributes["notes"]))
-        if "sells" in npc.raw_attributes and "{{Transport" in npc.raw_attributes["sells"]:
-            destinations.extend(parse_destinations(npc.raw_attributes["sells"]))
+        if "notes" in npc._raw_attributes and "{{Transport" in npc._raw_attributes["notes"]:
+            destinations.extend(parse_destinations(npc._raw_attributes["notes"]))
+        if "sells" in npc._raw_attributes and "{{Transport" in npc._raw_attributes["sells"]:
+            destinations.extend(parse_destinations(npc._raw_attributes["sells"]))
         npc.destinations = []
         for destination, price, notes in destinations:
             destination.strip()
@@ -220,7 +218,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
 
     @classmethod
     def _parse_buy_offers(cls, npc):
-        buy_items = parse_item_offers(npc.raw_attributes["buys"])
+        buy_items = parse_item_offers(npc._raw_attributes["buys"])
         npc.buys = []
         for item, price, currency in buy_items:
             # Some items have extra requirements, separated with ;, so we remove them
@@ -235,7 +233,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
 
     @classmethod
     def _parse_sell_offers(cls, npc):
-        sell_items = parse_item_offers(npc.raw_attributes["sells"])
+        sell_items = parse_item_offers(npc._raw_attributes["sells"])
         npc.sells = []
         for item, price, currency in sell_items:
             # Some items have extra requirements, separated with ;, so we remove them
@@ -248,7 +246,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             npc.sells.append(NpcSellOffer(item_name=item.strip(), currency_name=currency, value=value,
                                             npc_id=npc.article_id))
         # Items traded by npcs (these have a different template)
-        trade_items = parse_item_trades(npc.raw_attributes["sells"])
+        trade_items = parse_item_trades(npc._raw_attributes["sells"])
         for item, price, currency in trade_items:
             item = item.split(";")[0]
             value = None
@@ -261,7 +259,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
 
     @classmethod
     def _parse_spells(cls, npc):
-        spell_list = parse_spells(npc.raw_attributes["sells"])
+        spell_list = parse_spells(npc._raw_attributes["sells"])
         npc.teaches = []
         for group, spells in spell_list:
             for spell in spells:
@@ -272,8 +270,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                 sorcerer = "sorcerer" in group.lower() or npc.name == "Eliza"
                 if not(knight or paladin or druid or sorcerer):
                     def in_jobs(vocation, _npc):
-                        return vocation in (_npc.job+_npc.raw_attributes.get("job2", "") +
-                                            _npc.raw_attributes.get("job3", "")).lower()
+                        return vocation in (_npc.job+_npc._raw_attributes.get("job2", "") +
+                                            _npc._raw_attributes.get("job3", "")).lower()
 
                     knight = in_jobs("knight", npc)
                     paladin = in_jobs("paladin", npc)
@@ -304,34 +302,15 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             destination.insert(c)
 
     @classmethod
-    def _get_by_field(cls, c, field, value, use_like=False):
-        npc: cls = super()._get_by_field(c, field, value, use_like)
+    def get_by_field(cls, c, field, value, use_like=False):
+        npc: cls = super().get_by_field(c, field, value, use_like)
         if npc is None:
             return None
-        npc.sells = NpcSellOffer.get_by_npc_id(c, npc.article_id)
-        npc.buys = NpcBuyOffer.get_by_npc_id(c, npc.article_id)
-        npc.teaches = NpcSpell.get_by_npc_id(c, npc.article_id)
-        npc.destinations = NpcDestination.get_by_npc_id(c, npc.article_id)
+        npc.sells = NpcSellOffer.search(c, "npc_id", npc.article_id, sort_by="value", ascending=True)
+        npc.buys = NpcBuyOffer.search(c, "npc_id", npc.article_id, sort_by="value", ascending=False)
+        npc.teaches = NpcSpell.search(c, "npc_id", npc.article_id)
+        npc.destinations = NpcDestination.search(c, "npc_id", npc.article_id)
         return npc
-
-    @classmethod
-    def get_by_article_id(cls, c, article_id):
-        """
-        Gets a npc by its article id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        article_id: :class:`int`
-            The article id to look for.
-
-        Returns
-        -------
-        :class:`Npc`
-            The npc matching the ID, if any.
-        """
-        return cls._get_by_field(c, "article_id", article_id)
 
 
 class NpcOffer:
@@ -343,6 +322,18 @@ class NpcOffer:
         self.currency_id = kwargs.get("currency_id")
         self.currency_name = kwargs.get("currency_name")
         self.value = kwargs.get("value")
+
+    def __repr__(self):
+        attributes = []
+        for attr in self.__slots__:
+            try:
+                v = getattr(self, attr)
+                if v is None:
+                    continue
+                attributes.append("%s=%r" % (attr, v))
+            except AttributeError:
+                pass
+        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
 
 
 class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
@@ -366,7 +357,7 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
     value: :class:`str`
         The value of the item in the specified currency.
     """
-    __slots__ = ("npc_id", "npc_name", "item_id", "item_name", "currency_id", "currency_name", "currency_value")
+    __slots__ = ("npc_id", "npc_name", "item_id", "item_name", "value", "currency_id", "currency_name")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -395,39 +386,14 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
             pass
 
     @classmethod
-    def _get_all_by_field(cls, c, field, value, use_like=False):
-        operator = "LIKE" if use_like else "="
-        query = """SELECT %s.*, item.name as item_name, npc.name as npc_name FROM %s
-                   LEFT JOIN npc ON npc.article_id = npc_id
-                   LEFT JOIN item ON item.article_id = item_id
-                   WHERE %s %s ?""" % (cls.table.__tablename__, cls.table.__tablename__, field, operator)
-        c = c.execute(query, (value,))
-        c.row_factory = sqlite3.Row
-        results = []
-        for row in c.fetchall():
-            result = cls.from_row(row)
-            if result:
-                results.append(result)
-        return results
+    def _is_column(cls, name):
+        return name in cls.__slots__
 
     @classmethod
-    def get_by_npc_id(cls, c, npc_id):
-        """
-        Gets all attributes matching the npc's id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        npc_id: :class:`int`
-            The article id of the npc.
-
-        Returns
-        -------
-        list of :class:`NpcSellOffer`
-            A list of items sold by the Npc's.
-        """
-        return cls._get_all_by_field(c, "npc_id", npc_id)
+    def _get_base_query(cls):
+        return """SELECT %s.*, item.name as item_name, npc.name as npc_name FROM %s
+                  LEFT JOIN npc ON npc.article_id = npc_id
+                  LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
 
 class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
@@ -451,7 +417,7 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
         value: :class:`str`
             The value of the item in the specified currency.
         """
-    __slots__ = ("npc_id", "npc_name", "item_id", "item_name", "currency_id", "currency_name", "currency_value")
+    __slots__ = ("npc_id", "npc_name", "item_id", "item_name", "value", "currency_id", "currency_name")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -480,39 +446,14 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
             pass
 
     @classmethod
-    def _get_all_by_field(cls, c, field, value, use_like=False):
-        operator = "LIKE" if use_like else "="
-        query = """SELECT %s.*, item.name as item_name, npc.name as npc_name FROM %s
-                   LEFT JOIN npc ON npc.article_id = npc_id
-                   LEFT JOIN item ON item.article_id = item_id
-                   WHERE %s %s ?""" % (cls.table.__tablename__, cls.table.__tablename__, field, operator)
-        c = c.execute(query, (value,))
-        c.row_factory = sqlite3.Row
-        results = []
-        for row in c.fetchall():
-            result = cls.from_row(row)
-            if result:
-                results.append(result)
-        return results
+    def _is_column(cls, name):
+        return name in cls.__slots__
 
     @classmethod
-    def get_by_npc_id(cls, c, npc_id):
-        """
-        Gets all attributes matching the npc's id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        npc_id: :class:`int`
-            The article id of the npc.
-
-        Returns
-        -------
-        list of :class:`NpcBuyOffer`
-            A list of npcs bought by the Npc's.
-        """
-        return cls._get_all_by_field(c, "npc_id", npc_id)
+    def _get_base_query(cls):
+        return """SELECT %s.*, item.name as item_name, npc.name as npc_name FROM %s
+                  LEFT JOIN npc ON npc.article_id = npc_id
+                  LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
 
 class NpcSpell(abc.Row, table=schema.NpcSpell):
@@ -546,10 +487,18 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
         self.spell_name = kwargs.get("spell_name")
 
     def __repr__(self):
-        try:
-            return "%s(spell_name=%r)" % (self.__class__.__name__, self.spell_name)
-        except AttributeError:
-            return "%s(npc_id=%r, npc_name=%r)" % (self.__class__.__name__, self.npc_id, self.spell_id)
+        attributes = []
+        for attr in self.__slots__:
+            try:
+                v = getattr(self, attr)
+                if v is None:
+                    continue
+                if isinstance(v, bool) and not v:
+                    continue
+                attributes.append("%s=%r" % (attr, v))
+            except AttributeError:
+                pass
+        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
 
     def insert(self, c):
         if getattr(self, "spell_id", None):
@@ -560,58 +509,14 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
             c.execute(query, (self.npc_id, self.spell_name, self.knight, self.sorcerer, self.paladin, self.druid))
 
     @classmethod
-    def _get_all_by_field(cls, c, field, value, use_like=False):
-        operator = "LIKE" if use_like else "="
-        query = """SELECT %s.*, spell.name as spell_name, npc.name as npc_name FROM %s
-                   LEFT JOIN npc ON npc.article_id = npc_id
-                   LEFT JOIN spell ON spell.article_id = spell_id
-                   WHERE %s %s ?""" % (cls.table.__tablename__, cls.table.__tablename__, field, operator)
-        c = c.execute(query, (value,))
-        c.row_factory = sqlite3.Row
-        results = []
-        for row in c.fetchall():
-            result = cls.from_row(row)
-            if result:
-                results.append(result)
-        return results
+    def _is_column(cls, name):
+        return name in cls.__slots__
 
     @classmethod
-    def get_by_npc_id(cls, c, npc_id):
-        """
-        Gets all attributes matching the npc's id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        npc_id: :class:`int`
-            The article id of the npc.
-
-        Returns
-        -------
-        list of :class:`NpcSpell`
-            A list of the spells taught by the npc.
-        """
-        return cls._get_all_by_field(c, "npc_id", npc_id)
-
-    @classmethod
-    def get_by_spell_id(cls, c, spell_id):
-        """
-        Gets all attributes matching the spell's id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        spell_id: :class:`int`
-            The article id of the spell.
-
-        Returns
-        -------
-        list of :class:`NpcSpell`
-            A list of the npcs that teach the spell.
-        """
-        return cls._get_all_by_field(c, "spell_id", spell_id)
+    def _get_base_query(cls):
+        return """SELECT %s.*, spell.name as spell_name, npc.name as npc_name FROM %s
+                  LEFT JOIN npc ON npc.article_id = npc_id
+                  LEFT JOIN spell ON spell.article_id = spell_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
 
 class NpcDestination(abc.Row, table=schema.NpcDestination):
@@ -633,38 +538,6 @@ class NpcDestination(abc.Row, table=schema.NpcDestination):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-    @classmethod
-    def _get_all_by_field(cls, c, field, value, use_like=False):
-        operator = "LIKE" if use_like else "="
-        query = "SELECT * FROM %s WHERE %s %s ?" % (cls.table.__tablename__, field, operator)
-        c = c.execute(query, (value,))
-        c.row_factory = sqlite3.Row
-        results = []
-        for row in c.fetchall():
-            result = cls.from_row(row)
-            if result:
-                results.append(result)
-        return results
-
-    @classmethod
-    def get_by_npc_id(cls, c, npc_id):
-        """
-        Gets all attributes matching the npc's id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        npc_id: :class:`int`
-            The article id of the npc.
-
-        Returns
-        -------
-        list of :class:`NpcDestination`
-            A list of the Npc's destinations.
-        """
-        return cls._get_all_by_field(c, "npc_id", npc_id)
 
 
 class RashidPosition(abc.Row, table=schema.RashidPosition):

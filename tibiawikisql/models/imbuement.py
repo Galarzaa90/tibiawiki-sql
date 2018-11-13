@@ -1,5 +1,4 @@
 import re
-import sqlite3
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
@@ -86,8 +85,6 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         The title of the containing article.
     timestamp: :class:`int`
         The last time the containing article was edited.
-    raw_attributes: :class:`dict`
-        A dictionary containing attributes that couldn't be parsed.
     name: :class:`str`
         The name of the imbuement.
     tier: :class:`str`
@@ -112,7 +109,7 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
     }
     _pattern = re.compile(r"Infobox[\s_]Imbuement")
 
-    __slots__ = ("article_id", "title", "timestamp", "raw_attributes", "name", "tier", "type", "effect", "version",
+    __slots__ = ("article_id", "title", "timestamp", "name", "tier", "type", "effect", "version",
                  "image", "materials")
 
     def __init__(self, **kwargs):
@@ -123,8 +120,8 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         imbuement = super().from_article(article)
         if imbuement is None:
             return None
-        if "astralsources" in imbuement.raw_attributes:
-            materials = parse_astral_sources(imbuement.raw_attributes["astralsources"])
+        if "astralsources" in imbuement._raw_attributes:
+            materials = parse_astral_sources(imbuement._raw_attributes["astralsources"])
             imbuement.materials = []
             for name, amount in materials.items():
                 imbuement.materials.append(ImbuementMaterial(item_name=name, amount=amount,
@@ -138,49 +135,13 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
             material.insert(c)
 
     @classmethod
-    def _get_by_field(cls, c, field, value, use_like=False):
-        imbuement = super()._get_by_field(c, field, value, use_like)
-        imbuement.materials = ImbuementMaterial.get_by_imbuement_id(c, imbuement.article_id)
+    def get_by_field(cls, c, field, value, use_like=False):
+        imbuement = super().get_by_field(c, field, value, use_like)
+        if imbuement is None:
+            return None
+        imbuement.materials = ImbuementMaterial.search(c, "imbuement_id", imbuement.article_id)
         return imbuement
 
-
-    @classmethod
-    def get_by_article_id(cls, c, article_id):
-        """
-        Gets a imbuement by its article id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        article_id: :class:`int`
-            The article id to look for.
-
-        Returns
-        -------
-        :class:`Imbuement`
-            The imbuement matching the ID, if any.
-        """
-        return cls._get_by_field(c, "article_id", article_id)
-
-    @classmethod
-    def get_by_name(cls, c, name):
-        """
-        Gets an imbuement by its name.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        name: :class:`str`
-            The name to look for. Case insensitive.
-
-        Returns
-        -------
-        :class:`Imbuement`
-            The imbuement matching the name, if any.
-        """
-        return cls._get_by_field(c, "name", name, True)
 
 class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
     """
@@ -210,42 +171,16 @@ class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
         if getattr(self, "item_id", None):
             super().insert(c)
         else:
-            query = f"""INSERT INTO {self.table.__tablename__}({','.join(c.name for c in self.table.columns)})
+            query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
                         VALUES(?, (SELECT article_id from item WHERE title = ?), ?)"""
             c.execute(query, (self.imbuement_id, self.item_name, self.amount))
 
     @classmethod
-    def _get_all_by_field(cls, c, field, value, use_like=False):
-        operator = "LIKE" if use_like else "="
-        query = """SELECT %s.*, item.name as item_name, imbuement.name as imbuement_name FROM %s
+    def _get_base_query(cls):
+        return """SELECT %s.*, imbuement.name as imbuement_name, item.name as item_name FROM %s
                    LEFT JOIN imbuement ON imbuement.article_id = imbuement_id
-                   LEFT JOIN item ON item.article_id = item_id
-                   WHERE %s %s ?""" % (cls.table.__tablename__, cls.table.__tablename__, field, operator)
-        c = c.execute(query, (value,))
-        c.row_factory = sqlite3.Row
-        results = []
-        for row in c.fetchall():
-            result = cls.from_row(row)
-            if result:
-                results.append(result)
-        return results
+                   LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
     @classmethod
-    def get_by_imbuement_id(cls, c, imbuement_id):
-        """
-        Gets all drops matching the imbuement's id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        imbuement_id: :class:`int`
-            The article id of the imbuement.
-
-        Returns
-        -------
-        list of :class:`ImbuementMaterial`
-            A list of the imbuement's materials.
-        """
-        return cls._get_all_by_field(c, "imbuement_id", imbuement_id)
-
+    def _is_column(cls, name):
+        return name in cls.__slots__

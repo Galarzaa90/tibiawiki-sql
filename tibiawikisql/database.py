@@ -222,6 +222,7 @@ class Table(metaclass=TableMeta):
                                                            ', '.join('?' for _ in verified))
         c.execute(sql, tuple(verified.values()))
 
+
     @classmethod
     def drop(cls):
         return 'DROP TABLE IF EXISTS %s' % cls.__tablename__

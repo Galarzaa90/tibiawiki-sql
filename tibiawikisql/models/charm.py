@@ -23,27 +23,6 @@ class Charm(abc.Row, table=schema.Charm):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    @classmethod
-    def get_by_name(cls, c, name):
-        """
-        Gets a charm by its name from the database.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Connection`, :class:`sqlite3.Cursor`
-            A connection or cursor of the database.
-        name: :class:`str`
-            The name of the charm. Case insensitive.
-
-        Returns
-        -------
-        :class:`Charm`
-            The Charm found, or ``None``.
-        """
-        c = c.execute("SELECT * FROM %s WHERE name LIKE ?" % cls.table.__tablename__, (name,))
-        row = c.fetchone()
-        return cls.from_row(row)
-
     def __repr__(self):
         return "%s(name=%r,type=%r,points=%r)" % (self.__class__.__name__, self.name, self.type, self.points)
 

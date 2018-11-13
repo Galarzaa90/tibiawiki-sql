@@ -66,35 +66,16 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         spell = super().from_article(article)
         if not spell:
             return None
-        if "voc" in spell.raw_attributes:
+        if "voc" in spell._raw_attributes:
             for vocation in ["knight", "sorcerer", "druid", "paladin"]:
-                if vocation in spell.raw_attributes["voc"].lower():
+                if vocation in spell._raw_attributes["voc"].lower():
                     setattr(spell, vocation, True)
         return spell
 
     @classmethod
-    def _get_by_field(cls, c, field, value, use_like=False):
-        spell: cls = super()._get_by_field(c, field, value, use_like)
+    def get_by_field(cls, c, field, value, use_like=False):
+        spell: cls = super().get_by_field(c, field, value, use_like)
         if spell is None:
             return None
-        spell.taught_by = NpcSpell.get_by_spell_id(c, spell.article_id)
+        spell.taught_by = NpcSpell.search(c, "spell_id", spell.article_id)
         return spell
-
-    @classmethod
-    def get_by_article_id(cls, c, article_id):
-        """
-        Gets a spell by its article id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        article_id: :class:`int`
-            The article id to look for.
-
-        Returns
-        -------
-        :class:`Spell`
-            The spell matching the ID, if any.
-        """
-        return cls._get_by_field(c, "article_id", article_id)

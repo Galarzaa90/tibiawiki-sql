@@ -1,5 +1,4 @@
 import re
-import sqlite3
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
@@ -90,8 +89,6 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The title of the containing article.
     timestamp: :class:`int`
         The last time the containing article was edited.
-    raw_attributes: :class:`dict`
-        A dictionary containing attributes that couldn't be parsed.
     article: :class:`str`
         The article that goes before the name when looking at the creature.
     name: :class:`str`
@@ -227,8 +224,8 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         creature = super().from_article(article)
         if creature is None:
             return None
-        if "loot" in creature.raw_attributes:
-            loot = parse_loot(creature.raw_attributes["loot"])
+        if "loot" in creature._raw_attributes:
+            loot = parse_loot(creature._raw_attributes["loot"])
             loot_items = []
             for amounts, item in loot:
                 if not amounts:
@@ -255,50 +252,12 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
             attribute.insert(c)
 
     @classmethod
-    def _get_by_field(cls, c, field, value, use_like=False):
-        creature = super()._get_by_field(c, field, value, use_like)
+    def get_by_field(cls, c, field, value, use_like=False):
+        creature = super().get_by_field(c, field, value, use_like)
         if creature is None:
             return None
-        creature.loot = CreatureDrop.get_by_creature_id(c, creature.article_id)
+        creature.loot = CreatureDrop.search(c, "creature_id", creature.article_id, sort_by="chance", ascending=False)
         return creature
-
-    @classmethod
-    def get_by_article_id(cls, c, article_id):
-        """
-        Gets a creature by its article id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        article_id: :class:`int`
-            The article id to look for.
-
-        Returns
-        -------
-        :class:`Creature`
-            The creature matching the ID, if any.
-        """
-        return cls._get_by_field(c, "article_id", article_id)
-
-    @classmethod
-    def get_by_name(cls, c, name):
-        """
-        Gets an creature by its name.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        name: :class:`str`
-            The name to look for. Case insensitive.
-
-        Returns
-        -------
-        :class:`Creature`
-            The creature matching the name, if any.
-        """
-        return cls._get_by_field(c, "name", name, True)
 
 
 class CreatureDrop(abc.Row, table=schema.CreatureDrop):
@@ -359,57 +318,13 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
             c.execute(query, (self.creature_id, self.item_name, self.min, self.max))
 
     @classmethod
-    def _get_all_by_field(cls, c, field, value, use_like=False):
-        operator = "LIKE" if use_like else "="
-        query = """SELECT %s.*, item.name as item_name, creature.name as creature_name FROM %s
-                   LEFT JOIN creature ON creature.article_id = creature_id
-                   LEFT JOIN item ON item.article_id = item_id
-                   WHERE %s %s ?""" % (cls.table.__tablename__, cls.table.__tablename__, field, operator)
-        c = c.execute(query, (value,))
-        c.row_factory = sqlite3.Row
-        results = []
-        for row in c.fetchall():
-            result = cls.from_row(row)
-            if result:
-                results.append(result)
-        return results
+    def _is_column(cls, name):
+        return name in cls.__slots__
 
     @classmethod
-    def get_by_creature_id(cls, c, creature_id):
-        """
-        Gets all drops matching the creature's id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        creature_id: :class:`int`
-            The article id of the creature.
-
-        Returns
-        -------
-        list of :class:`CreatureDrop`
-            A list of the creature's drops.
-        """
-        return cls._get_all_by_field(c, "creature_id", creature_id)
-
-    @classmethod
-    def get_by_item_id(cls, c, item_id):
-        """
-        Gets all drops matching the item's id.
-
-        Parameters
-        ----------
-        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`
-            A connection or cursor of the database.
-        item_id: :class:`int`
-            The article id of the item.
-
-        Returns
-        -------
-        list of :class:`CreatureDrop`
-            A list of the creatures that drop the item.
-        """
-        return cls._get_all_by_field(c, "item_id", item_id)
+    def _get_base_query(cls):
+        return """SELECT %s.*, item.name as item_name, creature.name as creature_name FROM %s
+                  LEFT JOIN creature ON creature.article_id = creature_id
+                  LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
 
