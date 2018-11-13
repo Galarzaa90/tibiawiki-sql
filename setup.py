@@ -28,6 +28,9 @@ setup(
     url='https://github.com/Galarzaa90/tibiawiki-sql',
     license='Apache 2.0',
     install_requires=requirements,
+    extras_require={
+        'docs': [
+            'Sphinx']},
     description="Python script that generates a SQLite database from TibiaWiki articles",
     long_description=readme,
     long_description_content_type="text/markdown",

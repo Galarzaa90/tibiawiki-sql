@@ -5,6 +5,8 @@
 # This file does only contain a selection of the most common options. For a
 # full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
+import re
+
 
 def setup(app):
     app.add_stylesheet('custom.css')
@@ -29,8 +31,11 @@ author = 'Allan Galarza'
 
 # The short X.Y version
 version = ''
+with open('../tibiawikisql/__init__.py') as f:
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
+
 # The full version, including alpha/beta/rc tags
-release = '0.1.0'
+release = version
 
 
 # -- General configuration ---------------------------------------------------
@@ -80,6 +85,8 @@ pygments_style = 'sphinx'
 
 
 # -- Options for HTML output -------------------------------------------------
+
+html_experimental_html5_writer = True
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.

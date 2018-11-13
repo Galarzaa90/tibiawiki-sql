@@ -1,7 +1,8 @@
 import re
 
 from tibiawikisql import schema
-from tibiawikisql.models import abc, CreatureDrop, NpcBuyOffer, NpcSellOffer
+from tibiawikisql.models import abc, CreatureDrop
+from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
 from tibiawikisql.utils import parse_float, parse_boolean, parse_integer, clean_links
 
 
