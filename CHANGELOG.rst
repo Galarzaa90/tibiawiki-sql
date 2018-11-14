@@ -1,7 +1,11 @@
+=========
 Changelog
 =========
-Version 2.0.0 (Unreleased)
---------------------------
+
+v2.0.0
+======
+:Released: Unreleased
+
 - New model classes, to unify the generation process.
 - Live fetching is now possible, obtain data directly from the Wiki.
 - Database generation now shows progress bars and time estimates.
@@ -53,27 +57,37 @@ Version 2.0.0 (Unreleased)
         - ``day_name`` from ``rashid_position``
 
 
-Version 1.2.0 (2018-10-16)
---------------------------
+v1.2.0
+======
+:Released: 2018-10-16
+
 -  New ``charm`` table, contains information about all charms.
 
-Version 1.1.1 (2018-09-23)
---------------------------
+v1.1.1
+======
+:Released: 2018-09-23
+
 -  Improved parsing of ``walksaround`` and ``walksthrough``
 
-Version 1.1.0 (2018-09-22)
---------------------------
+v1.1.0
+======
+:Released: 2018-09-22
+
 -  Added new columns to creatures table:
 
    -  ``walksaround``
    -  ``walksthrough``
 
-Version 1.0.1 (2018-07-02)
---------------------------
+v1.0.1
+======
+:Released: 2018-07-02
+
 -  Fixed bug caused when a category had a number of articles that was exactly a multiple of 50.
 
-Version 1.0.0 (2018-07-01)
---------------------------
+v1.0.0
+======
+:Released: 2018-07-01
+
 -  ``id`` is now TibiaWiki’s article id for the element, making them more reliable than autoincremented ids.
 -  Fixed bug with potion’s prices.
 -  Fixed bug with paralysable being inverted.
@@ -87,8 +101,10 @@ Version 1.0.0 (2018-07-01)
    -  ``armor``
    -  ``speed``
 
-Version 0.3.0 (2017-12-18)
---------------------------
+v0.3.0
+======
+:Released: 2017-12-18
+
 -  New ``items_keys`` table, contains key numbers with their uses and
    locations.
 -  New ``rashid_positions`` database, contains Rashid’s coordinates for each weekday.
@@ -96,13 +112,15 @@ Version 0.3.0 (2017-12-18)
 -  Added ``article``, ``class`` and ``client_id`` to ``items`` table.
 -  Added ``last_edit`` column to most tables.
 
-Version 0.2.0 (2017-11-14)
---------------------------
+v0.2.0
+======
+:Released: 2017-11-14
+
 -  Improved the parsing of all data tables, resulting in more
    consistency in values, less empty strings (not ``NULL``) and better
    handling of default values.
 -  New ``database_info`` table, it contains two rows, “version” and
-   “generated_date”, containing the script version used and the date the
+   “generated_date”, containing the script vused and the date the
    database was generated respectively.
 -  Added a new ``currency`` column to ``npcs_buying`` and
    ``npcs_selling``, it contains the id of the item used as currency for
@@ -111,18 +129,18 @@ Version 0.2.0 (2017-11-14)
    including item trades (e.g. 1 fighting spirit for 2 royal helmets).
 -  More item attributes are saved to ``item_attributes``.
 
-Version 0.1.1 (2017-11-12)
---------------------------
+v0.1.1
+======
+:Released: 2017-11-12
+
 -  Better attribute parsing, this means values should me more consistent
    and there are no entries without the ``name`` column
 -  No changes were made to the schema.
 
-Version 0.1.0 (2017-11-09)
---------------------------
-Initial release
+v0.1.0
+======
+:Released: 2017-11-09
 
-Features
-~~~~~~~~
 -  Creatures table, with all their attributes, including a separate
    table for all their loot.
 -  Loot drop percentage are calculated from loot statistics
