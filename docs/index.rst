@@ -4,22 +4,23 @@
    contain the root `toctree` directive.
 .. currentmodule:: tibiawikisql
 
+.. toctree::
+   :maxdepth: 3
+   :hidden:
+
+   intro
+   schema
+   api
+   changelog
+
+
 TibiaWikiSQL
 ===============
 TibiaWikiSQL is a script that generates a SQLite database from TibiaWiki articles by using its API.
 
 This allows you to have all the data available at once, as well as take advantage of the features of a relational database.
 
-Documentation Contents
------------------------
+
 * :ref:`genindex`
+* :ref:`modindex`
 * :ref:`search`
-
-.. toctree::
-   :maxdepth: 2
-   
-   intro
-   schema
-   api
-   changelog
-

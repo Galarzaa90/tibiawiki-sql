@@ -34,17 +34,15 @@ This classes are used to implemenent common functionality among different classe
 
 Row
 ~~~
-.. autoclass:: tibiawikisql.abc.Row()
+.. autoclass:: tibiawikisql.models.Row()
    :members:
    :inherited-members:
 
 Parseable
 ~~~~~~~~~
-.. autoclass:: tibiawikisql.abc.Parseable()
+.. autoclass:: tibiawikisql.models.Parseable()
    :members:
    :inherited-members:
-
-
 
 Models
 ------
@@ -154,12 +152,17 @@ QuestReward
    :members:
    :inherited-members:
 
+RashidPosition
+~~~~~~~~~~~
+.. autoclass:: tibiawikisql.models.RashidPosition()
+   :members:
+   :inherited-members:
+
 Spell
 ~~~~~
 .. autoclass:: tibiawikisql.models.Spell()
    :members:
    :inherited-members:
-
 
 Utility Functions
 -----------------

@@ -7,7 +7,6 @@
 # http://www.sphinx-doc.org/en/master/config
 import re
 
-
 def setup(app):
     app.add_stylesheet('custom.css')
 
@@ -97,7 +96,14 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    'github_user': 'galarzaa90',
+    'github_repo': 'tibiawiki-sql',
+    'github_type': 'star',
+    'extra_nav_links': {
+        'Contribute to TibiaWiki': 'https://tibia.fandom.com'
+    }
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -112,7 +118,15 @@ html_static_path = ['_static']
 # default: ``['localtoc.html', 'relations.html', 'sourcelink.html',
 # 'searchbox.html']``.
 #
-# html_sidebars = {}
+html_sidebars = {
+    '**': [
+        'about.html',
+        'navigation.html',
+        'relations.html',
+        'searchbox.html',
+        'donate.html',
+    ]
+}
 
 
 # -- Options for HTMLHelp output ---------------------------------------------

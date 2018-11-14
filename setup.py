@@ -30,7 +30,7 @@ setup(
     install_requires=requirements,
     extras_require={
         'docs': [
-            'Sphinx']},
+            'Sphinx==1.7.9']},
     description="Python script that generates a SQLite database from TibiaWiki articles",
     long_description=readme,
     long_description_content_type="text/markdown",

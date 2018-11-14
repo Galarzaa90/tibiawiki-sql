@@ -73,8 +73,6 @@ class Parseable(Article, metaclass=abc.ABCMeta):
         The title of the containing article.
     timestamp: :class:`int`
         The last time the containing article was edited.
-    _raw_attributes: :class:`dict`
-        A dictionary containing attributes that couldn't be parsed.
     """
     _map = None
     """map: :class:`dict`: A dictionary mapping the article's attributes to object attributes."""
