@@ -15,7 +15,7 @@ from tibiawikisql.models.charm import charms
 from tibiawikisql.models.npc import rashid_positions
 from tibiawikisql.utils import parse_loot_statistics, parse_min_max
 
-DATABASE_FILE = "tibia_database.db"
+DATABASE_FILE = "tibiawiki.db"
 
 init()
 
@@ -50,6 +50,7 @@ categories = {
 @click.option('-db', '--db-name', help="Name for the database file.", default=DATABASE_FILE)
 def generate(skip_images, db_name):
     """Generates a database file."""
+    command_start = time.perf_counter()
     print("Connecting to database...")
     conn = sqlite3.connect(db_name)
     print("Creating schema...")
@@ -186,6 +187,9 @@ def generate(skip_images, db_name):
         schema.DatabaseInfo.insert(conn, **{"key": "version", "value": __version__})
         schema.DatabaseInfo.insert(conn, **{"key": "python_version", "value": platform.python_version()})
         schema.DatabaseInfo.insert(conn, **{"key": "platform", "value": platform.platform()})
+
+    dt = (time.perf_counter() - command_start)
+    print(f"Command finished in {dt:.2f} seconds.")
 
 
 def get_articles(category, data_store, key=None):

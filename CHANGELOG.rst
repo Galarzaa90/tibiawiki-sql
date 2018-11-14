@@ -11,7 +11,6 @@ v2.0.0
 - Database generation now shows progress bars and time estimates.
 - The database schema is now generated dynamically.
 - The database structure has changed:
-
     - Renamed tables:
         - ``achievements`` -> ``achievement``
         - ``creatures`` -> ``creature``
@@ -40,18 +39,18 @@ v2.0.0
             - ``convince`` -> ``convince_cost``
             - ``occurrence`` -> ``bestiary_occurrence``
             - ``see_invisible`` -> ``sees_invisible``
-            - ``walkthrough`` -> `` walks_through``
+            - ``walkthrough`` -> ``walks_through``
             - ``walksaround`` -> ``walks_around``
             - All element columns now have ``modifier`` at the beginning
               (e.g. ``phyisical`` -> ``modifier_phyisical``)
         - Table: ``item``
             - ``value`` -> ``value_sell``
             - ``price`` -> ``value_buy``
-        - ``id`` -> ``house_id`` in table `house`
-        - ``attribute`` -> ``value`` in table `item_attribute`
+        - ``id`` -> ``house_id`` in table ``house``
+        - ``attribute`` -> ``value`` in table ``item_attribute``
         - ``destination`` -> ``name`` in table ``npc_destination``
     - Added columns:
-        - ``title`` in all tables, except child tables and `charm`, `rashid_position` and `map`:
+        - ``title`` in all tables, except child tables and ``charm``, ``rashid_position`` and ``map``:
         - ``client_id`` in table ``item``
     - Removed columns:
         - ``day_name`` from ``rashid_position``

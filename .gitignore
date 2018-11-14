@@ -1,5 +1,5 @@
 images/
-tibia_database.db
+*.db
 
 # User files
 config.json

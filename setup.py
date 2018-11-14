@@ -32,6 +32,10 @@ setup(
         'docs': [
             'Sphinx==1.7.9']},
     description="Python script that generates a SQLite database from TibiaWiki articles",
+    entry_points='''
+        [console_scripts]
+        tibiawikisql=tibiawikisql.__main__:cli
+    ''',
     long_description=readme,
     long_description_content_type="text/markdown",
     packages=find_packages(),
@@ -46,6 +50,7 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Programming Language :: SQL',
         'Topic :: Database',
         'Topic :: Games/Entertainment :: Role-Playing',

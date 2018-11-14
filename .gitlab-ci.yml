@@ -41,6 +41,20 @@ coverage:
     paths:
       - htmlcov/
 
+databse:
+  stage: deploy
+  script:
+    - python setup.py install
+    - tibiawikisql generate
+  cache:
+    paths:
+      - images/
+  artifacts:
+    paths:
+    - tibiawiki.db
+  when: manual
+
+
 pages:
   stage: deploy
   dependencies:

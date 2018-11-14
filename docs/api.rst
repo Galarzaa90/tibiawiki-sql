@@ -1,5 +1,5 @@
-API
-===
+API Reference
+=============
 As of v2.0.0, this module comes with an API to communicate with TibiaWiki or with the elements of the generated database.
 
 TibiaWiki
