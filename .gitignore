@@ -1,9 +1,6 @@
 images/
 *.db
-
-# User files
-config.json
-*.data
+*.db-journal
 
 # IDEs
 .idea/

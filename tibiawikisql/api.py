@@ -1,7 +1,10 @@
 import datetime
 import json
+import urllib.parse
 
 import requests
+
+BASE_URL = "https://tibia.fandom.com"
 
 
 class WikiEntry:
@@ -39,6 +42,13 @@ class WikiEntry:
         if isinstance(other, self.__class__):
             return self.article_id == other.article_id
         return False
+
+    @property
+    def url(self):
+        """
+        :class:`str`: The URL to the article's display page.
+        """
+        return "%s/wiki/%s" % (BASE_URL, urllib.parse.quote(self.title))
 
 
 class Article(WikiEntry):
@@ -97,14 +107,14 @@ class Image(WikiEntry):
     @property
     def clean_name(self):
         """:class:`str`: The image's name without extension and prefix."""
-        return self.file_name.replace(self.extension,"")
+        return self.file_name.replace(self.extension, "")
 
 
 class WikiClient:
     """
     Contains methods to communicate with TibiaWiki's API.
     """
-    ENDPOINT = "https://tibia.fandom.com/api.php"
+    ENDPOINT = "%s/api.php" % BASE_URL
 
     headers = {
         'User-Agent': 'tibiawikisql v1.1.1'
