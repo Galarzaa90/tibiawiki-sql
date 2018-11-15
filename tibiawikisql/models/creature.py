@@ -123,7 +123,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         Whether the creature can be pushed or not.
     sees_invisible: :class:`bool`
         Whether the creature can see invisible players or not.
-    paralyzable: :class:`bool`
+    paralysable: :class:`bool`
         Whether the creature can be paralyzed or not.
     boss: :class:`bool`
         Whether the creature is a boss or not.
@@ -174,10 +174,10 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "maxdmg": ("max_damage", parse_maximum_integer),
         "summon": ("summon_cost", parse_integer),
         "convince": ("convince_cost", parse_integer),
-        "illusionable": ("illusionable", parse_boolean),
-        "pushable": ("pushable", parse_boolean),
-        "senseinvis": ("sees_invisible", parse_boolean),
-        "paraimmune": ("paralysable", lambda x: not parse_boolean(x, None)),
+        "illusionable": ("illusionable", lambda x: parse_boolean(x, None)),
+        "pushable": ("pushable", lambda x: parse_boolean(x, None)),
+        "senseinvis": ("sees_invisible", lambda x: parse_boolean(x, None)),
+        "paraimmune": ("paralysable", lambda x: parse_boolean(x, None, True)),
         "isboss": ("boss", parse_boolean),
         "physicalDmgMod": ("modifier_physical", parse_integer),
         "earthDmgMod": ("modifier_earth", parse_integer),
@@ -197,7 +197,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
     __slots__ = ("article_id", "title", "timestamp", "raw_attribute", "article", "name", "class", "type",
                  "bestiary_level", "bestiary_class", "bestiary_occurrence", "hitpoints", "experience", "armor", "speed",
                  "max_damage", "summon_cost", "convince_cost", "illusionable", "pushable", "sees_invisible",
-                 "paralyzable", "boss", "modifier_pyhsical", "modifier_earth", "modifier_fire", "modifier_energy",
+                 "paralysable", "boss", "modifier_physical", "modifier_earth", "modifier_fire", "modifier_energy",
                  "modifier_ice", "modifier_death", "modifier_holy", "modifier_lifedrain", "modifier_drown", "abilities",
                  "walks_through", "walks_around", "version", "image", "loot")
 

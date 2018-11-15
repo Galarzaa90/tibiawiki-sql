@@ -66,7 +66,7 @@ def convert_tibiawiki_position(pos):
         return 0
 
 
-def parse_boolean(value: str, default=False):
+def parse_boolean(value: str, default=False, invert=False):
     """
     Parses a boolean value from a string.
     String must contain "yes" to be considered True.
@@ -77,6 +77,8 @@ def parse_boolean(value: str, default=False):
         The string containing an integer.
     default: :class:`bool`, optional
         The value to return if no boolean string is found.
+    invert: :class:`bool`, optional
+        Whether to invert the value or not.
 
     Returns
     -------
@@ -85,9 +87,9 @@ def parse_boolean(value: str, default=False):
     """
     value = value.strip().lower()
     if value == "yes":
-        return True
+        return not invert
     elif value == "no":
-        return False
+        return invert
     else:
         return default
 

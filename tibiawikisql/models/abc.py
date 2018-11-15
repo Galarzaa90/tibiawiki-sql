@@ -126,7 +126,7 @@ class Row(metaclass=abc.ABCMeta):
         for c in self.table.columns:
             value = kwargs.get(c.name, c.default)
             # SQLite Booleans are actually stored as 0 or 1, so we convert to true boolean.
-            if isinstance(c.column_type, database.Boolean):
+            if isinstance(c.column_type, database.Boolean) and value is not None:
                 value = bool(value)
             setattr(self, c.name, value)
         if kwargs.get("_raw_attributes"):
