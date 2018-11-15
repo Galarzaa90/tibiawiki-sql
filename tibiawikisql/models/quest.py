@@ -112,17 +112,19 @@ class QuestReward(abc.Row, table=schema.QuestReward):
     ----------
     quest_id: :class:`int`
         The article id of the quest.
+    quest_title: :class:`str`
+        The title of the quest.
     item_id: :class:`int`
         The article id of the rewarded item.
-    item_name: :class:`str`
-        The name of the rewarded item.
+    item_title: :class:`str`
+        The title of the rewarded item.
     """
-    __slots__ = ("quest_id", "quest_name", "item_id", "item_name")
+    __slots__ = ("quest_id", "quest_title", "item_id", "item_title")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.quest_name = kwargs.get("quest_name")
-        self.item_name = kwargs.get("item_name")
+        self.quest_title = kwargs.get("quest_title")
+        self.item_title = kwargs.get("item_title")
 
     def insert(self, c):
         if getattr(self, "item_id", None):
@@ -131,7 +133,7 @@ class QuestReward(abc.Row, table=schema.QuestReward):
         try:
             c.execute(f"""INSERT INTO {self.table.__tablename__}(quest_id, item_id)
                       VALUES(?, (SELECT article_id FROM item WHERE title = ?))""",
-                      (self.quest_id, self.item_name))
+                      (self.quest_id, self.item_title))
         except sqlite3.IntegrityError:
             pass
 
@@ -141,7 +143,7 @@ class QuestReward(abc.Row, table=schema.QuestReward):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.name as item_name FROM %s
+        return """SELECT %s.*, item.title as item_title FROM %s
                       LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
 
@@ -152,17 +154,19 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
         ----------
         quest_id: :class:`int`
             The article id of the quest.
+        quest_title: :class:`str`
+            The title of the quest.
         creature_id: :class:`int`
             The article id of the found creature.
-        creature_name: :class:`str`
-            The name of the found creature.
+        creature_title: :class:`str`
+            The title of the found creature.
         """
-    __slots__ = ("quest_id", "quest_name", "creature_id", "creature_name")
+    __slots__ = ("quest_id", "quest_title", "creature_id", "creature_title")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.quest_name = kwargs.get("quest_name")
-        self.creature_name = kwargs.get("creature_name")
+        self.quest_title = kwargs.get("quest_title")
+        self.creature_title = kwargs.get("creature_title")
 
     def insert(self, c):
         if getattr(self, "creature_id", None):
@@ -171,7 +175,7 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
         try:
             c.execute(f"""INSERT INTO {self.table.__tablename__}(quest_id, creature_id)
                       VALUES(?, (SELECT article_id FROM creature WHERE title = ?))""",
-                      (self.quest_id, self.creature_name))
+                      (self.quest_id, self.creature_title))
         except sqlite3.IntegrityError:
             pass
 
@@ -181,6 +185,6 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, creature.name as creature_name FROM %s
+        return """SELECT %s.*, creature.title as creature_title FROM %s
                   LEFT JOIN creature ON creature.article_id = creature_id""" % (cls.table.__tablename__,
                                                                                 cls.table.__tablename__)

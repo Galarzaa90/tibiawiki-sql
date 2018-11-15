@@ -228,8 +228,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             value = None
             if price.strip():
                 value = int(price)
-            npc.buys.append(NpcBuyOffer(item_name=item.strip(), currency_name=currency, value=value,
-                                          npc_id=npc.article_id))
+            npc.buys.append(NpcBuyOffer(item_title=item.strip(), currency_title=currency, value=value,
+                                        npc_id=npc.article_id))
 
     @classmethod
     def _parse_sell_offers(cls, npc):
@@ -243,8 +243,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             value = None
             if price.strip():
                 value = int(price)
-            npc.sells.append(NpcSellOffer(item_name=item.strip(), currency_name=currency, value=value,
-                                            npc_id=npc.article_id))
+            npc.sells.append(NpcSellOffer(item_title=item.strip(), currency_title=currency, value=value,
+                                          npc_id=npc.article_id))
         # Items traded by npcs (these have a different template)
         trade_items = parse_item_trades(npc._raw_attributes["sells"])
         for item, price, currency in trade_items:
@@ -254,8 +254,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                 value = abs(int(price))
             if not currency.strip():
                 currency = "Gold Coin"
-            npc.sells.append(NpcSellOffer(item_name=item.strip(), currency_name=currency, value=value,
-                                            npc_id=npc.article_id))
+            npc.sells.append(NpcSellOffer(item_title=item.strip(), currency_title=currency, value=value,
+                                          npc_id=npc.article_id))
 
     @classmethod
     def _parse_spells(cls, npc):
@@ -280,15 +280,15 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                 exists = False
                 for j, s in enumerate(npc.teaches):
                     # Spell was already in list, so we update vocations
-                    if s.spell_name == spell:
-                        npc.teaches[j] = NpcSpell(npc_id=npc.article_id, spell_name=spell,
-                                                           knight=knight or s.knight, paladin=paladin or s.paladin,
-                                                           druid=druid or s.druid, sorcerer=sorcerer or s.sorcerer)
+                    if s.spell_title == spell:
+                        npc.teaches[j] = NpcSpell(npc_id=npc.article_id, spell_title=spell,
+                                                  knight=knight or s.knight, paladin=paladin or s.paladin,
+                                                  druid=druid or s.druid, sorcerer=sorcerer or s.sorcerer)
                         exists = True
                         break
                 if not exists:
-                    npc.teaches.append(NpcSpell(npc_id=npc.article_id, spell_name=spell, knight=knight,
-                                                         paladin=paladin, druid=druid, sorcerer=sorcerer))
+                    npc.teaches.append(NpcSpell(npc_id=npc.article_id, spell_title=spell, knight=knight,
+                                                paladin=paladin, druid=druid, sorcerer=sorcerer))
 
     def insert(self, c):
         super().insert(c)
@@ -316,11 +316,11 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
 class NpcOffer:
     def __init__(self, **kwargs):
         self.npc_id = kwargs.get("npc_id")
-        self.npc_name = kwargs.get("npc_name")
+        self.npc_title = kwargs.get("npc_title")
         self.item_id = kwargs.get("item_id")
-        self.item_name = kwargs.get("item_name")
+        self.item_title = kwargs.get("item_title")
         self.currency_id = kwargs.get("currency_id")
-        self.currency_name = kwargs.get("currency_name")
+        self.currency_title = kwargs.get("currency_title")
         self.value = kwargs.get("value")
 
     def __repr__(self):
@@ -344,20 +344,20 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
     ----------
     npc_id: :class:`int`
         The article id of the npc that sells the item.
-    npc_name: :class:`str`
-        The name of the npc that sells the item.
+    npc_title: :class:`str`
+        The title of the npc that sells the item.
     item_id: :class:`int`
         The id of the item sold by the npc.
-    item_name: :class:`str`
-        The name of the item sold by the npc.
+    item_title: :class:`str`
+        The title of the item sold by the npc.
     currency_id: :class:`int`
         The item id of the currency used to buy the item.
-    currency_name: :class:`str`
-        The name of the currency used to buy the item
+    currency_title: :class:`str`
+        The title of the currency used to buy the item
     value: :class:`str`
         The value of the item in the specified currency.
     """
-    __slots__ = ("npc_id", "npc_name", "item_id", "item_name", "value", "currency_id", "currency_name")
+    __slots__ = ("npc_id", "npc_title", "item_id", "item_title", "value", "currency_id", "currency_title")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -373,7 +373,7 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
                             (SELECT article_id from item WHERE title = ?),
                             ?,
                             (SELECT article_id from item WHERE title = ?))"""
-                c.execute(query, (self.npc_id, self.item_name, self.value, self.currency_name))
+                c.execute(query, (self.npc_id, self.item_title, self.value, self.currency_title))
             else:
                 query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
                                         VALUES(
@@ -381,7 +381,7 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
                                         (SELECT article_id from item WHERE title = ?),
                                         (SELECT value_buy from item WHERE title = ?),
                                         (SELECT article_id from item WHERE title = ?))"""
-                c.execute(query, (self.npc_id, self.item_name, self.item_name, self.currency_name))
+                c.execute(query, (self.npc_id, self.item_title, self.item_title, self.currency_title))
         except sqlite3.IntegrityError:
             pass
 
@@ -391,7 +391,7 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.name as item_name, npc.name as npc_name FROM %s
+        return """SELECT %s.*, item.title as item_title, npc.title as npc_title FROM %s
                   LEFT JOIN npc ON npc.article_id = npc_id
                   LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
@@ -404,20 +404,20 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
         ----------
         npc_id: :class:`int`
             The article id of the npc that buys the item.
-        npc_name: :class:`str`
-            The name of the npc that buys the item.
+        npc_title: :class:`str`
+            The title of the npc that buys the item.
         item_id: :class:`int`
             The id of the item bought by the npc.
-        item_name: :class:`str`
-            The name of the item bought by the npc.
+        item_title: :class:`str`
+            The title of the item bought by the npc.
         currency_id: :class:`int`
             The item id of the currency used to sell the item.
-        currency_name: :class:`str`
-            The name of the currency used to sell the item
+        currency_title: :class:`str`
+            The title of the currency used to sell the item
         value: :class:`str`
             The value of the item in the specified currency.
         """
-    __slots__ = ("npc_id", "npc_name", "item_id", "item_name", "value", "currency_id", "currency_name")
+    __slots__ = ("npc_id", "npc_title", "item_id", "item_title", "value", "currency_id", "currency_title")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -433,7 +433,7 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
                             (SELECT article_id from item WHERE title = ?),
                             ?,
                             (SELECT article_id from item WHERE title = ?))"""
-                c.execute(query, (self.npc_id, self.item_name, self.value, self.currency_name))
+                c.execute(query, (self.npc_id, self.item_title, self.value, self.currency_title))
             else:
                 query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
                                         VALUES(
@@ -441,7 +441,7 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
                                         (SELECT article_id from item WHERE title = ?),
                                         (SELECT value_sell from item WHERE title = ?),
                                         (SELECT article_id from item WHERE title = ?))"""
-                c.execute(query, (self.npc_id, self.item_name, self.item_name, self.currency_name))
+                c.execute(query, (self.npc_id, self.item_title, self.item_title, self.currency_title))
         except sqlite3.IntegrityError:
             pass
 
@@ -451,7 +451,7 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.name as item_name, npc.name as npc_name FROM %s
+        return """SELECT %s.*, item.title as item_title, npc.title as npc_title FROM %s
                   LEFT JOIN npc ON npc.article_id = npc_id
                   LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
@@ -464,12 +464,12 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
     ----------
     npc_id: :class:`int`
         The article id of the npc that teaches the spell.
-    npc_name: :class:`str`
-        The name of the npc that teaches the spell.
+    npc_title: :class:`str`
+        The title of the npc that teaches the spell.
     spell_id: :class:`int`
         The article id of the spell taught by the npc.
-    spell_name: :class:`str`
-        The name of the spell taught by the npc.
+    spell_title: :class:`str`
+        The title of the spell taught by the npc.
     knight: :class:`bool`
         If the spell is taught to knights.
     paladin: :class:`bool`
@@ -479,12 +479,12 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
     sorcerer: :class:`bool`
         If the spell is taught to sorcerers.
     """
-    __slots__ = ("npc_id", "npc_name", "spell_id", "spell_name", "knight", "sorcerer", "paladin", "druid")
+    __slots__ = ("npc_id", "npc_title", "spell_id", "spell_title", "knight", "sorcerer", "paladin", "druid")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.npc_name = kwargs.get("npc_name")
-        self.spell_name = kwargs.get("spell_name")
+        self.npc_title = kwargs.get("npc_title")
+        self.spell_title = kwargs.get("spell_title")
 
     def __repr__(self):
         attributes = []
@@ -506,7 +506,7 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
         else:
             query = f"""INSERT INTO {self.table.__tablename__}({','.join(c.name for c in self.table.columns)})
                         VALUES(?, (SELECT article_id from spell WHERE title = ?), ?, ?, ?, ?)"""
-            c.execute(query, (self.npc_id, self.spell_name, self.knight, self.sorcerer, self.paladin, self.druid))
+            c.execute(query, (self.npc_id, self.spell_title, self.knight, self.sorcerer, self.paladin, self.druid))
 
     @classmethod
     def _is_column(cls, name):
@@ -514,7 +514,7 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, spell.name as spell_name, npc.name as npc_name FROM %s
+        return """SELECT %s.*, spell.title as spell_title, npc.title as npc_title FROM %s
                   LEFT JOIN npc ON npc.article_id = npc_id
                   LEFT JOIN spell ON spell.article_id = spell_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
@@ -534,7 +534,7 @@ class NpcDestination(abc.Row, table=schema.NpcDestination):
     notes: :class:`str`
         Notes about the destination, such as requirements.
     """
-    __slots__ = ("npc_id", "npc_name", "name", "price", "notes")
+    __slots__ = ("npc_id", "name", "price", "notes")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

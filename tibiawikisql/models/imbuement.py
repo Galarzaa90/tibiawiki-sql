@@ -151,21 +151,21 @@ class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
     ----------
     imbuement_id: :class:`int`
         The article id of the imbuement this material belongs to.
-    imbuement_name: :class:`str`
-        The name of the imbuement this material belongs to.
+    imbuement_title: :class:`str`
+        The title of the imbuement this material belongs to.
     item_id: :class:`int`
         The article id of the item material.
-    item_name: :class:`str`
-        The name of the item material.
+    item_title: :class:`str`
+        The title of the item material.
     amount: :class:`int`
         The amount of items required.
     """
-    __slots__ = {"imbuement_id", "imbuement_name", "item_id", "item_name", "amount"}
+    __slots__ = {"imbuement_id", "imbuement_title", "item_id", "item_title", "amount"}
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.item_name = kwargs.get("item_name")
-        self.imbuement_name = kwargs.get("imbuement_name")
+        self.item_title = kwargs.get("item_title")
+        self.imbuement_title = kwargs.get("imbuement_title")
 
     def insert(self, c):
         if getattr(self, "item_id", None):
@@ -173,11 +173,11 @@ class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
         else:
             query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
                         VALUES(?, (SELECT article_id from item WHERE title = ?), ?)"""
-            c.execute(query, (self.imbuement_id, self.item_name, self.amount))
+            c.execute(query, (self.imbuement_id, self.item_title, self.amount))
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, imbuement.name as imbuement_name, item.name as item_name FROM %s
+        return """SELECT %s.*, imbuement.title as imbuement_title, item.title as item_title FROM %s
                    LEFT JOIN imbuement ON imbuement.article_id = imbuement_id
                    LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 

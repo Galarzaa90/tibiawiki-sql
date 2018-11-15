@@ -232,7 +232,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
                     _min, _max = 0, 1
                 else:
                     _min, _max = parse_min_max(amounts)
-                loot_items.append(CreatureDrop(creature_id=creature.article_id, item_name=item, min=_min, max=_max))
+                loot_items.append(CreatureDrop(creature_id=creature.article_id, item_title=item, min=_min, max=_max))
             creature.loot = loot_items
         return creature
 
@@ -268,12 +268,12 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
     ----------
     creature_id: :class:`int`
         The article id of the creature the drop belongs to.
-    creature_name: :class:`str`
-        The name of the creature that drops the item.
+    creature_title: :class:`str`
+        The title of the creature that drops the item.
     item_id: :class:`int`
         The article id of the item.
-    item_name: :class:`str`
-        The name of the dropped item.
+    item_title: :class:`str`
+        The title of the dropped item.
     min: :class:`int`
         The minimum possible amount of the dropped item.
     max: :class:`int`
@@ -281,12 +281,12 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
     chance: :class:`float`
         The chance percentage of getting this item dropped by this creature.
     """
-    __slots__ = ("creature_id", "creature_name", "item_id", "item_name", "min", "max", "chance")
+    __slots__ = ("creature_id", "creature_title", "item_id", "item_title", "min", "max", "chance")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.item_name = kwargs.get("item_name")
-        self.creature_name = kwargs.get("creature_name")
+        self.item_title = kwargs.get("item_title")
+        self.creature_title = kwargs.get("creature_title")
 
     def __repr__(self):
         attributes = []
@@ -315,7 +315,7 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
         else:
             query = f"""INSERT INTO {self.table.__tablename__}(creature_id, item_id, min, max)
                         VALUES(?, (SELECT article_id from item WHERE title = ?), ?, ?)"""
-            c.execute(query, (self.creature_id, self.item_name, self.min, self.max))
+            c.execute(query, (self.creature_id, self.item_title, self.min, self.max))
 
     @classmethod
     def _is_column(cls, name):
@@ -323,7 +323,7 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.name as item_name, creature.name as creature_name FROM %s
+        return """SELECT %s.*, item.title as item_title, creature.title as creature_title FROM %s
                   LEFT JOIN creature ON creature.article_id = creature_id
                   LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
