@@ -27,10 +27,14 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         The highest price an NPC will buy this item for.
     value_buy: :class:`int`
         The lowest price an NPC will sell this item for.
+    weight: :class:`float`
+        The item's weight in ounces.
     class: :class:`str`
         The item class the item belongs to.
     type: :class:`str`
         The item's type
+    flavor_text: :class:`str`
+        The extra text that is displayed when some items are looked at.
     version: :class:`str`
         The client version where this item was first implemented.
     image: :class:`bytes`
@@ -60,7 +64,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     _pattern = re.compile(r"Infobox[\s_]Item")
 
     __slots__ = ("article_id", "title", "timestamp", "name", "article", "stackable", "value_sell", "value_buy", "class",
-                 "type", "version", "image", "attributes", "dropped_by", "sold_by", "bought_by")
+                 "type", "version", "image", "attributes", "dropped_by", "sold_by", "bought_by", "flavor_text", "weight")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -73,7 +77,17 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         item.attributes = []
         for name, attribute in ItemAttribute._map.items():
             if attribute in item._raw_attributes and item._raw_attributes[attribute]:
-                item.attributes.append(ItemAttribute(item_id=item.article_id, name=name, value=item._raw_attributes[attribute]))
+                item.attributes.append(ItemAttribute(item_id=item.article_id, name=name, value=
+                                       item._raw_attributes[attribute]))
+        if "attrib" in item._raw_attributes:
+            attribs = item._raw_attributes["attrib"].split(",")
+            for attr in attribs:
+                attr = attr.strip()
+                m = re.search(r'([\s\w]+)\s([+\-\d]+)', attr)
+                if m:
+                    attribute = m.group(1).replace("fighting", "").replace("level", "").strip()
+                    value = m.group(2)
+                    item.attributes.append(ItemAttribute(item_id=item.article_id, name=attribute, value=value))
         return item
 
     def insert(self, c):
@@ -172,6 +186,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "armor": "armor",
         "hands": "hands",
         "imbue_slots": "imbueslots",
+        "imbuements": "imbuements",
         "attack+": "atk_mod",
         "hit%+": "hit_mod",
         "range": "range",

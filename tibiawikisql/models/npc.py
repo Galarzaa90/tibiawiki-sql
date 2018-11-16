@@ -321,6 +321,7 @@ class NpcOffer:
         self.item_title = kwargs.get("item_title")
         self.currency_id = kwargs.get("currency_id")
         self.currency_title = kwargs.get("currency_title")
+        self.npc_city = kwargs.get("npc_city")
         self.value = kwargs.get("value")
 
     def __repr__(self):
@@ -346,6 +347,8 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
         The article id of the npc that sells the item.
     npc_title: :class:`str`
         The title of the npc that sells the item.
+    npc_city: :class:`str`
+        The city where the NPC is located.
     item_id: :class:`int`
         The id of the item sold by the npc.
     item_title: :class:`str`
@@ -357,7 +360,7 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
     value: :class:`str`
         The value of the item in the specified currency.
     """
-    __slots__ = ("npc_id", "npc_title", "item_id", "item_title", "value", "currency_id", "currency_title")
+    __slots__ = ("npc_id", "npc_title", "npc_city", "item_id", "item_title", "value", "currency_id", "currency_title")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -391,7 +394,7 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.title as item_title, npc.title as npc_title FROM %s
+        return """SELECT %s.*, item.title as item_title, npc.title as npc_title, npc.city as npc_city FROM %s
                   LEFT JOIN npc ON npc.article_id = npc_id
                   LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
@@ -406,6 +409,8 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
             The article id of the npc that buys the item.
         npc_title: :class:`str`
             The title of the npc that buys the item.
+        npc_city: :class:`str`
+            The city where the NPC is located.
         item_id: :class:`int`
             The id of the item bought by the npc.
         item_title: :class:`str`
@@ -417,7 +422,7 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
         value: :class:`str`
             The value of the item in the specified currency.
         """
-    __slots__ = ("npc_id", "npc_title", "item_id", "item_title", "value", "currency_id", "currency_title")
+    __slots__ = ("npc_id", "npc_title", "npc_city", "item_id", "item_title", "value", "currency_id", "currency_title")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -451,7 +456,7 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.title as item_title, npc.title as npc_title FROM %s
+        return """SELECT %s.*, item.title as item_title, npc.title as npc_title, npc.city as npc_city FROM %s
                   LEFT JOIN npc ON npc.article_id = npc_id
                   LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
