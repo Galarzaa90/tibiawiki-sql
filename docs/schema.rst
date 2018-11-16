@@ -592,6 +592,9 @@ quest
 | article_id        | ``INTEGER`` | The id of the article containing this quest. |
 |                   | ``PRIMARY`` |                                              |
 +-------------------+-------------+----------------------------------------------+
+| title             | ``TEXT``    | The title of the article containing the      |
+|                   |             | quest.                                       |
++-------------------+-------------+----------------------------------------------+
 | name              | ``TEXT``    | The name of the quest.                       |
 +-------------------+-------------+----------------------------------------------+
 | location          | ``TEXT``    | Location where the quest starts or           |

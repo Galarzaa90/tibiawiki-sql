@@ -1,7 +1,7 @@
 import re
 
 from tibiawikisql import schema
-from tibiawikisql.models import abc, CreatureDrop
+from tibiawikisql.models import abc, CreatureDrop, QuestReward
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
 from tibiawikisql.utils import parse_float, parse_boolean, parse_integer, clean_links
 
@@ -47,6 +47,8 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         List of NPCs that sell this item.
     bought_by: list of :class:`NpcBuyOffer`
         List of NPCs that buy this item.
+    awarded_in: list of :class:`QuestReward`
+        List of quests that give this item as reward.
     """
     _map = {
         "article": ("article", lambda x: x),
@@ -64,7 +66,8 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     _pattern = re.compile(r"Infobox[\s_]Item")
 
     __slots__ = ("article_id", "title", "timestamp", "name", "article", "stackable", "value_sell", "value_buy", "class",
-                 "type", "version", "image", "attributes", "dropped_by", "sold_by", "bought_by", "flavor_text", "weight")
+                 "type", "version", "image", "attributes", "dropped_by", "sold_by", "bought_by", "flavor_text",
+                 "weight", "awarded_in")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -104,6 +107,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         item.dropped_by = CreatureDrop.search(c, "item_id", item.article_id, sort_by="chance", ascending=False)
         item.sold_by = NpcSellOffer.search(c, "item_id", item.article_id, sort_by="value", ascending=True)
         item.bought_by = NpcBuyOffer.search(c, "item_id", item.article_id, sort_by="value", ascending=False)
+        item.awarded_in = QuestReward.search(c, "item_id", item.article_id)
         return item
 
 

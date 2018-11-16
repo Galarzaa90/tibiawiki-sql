@@ -80,12 +80,12 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
             rewards = parse_links(quest._raw_attributes["reward"])
             quest.rewards = []
             for reward in rewards:
-                quest.rewards.append(QuestReward(quest_id=quest.article_id, item_name=reward.strip()))
+                quest.rewards.append(QuestReward(quest_id=quest.article_id, item_title=reward.strip()))
         if "dangers" in quest._raw_attributes:
             dangers = parse_links(quest._raw_attributes["dangers"])
             quest.dangers = []
             for danger in dangers:
-                quest.dangers.append(QuestDanger(quest_id=quest.article_id, creature_name=danger.strip()))
+                quest.dangers.append(QuestDanger(quest_id=quest.article_id, creature_title=danger.strip()))
         return quest
 
     def insert(self, c):
@@ -143,8 +143,10 @@ class QuestReward(abc.Row, table=schema.QuestReward):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.title as item_title FROM %s
-                      LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
+        return """SELECT %s.*, item.title as item_title, quest.title as quest_title FROM %s
+                  LEFT JOIN item ON item.article_id = item_id
+                  LEFT JOIN quest ON quest.article_id = quest_id
+                  """ % (cls.table.__tablename__, cls.table.__tablename__)
 
 
 class QuestDanger(abc.Row, table=schema.QuestDanger):
@@ -185,6 +187,7 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, creature.title as creature_title FROM %s
-                  LEFT JOIN creature ON creature.article_id = creature_id""" % (cls.table.__tablename__,
-                                                                                cls.table.__tablename__)
+        return """SELECT %s.*, creature.title as creature_title, quest.title as quest_title FROM %s
+                  LEFT JOIN creature ON creature.article_id = creature_id
+                  LEFT JOIN quest ON quest.article_id = quest_id
+                  """ % (cls.table.__tablename__, cls.table.__tablename__)

@@ -153,7 +153,7 @@ QuestReward
    :inherited-members:
 
 RashidPosition
-~~~~~~~~~~~
+~~~~~~~~~~~~~~
 .. autoclass:: tibiawikisql.models.RashidPosition()
    :members:
    :inherited-members:

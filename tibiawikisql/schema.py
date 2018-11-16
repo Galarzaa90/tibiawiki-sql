@@ -227,6 +227,7 @@ class NpcSpell(Table, table_name="npc_spell"):
 
 class Quest(Table):
     article_id = Column(Integer, primary_key=True)
+    title = Column(Text)
     name = Column(Text)
     location = Column(Text)
     legend = Column(Text)
