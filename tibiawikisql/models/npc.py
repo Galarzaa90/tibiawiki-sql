@@ -394,9 +394,12 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.title as item_title, npc.title as npc_title, npc.city as npc_city FROM %s
+        return """SELECT %s.*, item.title as item_title, npc.title as npc_title, npc.city as npc_city,
+                  currency.title as currency_title FROM %s
                   LEFT JOIN npc ON npc.article_id = npc_id
-                  LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
+                  LEFT JOIN item ON item.article_id = item_id
+                  LEFT JOIN item currency on currency.article_id = currency_id
+                  """ % (cls.table.__tablename__, cls.table.__tablename__)
 
 
 class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
@@ -456,9 +459,12 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.title as item_title, npc.title as npc_title, npc.city as npc_city FROM %s
+        return """SELECT %s.*, item.title as item_title, npc.title as npc_title, npc.city as npc_city,
+                  currency.title as currency_title FROM %s
                   LEFT JOIN npc ON npc.article_id = npc_id
-                  LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
+                  LEFT JOIN item ON item.article_id = item_id
+                  LEFT JOIN item currency on currency.article_id = currency_id
+                  """ % (cls.table.__tablename__, cls.table.__tablename__)
 
 
 class NpcSpell(abc.Row, table=schema.NpcSpell):
