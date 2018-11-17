@@ -38,11 +38,20 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         The level required to use the spell.
     premium: :class:`bool`
         Whether the spell is premium only or not.
+    knight: :class:`bool`
+        Whether the spell can be used by knights or not.
+    paladin: :class:`bool`
+        Whether the spell can be used by paladins or not.
+    druid: :class:`bool`
+        Whether the spell can be used by druids or not.
+    sorcerer: :class:`bool`
+        Whether the spell can be used by sorcerers or not.
     taught_by: list of :class:`NpcSpell`
         Npcs that teach this spell.
     """
     __slots__ = ("article_id", "title", "extra_attributes", "timestamp", "name", "words", "type", "element", "mana",
-                 "soul", "price", "cooldown", "level", "premium", "taught_by")
+                 "soul", "price", "cooldown", "level", "premium", "taught_by", "knight", "sorcerer", "druid",
+                 "paladin")
     _map = {
         "name": ("name", lambda x: x),
         "words": ("words", lambda x: x),
