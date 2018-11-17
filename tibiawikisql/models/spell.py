@@ -48,10 +48,14 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         Whether the spell can be used by sorcerers or not.
     taught_by: list of :class:`NpcSpell`
         Npcs that teach this spell.
+    version: :class:`str`
+        The client version where the spell was implemented.
+    image: :class:`bytes`
+        The spell's image in bytes.
     """
     __slots__ = ("article_id", "title", "extra_attributes", "timestamp", "name", "words", "type", "element", "mana",
                  "soul", "price", "cooldown", "level", "premium", "taught_by", "knight", "sorcerer", "druid",
-                 "paladin")
+                 "paladin", "image", "version")
     _map = {
         "name": ("name", lambda x: x),
         "words": ("words", lambda x: x),
