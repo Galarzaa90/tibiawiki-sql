@@ -533,7 +533,7 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
     @classmethod
     def _get_base_query(cls):
         return """SELECT %s.*, spell.title as spell_title, npc.title as npc_title, spell.price as price, 
-                  npc.city as npc_city, FROM %s
+                  npc.city as npc_city FROM %s
                   LEFT JOIN npc ON npc.article_id = npc_id
                   LEFT JOIN spell ON spell.article_id = spell_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
