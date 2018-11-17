@@ -483,6 +483,8 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
         The title of the spell taught by the npc.
     price: :class:`int`
         The price paid to have this spell taught.
+    npc_city: :class:`str`
+        The city where the NPC is located.
     knight: :class:`bool`
         If the spell is taught to knights.
     paladin: :class:`bool`
@@ -492,10 +494,12 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
     sorcerer: :class:`bool`
         If the spell is taught to sorcerers.
     """
-    __slots__ = ("npc_id", "npc_title", "spell_id", "spell_title", "price", "knight", "sorcerer", "paladin", "druid")
+    __slots__ = ("npc_id", "npc_title", "npc_city", "spell_id", "spell_title", "price", "knight", "sorcerer",
+                 "paladin", "druid")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.npc_city = kwargs.get("npc_city")
         self.npc_title = kwargs.get("npc_title")
         self.spell_title = kwargs.get("spell_title")
         self.price = kwargs.get("price")
@@ -528,7 +532,8 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, spell.title as spell_title, npc.title as npc_title, spell.price as price FROM %s
+        return """SELECT %s.*, spell.title as spell_title, npc.title as npc_title, spell.price as price, 
+                  npc.city as npc_city, FROM %s
                   LEFT JOIN npc ON npc.article_id = npc_id
                   LEFT JOIN spell ON spell.article_id = spell_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
