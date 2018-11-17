@@ -161,9 +161,9 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         The client version where the NPC was implemented.
     image: :class:`bytes`
         The NPC's image in bytes.
-    sells: list of :class:`NpcSellOffer`
+    sell_offers: list of :class:`NpcSellOffer`
         Items sold by the NPC.
-    buys: list of :class:`NpcBuyOffer`
+    buy_offers: list of :class:`NpcBuyOffer`
         Items bought by the NPC.
     destinations: list of :class:`NpcSellOffer`
         Places where the NPC can travel to.
@@ -171,7 +171,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         Spells this NPC can teach.
     """
     __slots__ = ("article_id", "title", "timestamp", "name", "gender", "race", "job", "location",
-                 "city", "x", "y", "z", "version", "image", "sells", "buys", "destinations", "teaches")
+                 "city", "x", "y", "z", "version", "image", "sell_offers", "buy_offers", "destinations", "teaches")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -219,7 +219,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
     @classmethod
     def _parse_buy_offers(cls, npc):
         buy_items = parse_item_offers(npc._raw_attributes["buys"])
-        npc.buys = []
+        npc.buy_offers = []
         for item, price, currency in buy_items:
             # Some items have extra requirements, separated with ;, so we remove them
             item = item.split(";")[0]
@@ -228,13 +228,13 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             value = None
             if price.strip():
                 value = int(price)
-            npc.buys.append(NpcBuyOffer(item_title=item.strip(), currency_title=currency, value=value,
-                                        npc_id=npc.article_id))
+            npc.buy_offers.append(NpcBuyOffer(item_title=item.strip(), currency_title=currency, value=value,
+                                              npc_id=npc.article_id))
 
     @classmethod
     def _parse_sell_offers(cls, npc):
         sell_items = parse_item_offers(npc._raw_attributes["sells"])
-        npc.sells = []
+        npc.sell_offers = []
         for item, price, currency in sell_items:
             # Some items have extra requirements, separated with ;, so we remove them
             item = item.split(";")[0]
@@ -243,8 +243,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             value = None
             if price.strip():
                 value = int(price)
-            npc.sells.append(NpcSellOffer(item_title=item.strip(), currency_title=currency, value=value,
-                                          npc_id=npc.article_id))
+            npc.sell_offers.append(NpcSellOffer(item_title=item.strip(), currency_title=currency, value=value,
+                                                npc_id=npc.article_id))
         # Items traded by npcs (these have a different template)
         trade_items = parse_item_trades(npc._raw_attributes["sells"])
         for item, price, currency in trade_items:
@@ -254,8 +254,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                 value = abs(int(price))
             if not currency.strip():
                 currency = "Gold Coin"
-            npc.sells.append(NpcSellOffer(item_title=item.strip(), currency_title=currency, value=value,
-                                          npc_id=npc.article_id))
+            npc.sell_offers.append(NpcSellOffer(item_title=item.strip(), currency_title=currency, value=value,
+                                                npc_id=npc.article_id))
 
     @classmethod
     def _parse_spells(cls, npc):
@@ -306,8 +306,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         npc: cls = super().get_by_field(c, field, value, use_like)
         if npc is None:
             return None
-        npc.sells = NpcSellOffer.search(c, "npc_id", npc.article_id, sort_by="value", ascending=True)
-        npc.buys = NpcBuyOffer.search(c, "npc_id", npc.article_id, sort_by="value", ascending=False)
+        npc.sell_offers = NpcSellOffer.search(c, "npc_id", npc.article_id, sort_by="value", ascending=True)
+        npc.buy_offers = NpcBuyOffer.search(c, "npc_id", npc.article_id, sort_by="value", ascending=False)
         npc.teaches = NpcSpell.search(c, "npc_id", npc.article_id)
         npc.destinations = NpcDestination.search(c, "npc_id", npc.article_id)
         return npc
@@ -481,6 +481,8 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
         The article id of the spell taught by the npc.
     spell_title: :class:`str`
         The title of the spell taught by the npc.
+    price: :class:`int`
+        The price paid to have this spell taught.
     knight: :class:`bool`
         If the spell is taught to knights.
     paladin: :class:`bool`
@@ -490,12 +492,13 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
     sorcerer: :class:`bool`
         If the spell is taught to sorcerers.
     """
-    __slots__ = ("npc_id", "npc_title", "spell_id", "spell_title", "knight", "sorcerer", "paladin", "druid")
+    __slots__ = ("npc_id", "npc_title", "spell_id", "spell_title", "price", "knight", "sorcerer", "paladin", "druid")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.npc_title = kwargs.get("npc_title")
         self.spell_title = kwargs.get("spell_title")
+        self.price = kwargs.get("price")
 
     def __repr__(self):
         attributes = []
@@ -525,7 +528,7 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, spell.title as spell_title, npc.title as npc_title FROM %s
+        return """SELECT %s.*, spell.title as spell_title, npc.title as npc_title, spell.price as price FROM %s
                   LEFT JOIN npc ON npc.article_id = npc_id
                   LEFT JOIN spell ON spell.article_id = spell_id""" % (cls.table.__tablename__, cls.table.__tablename__)
 
