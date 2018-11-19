@@ -6,6 +6,7 @@ kills_pattern = re.compile(r"kills=(\d+)")
 int_pattern = re.compile(r"[+-]?\d+")
 float_pattern = re.compile(r'[+-]?(\d*[.])?\d+')
 named_links_pattern = re.compile(r'\[\[[^]|]+\|([^]]+)\]\]')
+file_pattern = re.compile(r'\[\[(?:File|Image):[^\]]+\]\]')
 
 links_pattern = re.compile(r'\[\[([^]]+)\]\]')
 external_links_pattern = re.compile(r'\[[^]]+\]')
@@ -28,6 +29,8 @@ def clean_links(content):
     """
     if content is None:
         return None
+    # Images
+    content = file_pattern.sub(' ', content)
     # Named links
     content = named_links_pattern.sub(r'\g<1>', content)
     # Links
@@ -38,7 +41,7 @@ def clean_links(content):
     content = content.replace('  ', ' ')
     # No wiki
     content = no_wiki_pattern.sub(r'\g<1>', content)
-    return content
+    return content.strip()
 
 
 def convert_tibiawiki_position(pos):

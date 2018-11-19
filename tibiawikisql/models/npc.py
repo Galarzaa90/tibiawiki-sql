@@ -574,19 +574,21 @@ class RashidPosition(abc.Row, table=schema.RashidPosition):
         The z coordinate of Rashid that day.
     city: :class:`str`
         The city where Rashid is that day.
+    location: :class:`str`
+        The location where Rashid is that day.
     """
-    __slots__ = ("day", "x", "y", "z", "city")
+    __slots__ = ("day", "x", "y", "z", "city", "location")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
 
 rashid_positions = [
-    RashidPosition(day=0, x=32210, y=31157, z=7, city="Svargrond"),
-    RashidPosition(day=1, x=32303, y=32834, z=7, city="Liberty Bay"),
-    RashidPosition(day=2, x=32578, y=32754, z=7, city="Port Hope"),
-    RashidPosition(day=3, x=33068, y=32879, z=6, city="Ankrahmun"),
-    RashidPosition(day=4, x=33239, y=32480, z=7, city="Darashia"),
-    RashidPosition(day=5, x=33172, y=31813, z=6, city="Edron"),
-    RashidPosition(day=6, x=32326, y=31784, z=6, city="Carlin")
+    RashidPosition(day=0, x=32210, y=31157, z=7, city="Svargrond", location="Dankwart's Tavern, south of the temple."),
+    RashidPosition(day=1, x=32303, y=32834, z=7, city="Liberty Bay", location="Lyonel's tavern, west of the depot."),
+    RashidPosition(day=2, x=32578, y=32754, z=7, city="Port Hope", location="Clyde's tavern, west of the depot."),
+    RashidPosition(day=3, x=33068, y=32879, z=6, city="Ankrahmun", location="Arito's tavern, above the post office."),
+    RashidPosition(day=4, x=33239, y=32480, z=7, city="Darashia", location="Miraia's tavern, south of the guildhalls."),
+    RashidPosition(day=5, x=33172, y=31813, z=6, city="Edron", location="Mirabell's tavern, above the depot."),
+    RashidPosition(day=6, x=32326, y=31784, z=6, city="Carlin", location="Carlin depot, one floor above.")
 ]

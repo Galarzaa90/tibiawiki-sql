@@ -52,6 +52,8 @@ v2.0.0
     - Added columns:
         - ``title`` in all tables, except child tables and ``charm``, ``rashid_position`` and ``map``:
         - ``client_id`` in table ``item``
+        - ``location`` in ``npc`` and ``rashid_position`` tables.
+        - ``effect`` in table ``spell``.
     - Removed columns:
         - ``day_name`` from ``rashid_position``
 

@@ -161,6 +161,7 @@ class Spell(Table):
     title = Column(Text, unique=True)
     name = Column(Text)
     words = Column(Text)
+    effect = Column(Text)
     type = Column(Text)
     classz = Column(Text, name="class")
     element = Column(Text)
@@ -251,6 +252,7 @@ class QuestReward(Table, table_name="quest_reward"):
 class RashidPosition(Table, table_name="rashid_position"):
     day = Column(Integer, primary_key=True)
     city = Column(Text)
+    location = Column(Text)
     x = Column(Integer)
     y = Column(Integer)
     z = Column(Integer)

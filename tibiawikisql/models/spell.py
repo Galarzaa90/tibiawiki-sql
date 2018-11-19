@@ -2,7 +2,7 @@ import re
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc, NpcSpell
-from tibiawikisql.utils import parse_integer, parse_boolean
+from tibiawikisql.utils import parse_integer, parse_boolean, clean_links
 
 
 class Spell(abc.Row, abc.Parseable, table=schema.Spell):
@@ -20,6 +20,8 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         The name of the spell.
     words: :class:`str`
         The spell's invocation words.
+    effect: :class:`str`
+        The effects of casting the spell.
     type: :class:`str`
         The spell's type.
     class: :class:`str`
@@ -55,9 +57,10 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
     """
     __slots__ = ("article_id", "title", "extra_attributes", "timestamp", "name", "words", "type", "element", "mana",
                  "soul", "price", "cooldown", "level", "premium", "taught_by", "knight", "sorcerer", "druid",
-                 "paladin", "image", "version")
+                 "paladin", "image", "version", "effect")
     _map = {
         "name": ("name", lambda x: x),
+        "effect": ("effect", clean_links),
         "words": ("words", lambda x: x),
         "type": ("type", lambda x: x),
         "subclass": ("class", lambda x: x),
