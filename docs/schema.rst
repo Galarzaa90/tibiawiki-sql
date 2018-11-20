@@ -641,20 +641,22 @@ quest_reward
 
 rashid_position
 ~~~~~~~~~~~~~~~
-+--------+-------------+------------------------------------------+
-| Column |    Type     |               Description                |
-+========+=============+==========================================+
-| day    | ``INTEGER`` | Day of the week, where Monday is ``0``.  |
-|        | ``PRIMARY`` |                                          |
-+--------+-------------+------------------------------------------+
-| city   | ``TEXT``    | Name of the city Rashid is located.      |
-+--------+-------------+------------------------------------------+
-| x      | ``INTEGER`` | The x position where Rashid is that day. |
-+--------+-------------+------------------------------------------+
-| y      | ``INTEGER`` | The y position where Rashid is that day. |
-+--------+-------------+------------------------------------------+
-| z      | ``INTEGER`` | The z position where Rashid is that day. |
-+--------+-------------+------------------------------------------+
++----------+-------------+------------------------------------------+
+|  Column  |    Type     |               Description                |
++==========+=============+==========================================+
+| day      | ``INTEGER`` | Day of the week, where Monday is ``0``.  |
+|          | ``PRIMARY`` |                                          |
++----------+-------------+------------------------------------------+
+| city     | ``TEXT``    | Name of the city Rashid is located.      |
++----------+-------------+------------------------------------------+
+| location | ``TEXT``    | Location where Rashid is that day.       |
++----------+-------------+------------------------------------------+
+| x        | ``INTEGER`` | The x position where Rashid is that day. |
++----------+-------------+------------------------------------------+
+| y        | ``INTEGER`` | The y position where Rashid is that day. |
++----------+-------------+------------------------------------------+
+| z        | ``INTEGER`` | The z position where Rashid is that day. |
++----------+-------------+------------------------------------------+
 
 spell
 ~~~~~
@@ -668,7 +670,9 @@ spell
 +------------+-------------+-------------------------------------------------------+
 | name       | ``TEXT``    | The name of the spell.                                |
 +------------+-------------+-------------------------------------------------------+
-| words      | ``TEXT``    | The words used to cast the spell                      |
+| words      | ``TEXT``    | The words used to cast the spell.                     |
++------------+-------------+-------------------------------------------------------+
+| effect     | ``TEXT``    | Brief description of the spell's effect.              |
 +------------+-------------+-------------------------------------------------------+
 | type       | ``TEXT``    | Whether the spell is ``Instant`` or a ``Rune`` spell. |
 +------------+-------------+-------------------------------------------------------+
@@ -676,8 +680,7 @@ spell
 +------------+-------------+-------------------------------------------------------+
 | element    | ``TEXT``    | The type of damage this spell deals, if applicable.   |
 +------------+-------------+-------------------------------------------------------+
-| level      | ``INTEGER`` | Level required to cast this spell                     |
-|            |             |                                                       |
+| level      | ``INTEGER`` | Level required to cast this spell.                    |
 +------------+-------------+-------------------------------------------------------+
 | mana       | ``INTEGER`` | Mana required to cast this spell.                     |
 |            |             | ``0`` means special conditions apply.                 |
