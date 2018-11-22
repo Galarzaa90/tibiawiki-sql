@@ -15,8 +15,10 @@
 import re
 
 from tibiawikisql import schema
-from tibiawikisql.models import CreatureDrop, QuestReward, abc
+from tibiawikisql.models import abc
+from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
+from tibiawikisql.models.quest import QuestReward
 from tibiawikisql.utils import clean_links, parse_boolean, parse_float, parse_integer
 
 
