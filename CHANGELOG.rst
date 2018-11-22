@@ -4,7 +4,7 @@ Changelog
 
 v2.0.0
 ======
-:Released: Unreleased
+:Released: 2018-11-22
 
 - New model classes, to unify the generation process.
 - Live fetching is now possible, obtain data directly from the Wiki.
