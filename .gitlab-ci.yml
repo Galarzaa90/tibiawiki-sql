@@ -1,14 +1,72 @@
 image: python:3.6
 
-pages:
-  before_script:
-    - python -m pip install mkdocs mkdocs-material pymdown-extensions
+stages:
+  - build
+  - test
+  - deploy
+
+before_script:
+  - pip install -r requirements.txt
+  - pip install -U setuptools wheel
+
+build:
+  stage: build
   script:
-    - cp CHANGELOG.md docs/changelog.md
-    - python -m mkdocs build -d public
-  only:
-    refs:
-      - dev
+    - python setup.py sdist bdist_wheel
+  artifacts:
+    name: tibiawikisql-dist
+    paths:
+      - dist/
+
+docs:
+  stage: build
+  script:
+    - pip install Sphinx
+    - cd docs
+    - make html
+  artifacts:
+    name: tibiawikisql-docs
+    paths:
+      - docs/_build/
+
+coverage:
+  stage: test
+  script:
+      - pip install coverage
+      - coverage run setup.py test
+      - coverage report
+      - coverage html
+  artifacts:
+    name: Coverage_Report
+    paths:
+      - htmlcov/
+
+databse:
+  stage: deploy
+  script:
+    - python setup.py install
+    - tibiawikisql generate
+  cache:
+    paths:
+      - images/
+  artifacts:
+    paths:
+    - tibiawiki.db
+  when: manual
+
+
+pages:
+  stage: deploy
+  dependencies:
+    - docs
+    - coverage
+  script:
+    - mkdir public
+    - mv htmlcov/ public/coverage/
+    - mv docs/_build/html/* public/
   artifacts:
     paths:
       - public
+  only:
+    - master
+    - dev

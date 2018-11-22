@@ -1,0 +1,128 @@
+{{Infobox NPC|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name        = Shalmar
+| job         = Spell Instructor
+| location    = South-west in the [[Darashia]] castle
+| posx        = 129.197
+| posy        = 126.154
+| posz        = 7
+| gender      = Male
+| race        = Human
+| city        = Darashia
+| buysell     = yes
+| buys        =
+| sells       = {{Teaches|name=Druid spells
+|Find Person
+|Light
+|Light Healing
+|Magic Rope
+|Cure Poison
+|Levitate
+|Energy Strike
+|Terra Strike
+|Great Light
+|Haste
+|Flame Strike
+|Food (Spell)
+|Poison Field
+|Magic Shield
+|Ice Strike
+|Fire Field
+|Intense Healing Rune
+|Cure Poison Rune
+|Light Magic Missile
+|Convince Creature
+|Physical Strike
+|Destroy Field
+|Energy Field
+|Ice Wave
+|Heal Friend
+|Strong Haste
+|Desintegrate
+|Cure Electrification
+|Creature Illusion
+|Ultimate Healing Rune
+|Stalagmite
+|Poison Bomb
+|Summon Creature
+|Heavy Magic Missile
+|Ultimate Light
+|Animate Dead
+|Soulfire
+|Fire Bomb
+|Chameleon
+|Stone Shower
+|Icicle
+|Poison Wall
+|Avalanche
+|Ultimate Healing
+|Cure Burning
+|Explosion
+|Fire Wall
+|Invisible
+|Mass Healing
+|Terra Wave
+|Strong Ice Wave
+|Energy Wall
+|Cure Bleeding
+|Envenom
+|Strong Terra Strike
+|Strong Ice Strike
+|Summon Thundergiant
+}}
+{{Teaches|name=Sorcerer spells
+|Find Person
+|Light
+|Light Healing
+|Magic Rope
+|Cure Poison
+|Levitate
+|Energy Strike
+|Terra Strike
+|Great Light
+|Haste
+|Flame Strike
+|Poison Field
+|Magic Shield
+|Ice Strike
+|Fire Field
+|Light Magic Missile
+|Death Strike
+|Destroy Field
+|Energy Field
+|Fire Wave
+|Strong Haste
+|Intense Healing
+|Desintegrate
+|Energy Beam
+|Creature Illusion
+|Stalagmite
+|Summon Creature
+|Heavy Magic Missile
+|Ultimate Light
+|Ignite
+|Fireball
+|Fire Bomb
+|Soulfire
+|Animate Dead
+|Thunderstorm
+|Poison Wall
+|Great Energy Beam
+|Ultimate Healing
+|Explosion
+|Magic Wall
+|Fire Wall
+|Electrify
+|Invisible
+|Energy Bomb
+|Energy Wave
+|Energy Wall
+|Sudden Death
+|Lightning
+|Strong Flame Strike
+|Curse
+|Strong Energy Strike
+|Summon Grovebeast
+}}
+| notes       = Shalmar teaches many kinds of instant and spells for [[Druid]]s and [[Sorcerer]]s. He is assisted by [[Asima]] who keeps track of selling other magical goods.
+| implemented = 6.61-6.97
+}}

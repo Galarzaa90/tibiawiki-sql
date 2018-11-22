@@ -10,7 +10,7 @@ if sys.version_info < (3, 6):
 
 def get_version(package):
     """Return package version as listed in `__version__` in `init.py`."""
-    init_py = open(os.path.join(package, '__main__.py')).read()
+    init_py = open(os.path.join(package, '__init__.py')).read()
     return re.search("__version__ = ['\"]([^'\"]+)['\"]", init_py).group(1)
 
 
@@ -28,7 +28,14 @@ setup(
     url='https://github.com/Galarzaa90/tibiawiki-sql',
     license='Apache 2.0',
     install_requires=requirements,
+    extras_require={
+        'docs': [
+            'Sphinx==1.7.9']},
     description="Python script that generates a SQLite database from TibiaWiki articles",
+    entry_points='''
+        [console_scripts]
+        tibiawikisql=tibiawikisql.__main__:cli
+    ''',
     long_description=readme,
     long_description_content_type="text/markdown",
     packages=find_packages(),
@@ -43,6 +50,7 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Programming Language :: SQL',
         'Topic :: Database',
         'Topic :: Games/Entertainment :: Role-Playing',

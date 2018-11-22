@@ -1,0 +1,30 @@
+{
+    "query": {
+        "pages": {
+            "1595": {
+                "pageid": 1595,
+                "ns": 6,
+                "title": "File:Golden Armor.gif",
+                "imagerepository": "local",
+                "imageinfo": [
+                    {
+                        "timestamp": "2005-06-13T13:44:13Z",
+                        "user": "Rune Farmer",
+                        "userid": "270071",
+                        "parsedcomment": "Better copy which isn&#039;t cropped on the side",
+                        "comment": "Better copy which isn't cropped on the side",
+                        "url": "https://vignette.wikia.nocookie.net/tibia/images/d/d0/Golden_Armor.gif/revision/latest?cb=20050613134413&path-prefix=en",
+                        "descriptionurl": "https://tibia.fandom.com/wiki/File:Golden_Armor.gif",
+                        "bitdepth": "8"
+                    }
+                ]
+            },
+            "-1": {
+                "ns": 6,
+                "title": "File:Golden Shield.gif",
+                "missing": "",
+                "imagerepository": ""
+            }
+        }
+    }
+}

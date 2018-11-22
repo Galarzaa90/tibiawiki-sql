@@ -1,0 +1,13 @@
+{{Infobox Quest|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name           = The Annihilator Quest
+| aka            = Anni
+| reward         = [[Demon Outfits]] and one out of four available items: [[Magic Sword]], [[Demon Armor]], [[Stonecutter Axe]], and a [[Present Box]] with an [[Annihilation Bear]] inside. [[Annihilator]] [[achievement]].
+| location       = [[Edron]] [[Hero Cave]].
+| lvl            = 100
+| lvlrec         = 125
+| transcripts    = no
+| premium        = yes
+| dangers        = Most creatures are on the path to the quest such as [[Hunter]]s, [[Demon Skeleton]]s, [[Wild Warrior]]s, [[Priestess]]es, [[Monk]]s, [[Hero]]es and [[Minotaur Guard]]s. The quest involves only [[Angry Demon]]s and summoned [[Fire Elemental]]s.
+| legend         = Deep in the earth, near hell, the demons guard their great treasure, who only the bravest could dare to retrieve!
+| implemented    = 7.2
+}}

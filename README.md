@@ -1,5 +1,5 @@
 # tibiawiki-sql 
-    
+
 Script that generates a sqlite database for the MMO Tibia.
 
 Inspired in [Mytherin's Tibiaylzer](https://github.com/Mytherin/Tibialyzer) TibiaWiki parsing script.
@@ -20,43 +20,50 @@ externally.
 ## Requirements
 * Python 3.6 or higher
     * **requests** module
+    * **click** module
+    * **colorama** module
     
-## Running the script
-There's two ways to run the script:
-
-The first one is to clone or download this repository, and running the file `run.py.
-
-The second way is to install the module from pypi:
+## Installation
+This module can be installed from PyPi using:
 
 ```sh
-python -m pip install tibiawikisql
+pip install tibiawikisql
 ```
 
 Once installed, you can run the command anywhere using: 
 
 ```sh
-python -m tibiawikisql
+python -m tibiawikisql generate
+```
+
+OR
+
+```sh
+tibiawikisql
 ```
 
 
 The process can be long, taking up to 20 minutes the first time. All images are saved to the `images` folder. On 
 subsequent runs, images will be read from disk instead of being fetched from TibiaWiki again.
 
-When done, a database file called `tibia_database.db` will be found on the folder.
+When done, a database file called `tibiawiki.db` will be found on the folder.
 
 ## Database contents
+* Achievements
+* Charms
 * Creatures
-* Items
 * Creature drop statistics
+* Houses
+* Imbuements
+* Items
 * NPCs
 * NPC offers
-* Spells
-* Houses
-* Achievements
 * Quests
+* Spells
 
-## Database schema
-See [schema.md](docs/schema.md) in the `docs` folder
+## Documentation
+Check out the [documentation page](https://galarzaa90.github.io/tibiawiki-sql/).
+
 
 ## Contributing
 Improvements and bug fixes are welcome, via pull requests  

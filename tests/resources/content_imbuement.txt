@@ -1,0 +1,13 @@
+{{Infobox Imbuement|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name          = Powerful Strike
+| actualname    = Powerful Strike
+| prefix        = Powerful
+| type          = Strike
+| category      = Critical Hit
+| effect        = {{Imbuement Effect/Strike|50%|10%}}
+| slots         = swords, clubs, axes, bows, crossbows
+| astralsources = Protective Charm: 20, Sabretooth: 25, Vexclaw Talon: 5
+| implemented   = 11.02
+| notes         = This imbuement may also be applied to [[Rod of Destruction]], [[Wand of Destruction]], [[Falcon Rod]] and [[Falcon Wand]].
+{{JSpoiler|The ability to apply this imbuement can be obtained by finishing the [[Heart of Destruction Quest]] or by finishing the [[Forgotten Knowledge Quest]].}}
+}}

@@ -1,0 +1,22 @@
+{
+    "query": {
+        "pages": {
+            "1600": {
+                "pageid": 1600,
+                "ns": 0,
+                "title": "Golden Armor",
+                "revisions": [
+                    {
+                        "timestamp": "2017-04-26T20:04:19Z",
+                        "*": "{{Infobox Item|List={{{1|}}}|GetValue={{{GetValue|}}}\n| name          = Golden Armor\n| marketable    = yes\n| sprites       = {{Frames|{{Frame Sprite|55355}}}}\n| article       = a\n| actualname    = golden armor\n| plural        = ?\n| itemid        = 3360\n| flavortext    = It's an enchanted armor.\n| itemclass     = Body Equipment\n| primarytype   = Armors\n| secondarytype = \n| stackable     = no\n| vocrequired   = knights and paladins\n| armor         = 14\n| imbueslots    = 2\n| weight        = 80.00\n| droppedby     = {{Dropped By|Ferumbras|Ferumbras Mortal Shell|Ghazbaran|Golden Servant|Hellflayer|Hellgorak|Horadron|Juggernaut|Kerberos|Massacre|The Last Lore Keeper|Undead Dragon|Warlock|Zanakeph|Zarabustor}}\n| value         = 20,000 - 32,000\n| npcvalue      = 20000\n| npcprice      = 0\n| buyfrom       = --\n| sellto        = Rashid, Shanar:1500, Hardek:1500, H.L.:580\n| notes         = Tenth best armor, part of the [[Golden Set]].\nAfter the Update 8.4, the Golden Armor became for knights and paladins only. This can also be gotten by [[Rust Remover|unrusting]] a [[Rusty Armor (Rare)]].\n{{JSpoiler|Obtainable through the [[Behemoth Quest]].}}\n}}"
+                    }
+                ]
+            },
+            "-1": {
+                "ns": 0,
+                "title": "Golden Shield",
+                "missing": ""
+            }
+        }
+    }
+}
