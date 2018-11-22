@@ -1,0 +1,387 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Changelog &#8212; TibiaWikiSQL 2.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="API Reference" href="api.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="v2-0-0">
+<h2>v2.0.0<a class="headerlink" href="#v2-0-0" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Released</dt>
+<dd class="field-odd"><p>2018-11-22</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>New model classes, to unify the generation process.</p></li>
+<li><p>Live fetching is now possible, obtain data directly from the Wiki.</p></li>
+<li><p>Database generation now shows progress bars and time estimates.</p></li>
+<li><p>The database schema is now generated dynamically.</p></li>
+<li><dl class="simple">
+<dt>The database structure has changed:</dt>
+<dd><ul>
+<li><dl class="simple">
+<dt>Renamed tables:</dt>
+<dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">achievements</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">achievement</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">creatures</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">creature</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">creatures_drops</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">creature_drop</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">houses</span></code> - <code class="docutils literal notranslate"><span class="pre">house</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">imbuements</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">imbuement</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">imbuements_materials</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">imbuement_material</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">items</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">item</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">items_attributes</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">item_attribute</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">npcs</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">npc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">npcs_buying</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">npc_offer_buy</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">npcs_selling</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">npc_offer_sell</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">npcs_destinations</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">npc_destination</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">npcs_spells</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">npc_spell</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">quests</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">quest</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">quests_dangers</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">quest_danger</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">quests_rewards</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">quest_reward</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rashid_positions</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">rashid_position</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spells</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">spell</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Renamed columns:</dt>
+<dd><ul>
+<li><dl class="simple">
+<dt>All tables:</dt>
+<dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">article_id</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">last_edit</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">timestamp</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Table: <code class="docutils literal notranslate"><span class="pre">creature</span></code>:</dt>
+<dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">summon</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">summon_cost</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">convince</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">convince_cost</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">occurrence</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">bestiary_occurrence</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">see_invisible</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">sees_invisible</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">walkthrough</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">walks_through</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">walksaround</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">walks_around</span></code></p></li>
+<li><p>All element columns now have <code class="docutils literal notranslate"><span class="pre">modifier</span></code> at the beginning
+(e.g. <code class="docutils literal notranslate"><span class="pre">phyisical</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">modifier_phyisical</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Table: <code class="docutils literal notranslate"><span class="pre">item</span></code></dt>
+<dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">value_sell</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">price</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">value_buy</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">house_id</span></code> in table <code class="docutils literal notranslate"><span class="pre">house</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">attribute</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">value</span></code> in table <code class="docutils literal notranslate"><span class="pre">item_attribute</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">destination</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">name</span></code> in table <code class="docutils literal notranslate"><span class="pre">npc_destination</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Added columns:</dt>
+<dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code> in all tables, except child tables and <code class="docutils literal notranslate"><span class="pre">charm</span></code>, <code class="docutils literal notranslate"><span class="pre">rashid_position</span></code> and <code class="docutils literal notranslate"><span class="pre">map</span></code>:</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">client_id</span></code> in table <code class="docutils literal notranslate"><span class="pre">item</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">location</span></code> in <code class="docutils literal notranslate"><span class="pre">npc</span></code> and <code class="docutils literal notranslate"><span class="pre">rashid_position</span></code> tables.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">effect</span></code> in table <code class="docutils literal notranslate"><span class="pre">spell</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Removed columns:</dt>
+<dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">day_name</span></code> from <code class="docutils literal notranslate"><span class="pre">rashid_position</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="v1-2-0">
+<h2>v1.2.0<a class="headerlink" href="#v1-2-0" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Released</dt>
+<dd class="field-odd"><p>2018-10-16</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>New <code class="docutils literal notranslate"><span class="pre">charm</span></code> table, contains information about all charms.</p></li>
+</ul>
+</div>
+<div class="section" id="v1-1-1">
+<h2>v1.1.1<a class="headerlink" href="#v1-1-1" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Released</dt>
+<dd class="field-odd"><p>2018-09-23</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>Improved parsing of <code class="docutils literal notranslate"><span class="pre">walksaround</span></code> and <code class="docutils literal notranslate"><span class="pre">walksthrough</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="v1-1-0">
+<h2>v1.1.0<a class="headerlink" href="#v1-1-0" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Released</dt>
+<dd class="field-odd"><p>2018-09-22</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>Added new columns to creatures table:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">walksaround</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">walksthrough</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="v1-0-1">
+<h2>v1.0.1<a class="headerlink" href="#v1-0-1" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Released</dt>
+<dd class="field-odd"><p>2018-07-02</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>Fixed bug caused when a category had a number of articles that was exactly a multiple of 50.</p></li>
+</ul>
+</div>
+<div class="section" id="v1-0-0">
+<h2>v1.0.0<a class="headerlink" href="#v1-0-0" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Released</dt>
+<dd class="field-odd"><p>2018-07-01</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> is now TibiaWiki’s article id for the element, making them more reliable than autoincremented ids.</p></li>
+<li><p>Fixed bug with potion’s prices.</p></li>
+<li><p>Fixed bug with paralysable being inverted.</p></li>
+<li><p>New tables <code class="docutils literal notranslate"><span class="pre">imbuements</span></code> and <code class="docutils literal notranslate"><span class="pre">imbuements_materials</span></code>.</p></li>
+<li><p>Unknown creature attributes are no longer parsed as <code class="docutils literal notranslate"><span class="pre">False</span></code>, but <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p>New columns in creatures table:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">bestiary_class</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bestiary_level</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">occurrence</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">armor</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">speed</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="v0-3-0">
+<h2>v0.3.0<a class="headerlink" href="#v0-3-0" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Released</dt>
+<dd class="field-odd"><p>2017-12-18</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>New <code class="docutils literal notranslate"><span class="pre">items_keys</span></code> table, contains key numbers with their uses and
+locations.</p></li>
+<li><p>New <code class="docutils literal notranslate"><span class="pre">rashid_positions</span></code> database, contains Rashid’s coordinates for each weekday.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">article</span></code>, <code class="docutils literal notranslate"><span class="pre">class</span></code> and <code class="docutils literal notranslate"><span class="pre">type</span></code> to <code class="docutils literal notranslate"><span class="pre">creatures</span></code> table.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">article</span></code>, <code class="docutils literal notranslate"><span class="pre">class</span></code> and <code class="docutils literal notranslate"><span class="pre">client_id</span></code> to <code class="docutils literal notranslate"><span class="pre">items</span></code> table.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">last_edit</span></code> column to most tables.</p></li>
+</ul>
+</div>
+<div class="section" id="v0-2-0">
+<h2>v0.2.0<a class="headerlink" href="#v0-2-0" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Released</dt>
+<dd class="field-odd"><p>2017-11-14</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>Improved the parsing of all data tables, resulting in more
+consistency in values, less empty strings (not <code class="docutils literal notranslate"><span class="pre">NULL</span></code>) and better
+handling of default values.</p></li>
+<li><p>New <code class="docutils literal notranslate"><span class="pre">database_info</span></code> table, it contains two rows, “version” and
+“generated_date”, containing the script vused and the date the
+database was generated respectively.</p></li>
+<li><p>Added a new <code class="docutils literal notranslate"><span class="pre">currency</span></code> column to <code class="docutils literal notranslate"><span class="pre">npcs_buying</span></code> and
+<code class="docutils literal notranslate"><span class="pre">npcs_selling</span></code>, it contains the id of the item used as currency for
+that transaction (e.g. gold coins, gold tokens, silver tokens, etc).</p></li>
+<li><p>Better parsing for item npc offers, a lot more offers are saved now,
+including item trades (e.g. 1 fighting spirit for 2 royal helmets).</p></li>
+<li><p>More item attributes are saved to <code class="docutils literal notranslate"><span class="pre">item_attributes</span></code>.</p></li>
+</ul>
+</div>
+<div class="section" id="v0-1-1">
+<h2>v0.1.1<a class="headerlink" href="#v0-1-1" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Released</dt>
+<dd class="field-odd"><p>2017-11-12</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>Better attribute parsing, this means values should me more consistent
+and there are no entries without the <code class="docutils literal notranslate"><span class="pre">name</span></code> column</p></li>
+<li><p>No changes were made to the schema.</p></li>
+</ul>
+</div>
+<div class="section" id="v0-1-0">
+<h2>v0.1.0<a class="headerlink" href="#v0-1-0" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Released</dt>
+<dd class="field-odd"><p>2017-11-09</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>Creatures table, with all their attributes, including a separate
+table for all their loot.</p></li>
+<li><p>Loot drop percentage are calculated from loot statistics</p></li>
+<li><p>Item table, with their basic attributes, and their separate
+attributes on a separate table</p></li>
+<li><p>NPCs table with their information, including spawn location.</p></li>
+<li><p>NPCs sell and buy offers</p></li>
+<li><p>Achievements, with their spoiler info</p></li>
+<li><p>Quests basic infor</p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">TibiaWikiSQL</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v2-0-0">v2.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-2-0">v1.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-1-1">v1.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-1-0">v1.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-0-1">v1.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-0-0">v1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-3-0">v0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-2-0">v0.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-1-1">v0.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-1-0">v0.1.0</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">API Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Allan Galarza.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/changelog.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

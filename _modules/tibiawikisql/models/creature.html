@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>tibiawikisql.models.creature &#8212; TibiaWikiSQL 2.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for tibiawikisql.models.creature</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright 2018 Allan Galarza</span>
+<span class="c1">#</span>
+<span class="c1">#  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1">#  you may not use this file except in compliance with the License.</span>
+<span class="c1">#  You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#  http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1">#  Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">#  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">#  See the License for the specific language governing permissions and</span>
+<span class="c1">#  limitations under the License.</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">tibiawikisql</span> <span class="k">import</span> <span class="n">schema</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.models</span> <span class="k">import</span> <span class="n">abc</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="k">import</span> <span class="n">clean_links</span><span class="p">,</span> <span class="n">int_pattern</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">,</span> <span class="n">parse_min_max</span>
+
+<span class="n">creature_loot_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">parse_maximum_integer</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    From a string, finds the highest integer found.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value: :class:`str`</span>
+<span class="sd">        The string containing integers.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :class:`int`, optional:</span>
+<span class="sd">        The highest number found, or None if no number is found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="n">int_pattern</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">matches</span><span class="p">)))</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">parse_loot</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets every item drop entry of a creature&#39;s drops.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value: :class:`str`</span>
+<span class="sd">        A string containing item drops.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple:</span>
+<span class="sd">        A tuple containing the amounts and the item name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">creature_loot_pattern</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">parse_monster_walks</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Matches the values against a regex to filter typos or bad data on the wiki.</span>
+<span class="sd">    Element names followed by any character that is not a comma will be considered unknown and will not be returned.</span>
+
+<span class="sd">    Examples\:</span>
+<span class="sd">        - ``Poison?, fire`` will return ``fire``.</span>
+<span class="sd">        - ``Poison?, fire.`` will return neither.</span>
+<span class="sd">        - ``Poison, earth, fire?, [[ice]]`` will return ``poison,earth``.</span>
+<span class="sd">        - ``No``, ``--``, ``&gt;``, or ``None`` will return ``None``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value: :class:`str`</span>
+<span class="sd">        The string containing possible field types.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :class:`str`, optional</span>
+<span class="sd">        A list of field types, separated by commas.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(physical)(,|$)|(holy)(,|$)|(death)(,|$)|(fire)(,|$)|(ice)(,|$)|(energy)(,|$)|(earth)(,|$)|&quot;</span>
+                       <span class="sa">r</span><span class="s2">&quot;(poison)(,|$)&quot;</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">content</span>
+
+
+<div class="viewcode-block" id="Creature"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature">[docs]</a><span class="k">class</span> <span class="nc">Creature</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">Creature</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents a creature.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    article_id: :class:`int`</span>
+<span class="sd">        The id of the  containing article.</span>
+<span class="sd">    title: :class:`str`</span>
+<span class="sd">        The title of the containing article.</span>
+<span class="sd">    timestamp: :class:`int`</span>
+<span class="sd">        The last time the containing article was edited.</span>
+<span class="sd">    article: :class:`str`</span>
+<span class="sd">        The article that goes before the name when looking at the creature.</span>
+<span class="sd">    name: :class:`str`</span>
+<span class="sd">        The name of the creature, as displayed in-game.</span>
+<span class="sd">    class: :class:`str`</span>
+<span class="sd">        The creature&#39;s classification.</span>
+<span class="sd">    type: :class:`str`</span>
+<span class="sd">        The creature&#39;s type.</span>
+<span class="sd">    bestiary_class: :class:`str`</span>
+<span class="sd">        The creature&#39;s bestiary class, if applicable.</span>
+<span class="sd">    bestiary_level: :class:`str`</span>
+<span class="sd">        The creature&#39;s bestiary level, from &#39;Trivial&#39; to &#39;Hard&#39;</span>
+<span class="sd">    bestiary_occurrence: :class:`str`</span>
+<span class="sd">        The creature&#39;s bestiary occurrence, from &#39;Common&#39;  to &#39;Very Rare&#39;.</span>
+<span class="sd">    hitpoints: :class:`int`</span>
+<span class="sd">        The creature&#39;s hitpoints, may be `None` if unknown.</span>
+<span class="sd">    experience: :class:`int`</span>
+<span class="sd">        Experience points yielded by the creature. Might be `None` if unknown.</span>
+<span class="sd">    armor: :class:`int`</span>
+<span class="sd">        The creature&#39;s armor value.</span>
+<span class="sd">    speed: :class:`int`</span>
+<span class="sd">        The creature&#39;s speed value.</span>
+<span class="sd">    max_damage: :class:`int`</span>
+<span class="sd">        The maximum amount of damage the creature can do in a single turn.</span>
+<span class="sd">    summon_cost: :class:`int`</span>
+<span class="sd">        The mana needed to summon this creature. 0 if not summonable.</span>
+<span class="sd">    convince_cost: :class:`int`</span>
+<span class="sd">        The mana needed to convince this creature. 0 if not convincible.</span>
+<span class="sd">    illusionable: :class:`bool`</span>
+<span class="sd">        Whether the creature can be illusioned into using `Creature Illusion`.</span>
+<span class="sd">    pushable: :class:`bool`</span>
+<span class="sd">        Whether the creature can be pushed or not.</span>
+<span class="sd">    sees_invisible: :class:`bool`</span>
+<span class="sd">        Whether the creature can see invisible players or not.</span>
+<span class="sd">    paralysable: :class:`bool`</span>
+<span class="sd">        Whether the creature can be paralyzed or not.</span>
+<span class="sd">    boss: :class:`bool`</span>
+<span class="sd">        Whether the creature is a boss or not.</span>
+<span class="sd">    modifier_physical: :class:`int`</span>
+<span class="sd">        The percentage of damage received of physical damage. ``None`` if unknown.</span>
+<span class="sd">    modifier_earth: :class:`int`</span>
+<span class="sd">        The percentage of damage received of earth damage. ``None`` if unknown.</span>
+<span class="sd">    modifier_fire: :class:`int`</span>
+<span class="sd">        The percentage of damage received of fire damage. ``None`` if unknown.</span>
+<span class="sd">    modifier_energy: :class:`int`</span>
+<span class="sd">        The percentage of damage received of energy damage. ``None`` if unknown.</span>
+<span class="sd">    modifier_ice: :class:`int`</span>
+<span class="sd">        The percentage of damage received of ice damage. ``None`` if unknown.</span>
+<span class="sd">    modifier_death: :class:`int`</span>
+<span class="sd">        The percentage of damage received of death damage. ``None`` if unknown.</span>
+<span class="sd">    modifier_holy: :class:`int`</span>
+<span class="sd">        The percentage of damage received of holy damage. ``None`` if unknown.</span>
+<span class="sd">    modifier_drown: :class:`int`</span>
+<span class="sd">        The percentage of damage received of drown damage. ``None`` if unknown.</span>
+<span class="sd">    modifier_lifedrain: :class:`int`</span>
+<span class="sd">        The percentage of damage received of life drain damage. ``None`` if unknown.</span>
+<span class="sd">    abilities: :class:`str`</span>
+<span class="sd">        A brief description of the creature&#39;s abilities.</span>
+<span class="sd">    walks_through: :class:`str`</span>
+<span class="sd">        The field types the creature will walk through, separated by commas.</span>
+<span class="sd">    walks_around: :class:`str`</span>
+<span class="sd">        The field types the creature will walk around, separated by commas.</span>
+<span class="sd">    version: :class:`str`</span>
+<span class="sd">        The client version where this creature was first implemented.</span>
+<span class="sd">    image: :class:`bytes`</span>
+<span class="sd">        The creature&#39;s image in bytes.</span>
+<span class="sd">    loot: list of :class:`CreatureDrop`</span>
+<span class="sd">        The items dropped by this creature.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;article&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;article&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;actualname&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;creatureclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;bestiaryclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_class&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;bestiarylevel&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_level&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;occurrence&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_occurrence&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;primarytype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;hp&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;hitpoints&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+        <span class="s2">&quot;exp&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;experience&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+        <span class="s2">&quot;armor&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;armor&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+        <span class="s2">&quot;speed&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;speed&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+        <span class="s2">&quot;maxdmg&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;max_damage&quot;</span><span class="p">,</span> <span class="n">parse_maximum_integer</span><span class="p">),</span>
+        <span class="s2">&quot;summon&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;summon_cost&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;convince&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;convince_cost&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;illusionable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;illusionable&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_boolean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+        <span class="s2">&quot;pushable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;pushable&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_boolean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+        <span class="s2">&quot;senseinvis&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;sees_invisible&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_boolean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+        <span class="s2">&quot;paraimmune&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;paralysable&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_boolean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">True</span><span class="p">)),</span>
+        <span class="s2">&quot;isboss&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;boss&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
+        <span class="s2">&quot;physicalDmgMod&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;modifier_physical&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;earthDmgMod&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;modifier_earth&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;fireDmgMod&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;modifier_fire&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;iceDmgMod&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;modifier_ice&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;energyDmgMod&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;modifier_energy&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;deathDmgMod&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;modifier_death&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;holyDmgMod&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;modifier_holy&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;drownDmgMod&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;modifier_drown&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;hpDrainDmgMod&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;modifier_hpdrain&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;abilities&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;abilities&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
+        <span class="s2">&quot;walksthrough&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;walks_through&quot;</span><span class="p">,</span> <span class="n">parse_monster_walks</span><span class="p">),</span>
+        <span class="s2">&quot;walksaround&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;walks_around&quot;</span><span class="p">,</span> <span class="n">parse_monster_walks</span><span class="p">),</span>
+        <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Creature&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;article_id&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;raw_attribute&quot;</span><span class="p">,</span> <span class="s2">&quot;article&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;bestiary_level&quot;</span><span class="p">,</span> <span class="s2">&quot;bestiary_class&quot;</span><span class="p">,</span> <span class="s2">&quot;bestiary_occurrence&quot;</span><span class="p">,</span> <span class="s2">&quot;hitpoints&quot;</span><span class="p">,</span> <span class="s2">&quot;experience&quot;</span><span class="p">,</span> <span class="s2">&quot;armor&quot;</span><span class="p">,</span> <span class="s2">&quot;speed&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;max_damage&quot;</span><span class="p">,</span> <span class="s2">&quot;summon_cost&quot;</span><span class="p">,</span> <span class="s2">&quot;convince_cost&quot;</span><span class="p">,</span> <span class="s2">&quot;illusionable&quot;</span><span class="p">,</span> <span class="s2">&quot;pushable&quot;</span><span class="p">,</span> <span class="s2">&quot;sees_invisible&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;paralysable&quot;</span><span class="p">,</span> <span class="s2">&quot;boss&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_physical&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_earth&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_fire&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_energy&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;modifier_ice&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_death&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_holy&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_lifedrain&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_drown&quot;</span><span class="p">,</span> <span class="s2">&quot;abilities&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;walks_through&quot;</span><span class="p">,</span> <span class="s2">&quot;walks_around&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="s2">&quot;loot&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Creature.from_article"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature.from_article">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_article</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">article</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses an article into a TibiaWiki model.</span>
+
+<span class="sd">        This method is overridden to parse extra attributes like loot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        article: :class:`api.Article`</span>
+<span class="sd">            The article from where the model is parsed.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`Creature`</span>
+<span class="sd">            The creature represented by the current article.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">creature</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_article</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">creature</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;loot&quot;</span> <span class="ow">in</span> <span class="n">creature</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+            <span class="n">loot</span> <span class="o">=</span> <span class="n">parse_loot</span><span class="p">(</span><span class="n">creature</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;loot&quot;</span><span class="p">])</span>
+            <span class="n">loot_items</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">amounts</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">loot</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">amounts</span><span class="p">:</span>
+                    <span class="n">_min</span><span class="p">,</span> <span class="n">_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">_min</span><span class="p">,</span> <span class="n">_max</span> <span class="o">=</span> <span class="n">parse_min_max</span><span class="p">(</span><span class="n">amounts</span><span class="p">)</span>
+                <span class="n">loot_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CreatureDrop</span><span class="p">(</span><span class="n">creature_id</span><span class="o">=</span><span class="n">creature</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">item_title</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">_min</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">_max</span><span class="p">))</span>
+            <span class="n">creature</span><span class="o">.</span><span class="n">loot</span> <span class="o">=</span> <span class="n">loot_items</span>
+        <span class="k">return</span> <span class="n">creature</span></div>
+
+<div class="viewcode-block" id="Creature.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inserts the current model into its respective database.</span>
+
+<span class="sd">        This method is overridden to insert elements of child rows.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`</span>
+<span class="sd">            A cursor or connection of the database.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;loot&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">attribute</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Creature.get_by_field"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature.get_by_field">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_by_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">use_like</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">creature</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_by_field</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">use_like</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">creature</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">creature</span><span class="o">.</span><span class="n">loot</span> <span class="o">=</span> <span class="n">CreatureDrop</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;creature_id&quot;</span><span class="p">,</span> <span class="n">creature</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;chance&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">creature</span></div></div>
+
+
+<div class="viewcode-block" id="CreatureDrop"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureDrop">[docs]</a><span class="k">class</span> <span class="nc">CreatureDrop</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">CreatureDrop</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents an item dropped by a creature.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    creature_id: :class:`int`</span>
+<span class="sd">        The article id of the creature the drop belongs to.</span>
+<span class="sd">    creature_title: :class:`str`</span>
+<span class="sd">        The title of the creature that drops the item.</span>
+<span class="sd">    item_id: :class:`int`</span>
+<span class="sd">        The article id of the item.</span>
+<span class="sd">    item_title: :class:`str`</span>
+<span class="sd">        The title of the dropped item.</span>
+<span class="sd">    min: :class:`int`</span>
+<span class="sd">        The minimum possible amount of the dropped item.</span>
+<span class="sd">    max: :class:`int`</span>
+<span class="sd">        The maximum possible amount of the dropped item.</span>
+<span class="sd">    chance: :class:`float`</span>
+<span class="sd">        The chance percentage of getting this item dropped by this creature.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;creature_id&quot;</span><span class="p">,</span> <span class="s2">&quot;creature_title&quot;</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="s2">&quot;item_title&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;chance&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;item_title&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">creature_title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;creature_title&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0.__class__.__name__}</span><span class="s2">(</span><span class="si">{1}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">))</span>
+
+<div class="viewcode-block" id="CreatureDrop.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureDrop.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inserts the current model into its respective database.</span>
+
+<span class="sd">        Overridden to insert using a subquery to get the item&#39;s id from the name.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        c: :class:`sqlite3.Cursor`, :class:`sqlite3.Connection`</span>
+<span class="sd">            A cursor or connection of the database.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">(creature_id, item_id, min, max)</span>
+<span class="s2">                        VALUES(?, (SELECT article_id from item WHERE title = ?), ?, ?)&quot;&quot;&quot;</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">creature_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">))</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_is_column</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__slots__</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">%s</span><span class="s2">.*, item.title as item_title, creature.title as creature_title FROM </span><span class="si">%s</span><span class="s2"></span>
+<span class="s2">                  LEFT JOIN creature ON creature.article_id = creature_id</span>
+<span class="s2">                  LEFT JOIN item ON item.article_id = item_id&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span></div>
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">TibiaWikiSQL</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Allan Galarza.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

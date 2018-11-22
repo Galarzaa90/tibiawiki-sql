@@ -1,0 +1,727 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>tibiawikisql.models.npc &#8212; TibiaWikiSQL 2.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for tibiawikisql.models.npc</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright 2018 Allan Galarza</span>
+<span class="c1">#</span>
+<span class="c1">#  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1">#  you may not use this file except in compliance with the License.</span>
+<span class="c1">#  You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#  http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1">#  Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">#  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">#  See the License for the specific language governing permissions and</span>
+<span class="c1">#  limitations under the License.</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="kn">from</span> <span class="nn">tibiawikisql</span> <span class="k">import</span> <span class="n">schema</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.models</span> <span class="k">import</span> <span class="n">abc</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="k">import</span> <span class="n">clean_links</span><span class="p">,</span> <span class="n">convert_tibiawiki_position</span>
+
+<span class="n">price_to_template</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{{Price to (?:Buy|Sell)\s*([^}]+)}}&quot;</span><span class="p">)</span>
+<span class="n">npc_offers</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\|([^|:\[]+)(?::\s?(\d+))?(?:\s?\[\[([^\]]+))?&quot;</span><span class="p">)</span>
+
+<span class="n">teaches_template</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}&quot;</span><span class="p">)</span>
+<span class="n">spells_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\|([^|]+)&quot;</span><span class="p">)</span>
+
+<span class="n">trades_sell_template</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{{Trades/Sells\s*(?:\|note=([^|]+))?([^}]+)}}&quot;</span><span class="p">)</span>
+<span class="n">npc_trades</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\|([^|,\[]+)(?:,\s?([+-]?\d+))?(?:\s?\[\[([^\]]+))?&quot;</span><span class="p">)</span>
+
+<span class="n">transport_template</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{{Transport\s*(?:\|discount=([^|]+))?([^}]+)}}&quot;</span><span class="p">)</span>
+<span class="n">npc_destinations</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\|([^,]+),\s?(\d+)(?:;\s?([^|]+))?&quot;</span><span class="p">)</span>
+
+<span class="n">ilink_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{{Ilink\|([^}]+)}}&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">parse_destinations</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses an NPC destinations into a list of tuples.</span>
+
+<span class="sd">        The tuple contains the  destination&#39;s name, price and notes.</span>
+<span class="sd">        Price and notes may not be present.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value: :class:`str`</span>
+<span class="sd">            A string containing destinations.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list(:class:`tuple`)</span>
+<span class="sd">            A list of tuples containing the parsed destinations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">__</span><span class="p">,</span> <span class="n">destinations</span> <span class="ow">in</span> <span class="n">transport_template</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">npc_destinations</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">destinations</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">parse_item_offers</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses NPC item offers into a list of tuples.</span>
+
+<span class="sd">    The tuple contains the item&#39;s name, price and currency.</span>
+<span class="sd">    Price and currency may not be present.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value: :class:`str`</span>
+<span class="sd">        The string  containing NPC offers.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list(:class:`tuple`)</span>
+<span class="sd">        A list of tuples containing the parsed offers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">price_to_template</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">npc_offers</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+
+<span class="k">def</span> <span class="nf">parse_item_trades</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses an NPC item trades into a list of tuples.</span>
+
+<span class="sd">    The tuple contains the item&#39;s name, price and currency.</span>
+<span class="sd">    Price and currency may not be present.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value: :class:`str`</span>
+<span class="sd">        A string containing item trades.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list(:class:`tuple`)</span>
+<span class="sd">        A list of tuples containing the parsed offers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">replace_ilinks</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">note</span><span class="p">,</span> <span class="n">trades</span> <span class="ow">in</span> <span class="n">trades_sell_template</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">npc_trades</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">trades</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">parse_spells</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parses an NPC&#39;s teacheable spells.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value: :class:`str`</span>
+<span class="sd">        A string containing teachable spells.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    A list of spells grouped by vocation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">spell_list</span> <span class="ow">in</span> <span class="n">teaches_template</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="n">spells</span> <span class="o">=</span> <span class="n">spells_pattern</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">spell_list</span><span class="p">)</span>
+        <span class="n">spells</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">spells</span><span class="p">]</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">spells</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">replace_ilinks</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Replaces the ILink template with a regular link.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value: :class:`str`</span>
+<span class="sd">        A string containing ILink templates.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :class:`str`</span>
+<span class="sd">        The string with regular links instead of ILink templates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ilink_pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[[\g&lt;1&gt;]]&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Npc"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Npc">[docs]</a><span class="k">class</span> <span class="nc">Npc</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">Npc</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a non-playable character.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    article_id: :class:`int`</span>
+<span class="sd">        The id of the  containing article.</span>
+<span class="sd">    title: :class:`str`</span>
+<span class="sd">        The title of the containing article.</span>
+<span class="sd">    timestamp: :class:`int`</span>
+<span class="sd">        The last time the containing article was edited.</span>
+<span class="sd">    name: :class:`str`</span>
+<span class="sd">        The in-game name of the NPC.</span>
+<span class="sd">    gender: :class:`str`</span>
+<span class="sd">        The gender of the NPC.</span>
+<span class="sd">    race: :class:`str`</span>
+<span class="sd">        The race of the NPC.</span>
+<span class="sd">    job: :class:`str`</span>
+<span class="sd">        The NPC&#39;s job.</span>
+<span class="sd">    location: :class:`str`</span>
+<span class="sd">        The location of the NPC.</span>
+<span class="sd">    city: :class:`str`</span>
+<span class="sd">        The city where the NPC is located.</span>
+<span class="sd">    x: :class:`int`</span>
+<span class="sd">        The x coordinates of the NPC.</span>
+<span class="sd">    y: :class:`int`</span>
+<span class="sd">        The y coordinates of the NPC.</span>
+<span class="sd">    z: :class:`int`</span>
+<span class="sd">        The z coordinates of the NPC.</span>
+<span class="sd">    version: :class:`str`</span>
+<span class="sd">        The client version where the NPC was implemented.</span>
+<span class="sd">    image: :class:`bytes`</span>
+<span class="sd">        The NPC&#39;s image in bytes.</span>
+<span class="sd">    sell_offers: list of :class:`NpcSellOffer`</span>
+<span class="sd">        Items sold by the NPC.</span>
+<span class="sd">    buy_offers: list of :class:`NpcBuyOffer`</span>
+<span class="sd">        Items bought by the NPC.</span>
+<span class="sd">    destinations: list of :class:`NpcSellOffer`</span>
+<span class="sd">        Places where the NPC can travel to.</span>
+<span class="sd">    teaches: list of :class:`NpcSpell`</span>
+<span class="sd">        Spells this NPC can teach.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;article_id&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;race&quot;</span><span class="p">,</span> <span class="s2">&quot;job&quot;</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="s2">&quot;sell_offers&quot;</span><span class="p">,</span> <span class="s2">&quot;buy_offers&quot;</span><span class="p">,</span> <span class="s2">&quot;destinations&quot;</span><span class="p">,</span> <span class="s2">&quot;teaches&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;actualname&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
+        <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;race&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;race&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;job&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;job&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;posx&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">convert_tibiawiki_position</span><span class="p">),</span>
+        <span class="s2">&quot;posy&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">convert_tibiawiki_position</span><span class="p">),</span>
+        <span class="s2">&quot;posz&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
+        <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]NPC&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Npc.from_article"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Npc.from_article">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_article</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">article</span><span class="p">):</span>
+        <span class="n">npc</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_article</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">npc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s2">&quot;buys&quot;</span> <span class="ow">in</span> <span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_parse_buy_offers</span><span class="p">(</span><span class="n">npc</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;sells&quot;</span> <span class="ow">in</span> <span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_parse_sell_offers</span><span class="p">(</span><span class="n">npc</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_parse_spells</span><span class="p">(</span><span class="n">npc</span><span class="p">)</span>
+        <span class="n">destinations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="s2">&quot;notes&quot;</span> <span class="ow">in</span> <span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span> <span class="ow">and</span> <span class="s2">&quot;{{Transport&quot;</span> <span class="ow">in</span> <span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;notes&quot;</span><span class="p">]:</span>
+            <span class="n">destinations</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">parse_destinations</span><span class="p">(</span><span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;notes&quot;</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="s2">&quot;sells&quot;</span> <span class="ow">in</span> <span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span> <span class="ow">and</span> <span class="s2">&quot;{{Transport&quot;</span> <span class="ow">in</span> <span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;sells&quot;</span><span class="p">]:</span>
+            <span class="n">destinations</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">parse_destinations</span><span class="p">(</span><span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;sells&quot;</span><span class="p">]))</span>
+        <span class="n">npc</span><span class="o">.</span><span class="n">destinations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">destination</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">notes</span> <span class="ow">in</span> <span class="n">destinations</span><span class="p">:</span>
+            <span class="n">destination</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">notes</span> <span class="o">=</span> <span class="n">clean_links</span><span class="p">(</span><span class="n">notes</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">price</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">notes</span><span class="p">:</span>
+                <span class="n">notes</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">npc</span><span class="o">.</span><span class="n">destinations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NpcDestination</span><span class="p">(</span><span class="n">npc_id</span><span class="o">=</span><span class="n">npc</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">destination</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="n">price</span><span class="p">,</span> <span class="n">notes</span><span class="o">=</span><span class="n">notes</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">npc</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_parse_buy_offers</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">npc</span><span class="p">):</span>
+        <span class="n">buy_items</span> <span class="o">=</span> <span class="n">parse_item_offers</span><span class="p">(</span><span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;buys&quot;</span><span class="p">])</span>
+        <span class="n">npc</span><span class="o">.</span><span class="n">buy_offers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">currency</span> <span class="ow">in</span> <span class="n">buy_items</span><span class="p">:</span>
+            <span class="c1"># Some items have extra requirements, separated with ;, so we remove them</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">currency</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">currency</span> <span class="o">=</span> <span class="s2">&quot;Gold Coin&quot;</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">price</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+            <span class="n">npc</span><span class="o">.</span><span class="n">buy_offers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NpcBuyOffer</span><span class="p">(</span><span class="n">item_title</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">currency_title</span><span class="o">=</span><span class="n">currency</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+                                              <span class="n">npc_id</span><span class="o">=</span><span class="n">npc</span><span class="o">.</span><span class="n">article_id</span><span class="p">))</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_parse_sell_offers</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">npc</span><span class="p">):</span>
+        <span class="n">sell_items</span> <span class="o">=</span> <span class="n">parse_item_offers</span><span class="p">(</span><span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;sells&quot;</span><span class="p">])</span>
+        <span class="n">npc</span><span class="o">.</span><span class="n">sell_offers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">currency</span> <span class="ow">in</span> <span class="n">sell_items</span><span class="p">:</span>
+            <span class="c1"># Some items have extra requirements, separated with ;, so we remove them</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">currency</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">currency</span> <span class="o">=</span> <span class="s2">&quot;Gold Coin&quot;</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">price</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+            <span class="n">npc</span><span class="o">.</span><span class="n">sell_offers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NpcSellOffer</span><span class="p">(</span><span class="n">item_title</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">currency_title</span><span class="o">=</span><span class="n">currency</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+                                                <span class="n">npc_id</span><span class="o">=</span><span class="n">npc</span><span class="o">.</span><span class="n">article_id</span><span class="p">))</span>
+        <span class="c1"># Items traded by npcs (these have a different template)</span>
+        <span class="n">trade_items</span> <span class="o">=</span> <span class="n">parse_item_trades</span><span class="p">(</span><span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;sells&quot;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">currency</span> <span class="ow">in</span> <span class="n">trade_items</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">price</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">price</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">currency</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">currency</span> <span class="o">=</span> <span class="s2">&quot;Gold Coin&quot;</span>
+            <span class="n">npc</span><span class="o">.</span><span class="n">sell_offers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NpcSellOffer</span><span class="p">(</span><span class="n">item_title</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">currency_title</span><span class="o">=</span><span class="n">currency</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+                                                <span class="n">npc_id</span><span class="o">=</span><span class="n">npc</span><span class="o">.</span><span class="n">article_id</span><span class="p">))</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_parse_spells</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">npc</span><span class="p">):</span>
+        <span class="n">spell_list</span> <span class="o">=</span> <span class="n">parse_spells</span><span class="p">(</span><span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;sells&quot;</span><span class="p">])</span>
+        <span class="n">npc</span><span class="o">.</span><span class="n">teaches</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">spells</span> <span class="ow">in</span> <span class="n">spell_list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">spell</span> <span class="ow">in</span> <span class="n">spells</span><span class="p">:</span>
+                <span class="n">spell</span> <span class="o">=</span> <span class="n">spell</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">knight</span> <span class="o">=</span> <span class="s2">&quot;knight&quot;</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="n">npc</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Eliza&quot;</span>
+                <span class="n">paladin</span> <span class="o">=</span> <span class="s2">&quot;paladin&quot;</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="n">npc</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Ursula&quot;</span> <span class="ow">or</span> <span class="n">npc</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Eliza&quot;</span>
+                <span class="n">druid</span> <span class="o">=</span> <span class="s2">&quot;druid&quot;</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="n">npc</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Elathriel&quot;</span> <span class="ow">or</span> <span class="n">npc</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Eliza&quot;</span>
+                <span class="n">sorcerer</span> <span class="o">=</span> <span class="s2">&quot;sorcerer&quot;</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="n">npc</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Eliza&quot;</span>
+                <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">knight</span> <span class="ow">or</span> <span class="n">paladin</span> <span class="ow">or</span> <span class="n">druid</span> <span class="ow">or</span> <span class="n">sorcerer</span><span class="p">):</span>
+                    <span class="k">def</span> <span class="nf">in_jobs</span><span class="p">(</span><span class="n">vocation</span><span class="p">,</span> <span class="n">_npc</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="n">vocation</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_npc</span><span class="o">.</span><span class="n">job</span><span class="o">+</span><span class="n">_npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;job2&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span>
+                                            <span class="n">_npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;job3&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+                    <span class="n">knight</span> <span class="o">=</span> <span class="n">in_jobs</span><span class="p">(</span><span class="s2">&quot;knight&quot;</span><span class="p">,</span> <span class="n">npc</span><span class="p">)</span>
+                    <span class="n">paladin</span> <span class="o">=</span> <span class="n">in_jobs</span><span class="p">(</span><span class="s2">&quot;paladin&quot;</span><span class="p">,</span> <span class="n">npc</span><span class="p">)</span>
+                    <span class="n">druid</span> <span class="o">=</span> <span class="n">in_jobs</span><span class="p">(</span><span class="s2">&quot;druid&quot;</span><span class="p">,</span> <span class="n">npc</span><span class="p">)</span>
+                    <span class="n">sorcerer</span> <span class="o">=</span> <span class="n">in_jobs</span><span class="p">(</span><span class="s2">&quot;sorcerer&quot;</span><span class="p">,</span> <span class="n">npc</span><span class="p">)</span>
+                <span class="n">exists</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">npc</span><span class="o">.</span><span class="n">teaches</span><span class="p">):</span>
+                    <span class="c1"># Spell was already in list, so we update vocations</span>
+                    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">spell_title</span> <span class="o">==</span> <span class="n">spell</span><span class="p">:</span>
+                        <span class="n">npc</span><span class="o">.</span><span class="n">teaches</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">NpcSpell</span><span class="p">(</span><span class="n">npc_id</span><span class="o">=</span><span class="n">npc</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">spell_title</span><span class="o">=</span><span class="n">spell</span><span class="p">,</span>
+                                                  <span class="n">knight</span><span class="o">=</span><span class="n">knight</span> <span class="ow">or</span> <span class="n">s</span><span class="o">.</span><span class="n">knight</span><span class="p">,</span> <span class="n">paladin</span><span class="o">=</span><span class="n">paladin</span> <span class="ow">or</span> <span class="n">s</span><span class="o">.</span><span class="n">paladin</span><span class="p">,</span>
+                                                  <span class="n">druid</span><span class="o">=</span><span class="n">druid</span> <span class="ow">or</span> <span class="n">s</span><span class="o">.</span><span class="n">druid</span><span class="p">,</span> <span class="n">sorcerer</span><span class="o">=</span><span class="n">sorcerer</span> <span class="ow">or</span> <span class="n">s</span><span class="o">.</span><span class="n">sorcerer</span><span class="p">)</span>
+                        <span class="n">exists</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">:</span>
+                    <span class="n">npc</span><span class="o">.</span><span class="n">teaches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NpcSpell</span><span class="p">(</span><span class="n">npc_id</span><span class="o">=</span><span class="n">npc</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">spell_title</span><span class="o">=</span><span class="n">spell</span><span class="p">,</span> <span class="n">knight</span><span class="o">=</span><span class="n">knight</span><span class="p">,</span>
+                                                <span class="n">paladin</span><span class="o">=</span><span class="n">paladin</span><span class="p">,</span> <span class="n">druid</span><span class="o">=</span><span class="n">druid</span><span class="p">,</span> <span class="n">sorcerer</span><span class="o">=</span><span class="n">sorcerer</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Npc.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Npc.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">offer</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;buy_offers&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">offer</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">offer</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;sell_offers&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">offer</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">spell</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;teaches&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">spell</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">destination</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;destinations&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">destination</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Npc.get_by_field"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Npc.get_by_field">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_by_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">use_like</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">npc</span><span class="p">:</span> <span class="bp">cls</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_by_field</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">use_like</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">npc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">npc</span><span class="o">.</span><span class="n">sell_offers</span> <span class="o">=</span> <span class="n">NpcSellOffer</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;npc_id&quot;</span><span class="p">,</span> <span class="n">npc</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">npc</span><span class="o">.</span><span class="n">buy_offers</span> <span class="o">=</span> <span class="n">NpcBuyOffer</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;npc_id&quot;</span><span class="p">,</span> <span class="n">npc</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">npc</span><span class="o">.</span><span class="n">teaches</span> <span class="o">=</span> <span class="n">NpcSpell</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;npc_id&quot;</span><span class="p">,</span> <span class="n">npc</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+        <span class="n">npc</span><span class="o">.</span><span class="n">destinations</span> <span class="o">=</span> <span class="n">NpcDestination</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;npc_id&quot;</span><span class="p">,</span> <span class="n">npc</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">npc</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">NpcOffer</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npc_id</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;npc_id&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npc_title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;npc_title&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_id</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;item_id&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;item_title&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currency_id</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;currency_id&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currency_title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;currency_title&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npc_city</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;npc_city&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0.__class__.__name__}</span><span class="s2">(</span><span class="si">{1}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="NpcSellOffer"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcSellOffer">[docs]</a><span class="k">class</span> <span class="nc">NpcSellOffer</span><span class="p">(</span><span class="n">NpcOffer</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">NpcSelling</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents an item sellable by an NPC.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    npc_id: :class:`int`</span>
+<span class="sd">        The article id of the npc that sells the item.</span>
+<span class="sd">    npc_title: :class:`str`</span>
+<span class="sd">        The title of the npc that sells the item.</span>
+<span class="sd">    npc_city: :class:`str`</span>
+<span class="sd">        The city where the NPC is located.</span>
+<span class="sd">    item_id: :class:`int`</span>
+<span class="sd">        The id of the item sold by the npc.</span>
+<span class="sd">    item_title: :class:`str`</span>
+<span class="sd">        The title of the item sold by the npc.</span>
+<span class="sd">    currency_id: :class:`int`</span>
+<span class="sd">        The item id of the currency used to buy the item.</span>
+<span class="sd">    currency_title: :class:`str`</span>
+<span class="sd">        The title of the currency used to buy the item</span>
+<span class="sd">    value: :class:`str`</span>
+<span class="sd">        The value of the item in the specified currency.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;npc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;npc_title&quot;</span><span class="p">,</span> <span class="s2">&quot;npc_city&quot;</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="s2">&quot;item_title&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;currency_id&quot;</span><span class="p">,</span> <span class="s2">&quot;currency_title&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="NpcSellOffer.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcSellOffer.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;currency_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
+<span class="s2">                            VALUES(</span>
+<span class="s2">                            ?,</span>
+<span class="s2">                            (SELECT article_id from item WHERE title = ?),</span>
+<span class="s2">                            ?,</span>
+<span class="s2">                            (SELECT article_id from item WHERE title = ?))&quot;&quot;&quot;</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npc_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currency_title</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
+<span class="s2">                                        VALUES(</span>
+<span class="s2">                                        ?,</span>
+<span class="s2">                                        (SELECT article_id from item WHERE title = ?),</span>
+<span class="s2">                                        (SELECT value_buy from item WHERE title = ?),</span>
+<span class="s2">                                        (SELECT article_id from item WHERE title = ?))&quot;&quot;&quot;</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npc_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currency_title</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_is_column</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__slots__</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">%s</span><span class="s2">.*, item.title as item_title, npc.title as npc_title, npc.city as npc_city,</span>
+<span class="s2">                  currency.title as currency_title FROM </span><span class="si">%s</span><span class="s2"></span>
+<span class="s2">                  LEFT JOIN npc ON npc.article_id = npc_id</span>
+<span class="s2">                  LEFT JOIN item ON item.article_id = item_id</span>
+<span class="s2">                  LEFT JOIN item currency on currency.article_id = currency_id</span>
+<span class="s2">                  &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NpcBuyOffer"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcBuyOffer">[docs]</a><span class="k">class</span> <span class="nc">NpcBuyOffer</span><span class="p">(</span><span class="n">NpcOffer</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">NpcBuying</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Represents an item buyable by an NPC.</span>
+
+<span class="sd">        Attributes</span>
+<span class="sd">        ----------</span>
+<span class="sd">        npc_id: :class:`int`</span>
+<span class="sd">            The article id of the npc that buys the item.</span>
+<span class="sd">        npc_title: :class:`str`</span>
+<span class="sd">            The title of the npc that buys the item.</span>
+<span class="sd">        npc_city: :class:`str`</span>
+<span class="sd">            The city where the NPC is located.</span>
+<span class="sd">        item_id: :class:`int`</span>
+<span class="sd">            The id of the item bought by the npc.</span>
+<span class="sd">        item_title: :class:`str`</span>
+<span class="sd">            The title of the item bought by the npc.</span>
+<span class="sd">        currency_id: :class:`int`</span>
+<span class="sd">            The item id of the currency used to sell the item.</span>
+<span class="sd">        currency_title: :class:`str`</span>
+<span class="sd">            The title of the currency used to sell the item</span>
+<span class="sd">        value: :class:`str`</span>
+<span class="sd">            The value of the item in the specified currency.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;npc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;npc_title&quot;</span><span class="p">,</span> <span class="s2">&quot;npc_city&quot;</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="s2">&quot;item_title&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;currency_id&quot;</span><span class="p">,</span> <span class="s2">&quot;currency_title&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="NpcBuyOffer.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcBuyOffer.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;currency_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
+<span class="s2">                            VALUES(</span>
+<span class="s2">                            ?,</span>
+<span class="s2">                            (SELECT article_id from item WHERE title = ?),</span>
+<span class="s2">                            ?,</span>
+<span class="s2">                            (SELECT article_id from item WHERE title = ?))&quot;&quot;&quot;</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npc_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currency_title</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
+<span class="s2">                                        VALUES(</span>
+<span class="s2">                                        ?,</span>
+<span class="s2">                                        (SELECT article_id from item WHERE title = ?),</span>
+<span class="s2">                                        (SELECT value_sell from item WHERE title = ?),</span>
+<span class="s2">                                        (SELECT article_id from item WHERE title = ?))&quot;&quot;&quot;</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npc_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currency_title</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_is_column</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__slots__</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">%s</span><span class="s2">.*, item.title as item_title, npc.title as npc_title, npc.city as npc_city,</span>
+<span class="s2">                  currency.title as currency_title FROM </span><span class="si">%s</span><span class="s2"></span>
+<span class="s2">                  LEFT JOIN npc ON npc.article_id = npc_id</span>
+<span class="s2">                  LEFT JOIN item ON item.article_id = item_id</span>
+<span class="s2">                  LEFT JOIN item currency on currency.article_id = currency_id</span>
+<span class="s2">                  &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NpcSpell"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcSpell">[docs]</a><span class="k">class</span> <span class="nc">NpcSpell</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">NpcSpell</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a spell that a NPC can teach.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    npc_id: :class:`int`</span>
+<span class="sd">        The article id of the npc that teaches the spell.</span>
+<span class="sd">    npc_title: :class:`str`</span>
+<span class="sd">        The title of the npc that teaches the spell.</span>
+<span class="sd">    spell_id: :class:`int`</span>
+<span class="sd">        The article id of the spell taught by the npc.</span>
+<span class="sd">    spell_title: :class:`str`</span>
+<span class="sd">        The title of the spell taught by the npc.</span>
+<span class="sd">    price: :class:`int`</span>
+<span class="sd">        The price paid to have this spell taught.</span>
+<span class="sd">    npc_city: :class:`str`</span>
+<span class="sd">        The city where the NPC is located.</span>
+<span class="sd">    knight: :class:`bool`</span>
+<span class="sd">        If the spell is taught to knights.</span>
+<span class="sd">    paladin: :class:`bool`</span>
+<span class="sd">        If the spell is taught to paladins.</span>
+<span class="sd">    druid: :class:`bool`</span>
+<span class="sd">        If the spell is taught to druids.</span>
+<span class="sd">    sorcerer: :class:`bool`</span>
+<span class="sd">        If the spell is taught to sorcerers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;npc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;npc_title&quot;</span><span class="p">,</span> <span class="s2">&quot;npc_city&quot;</span><span class="p">,</span> <span class="s2">&quot;spell_id&quot;</span><span class="p">,</span> <span class="s2">&quot;spell_title&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;knight&quot;</span><span class="p">,</span> <span class="s2">&quot;sorcerer&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;paladin&quot;</span><span class="p">,</span> <span class="s2">&quot;druid&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npc_city</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;npc_city&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npc_title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;npc_title&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spell_title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;spell_title&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0.__class__.__name__}</span><span class="s2">(</span><span class="si">{1}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">))</span>
+
+<div class="viewcode-block" id="NpcSpell.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcSpell.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;spell_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(c.name for c in self.table.columns)})</span>
+<span class="s2">                        VALUES(?, (SELECT article_id from spell WHERE title = ?), ?, ?, ?, ?)&quot;&quot;&quot;</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npc_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spell_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">knight</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sorcerer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">paladin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">druid</span><span class="p">))</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_is_column</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__slots__</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">%s</span><span class="s2">.*, spell.title as spell_title, npc.title as npc_title, spell.price as price, </span>
+<span class="s2">                  npc.city as npc_city FROM </span><span class="si">%s</span><span class="s2"></span>
+<span class="s2">                  LEFT JOIN npc ON npc.article_id = npc_id</span>
+<span class="s2">                  LEFT JOIN spell ON spell.article_id = spell_id&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NpcDestination"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcDestination">[docs]</a><span class="k">class</span> <span class="nc">NpcDestination</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">NpcDestination</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a NPC&#39;s travel destination</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    npc_id: :class:`int`</span>
+<span class="sd">        The article id of the NPC.</span>
+<span class="sd">    name: :class:`str`</span>
+<span class="sd">        The name of the destination</span>
+<span class="sd">    price: :class:`int`</span>
+<span class="sd">        The price in gold to travel.</span>
+<span class="sd">    notes: :class:`str`</span>
+<span class="sd">        Notes about the destination, such as requirements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;npc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;notes&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RashidPosition"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.RashidPosition">[docs]</a><span class="k">class</span> <span class="nc">RashidPosition</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">RashidPosition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents a Rashid position.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    -----------</span>
+<span class="sd">    day: :class:`int`</span>
+<span class="sd">        Day of the week, Monday starts at 0.</span>
+<span class="sd">    x: :class:`int`</span>
+<span class="sd">        The x coordinate of Rashid that day.</span>
+<span class="sd">    y: :class:`int`</span>
+<span class="sd">        The y coordinate of Rashid that day.</span>
+<span class="sd">    z: :class:`int`</span>
+<span class="sd">        The z coordinate of Rashid that day.</span>
+<span class="sd">    city: :class:`str`</span>
+<span class="sd">        The city where Rashid is that day.</span>
+<span class="sd">    location: :class:`str`</span>
+<span class="sd">        The location where Rashid is that day.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<span class="n">rashid_positions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">RashidPosition</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">32210</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">31157</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Svargrond&quot;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;Dankwart&#39;s Tavern, south of the temple.&quot;</span><span class="p">),</span>
+    <span class="n">RashidPosition</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">32303</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">32834</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Liberty Bay&quot;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;Lyonel&#39;s tavern, west of the depot.&quot;</span><span class="p">),</span>
+    <span class="n">RashidPosition</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">32578</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">32754</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Port Hope&quot;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;Clyde&#39;s tavern, west of the depot.&quot;</span><span class="p">),</span>
+    <span class="n">RashidPosition</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">33068</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">32879</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Ankrahmun&quot;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;Arito&#39;s tavern, above the post office.&quot;</span><span class="p">),</span>
+    <span class="n">RashidPosition</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">33239</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">32480</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Darashia&quot;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;Miraia&#39;s tavern, south of the guildhalls.&quot;</span><span class="p">),</span>
+    <span class="n">RashidPosition</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">33172</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">31813</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Edron&quot;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;Mirabell&#39;s tavern, above the depot.&quot;</span><span class="p">),</span>
+    <span class="n">RashidPosition</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">32326</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">31784</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Carlin&quot;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;Carlin depot, one floor above.&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">TibiaWikiSQL</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Allan Galarza.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

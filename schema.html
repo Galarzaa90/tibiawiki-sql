@@ -1,0 +1,1530 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Database &#8212; TibiaWikiSQL 2.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api.html" />
+    <link rel="prev" title="Introduction" href="intro.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="database">
+<h1>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h1>
+<p>The SQLite database contains a series of tables dedicated to each of the model types. Following SQL best practices where possible.</p>
+<p>The database can be accessed through the API provided by this module, or directly any SQLite API using queries.</p>
+<p>The generated database has the following tables.</p>
+<div class="section" id="tables">
+<h2>Tables<a class="headerlink" href="#tables" title="Permalink to this headline">¶</a></h2>
+<table class="docutils">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 68%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Table</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#achievement">achievement</a></p></td>
+<td><p>Contains information for all achievements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#charm">charm</a></p></td>
+<td><p>Contains information for all charms.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#creature">creature</a></p></td>
+<td><p>Contains information for all creatures.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#creature-drop">creature_drop</a></p></td>
+<td><p>Contains all the items dropped by creatures.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#database-info">database_info</a></p></td>
+<td><p>Contains information about the database itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#house">house</a></p></td>
+<td><p>Contains all houses and guildhalls.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#imbuement">imbuement</a></p></td>
+<td><p>Contains information for all imbuements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#imbuement-material">imbuement_material</a></p></td>
+<td><p>Contains the item materials for imbuements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#item">item</a></p></td>
+<td><p>Contains information for all items.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#item-attribute">item_attribute</a></p></td>
+<td><p>Contains extra attributes and properties of
+items that only apply to certain types.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#item-key">item_key</a></p></td>
+<td><p>Contains the different key variations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#map">map</a></p></td>
+<td><p>Contains the world map’s images.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#npc">npc</a></p></td>
+<td><p>Contains information for all NPCs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#npc-destination">npc_destination</a></p></td>
+<td><p>Contains all the NPCs’ travel destinations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#npc-offer-buy">npc_offer_buy</a></p></td>
+<td><p>Contains all the NPCs’ buy offers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#npc-offer-sell">npc_offer_sell</a></p></td>
+<td><p>Contains all the NPCs’ sell offers.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#npc-spell">npc_spell</a></p></td>
+<td><p>Contains all the spells NPCs teach.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#quest">quest</a></p></td>
+<td><p>Contains information for all quests.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#quest-danger">quest_danger</a></p></td>
+<td><p>Contains creatures that can be found in a
+quest.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#quest-reward">quest_reward</a></p></td>
+<td><p>Contains item rewards for quests.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rashid-position">rashid_position</a></p></td>
+<td><p>Contains the positions for the NPC Rashid
+every day of the week.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spell">spell</a></p></td>
+<td><p>Contains information for all spells.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="table-schemas">
+<h2>Table schemas<a class="headerlink" href="#table-schemas" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="line-block">
+<div class="line">SQLite does not have an actual Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true).</div>
+<div class="line">This is not much of an issue in Python, but it might be an issue on more strict typed langauges.</div>
+</div>
+</div>
+<div class="section" id="achievement">
+<h3>achievement<a class="headerlink" href="#achievement" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 68%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>article_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
+<td><p>The id of the article containing this achievement.</p></td>
+</tr>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The title of the article containing the achievement.</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The name of the achievement.</p></td>
+</tr>
+<tr class="row-odd"><td><p>grade</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The grade of the achievement. Goes from 1 to 3.</p></td>
+</tr>
+<tr class="row-even"><td><p>points</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The number of points this achivement gives.</p></td>
+</tr>
+<tr class="row-odd"><td><p>description</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The official description shown for
+this achievement.</p></td>
+</tr>
+<tr class="row-even"><td><p>spoiler</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>Brief instructions on how to
+complete the quest.</p></td>
+</tr>
+<tr class="row-odd"><td><p>secret</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this is a secret
+achievement or not.</p></td>
+</tr>
+<tr class="row-even"><td><p>premium</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this achievement requires
+premium.</p></td>
+</tr>
+<tr class="row-odd"><td><p>version</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>Client version this achievement
+was implemented in.</p></td>
+</tr>
+<tr class="row-even"><td><p>timestamp</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Unix timestamp of the article’s last edit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="charm">
+<h3>charm<a class="headerlink" href="#charm" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 73%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The name of the charm.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The type of the charm: <code class="docutils literal notranslate"><span class="pre">Offensive</span></code>, <code class="docutils literal notranslate"><span class="pre">Defensive</span></code> or <code class="docutils literal notranslate"><span class="pre">Passive</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>points</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The number of charm points needed to unlock.</p></td>
+</tr>
+<tr class="row-odd"><td><p>description</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The effect of this charm.</p></td>
+</tr>
+<tr class="row-even"><td><p>image</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BLOB</span></code></p></td>
+<td><p>The charm’s image bytes.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="creature">
+<h3>creature<a class="headerlink" href="#creature" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 15%" />
+<col style="width: 61%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>article_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
+<td><p>The id of the article containing this creature.</p></td>
+</tr>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The title of the article containing this creature.</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The name of the creature in-game.</p></td>
+</tr>
+<tr class="row-odd"><td><p>article</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The grammatical article before the creature’s name.
+This is shown when looking at creatures.
+Bosses have no article.</p></td>
+</tr>
+<tr class="row-even"><td><p>hitpoints</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The number of hitpoints the creature has.
+May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if unknown.</p></td>
+</tr>
+<tr class="row-odd"><td><p>experience</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The number of experience the creature yields .
+May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if unknown.</p></td>
+</tr>
+<tr class="row-even"><td><p>armor</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The armor value of the creature.
+May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if unknown.</p></td>
+</tr>
+<tr class="row-odd"><td><p>speed</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The speed value of the creature.
+May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if unknown.</p></td>
+</tr>
+<tr class="row-even"><td><p>class</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The class this creature belongs to
+(e.g. <code class="docutils literal notranslate"><span class="pre">Demons</span></code>, <code class="docutils literal notranslate"><span class="pre">Humanoids</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Mammals</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The class this creature belongs to
+(e.g. <code class="docutils literal notranslate"><span class="pre">Archdemons</span></code>, <code class="docutils literal notranslate"><span class="pre">Dwarves</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Apes</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p>bestiary_class</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The bestiary category of this
+creature. <code class="docutils literal notranslate"><span class="pre">NULL</span></code> for creatures
+not in the bestiary.</p></td>
+</tr>
+<tr class="row-odd"><td><p>bestiary_level</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The bestiary level of this
+creature. <code class="docutils literal notranslate"><span class="pre">NULL</span></code> for creatures
+not in the bestiary.</p></td>
+</tr>
+<tr class="row-even"><td><p>bestiary_occurrence</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The bestiary’s rarity value of
+this creature. <code class="docutils literal notranslate"><span class="pre">NULL</span></code> for
+creatures not in the bestiary.</p></td>
+</tr>
+<tr class="row-odd"><td><p>max_damage</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The maximum damage a creature may
+deal if it were to use all it’s
+abilities at once. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
+if unknown.</p></td>
+</tr>
+<tr class="row-even"><td><p>summon_cost</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The mana cost to summon this
+creature. <code class="docutils literal notranslate"><span class="pre">0</span></code> means it is not
+summonable.</p></td>
+</tr>
+<tr class="row-odd"><td><p>convince_cost</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The mana cost to convince this
+creature. <code class="docutils literal notranslate"><span class="pre">0</span></code> means it is not
+convincible.</p></td>
+</tr>
+<tr class="row-even"><td><p>illusionable</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether the player can turn into
+this creature with Creature
+Illusion.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pushable</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this creature can be pushed or not.</p></td>
+</tr>
+<tr class="row-even"><td><p>paralysable</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this creature can be paralyzed or not.</p></td>
+</tr>
+<tr class="row-odd"><td><p>sees_invisible</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this creature can see
+invisible players or not.</p></td>
+</tr>
+<tr class="row-even"><td><p>boss</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this creature is a boss or
+not.</p></td>
+</tr>
+<tr class="row-odd"><td><p>modifier_physical</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Percentage of damage the creature
+receives from this damage type.
+<code class="docutils literal notranslate"><span class="pre">0</span></code> being completely immune,
+<code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
+if unknown.</p></td>
+</tr>
+<tr class="row-even"><td><p>modifier_earth</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Percentage of damage the creature
+receives from this damage type.
+<code class="docutils literal notranslate"><span class="pre">0</span></code> being completely immune,
+<code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
+if unknown.</p></td>
+</tr>
+<tr class="row-odd"><td><p>modifier_fire</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Percentage of damage the creature
+receives from this damage type.
+<code class="docutils literal notranslate"><span class="pre">0</span></code> being completely immune,
+<code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
+if unknown.</p></td>
+</tr>
+<tr class="row-even"><td><p>modifier_ice</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Percentage of damage the creature
+receives from this damage type.
+<code class="docutils literal notranslate"><span class="pre">0</span></code> being completely immune,
+<code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
+if unknown.</p></td>
+</tr>
+<tr class="row-odd"><td><p>modifier_energy</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Percentage of damage the creature
+receives from this damage type.
+<code class="docutils literal notranslate"><span class="pre">0</span></code> being completely immune,
+<code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
+if unknown.</p></td>
+</tr>
+<tr class="row-even"><td><p>modifier_death</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Percentage of damage the creature
+receives from this damage type.
+<code class="docutils literal notranslate"><span class="pre">0</span></code> being completely immune,
+<code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
+if unknown.</p></td>
+</tr>
+<tr class="row-odd"><td><p>modifier_holy</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Percentage of damage the creature
+receives from this damage type.
+<code class="docutils literal notranslate"><span class="pre">0</span></code> being completely immune,
+<code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
+if unknown.</p></td>
+</tr>
+<tr class="row-even"><td><p>modifier_drown</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Percentage of damage the creature
+receives from this damage type.
+<code class="docutils literal notranslate"><span class="pre">0</span></code> being completely immune,
+<code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
+if unknown.</p></td>
+</tr>
+<tr class="row-odd"><td><p>modifier_hpdrain</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Percentage of damage the creature
+receives from this damage type.
+<code class="docutils literal notranslate"><span class="pre">0</span></code> being completely immune,
+<code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
+if unknown.</p></td>
+</tr>
+<tr class="row-even"><td><p>abilities</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>A summary of a creature’s
+abilities (attacks, spells,
+healing).</p></td>
+</tr>
+<tr class="row-odd"><td><p>walks_through</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The type of fields the creature
+will walk through.</p></td>
+</tr>
+<tr class="row-even"><td><p>walks_around</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The type of fields the creature
+will walk around to avoid when
+possible.</p></td>
+</tr>
+<tr class="row-odd"><td><p>version</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The client version this creature
+was introduced to the game.</p></td>
+</tr>
+<tr class="row-even"><td><p>image</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BLOB</span></code></p></td>
+<td><p>The creature’s image bytes.</p></td>
+</tr>
+<tr class="row-odd"><td><p>timestamp</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Unix timestamp of the article’s last edit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="creature-drop">
+<h3>creature_drop<a class="headerlink" href="#creature-drop" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 69%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>creature_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the creature that yields this drop.</p></td>
+</tr>
+<tr class="row-odd"><td><p>item_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the dropped item.</p></td>
+</tr>
+<tr class="row-even"><td><p>chance</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">REAL</span></code></p></td>
+<td><p>The chance percentage of this drop. <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if unknown.</p></td>
+</tr>
+<tr class="row-odd"><td><p>min</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The minimum count of the dropped item.</p></td>
+</tr>
+<tr class="row-even"><td><p>max</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The maximum count of the dropped item.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="database-info">
+<h3>database_info<a class="headerlink" href="#database-info" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 24%" />
+<col style="width: 62%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>key</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The name of the value contained.</p></td>
+</tr>
+<tr class="row-odd"><td><p>value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The value of the property.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="house">
+<h3>house<a class="headerlink" href="#house" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 18%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>article_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
+<td><p>The id of the article containing this house.</p></td>
+</tr>
+<tr class="row-odd"><td><p>houseid</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the house according to tibia.com.</p></td>
+</tr>
+<tr class="row-even"><td><p>title</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The title of the article containing this house.</p></td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The name of the house.</p></td>
+</tr>
+<tr class="row-even"><td><p>city</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The city the house belongs to.</p></td>
+</tr>
+<tr class="row-odd"><td><p>street</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The street this house is located in.</p></td>
+</tr>
+<tr class="row-even"><td><p>beds</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The number of beds the house has.</p></td>
+</tr>
+<tr class="row-odd"><td><p>rent</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The monthly rent of this house.</p></td>
+</tr>
+<tr class="row-even"><td><p>size</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The number of tiles this house has.</p></td>
+</tr>
+<tr class="row-odd"><td><p>rooms</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The number of rooms or divisions has.</p></td>
+</tr>
+<tr class="row-even"><td><p>floors</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The number of floors this house has.</p></td>
+</tr>
+<tr class="row-odd"><td><p>x</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The x position of the house.</p></td>
+</tr>
+<tr class="row-even"><td><p>y</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The y position of the house.</p></td>
+</tr>
+<tr class="row-odd"><td><p>z</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The z position of the house.</p></td>
+</tr>
+<tr class="row-even"><td><p>guildhall</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this house is a guildhall or not.</p></td>
+</tr>
+<tr class="row-odd"><td><p>version</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The client version this was implemented in.</p></td>
+</tr>
+<tr class="row-even"><td><p>timestamp</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Unix timestamp of the article’s last edit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="imbuement">
+<h3>imbuement<a class="headerlink" href="#imbuement" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 15%" />
+<col style="width: 72%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>article_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
+<td><p>The id of the article containing this imbuement.</p></td>
+</tr>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The title of the article containing this imbuement.</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The name of the imbuement.</p></td>
+</tr>
+<tr class="row-odd"><td><p>tier</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The imbuement’s tier: <code class="docutils literal notranslate"><span class="pre">Basic</span></code>,  <code class="docutils literal notranslate"><span class="pre">Intricate</span></code>, <code class="docutils literal notranslate"><span class="pre">Powerful</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The imbuement’s type, e.g.  <code class="docutils literal notranslate"><span class="pre">Void</span></code>, <code class="docutils literal notranslate"><span class="pre">Frost</span></code>, etc.</p></td>
+</tr>
+<tr class="row-odd"><td><p>effect</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The effect given by this imbuement.</p></td>
+</tr>
+<tr class="row-even"><td><p>version</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The client version this imbuement
+was introduced to the game.</p></td>
+</tr>
+<tr class="row-odd"><td><p>image</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BLOB</span></code></p></td>
+<td><p>The imbuement’s image bytes.</p></td>
+</tr>
+<tr class="row-even"><td><p>timestamp</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Unix timestamp of the article’s last edit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="imbuement-material">
+<h3>imbuement_material<a class="headerlink" href="#imbuement-material" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 17%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>imbuement_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the imbuement this material belongs to</p></td>
+</tr>
+<tr class="row-odd"><td><p>item_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the item material.</p></td>
+</tr>
+<tr class="row-even"><td><p>amount</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The amount of items needed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="item">
+<h3>item<a class="headerlink" href="#item" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>article_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
+<td><p>The id of the article containing this item.</p></td>
+</tr>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The title of the article containing this item.</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The actual name of the item in-game.</p></td>
+</tr>
+<tr class="row-odd"><td><p>stackable</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this item is stackable or not.</p></td>
+</tr>
+<tr class="row-even"><td><p>value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The maximum value of this item
+when sold to NPCs</p></td>
+</tr>
+<tr class="row-odd"><td><p>price</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The maximum price of this item
+when bought from NPCs.</p></td>
+</tr>
+<tr class="row-even"><td><p>weight</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">REAL</span></code></p></td>
+<td><p>The weight of this item in ounces.</p></td>
+</tr>
+<tr class="row-odd"><td><p>class</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The class this item belongs to
+(e.g. <code class="docutils literal notranslate"><span class="pre">Body</span> <span class="pre">Equipment</span></code> , <code class="docutils literal notranslate"><span class="pre">Weapons</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The category this item belongs to
+(e.g. <code class="docutils literal notranslate"><span class="pre">Helmets</span></code>, <code class="docutils literal notranslate"><span class="pre">Club</span> <span class="pre">Weapons</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p>flavor_text</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The extra text that is displayed
+when some items are looked at.</p></td>
+</tr>
+<tr class="row-even"><td><p>client_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The client id of the item.</p></td>
+</tr>
+<tr class="row-odd"><td><p>version</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The client version this item was
+introduced to the game.</p></td>
+</tr>
+<tr class="row-even"><td><p>image</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BLOB</span></code></p></td>
+<td><p>The item’s image bytes.</p></td>
+</tr>
+<tr class="row-odd"><td><p>timestamp</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Unix timestamp of the article’s last edit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="item-attribute">
+<h3>item_attribute<a class="headerlink" href="#item-attribute" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 19%" />
+<col style="width: 68%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>item_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the item this attribute belongs to.</p></td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The name of the attribute.</p></td>
+</tr>
+<tr class="row-even"><td><p>value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The value of the attribute.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="item-key">
+<h3>item_key<a class="headerlink" href="#item-key" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 18%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>article_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
+<td><p>The id of the article containing this key.</p></td>
+</tr>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The title of the article containing this key.</p></td>
+</tr>
+<tr class="row-even"><td><p>number</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The number of this key, without padding
+(e.g. Key 0555’s
+<code class="docutils literal notranslate"><span class="pre">number</span></code> would be <code class="docutils literal notranslate"><span class="pre">555</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p>item_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The item id of the key.</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>Name(s) this key usually receives by players.</p></td>
+</tr>
+<tr class="row-odd"><td><p>material</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The material this key is made of.</p></td>
+</tr>
+<tr class="row-even"><td><p>location</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>General location of this key.</p></td>
+</tr>
+<tr class="row-odd"><td><p>origin</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>How this key is obtained.</p></td>
+</tr>
+<tr class="row-even"><td><p>notes</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>Where this key is used or other notes.</p></td>
+</tr>
+<tr class="row-odd"><td><p>version</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The client version this key was
+introduced to the game.</p></td>
+</tr>
+<tr class="row-even"><td><p>timestamp</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Unix timestamp of the article’s last edit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="map">
+<h3>map<a class="headerlink" href="#map" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 18%" />
+<col style="width: 72%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>z</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
+<td><p>The floor’s level, where 7 is the ground floor.</p></td>
+</tr>
+<tr class="row-odd"><td><p>image</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BLOB</span></code></p></td>
+<td><p>The map’s image for that that floor, in PNG format.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="npc">
+<h3>npc<a class="headerlink" href="#npc" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 17%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>article_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
+<td><p>The id of the article containing this NPC.</p></td>
+</tr>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The title of the article containing the NPC.</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The actual name of the NPC in-game.</p></td>
+</tr>
+<tr class="row-odd"><td><p>gender</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The actual gender of the NPC in-game.</p></td>
+</tr>
+<tr class="row-even"><td><p>race</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The actual race of the NPC in-game.</p></td>
+</tr>
+<tr class="row-odd"><td><p>job</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The NPC job</p></td>
+</tr>
+<tr class="row-even"><td><p>city</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>City where the npc is found.</p></td>
+</tr>
+<tr class="row-odd"><td><p>location</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The location where the NPC is found.</p></td>
+</tr>
+<tr class="row-even"><td><p>x</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The x position where the NPC is usually located.</p></td>
+</tr>
+<tr class="row-odd"><td><p>y</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The y position where the NPC is usually located.</p></td>
+</tr>
+<tr class="row-even"><td><p>z</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The z position where the NPC is usually located.</p></td>
+</tr>
+<tr class="row-odd"><td><p>version</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The client version this NPC was introduced to
+to the game.</p></td>
+</tr>
+<tr class="row-even"><td><p>image</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BLOB</span></code></p></td>
+<td><p>The NPC’s image bytes.</p></td>
+</tr>
+<tr class="row-odd"><td><p>timestamp</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Unix timestamp of the article’s last edit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="npc-destination">
+<h3>npc_destination<a class="headerlink" href="#npc-destination" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 23%" />
+<col style="width: 63%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>npc_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the npc this destination
+belongs to.</p></td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The name of the place this npc can
+take you to.</p></td>
+</tr>
+<tr class="row-even"><td><p>price</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The price to travel to the
+destination with this npc.</p></td>
+</tr>
+<tr class="row-odd"><td><p>notes</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Extra notes for this destination,
+like extra requirements or
+exceptions.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="npc-offer-buy">
+<h3>npc_offer_buy<a class="headerlink" href="#npc-offer-buy" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 23%" />
+<col style="width: 59%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>npc_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the npc this offer
+belongs to</p></td>
+</tr>
+<tr class="row-odd"><td><p>item_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the item this offer
+refers to</p></td>
+</tr>
+<tr class="row-even"><td><p>value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The value of the offer</p></td>
+</tr>
+<tr class="row-odd"><td><p>currency</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the item used as
+currency in this offer. In most
+cases this is the id of gold
+coins.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="npc-offer-sell">
+<h3>npc_offer_sell<a class="headerlink" href="#npc-offer-sell" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 23%" />
+<col style="width: 59%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>npc_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the npc this offer
+belongs to</p></td>
+</tr>
+<tr class="row-odd"><td><p>item_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the item this offer
+refers to</p></td>
+</tr>
+<tr class="row-even"><td><p>value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The value of the offer</p></td>
+</tr>
+<tr class="row-odd"><td><p>currency</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the item used as
+currency in this offer. In most
+cases this is the id of gold
+coins.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="npc-spell">
+<h3>npc_spell<a class="headerlink" href="#npc-spell" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 19%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>npc_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the npc that teaches this spell.</p></td>
+</tr>
+<tr class="row-odd"><td><p>spell_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The id of the spell this npc teaches.</p></td>
+</tr>
+<tr class="row-even"><td><p>knight</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this NPC teaches this spell to
+knights.</p></td>
+</tr>
+<tr class="row-odd"><td><p>sorcerer</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this NPC teaches this spell to
+sorcerers.</p></td>
+</tr>
+<tr class="row-even"><td><p>druid</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this NPC teaches this spell to
+druids.</p></td>
+</tr>
+<tr class="row-odd"><td><p>paladin</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this NPC teaches this spell to
+paladins.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="quest">
+<h3>quest<a class="headerlink" href="#quest" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 17%" />
+<col style="width: 59%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>article_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
+<td><p>The id of the article containing this quest.</p></td>
+</tr>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The title of the article containing the
+quest.</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The name of the quest.</p></td>
+</tr>
+<tr class="row-odd"><td><p>location</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>Location where the quest starts or
+takes place.</p></td>
+</tr>
+<tr class="row-even"><td><p>legend</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>Short description of the quest.</p></td>
+</tr>
+<tr class="row-odd"><td><p>level_required</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The level required to finish the
+quest.</p></td>
+</tr>
+<tr class="row-even"><td><p>level_recommended</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The level recommended to finish
+the quest.</p></td>
+</tr>
+<tr class="row-odd"><td><p>premium</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether premium account is
+required to finish the quest.</p></td>
+</tr>
+<tr class="row-even"><td><p>version</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>Client version where this quest
+was implemented.</p></td>
+</tr>
+<tr class="row-odd"><td><p>timestamp</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Unix timestamp of the UTC time of
+the last edit made to this
+article.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="quest-danger">
+<h3>quest_danger<a class="headerlink" href="#quest-danger" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 19%" />
+<col style="width: 61%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>quest_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Id of the quest this danger belongs to.</p></td>
+</tr>
+<tr class="row-odd"><td><p>creature_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Id of the creature found in this quest.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="quest-reward">
+<h3>quest_reward<a class="headerlink" href="#quest-reward" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 20%" />
+<col style="width: 64%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>quest_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Id of the quest this reward belongs to.</p></td>
+</tr>
+<tr class="row-odd"><td><p>item_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Id of the item obtained in this quest.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="rashid-position">
+<h3>rashid_position<a class="headerlink" href="#rashid-position" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 21%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>day</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
+<td><p>Day of the week, where Monday is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>city</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>Name of the city Rashid is located.</p></td>
+</tr>
+<tr class="row-even"><td><p>x</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The x position where Rashid is that day.</p></td>
+</tr>
+<tr class="row-odd"><td><p>y</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The y position where Rashid is that day.</p></td>
+</tr>
+<tr class="row-even"><td><p>z</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The z position where Rashid is that day.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="spell">
+<h3>spell<a class="headerlink" href="#spell" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 16%" />
+<col style="width: 69%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>article_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
+<td><p>The id of the article containing this achievement.</p></td>
+</tr>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The title of the article containing the achievement.</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The name of the spell.</p></td>
+</tr>
+<tr class="row-odd"><td><p>words</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The words used to cast the spell</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>Whether the spell is <code class="docutils literal notranslate"><span class="pre">Instant</span></code> or a <code class="docutils literal notranslate"><span class="pre">Rune</span></code> spell.</p></td>
+</tr>
+<tr class="row-odd"><td><p>class</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The spell’s class (e.g. <code class="docutils literal notranslate"><span class="pre">Attack</span></code>, <code class="docutils literal notranslate"><span class="pre">Support</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>element</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The type of damage this spell deals, if applicable.</p></td>
+</tr>
+<tr class="row-odd"><td><p>level</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Level required to cast this spell</p></td>
+</tr>
+<tr class="row-even"><td><p>mana</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Mana required to cast this spell.
+<code class="docutils literal notranslate"><span class="pre">0</span></code> means special conditions apply.</p></td>
+</tr>
+<tr class="row-odd"><td><p>soul</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Soul points required to cast this spell.</p></td>
+</tr>
+<tr class="row-even"><td><p>premium</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this spell requires
+premium account or not. <code class="docutils literal notranslate"><span class="pre">0</span></code> or
+<code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>price</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Price in gold coins of this spell</p></td>
+</tr>
+<tr class="row-even"><td><p>cooldown</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Cooldown in seconds of this spell</p></td>
+</tr>
+<tr class="row-odd"><td><p>knight</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this spell can be used by
+knights or not.</p></td>
+</tr>
+<tr class="row-even"><td><p>sorcerer</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this spell can be used by
+sorcerers or not.</p></td>
+</tr>
+<tr class="row-odd"><td><p>druid</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this spell can be used by
+druids or not.</p></td>
+</tr>
+<tr class="row-even"><td><p>paladin</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether this spell can be used by
+paladins or not.</p></td>
+</tr>
+<tr class="row-odd"><td><p>image</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BLOB</span></code></p></td>
+<td><p>The spell’s image bytes.</p></td>
+</tr>
+<tr class="row-even"><td><p>timestamp</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Unix timestamp of the article’s last edit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">TibiaWikiSQL</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Database</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tables">Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#table-schemas">Table schemas</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#achievement">achievement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#charm">charm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creature">creature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creature-drop">creature_drop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#database-info">database_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#house">house</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imbuement">imbuement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imbuement-material">imbuement_material</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#item">item</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#item-attribute">item_attribute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#item-key">item_key</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#map">map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#npc">npc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#npc-destination">npc_destination</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#npc-offer-buy">npc_offer_buy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#npc-offer-sell">npc_offer_sell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#npc-spell">npc_spell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quest">quest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quest-danger">quest_danger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quest-reward">quest_reward</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rashid-position">rashid_position</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spell">spell</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="intro.html" title="previous chapter">Introduction</a></li>
+      <li>Next: <a href="api.html" title="next chapter">API Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Allan Galarza.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/schema.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
