@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Changelog &#8212; TibiaWikiSQL 2.0.0 documentation</title>
+    <title>Changelog &#8212; TibiaWikiSQL 2.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -33,13 +33,16 @@
             
   <div class="section" id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="v2-0-1">
+<h2>v2.0.1<a class="headerlink" href="#v2-0-1" title="Permalink to this headline">¶</a></h2>
+<p>Released: 2018-11-26</p>
+<ul class="simple">
+<li><p>Fixed imbuement materials not getting saved in the database.</p></li>
+</ul>
+</div>
 <div class="section" id="v2-0-0">
 <h2>v2.0.0<a class="headerlink" href="#v2-0-0" title="Permalink to this headline">¶</a></h2>
-<dl class="field-list simple">
-<dt class="field-odd">Released</dt>
-<dd class="field-odd"><p>2018-11-22</p>
-</dd>
-</dl>
+<p>Released: 2018-11-22</p>
 <ul class="simple">
 <li><p>New model classes, to unify the generation process.</p></li>
 <li><p>Live fetching is now possible, obtain data directly from the Wiki.</p></li>
@@ -143,33 +146,21 @@
 </div>
 <div class="section" id="v1-2-0">
 <h2>v1.2.0<a class="headerlink" href="#v1-2-0" title="Permalink to this headline">¶</a></h2>
-<dl class="field-list simple">
-<dt class="field-odd">Released</dt>
-<dd class="field-odd"><p>2018-10-16</p>
-</dd>
-</dl>
+<p>Released: 2018-10-16</p>
 <ul class="simple">
 <li><p>New <code class="docutils literal notranslate"><span class="pre">charm</span></code> table, contains information about all charms.</p></li>
 </ul>
 </div>
 <div class="section" id="v1-1-1">
 <h2>v1.1.1<a class="headerlink" href="#v1-1-1" title="Permalink to this headline">¶</a></h2>
-<dl class="field-list simple">
-<dt class="field-odd">Released</dt>
-<dd class="field-odd"><p>2018-09-23</p>
-</dd>
-</dl>
+<p>Released: 2018-09-23</p>
 <ul class="simple">
 <li><p>Improved parsing of <code class="docutils literal notranslate"><span class="pre">walksaround</span></code> and <code class="docutils literal notranslate"><span class="pre">walksthrough</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="v1-1-0">
 <h2>v1.1.0<a class="headerlink" href="#v1-1-0" title="Permalink to this headline">¶</a></h2>
-<dl class="field-list simple">
-<dt class="field-odd">Released</dt>
-<dd class="field-odd"><p>2018-09-22</p>
-</dd>
-</dl>
+<p>Released: 2018-09-22</p>
 <ul class="simple">
 <li><p>Added new columns to creatures table:</p>
 <ul>
@@ -181,22 +172,14 @@
 </div>
 <div class="section" id="v1-0-1">
 <h2>v1.0.1<a class="headerlink" href="#v1-0-1" title="Permalink to this headline">¶</a></h2>
-<dl class="field-list simple">
-<dt class="field-odd">Released</dt>
-<dd class="field-odd"><p>2018-07-02</p>
-</dd>
-</dl>
+<p>Released: 2018-07-02</p>
 <ul class="simple">
 <li><p>Fixed bug caused when a category had a number of articles that was exactly a multiple of 50.</p></li>
 </ul>
 </div>
 <div class="section" id="v1-0-0">
 <h2>v1.0.0<a class="headerlink" href="#v1-0-0" title="Permalink to this headline">¶</a></h2>
-<dl class="field-list simple">
-<dt class="field-odd">Released</dt>
-<dd class="field-odd"><p>2018-07-01</p>
-</dd>
-</dl>
+<p>Released: 2018-07-01</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> is now TibiaWiki’s article id for the element, making them more reliable than autoincremented ids.</p></li>
 <li><p>Fixed bug with potion’s prices.</p></li>
@@ -216,11 +199,7 @@
 </div>
 <div class="section" id="v0-3-0">
 <h2>v0.3.0<a class="headerlink" href="#v0-3-0" title="Permalink to this headline">¶</a></h2>
-<dl class="field-list simple">
-<dt class="field-odd">Released</dt>
-<dd class="field-odd"><p>2017-12-18</p>
-</dd>
-</dl>
+<p>Released: 2017-12-18</p>
 <ul class="simple">
 <li><p>New <code class="docutils literal notranslate"><span class="pre">items_keys</span></code> table, contains key numbers with their uses and
 locations.</p></li>
@@ -232,11 +211,7 @@ locations.</p></li>
 </div>
 <div class="section" id="v0-2-0">
 <h2>v0.2.0<a class="headerlink" href="#v0-2-0" title="Permalink to this headline">¶</a></h2>
-<dl class="field-list simple">
-<dt class="field-odd">Released</dt>
-<dd class="field-odd"><p>2017-11-14</p>
-</dd>
-</dl>
+<p>Released: 2017-11-14</p>
 <ul class="simple">
 <li><p>Improved the parsing of all data tables, resulting in more
 consistency in values, less empty strings (not <code class="docutils literal notranslate"><span class="pre">NULL</span></code>) and better
@@ -254,11 +229,7 @@ including item trades (e.g. 1 fighting spirit for 2 royal helmets).</p></li>
 </div>
 <div class="section" id="v0-1-1">
 <h2>v0.1.1<a class="headerlink" href="#v0-1-1" title="Permalink to this headline">¶</a></h2>
-<dl class="field-list simple">
-<dt class="field-odd">Released</dt>
-<dd class="field-odd"><p>2017-11-12</p>
-</dd>
-</dl>
+<p>Released: 2017-11-12</p>
 <ul class="simple">
 <li><p>Better attribute parsing, this means values should me more consistent
 and there are no entries without the <code class="docutils literal notranslate"><span class="pre">name</span></code> column</p></li>
@@ -267,11 +238,7 @@ and there are no entries without the <code class="docutils literal notranslate">
 </div>
 <div class="section" id="v0-1-0">
 <h2>v0.1.0<a class="headerlink" href="#v0-1-0" title="Permalink to this headline">¶</a></h2>
-<dl class="field-list simple">
-<dt class="field-odd">Released</dt>
-<dd class="field-odd"><p>2017-11-09</p>
-</dd>
-</dl>
+<p>Released: 2017-11-09</p>
 <ul class="simple">
 <li><p>Creatures table, with all their attributes, including a separate
 table for all their loot.</p></li>
@@ -315,6 +282,7 @@ attributes on a separate table</p></li>
 <li class="toctree-l1"><a class="reference internal" href="schema.html">Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v2-0-1">v2.0.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#v2-0-0">v2.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#v1-2-0">v1.2.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#v1-1-1">v1.1.1</a></li>
