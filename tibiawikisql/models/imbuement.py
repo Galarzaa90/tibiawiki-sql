@@ -138,7 +138,7 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
             materials = parse_astral_sources(imbuement._raw_attributes["astralsources"])
             imbuement.materials = []
             for name, amount in materials.items():
-                imbuement.materials.append(ImbuementMaterial(item_name=name, amount=amount,
+                imbuement.materials.append(ImbuementMaterial(item_title=name, amount=amount,
                                                              imbuement_id=imbuement.article_id))
 
         return imbuement

@@ -2,9 +2,15 @@
 Changelog
 =========
 
+v2.0.1
+======
+Released: 2018-11-26
+
+- Fixed imbuement materials not getting saved in the database.
+
 v2.0.0
 ======
-:Released: 2018-11-22
+Released: 2018-11-22
 
 - New model classes, to unify the generation process.
 - Live fetching is now possible, obtain data directly from the Wiki.
@@ -60,19 +66,19 @@ v2.0.0
 
 v1.2.0
 ======
-:Released: 2018-10-16
+Released: 2018-10-16
 
 -  New ``charm`` table, contains information about all charms.
 
 v1.1.1
 ======
-:Released: 2018-09-23
+Released: 2018-09-23
 
 -  Improved parsing of ``walksaround`` and ``walksthrough``
 
 v1.1.0
 ======
-:Released: 2018-09-22
+Released: 2018-09-22
 
 -  Added new columns to creatures table:
 
@@ -81,13 +87,13 @@ v1.1.0
 
 v1.0.1
 ======
-:Released: 2018-07-02
+Released: 2018-07-02
 
 -  Fixed bug caused when a category had a number of articles that was exactly a multiple of 50.
 
 v1.0.0
 ======
-:Released: 2018-07-01
+Released: 2018-07-01
 
 -  ``id`` is now TibiaWiki’s article id for the element, making them more reliable than autoincremented ids.
 -  Fixed bug with potion’s prices.
@@ -104,7 +110,7 @@ v1.0.0
 
 v0.3.0
 ======
-:Released: 2017-12-18
+Released: 2017-12-18
 
 -  New ``items_keys`` table, contains key numbers with their uses and
    locations.
@@ -115,7 +121,7 @@ v0.3.0
 
 v0.2.0
 ======
-:Released: 2017-11-14
+Released: 2017-11-14
 
 -  Improved the parsing of all data tables, resulting in more
    consistency in values, less empty strings (not ``NULL``) and better
@@ -132,7 +138,7 @@ v0.2.0
 
 v0.1.1
 ======
-:Released: 2017-11-12
+Released: 2017-11-12
 
 -  Better attribute parsing, this means values should me more consistent
    and there are no entries without the ``name`` column
@@ -140,7 +146,7 @@ v0.1.1
 
 v0.1.0
 ======
-:Released: 2017-11-09
+Released: 2017-11-09
 
 -  Creatures table, with all their attributes, including a separate
    table for all their loot.
