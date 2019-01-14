@@ -34,9 +34,9 @@ DATABASE_FILE = "tibiawiki.db"
 init()
 
 
-def progress_bar(iterable, label, length):
-    return click.progressbar(iterable=iterable, length=length, label=label,fill_char="█", empty_char="░",
-                             show_pos=True,  bar_template='%(label)s [\33[33m%(bar)s\33[0m] %(info)s')
+def progress_bar(iterable, label, length, **kwargs):
+    return click.progressbar(iterable=iterable, length=length, label=label, fill_char="█", empty_char="░",
+                             show_pos=True, bar_template='%(label)s [\33[33m%(bar)s\33[0m] %(info)s', **kwargs)
 
 
 @click.group(context_settings={'help_option_names': ['-h', '--help']})
@@ -86,7 +86,7 @@ def generate(skip_images, db_name):
             continue
         titles = [a.title for a in data_store[key]]
         unparsed = []
-        start = time.perf_counter()
+        exec_time = time.perf_counter()
         generator = WikiClient.get_articles(titles)
         with conn:
             with progress_bar(generator, f"Parsing {key}", len(titles)) as bar:
@@ -99,7 +99,7 @@ def generate(skip_images, db_name):
             if unparsed:
                 print(f"\33[31m\tCould not parse {len(unparsed):,} articles.\033[0m")
                 print("\t-> \33[31m%s\033[0m" % '\033[0m,\33[31m'.join(unparsed))
-            dt = (time.perf_counter() - start)
+            dt = (time.perf_counter() - exec_time)
             print(f"\33[32m\tParsed articles in {dt:.2f} seconds.\033[0m")
 
     for position in rashid_positions:
@@ -125,9 +125,9 @@ def generate(skip_images, db_name):
                 creature_id = result[0]
                 # Most loot statistics contain stats for older versions too, we onl care about the latest version.
                 try:
-                    start = article.content.index("Loot2")
-                    end = article.content.index("}}", start)
-                    content = article.content[start:end]
+                    exec_time = article.content.index("Loot2")
+                    end = article.content.index("}}", exec_time)
+                    content = article.content[exec_time:end]
                 except ValueError:
                     # Article contains no loot
                     continue
@@ -158,41 +158,7 @@ def generate(skip_images, db_name):
             for key, value in categories.items():
                 if not value.get("images", True):
                     continue
-                extension = value.get("extension", ".gif")
-                table = value["model"].table.__tablename__
-                if value.get("no_title", False):
-                    results = conn.execute(f"SELECT name FROM {table}")
-                else:
-                    results = conn.execute(f"SELECT title FROM {table}")
-                titles = [f"{r[0]}{extension}" for r in results]
-                os.makedirs(f"images/{table}", exist_ok=True)
-                cache_count = 0
-                fetch_count = 0
-                start = time.perf_counter()
-                with progress_bar(WikiClient.get_images_info(titles), f"Fetching {key} images", len(titles)) as bar:
-                    for image in bar:
-                        if image is None:
-                            continue
-                        try:
-                            with open(f"images/{table}/{image.file_name}", "rb") as f:
-                                image_bytes = f.read()
-                            cache_count += 1
-                        except FileNotFoundError:
-                            r = requests.get(image.file_url)
-                            r.raise_for_status()
-                            image_bytes = r.content
-                            fetch_count += 1
-                            with open(f"images/{table}/{image.file_name}", "wb") as f:
-                                f.write(image_bytes)
-                        except requests.HTTPError:
-                            continue
-                        if value.get("no_title", False):
-                            conn.execute(f"UPDATE {table} SET image = ? WHERE name = ?", (image_bytes, image.clean_name))
-                        else:
-                            conn.execute(f"UPDATE {table} SET image = ? WHERE title = ?", (image_bytes, image.clean_name))
-                dt = (time.perf_counter() - start)
-                print(f"\33[32m\tParsed {key} images in {dt:.2f} seconds."
-                      f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
+                save_images(conn, key, value)
             save_maps(conn)
     with conn:
         gen_time = datetime.datetime.utcnow()
@@ -204,6 +170,51 @@ def generate(skip_images, db_name):
 
     dt = (time.perf_counter() - command_start)
     print(f"Command finished in {dt:.2f} seconds.")
+
+
+def img_show(item):
+    if item is None:
+        return ""
+    return item.clean_name
+
+
+def save_images(conn, key, value):
+    extension = value.get("extension", ".gif")
+    table = value["model"].table.__tablename__
+    if value.get("no_title", False):
+        results = conn.execute(f"SELECT name FROM {table}")
+    else:
+        results = conn.execute(f"SELECT title FROM {table}")
+    titles = [f"{r[0]}{extension}" for r in results]
+    os.makedirs(f"images/{table}", exist_ok=True)
+    cache_count = 0
+    fetch_count = 0
+    start = time.perf_counter()
+    generator = WikiClient.get_images_info(titles)
+    with progress_bar(generator, f"Fetching {key} images", len(titles), item_show_func=img_show) as bar:
+        for image in bar:
+            if image is None:
+                continue
+            try:
+                with open(f"images/{table}/{image.file_name}", "rb") as f:
+                    image_bytes = f.read()
+                cache_count += 1
+            except FileNotFoundError:
+                r = requests.get(image.file_url)
+                r.raise_for_status()
+                image_bytes = r.content
+                fetch_count += 1
+                with open(f"images/{table}/{image.file_name}", "wb") as f:
+                    f.write(image_bytes)
+            except requests.HTTPError:
+                continue
+            if value.get("no_title", False):
+                conn.execute(f"UPDATE {table} SET image = ? WHERE name = ?", (image_bytes, image.clean_name))
+            else:
+                conn.execute(f"UPDATE {table} SET image = ? WHERE title = ?", (image_bytes, image.clean_name))
+    dt = (time.perf_counter() - start)
+    print(f"\33[32m\tParsed {key} images in {dt:.2f} seconds."
+          f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
 
 
 def get_articles(category, data_store, key=None):

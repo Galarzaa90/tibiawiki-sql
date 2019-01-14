@@ -7,6 +7,7 @@
 # http://www.sphinx-doc.org/en/master/config
 import re
 
+
 def setup(app):
     app.add_stylesheet('custom.css')
 
@@ -102,7 +103,10 @@ html_theme_options = {
     'github_type': 'star',
     'extra_nav_links': {
         'Contribute to TibiaWiki': 'https://tibia.fandom.com'
-    }
+    },
+    'fixed_sidebar': True,
+    'travis_button': True,
+    'donate_url': 'https://beerpay.io/Galarzaa90/tibiawiki-sql'
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
