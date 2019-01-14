@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>API Reference &#8212; TibiaWikiSQL 2.0.1 documentation</title>
+    <title>API Reference &#8212; TibiaWikiSQL 2.0.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -12,6 +12,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Changelog" href="changelog.html" />
@@ -23,9 +24,129 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head><body>
-  
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">TibiaWikiSQL</a></h1>
 
-    <div class="document">
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/galarzaa90/tibiawiki-sql">
+    <img
+        alt="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+        src="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Database</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tibiawiki">TibiaWiki</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#wikiclient">WikiClient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wikientry">WikiEntry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#article">Article</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image">Image</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#abstract-base-classes">Abstract Base Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#row">Row</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parseable">Parseable</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#models">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#achievement">Achievement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creature">Creature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creaturedrop">CreatureDrop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#house">House</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imbuement">Imbuement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imbuementmaterial">ImbuementMaterial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#item">Item</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#itemattribute">ItemAttribute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key">Key</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#npc">Npc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#npcdestination">NpcDestination</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#npcbuyoffer">NpcBuyOffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#npcselloffer">NpcSellOffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#npcspell">NpcSpell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quest">Quest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#questdanger">QuestDanger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#questreward">QuestReward</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rashidposition">RashidPosition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spell">Spell</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tibiawikisql.utils">Utility Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="schema.html" title="previous chapter">Database</a></li>
+      <li>Next: <a href="changelog.html" title="next chapter">Changelog</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+<p>
+<a class="badge" href="https://beerpay.io/Galarzaa90/tibiawiki-sql">
+<img src="https://img.shields.io/badge/donate-%E2%9D%A4%C2%A0-ff69b4.svg?style=flat" alt="Donate">
+</a>
+</p>
+
+
+
+
+
+        </div>
+      </div>
       <div class="documentwrapper">
         <div class="bodywrapper">
           
@@ -5032,114 +5153,13 @@ They consist of two numbers separated by a hyphen, e.g. <code class="docutils li
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">TibiaWikiSQL</a></h1>
-
-
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="schema.html">Database</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#tibiawiki">TibiaWiki</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#wikiclient">WikiClient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#wikientry">WikiEntry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#article">Article</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#image">Image</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#abstract-base-classes">Abstract Base Classes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#row">Row</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#parseable">Parseable</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#models">Models</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#achievement">Achievement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#creature">Creature</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#creaturedrop">CreatureDrop</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#house">House</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#imbuement">Imbuement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#imbuementmaterial">ImbuementMaterial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#item">Item</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#itemattribute">ItemAttribute</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#key">Key</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#npc">Npc</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#npcdestination">NpcDestination</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#npcbuyoffer">NpcBuyOffer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#npcselloffer">NpcSellOffer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#npcspell">NpcSpell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#quest">Quest</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#questdanger">QuestDanger</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#questreward">QuestReward</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#rashidposition">RashidPosition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#spell">Spell</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#module-tibiawikisql.utils">Utility Functions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="schema.html" title="previous chapter">Database</a></li>
-      <li>Next: <a href="changelog.html" title="next chapter">Changelog</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
+    <div class="clearer"></div>
+  </div>
     <div class="footer">
       &copy;2018, Allan Galarza.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

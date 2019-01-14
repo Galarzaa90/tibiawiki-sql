@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Changelog &#8212; TibiaWikiSQL 2.0.1 documentation</title>
+    <title>Changelog &#8212; TibiaWikiSQL 2.0.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -12,6 +12,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="API Reference" href="api.html" />
@@ -22,9 +23,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head><body>
-  
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">TibiaWikiSQL</a></h1>
 
-    <div class="document">
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/galarzaa90/tibiawiki-sql">
+    <img
+        alt="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+        src="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v2-0-2">2.0.2 (2019-01-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-0-1">2.0.1 (2018-11-26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-0-0">2.0.0 (2018-11-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-2-0">1.2.0 (2018-10-16)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-1-1">1.1.1 (2018-09-23)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-1-0">1.1.0 (2018-09-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-0-1">1.0.1 (2018-07-02)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-0-0">1.0.0 (2018-07-01)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-3-0">0.3.0 (2017-12-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-2-0">0.2.0 (2017-11-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-1-1">0.1.1 (2017-11-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-1-0">0.1.0 (2017-11-09)</a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">API Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+<p>
+<a class="badge" href="https://beerpay.io/Galarzaa90/tibiawiki-sql">
+<img src="https://img.shields.io/badge/donate-%E2%9D%A4%C2%A0-ff69b4.svg?style=flat" alt="Donate">
+</a>
+</p>
+
+
+
+
+
+        </div>
+      </div>
       <div class="documentwrapper">
         <div class="bodywrapper">
           
@@ -33,16 +130,20 @@
             
   <div class="section" id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="v2-0-2">
+<span id="id1"></span><h2>2.0.2 (2019-01-14)<a class="headerlink" href="#v2-0-2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Elemental protection and required vocation item attributes were not getting set.</p></li>
+</ul>
+</div>
 <div class="section" id="v2-0-1">
-<h2>v2.0.1<a class="headerlink" href="#v2-0-1" title="Permalink to this headline">¶</a></h2>
-<p>Released: 2018-11-26</p>
+<span id="id2"></span><h2>2.0.1 (2018-11-26)<a class="headerlink" href="#v2-0-1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Fixed imbuement materials not getting saved in the database.</p></li>
 </ul>
 </div>
 <div class="section" id="v2-0-0">
-<h2>v2.0.0<a class="headerlink" href="#v2-0-0" title="Permalink to this headline">¶</a></h2>
-<p>Released: 2018-11-22</p>
+<span id="id3"></span><h2>2.0.0 (2018-11-22)<a class="headerlink" href="#v2-0-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>New model classes, to unify the generation process.</p></li>
 <li><p>Live fetching is now possible, obtain data directly from the Wiki.</p></li>
@@ -145,22 +246,19 @@
 </ul>
 </div>
 <div class="section" id="v1-2-0">
-<h2>v1.2.0<a class="headerlink" href="#v1-2-0" title="Permalink to this headline">¶</a></h2>
-<p>Released: 2018-10-16</p>
+<span id="id4"></span><h2>1.2.0 (2018-10-16)<a class="headerlink" href="#v1-2-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>New <code class="docutils literal notranslate"><span class="pre">charm</span></code> table, contains information about all charms.</p></li>
 </ul>
 </div>
 <div class="section" id="v1-1-1">
-<h2>v1.1.1<a class="headerlink" href="#v1-1-1" title="Permalink to this headline">¶</a></h2>
-<p>Released: 2018-09-23</p>
+<span id="id5"></span><h2>1.1.1 (2018-09-23)<a class="headerlink" href="#v1-1-1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Improved parsing of <code class="docutils literal notranslate"><span class="pre">walksaround</span></code> and <code class="docutils literal notranslate"><span class="pre">walksthrough</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="v1-1-0">
-<h2>v1.1.0<a class="headerlink" href="#v1-1-0" title="Permalink to this headline">¶</a></h2>
-<p>Released: 2018-09-22</p>
+<span id="id6"></span><h2>1.1.0 (2018-09-22)<a class="headerlink" href="#v1-1-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Added new columns to creatures table:</p>
 <ul>
@@ -171,15 +269,13 @@
 </ul>
 </div>
 <div class="section" id="v1-0-1">
-<h2>v1.0.1<a class="headerlink" href="#v1-0-1" title="Permalink to this headline">¶</a></h2>
-<p>Released: 2018-07-02</p>
+<span id="id7"></span><h2>1.0.1 (2018-07-02)<a class="headerlink" href="#v1-0-1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Fixed bug caused when a category had a number of articles that was exactly a multiple of 50.</p></li>
 </ul>
 </div>
 <div class="section" id="v1-0-0">
-<h2>v1.0.0<a class="headerlink" href="#v1-0-0" title="Permalink to this headline">¶</a></h2>
-<p>Released: 2018-07-01</p>
+<span id="id8"></span><h2>1.0.0 (2018-07-01)<a class="headerlink" href="#v1-0-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> is now TibiaWiki’s article id for the element, making them more reliable than autoincremented ids.</p></li>
 <li><p>Fixed bug with potion’s prices.</p></li>
@@ -198,8 +294,7 @@
 </ul>
 </div>
 <div class="section" id="v0-3-0">
-<h2>v0.3.0<a class="headerlink" href="#v0-3-0" title="Permalink to this headline">¶</a></h2>
-<p>Released: 2017-12-18</p>
+<span id="id9"></span><h2>0.3.0 (2017-12-18)<a class="headerlink" href="#v0-3-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>New <code class="docutils literal notranslate"><span class="pre">items_keys</span></code> table, contains key numbers with their uses and
 locations.</p></li>
@@ -210,8 +305,7 @@ locations.</p></li>
 </ul>
 </div>
 <div class="section" id="v0-2-0">
-<h2>v0.2.0<a class="headerlink" href="#v0-2-0" title="Permalink to this headline">¶</a></h2>
-<p>Released: 2017-11-14</p>
+<span id="id10"></span><h2>0.2.0 (2017-11-14)<a class="headerlink" href="#v0-2-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Improved the parsing of all data tables, resulting in more
 consistency in values, less empty strings (not <code class="docutils literal notranslate"><span class="pre">NULL</span></code>) and better
@@ -228,8 +322,7 @@ including item trades (e.g. 1 fighting spirit for 2 royal helmets).</p></li>
 </ul>
 </div>
 <div class="section" id="v0-1-1">
-<h2>v0.1.1<a class="headerlink" href="#v0-1-1" title="Permalink to this headline">¶</a></h2>
-<p>Released: 2017-11-12</p>
+<span id="id11"></span><h2>0.1.1 (2017-11-12)<a class="headerlink" href="#v0-1-1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Better attribute parsing, this means values should me more consistent
 and there are no entries without the <code class="docutils literal notranslate"><span class="pre">name</span></code> column</p></li>
@@ -237,8 +330,7 @@ and there are no entries without the <code class="docutils literal notranslate">
 </ul>
 </div>
 <div class="section" id="v0-1-0">
-<h2>v0.1.0<a class="headerlink" href="#v0-1-0" title="Permalink to this headline">¶</a></h2>
-<p>Released: 2017-11-09</p>
+<span id="id12"></span><h2>0.1.0 (2017-11-09)<a class="headerlink" href="#v0-1-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Creatures table, with all their attributes, including a separate
 table for all their loot.</p></li>
@@ -258,89 +350,13 @@ attributes on a separate table</p></li>
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">TibiaWikiSQL</a></h1>
-
-
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-<h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="schema.html">Database</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#v2-0-1">v2.0.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#v2-0-0">v2.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#v1-2-0">v1.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#v1-1-1">v1.1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#v1-1-0">v1.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#v1-0-1">v1.0.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#v1-0-0">v1.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#v0-3-0">v0.3.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#v0-2-0">v0.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#v0-1-1">v0.1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#v0-1-0">v0.1.0</a></li>
-</ul>
-</li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="api.html" title="previous chapter">API Reference</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
+    <div class="clearer"></div>
+  </div>
     <div class="footer">
       &copy;2018, Allan Galarza.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
