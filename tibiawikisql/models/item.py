@@ -107,6 +107,22 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
                     attribute = m.group(1).replace("fighting", "").replace("level", "").strip()
                     value = m.group(2)
                     item.attributes.append(ItemAttribute(item_id=item.article_id, name=attribute, value=value))
+        if "resist" in item._raw_attributes:
+            resistances = item._raw_attributes["resist"].split(",")
+            for element in resistances:
+                element = element.strip()
+                m = re.search(r'([a-zA-Z0-9_ ]+) +(-?\+?\d+)%', element)
+                if m:
+                    attribute = m.group(1) + "%"
+                    try:
+                        value = int(m.group(2))
+                    except ValueError:
+                        value = 0
+                    item.attributes.append(ItemAttribute(item_id=item.article_id, name=attribute, value=value))
+        vocations = item._raw_attributes.get('vocrequired')
+        if vocations and "none" not in vocations.lower():
+            vocation = vocations.replace('and', '+').replace(',', '+').replace(' ', '')
+            item.attributes.append(ItemAttribute(item_id=item.article_id, name="vocation", value=vocation))
         return item
 
     def insert(self, c):
