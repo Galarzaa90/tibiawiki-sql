@@ -2,15 +2,24 @@
 Changelog
 =========
 
-v2.0.1
-======
-Released: 2018-11-26
+.. _v2.0.2:
+
+2.0.2 (2019-01-14)
+==================
+
+- Elemental protection and required vocation item attributes were not getting set.
+
+.. _v2.0.1:
+
+2.0.1 (2018-11-26)
+==================
 
 - Fixed imbuement materials not getting saved in the database.
 
-v2.0.0
-======
-Released: 2018-11-22
+.. _v2.0.0:
+
+2.0.0 (2018-11-22)
+==================
 
 - New model classes, to unify the generation process.
 - Live fetching is now possible, obtain data directly from the Wiki.
@@ -63,37 +72,41 @@ Released: 2018-11-22
     - Removed columns:
         - ``day_name`` from ``rashid_position``
 
+.. _v1.2.0:
 
-v1.2.0
-======
-Released: 2018-10-16
+1.2.0 (2018-10-16)
+==================
 
 -  New ``charm`` table, contains information about all charms.
 
-v1.1.1
-======
-Released: 2018-09-23
+.. _v1.1.1:
+
+1.1.1 (2018-09-23)
+==================
 
 -  Improved parsing of ``walksaround`` and ``walksthrough``
 
-v1.1.0
-======
-Released: 2018-09-22
+.. _v1.1.0:
+
+1.1.0 (2018-09-22)
+==================
 
 -  Added new columns to creatures table:
 
    -  ``walksaround``
    -  ``walksthrough``
 
-v1.0.1
-======
-Released: 2018-07-02
+.. _v1.0.1:
+
+1.0.1 (2018-07-02)
+==================
 
 -  Fixed bug caused when a category had a number of articles that was exactly a multiple of 50.
 
-v1.0.0
-======
-Released: 2018-07-01
+.. _v1.0.0:
+
+1.0.0 (2018-07-01)
+==================
 
 -  ``id`` is now TibiaWiki’s article id for the element, making them more reliable than autoincremented ids.
 -  Fixed bug with potion’s prices.
@@ -108,9 +121,10 @@ Released: 2018-07-01
    -  ``armor``
    -  ``speed``
 
-v0.3.0
-======
-Released: 2017-12-18
+.. _v0.3.0:
+
+0.3.0 (2017-12-18)
+==================
 
 -  New ``items_keys`` table, contains key numbers with their uses and
    locations.
@@ -119,9 +133,10 @@ Released: 2017-12-18
 -  Added ``article``, ``class`` and ``client_id`` to ``items`` table.
 -  Added ``last_edit`` column to most tables.
 
-v0.2.0
-======
-Released: 2017-11-14
+.. _v0.2.0:
+
+0.2.0 (2017-11-14)
+==================
 
 -  Improved the parsing of all data tables, resulting in more
    consistency in values, less empty strings (not ``NULL``) and better
@@ -136,17 +151,19 @@ Released: 2017-11-14
    including item trades (e.g. 1 fighting spirit for 2 royal helmets).
 -  More item attributes are saved to ``item_attributes``.
 
-v0.1.1
-======
-Released: 2017-11-12
+.. _v0.1.1:
+
+0.1.1 (2017-11-12)
+==================
 
 -  Better attribute parsing, this means values should me more consistent
    and there are no entries without the ``name`` column
 -  No changes were made to the schema.
 
-v0.1.0
-======
-Released: 2017-11-09
+.. _v0.1.0:
+
+0.1.0 (2017-11-09)
+==================
 
 -  Creatures table, with all their attributes, including a separate
    table for all their loot.
