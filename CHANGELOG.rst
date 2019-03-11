@@ -2,6 +2,15 @@
 Changelog
 =========
 
+.. _v2.1.0:
+
+2.1.0 (Unreleased)
+==================
+
+- `elemental_attack` Item Attribute split into ``fire_attack``, ``ice_attack``, ``energy_attack`` and ``earth_attack`` to
+  reflect changes in TibiaWiki's template.
+- Added ``bestiary_kills`` and ``charm_points`` properties to ``Creature``.
+
 .. _v2.0.2:
 
 2.0.2 (2019-01-14)

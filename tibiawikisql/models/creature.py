@@ -13,12 +13,29 @@
 #  limitations under the License.
 
 import re
+from typing import Optional
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
 from tibiawikisql.utils import clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max
 
 creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
+
+KILLS = {
+    "Harmless": 25,
+    "Trivial": 250,
+    "Easy": 500,
+    "Medium": 1000,
+    "Hard": 2500
+}
+
+CHARM_POINTS = {
+    "Harmless": 1,
+    "Trivial": 5,
+    "Easy": 15,
+    "Medium": 25,
+    "Hard": 50
+}
 
 
 def parse_maximum_integer(value):
@@ -218,6 +235,22 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+    @property
+    def bestiary_kills(self) -> Optional[int]:
+        """:class:`int`, optional:Total kills needed to complete the bestiary entry if applicable."""
+        try:
+            return KILLS[self.bestiary_level] if self.bestiary_occurrence != 'Very Rare' else 5
+        except KeyError:
+            return None
+
+    @property
+    def charm_points(self) -> Optional[int]:
+        """:class:`int`, optional: Charm points awarded for completing the creature's bestiary entry, if applicable."""
+        try:
+            return CHARM_POINTS[self.bestiary_level] * (1 if self.bestiary_occurrence != 'Very Rare' else 2)
+        except KeyError:
+            return None
+
     @classmethod
     def from_article(cls, article):
         """
@@ -340,5 +373,3 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
         return """SELECT %s.*, item.title as item_title, creature.title as creature_title FROM %s
                   LEFT JOIN creature ON creature.article_id = creature_id
                   LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
-
-
