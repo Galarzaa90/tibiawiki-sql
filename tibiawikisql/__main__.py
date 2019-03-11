@@ -1,4 +1,4 @@
-#  Copyright 2018 Allan Galarza
+#  Copyright 2019 Allan Galarza
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -22,8 +22,7 @@ import click
 import requests
 from colorama import init
 
-from tibiawikisql import WikiClient, __version__
-from tibiawikisql import models, schema
+from tibiawikisql import WikiClient, __version__, models, schema
 from tibiawikisql.models import abc
 from tibiawikisql.models.charm import charms
 from tibiawikisql.models.npc import rashid_positions
