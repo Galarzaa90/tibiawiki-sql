@@ -13,7 +13,8 @@
 #  limitations under the License.
 
 import re
-from typing import Optional
+from collections import OrderedDict
+from typing import List, Optional
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
@@ -36,6 +37,8 @@ CHARM_POINTS = {
     "Medium": 25,
     "Hard": 50
 }
+
+ELEMENTAL_MODIFIERS = ["physical" "earth", "fire", "ice", "energy", "death", "holy", "drown", "hpdrain"]
 
 
 def parse_maximum_integer(value):
@@ -250,6 +253,28 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
             return CHARM_POINTS[self.bestiary_level] * (1 if self.bestiary_occurrence != 'Very Rare' else 2)
         except KeyError:
             return None
+
+    @property
+    def elemental_modifiers(self):
+        """:class:`OrderedDict`: Returns a dictionary containing all elemental modifiers, sorted in descending order."""
+        modifiers = {k: getattr(self, f"modifier_{k}", None) for k in ELEMENTAL_MODIFIERS if
+                     getattr(self, f"modifier_{k}", None) is not None}
+        return OrderedDict(sorted(modifiers.items(), key=lambda t: t[1], reverse=True))
+
+    @property
+    def immune_to(self) -> List[str]:
+        """:class:`list` of :class:`str`: Gets a list of the elements the creature is immune to."""
+        return [k for k, v in self.elemental_modifiers.items() if v == 0]
+
+    @property
+    def weak_to(self):
+        """:class:`OrderedDict`: Dictionary containing the elements the creature is weak to and modifier."""
+        return OrderedDict({k: v for k, v in self.elemental_modifiers.items() if v > 0})
+
+    @property
+    def resistant_to(self):
+        """:class:`OrderedDict`: Dictionary containing the elements the creature is resistant to and modifier."""
+        return OrderedDict({k: v for k, v in self.elemental_modifiers.items() if 100 > v > 0})
 
     @classmethod
     def from_article(cls, article):
