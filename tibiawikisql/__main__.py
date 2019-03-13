@@ -55,6 +55,7 @@ categories = {
     "quests": {"category": "Quest Overview Pages", "model": models.Quest, "images": False},
     "house": {"category": "Player-Ownable Buildings", "model": models.House, "images": False},
     "charm": {"model": models.Charm, "extension": ".png", "no_title": True},
+    "worlds": {"category": "Gameworlds", "model": models.World, "images": False, "include_deprecated": True},
 }
 
 
@@ -74,7 +75,7 @@ def generate(skip_images, db_name):
 
     for key, value in categories.items():
         try:
-            get_articles(value["category"], data_store, key)
+            get_articles(value["category"], data_store, key, value.get("include_deprecated", False))
         except KeyError:
             pass
 
@@ -216,14 +217,14 @@ def save_images(conn, key, value):
           f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
 
 
-def get_articles(category, data_store, key=None):
+def get_articles(category, data_store, key=None, include_deprecated=False):
     if key is None:
         key = category.lower()
     print(f"Fetching articles in \33[94mCategory:{category}\033[0m...")
     data_store[key] = []
     start = time.perf_counter()
     for article in WikiClient.get_category_members(category):
-        if article not in data_store.get("deprecated", []):
+        if article not in data_store.get("deprecated", []) or include_deprecated:
             data_store[key].append(article)
     dt = (time.perf_counter() - start)
     print(f"\33[32m\tFound {len(data_store[key]):,} articles in {dt:.2f} seconds.\033[0m")

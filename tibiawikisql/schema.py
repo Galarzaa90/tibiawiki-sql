@@ -272,6 +272,24 @@ class RashidPosition(Table, table_name="rashid_position"):
     z = Column(Integer)
 
 
+class World(Table):
+    article_id = Column(Integer, primary_key=True)
+    title = Column(Text, unique=True)
+    name = Column(Text)
+    location = Column(Text)
+    pvp_type = Column(Text)
+    preview = Column(Boolean, default=False)
+    experimental = Column(Boolean, default=False)
+    online_since = Column(Text)
+    offline_since = Column(Text)
+    merged_into = Column(Text)
+    battleye = Column(Boolean, default=False)
+    protected_since = Column(Text)
+    world_board = Column(Integer)
+    trade_board = Column(Integer)
+    timestamp = Column(Integer)
+
+
 def create_tables(conn):
     """
     Creates all the tables in the database.

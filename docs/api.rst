@@ -164,6 +164,12 @@ Spell
    :members:
    :inherited-members:
 
+World
+~~~~~
+.. autoclass:: tibiawikisql.models.World()
+   :members:
+   :inherited-members:
+
 Utility Functions
 -----------------
 .. automodule:: tibiawikisql.utils
