@@ -49,10 +49,12 @@ class World(abc.Row, abc.Parseable, table=schema.World):
         Whether the world is a preview world or not.
     experimental: :class:`bool`
         Whether the world is a experimental world or not.
-    online: :class:`str`
+    online_since: :class:`str`
         Date when the world became online for the first time, in ISO 8601 format.
-    offline: :class:`str`
+    offline_since: :class:`str`, optional
         Date when the world went offline, in ISO 8601 format.
+    merged_into: :class:`str`, optional.
+        The name of the world this world got merged into, if applicable.
     battleye: :class:`bool`
         Whether the world is BattlEye protected or not.
     protected_since: :class:`str`
@@ -77,7 +79,8 @@ class World(abc.Row, abc.Parseable, table=schema.World):
         "tradeboardid": ("trade_board", parse_integer),
     }
     _pattern = re.compile(r"Infobox[\s_]World")
-    __slots__ = ("name",)
+    __slots__ = ("name","location", "pvp_type", "preview", "experimental", "online_since", "offline_since", 
+                "merged_into", "battleye", "protected_since", "world_board", "trade_board")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
