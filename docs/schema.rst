@@ -743,10 +743,10 @@ world
 | battleye        | ``BOOLEAN`` | Whether the world is BattlEye protected or not.                              |
 +-----------------+-------------+------------------------------------------------------------------------------+
 | protected_since | ``TEXT``    | Date when the world started being protected by BattlEye, in ISO 8601 format. |
-|                 |             |                                                                              |
 +-----------------+-------------+------------------------------------------------------------------------------+
-| trade_board     | ``INTEGER`` | Cooldown in seconds of this spell                                            |
-|                 |             |                                                                              |
+| world_board     | ``INTEGER`` | The board ID for the world's board.                                          |
++-----------------+-------------+------------------------------------------------------------------------------+
+| trade_board     | ``INTEGER`` | The board ID for the world's trade board.                                    |
 +-----------------+-------------+------------------------------------------------------------------------------+
 | timestamp       | ``INTEGER`` | Unix timestamp of the article's last edit.                                   |
 +-----------------+-------------+------------------------------------------------------------------------------+
