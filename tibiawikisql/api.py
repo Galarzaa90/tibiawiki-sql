@@ -18,6 +18,8 @@ import urllib.parse
 
 import requests
 
+from tibiawikisql import __version__
+
 BASE_URL = "https://tibia.fandom.com"
 
 
@@ -131,7 +133,7 @@ class WikiClient:
     ENDPOINT = "%s/api.php" % BASE_URL
 
     headers = {
-        'User-Agent': 'tibiawikisql v1.1.1'
+        'User-Agent': f'tibiawikisql {__version__}'
     }
 
     @classmethod
