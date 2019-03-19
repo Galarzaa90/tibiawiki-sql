@@ -1,4 +1,4 @@
-#  Copyright 2018 Allan Galarza
+#  Copyright 2019 Allan Galarza
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -216,7 +216,6 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
     _map = {
         "level": "levelrequired",
         "attack": "attack",
-        "elemental_attack": "elementattack",
         "defense": "defense",
         "defense_modifier": "defensemod",
         "armor": "armor",
@@ -241,6 +240,10 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "charges": "charges",
         "food_time": "regenseconds",
         "duration": "duration",
+        "fire_attack": "fire_attack",
+        "energy_attack": "energy_attack",
+        "ice_attack": "ice_attack",
+        "earth_attack": "earth_attack",
     }
     __slots__ = {"item_id", "name", "value"}
 

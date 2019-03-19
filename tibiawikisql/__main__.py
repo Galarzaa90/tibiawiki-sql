@@ -1,4 +1,4 @@
-#  Copyright 2018 Allan Galarza
+#  Copyright 2019 Allan Galarza
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@ import os
 import platform
 import sqlite3
 import time
+from typing import Optional, Type
 
 import click
+import colorama
 import requests
-from colorama import init
 
-from tibiawikisql import WikiClient, __version__
-from tibiawikisql import models, schema
+from tibiawikisql import WikiClient, __version__, models, schema
 from tibiawikisql.models import abc
 from tibiawikisql.models.charm import charms
 from tibiawikisql.models.npc import rashid_positions
@@ -31,7 +31,7 @@ from tibiawikisql.utils import parse_loot_statistics, parse_min_max
 
 DATABASE_FILE = "tibiawiki.db"
 
-init()
+colorama.init()
 
 
 def progress_bar(iterable, label, length, **kwargs):
@@ -45,17 +45,32 @@ def cli():
     pass
 
 
+class Category:
+    """Defines the article groups to be fetched.
+
+    Class for internal use only, for easier autocompletion and maintenance."""
+    def __init__(self, name: Optional[str], model: Type[abc.Row] = None, *, no_images=False, extension=".gif",
+                 include_deprecated=False, no_title=False):
+        self.name = name
+        self.model = model
+        self.no_images = no_images
+        self.extension = extension
+        self.include_deprecated = include_deprecated
+        self.no_title = no_title
+
+
 categories = {
-    "achievements": {"category": "Achievements", "model": models.Achievement, "images": False},
-    "spells": {"category": "Spells", "model": models.Spell},
-    "items": {"category": "Items", "model": models.Item},
-    "creatures": {"category": "Creatures", "model": models.Creature},
-    "keys": {"category": "Keys", "model": models.Key, "images": False},
-    "npcs": {"category": "NPCs", "model": models.Npc},
-    "imbuements": {"category": "Imbuements", "model": models.Imbuement, "extension": ".png"},
-    "quests": {"category": "Quest Overview Pages", "model": models.Quest, "images": False},
-    "house": {"category": "Player-Ownable Buildings", "model": models.House, "images": False},
-    "charm": {"model": models.Charm, "extension": ".png", "no_title": True},
+    "achievements": Category("Achievements", models.Achievement, no_images=True),
+    "spells": Category("Spells", models.Spell),
+    "items": Category("Items", models.Item),
+    "creatures": Category("Creatures", models.Creature),
+    "keys": Category("Keys", models.Key, no_images=True),
+    "npcs": Category("NPCs", models.Npc),
+    "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
+    "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
+    "house": Category("Player-Ownable Buildings", models.House, no_images=True),
+    "charm": Category(None, models.Charm, extension=".png", no_title=True),
+    "worlds": Category("Gameworlds", models.World, no_images=True, include_deprecated=True)
 }
 
 
@@ -75,13 +90,13 @@ def generate(skip_images, db_name):
 
     for key, value in categories.items():
         try:
-            get_articles(value["category"], data_store, key)
+            get_articles(value.name, data_store, key, value.include_deprecated)
         except KeyError:
             pass
 
     print("Parsing articles...")
     for key, value in categories.items():
-        model = value["model"]
+        model = value.model
         if not issubclass(model, abc.Parseable):
             continue
         titles = [a.title for a in data_store[key]]
@@ -89,7 +104,7 @@ def generate(skip_images, db_name):
         exec_time = time.perf_counter()
         generator = WikiClient.get_articles(titles)
         with conn:
-            with progress_bar(generator, f"Parsing {key}", len(titles)) as bar:
+            with progress_bar(generator, f"Parsing {key}", len(titles), item_show_func=article_show) as bar:
                 for i, article in enumerate(bar):
                     entry = model.from_article(article)
                     if entry is not None:
@@ -112,7 +127,8 @@ def generate(skip_images, db_name):
         results = conn.execute("SELECT title FROM creature")
         titles = [f"Loot Statistics:{t[0]}" for t in results]
         start_time = time.perf_counter()
-        with progress_bar(WikiClient.get_articles(titles), "Fetching loot statistics", len(titles)) as bar:
+        with progress_bar(WikiClient.get_articles(titles), "Fetching loot statistics", len(titles),
+                          item_show_func=article_show) as bar:
             for article in bar:
                 if article is None:
                     continue
@@ -156,7 +172,7 @@ def generate(skip_images, db_name):
     if not skip_images:
         with conn:
             for key, value in categories.items():
-                if not value.get("images", True):
+                if value.no_images:
                     continue
                 save_images(conn, key, value)
             save_maps(conn)
@@ -178,17 +194,22 @@ def img_show(item):
     return item.clean_name
 
 
+def article_show(item):
+    if item is None:
+        return ""
+    return item.title
+
+
 def save_images(conn, key, value):
-    extension = value.get("extension", ".gif")
-    table = value["model"].table.__tablename__
-    if value.get("no_title", False):
-        results = conn.execute(f"SELECT name FROM {table}")
-    else:
-        results = conn.execute(f"SELECT title FROM {table}")
+    extension = value.extension
+    table = value.model.table.__tablename__
+    column = "name" if value.no_title else "title"
+    results = conn.execute(f"SELECT {column} FROM {table}")
     titles = [f"{r[0]}{extension}" for r in results]
     os.makedirs(f"images/{table}", exist_ok=True)
     cache_count = 0
     fetch_count = 0
+    failed = []
     start = time.perf_counter()
     generator = WikiClient.get_images_info(titles)
     with progress_bar(generator, f"Fetching {key} images", len(titles), item_show_func=img_show) as bar:
@@ -207,24 +228,25 @@ def save_images(conn, key, value):
                 with open(f"images/{table}/{image.file_name}", "wb") as f:
                     f.write(image_bytes)
             except requests.HTTPError:
+                failed.append(image.file_name)
                 continue
-            if value.get("no_title", False):
-                conn.execute(f"UPDATE {table} SET image = ? WHERE name = ?", (image_bytes, image.clean_name))
-            else:
-                conn.execute(f"UPDATE {table} SET image = ? WHERE title = ?", (image_bytes, image.clean_name))
+            conn.execute(f"UPDATE {table} SET image = ? WHERE {column} = ?", (image_bytes, image.clean_name))
     dt = (time.perf_counter() - start)
+    if failed:
+        print(f"\33[31m\tCould not fetch {len(failed):,} images.\033[0m")
+        print("\t-> \33[31m%s\033[0m" % '\033[0m,\33[31m'.join(failed))
     print(f"\33[32m\tParsed {key} images in {dt:.2f} seconds."
           f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
 
 
-def get_articles(category, data_store, key=None):
+def get_articles(category, data_store, key=None, include_deprecated=False):
     if key is None:
         key = category.lower()
     print(f"Fetching articles in \33[94mCategory:{category}\033[0m...")
     data_store[key] = []
     start = time.perf_counter()
     for article in WikiClient.get_category_members(category):
-        if article not in data_store.get("deprecated", []):
+        if article not in data_store.get("deprecated", []) or include_deprecated:
             data_store[key].append(article)
     dt = (time.perf_counter() - start)
     print(f"\33[32m\tFound {len(data_store[key]):,} articles in {dt:.2f} seconds.\033[0m")

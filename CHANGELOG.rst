@@ -2,6 +2,17 @@
 Changelog
 =========
 
+.. _v2.1.0:
+
+2.1.0 (2019-03-19)
+==================
+
+- `elemental_attack` Item Attribute split into ``fire_attack``, ``ice_attack``, ``energy_attack`` and ``earth_attack`` to
+  reflect changes in TibiaWiki's template.
+- Added ``bestiary_kills`` and ``charm_points`` properties to ``Creature``.
+- Added ``elemental_modifiers``, ``weak_to``, ``immune_to`` and ``resistant_to`` properties to ``Creature``.
+- New table ``world`` and model ``World``. Contains information of Game worlds, including now offline worlds.
+
 .. _v2.0.2:
 
 2.0.2 (2019-01-14)

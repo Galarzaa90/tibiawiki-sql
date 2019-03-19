@@ -1,4 +1,4 @@
-#  Copyright 2018 Allan Galarza
+#  Copyright 2019 Allan Galarza
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -22,3 +22,4 @@ from tibiawikisql.models.item import Item, ItemAttribute, Key
 from tibiawikisql.models.npc import Npc, NpcBuyOffer, NpcDestination, NpcOffer, NpcSellOffer, NpcSpell, RashidPosition
 from tibiawikisql.models.quest import Quest, QuestDanger, QuestReward
 from tibiawikisql.models.spell import Spell
+from tibiawikisql.models.world import World
