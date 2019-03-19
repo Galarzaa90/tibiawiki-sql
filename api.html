@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>API Reference &#8212; TibiaWikiSQL 2.0.2 documentation</title>
+    <title>API Reference &#8212; TibiaWikiSQL 2.1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -93,6 +93,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#questreward">QuestReward</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rashidposition">RashidPosition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#spell">Spell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#world">World</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-tibiawikisql.utils">Utility Functions</a></li>
@@ -1313,6 +1314,72 @@
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>list of <a class="reference internal" href="#tibiawikisql.models.CreatureDrop" title="tibiawikisql.models.CreatureDrop"><code class="xref py py-class docutils literal notranslate"><span class="pre">CreatureDrop</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.Creature.bestiary_kills">
+<code class="descname">bestiary_kills</code><a class="headerlink" href="#tibiawikisql.models.Creature.bestiary_kills" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total kills needed to complete the bestiary entry if applicable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.Creature.charm_points">
+<code class="descname">charm_points</code><a class="headerlink" href="#tibiawikisql.models.Creature.charm_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Charm points awarded for completing the creature’s bestiary entry, if applicable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.Creature.elemental_modifiers">
+<code class="descname">elemental_modifiers</code><a class="headerlink" href="#tibiawikisql.models.Creature.elemental_modifiers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary containing all elemental modifiers, sorted in descending order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedDict</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.Creature.immune_to">
+<code class="descname">immune_to</code><a class="headerlink" href="#tibiawikisql.models.Creature.immune_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a list of the elements the creature is immune to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.Creature.weak_to">
+<code class="descname">weak_to</code><a class="headerlink" href="#tibiawikisql.models.Creature.weak_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary containing the elements the creature is weak to and modifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedDict</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.Creature.resistant_to">
+<code class="descname">resistant_to</code><a class="headerlink" href="#tibiawikisql.models.Creature.resistant_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary containing the elements the creature is resistant to and modifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedDict</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -5013,6 +5080,290 @@
 </dd></dl>
 
 </div>
+<div class="section" id="world">
+<h3>World<a class="headerlink" href="#world" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="tibiawikisql.models.World">
+<em class="property">class </em><code class="descclassname">tibiawikisql.models.</code><code class="descname">World</code><a class="reference internal" href="_modules/tibiawikisql/models/world.html#World"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tibiawikisql.models.World" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a Game World.</p>
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.article_id">
+<code class="descname">article_id</code><a class="headerlink" href="#tibiawikisql.models.World.article_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The id of the containing article.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.title">
+<code class="descname">title</code><a class="headerlink" href="#tibiawikisql.models.World.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>The title of the containing article.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.timestamp">
+<code class="descname">timestamp</code><a class="headerlink" href="#tibiawikisql.models.World.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The last time the containing article was edited.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.name">
+<code class="descname">name</code><a class="headerlink" href="#tibiawikisql.models.World.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the world.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.pvp_type">
+<code class="descname">pvp_type</code><a class="headerlink" href="#tibiawikisql.models.World.pvp_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The world’s PvP type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.location">
+<code class="descname">location</code><a class="headerlink" href="#tibiawikisql.models.World.location" title="Permalink to this definition">¶</a></dt>
+<dd><p>The world’s server’s physical location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.preview">
+<code class="descname">preview</code><a class="headerlink" href="#tibiawikisql.models.World.preview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the world is a preview world or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.experimental">
+<code class="descname">experimental</code><a class="headerlink" href="#tibiawikisql.models.World.experimental" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the world is a experimental world or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.online_since">
+<code class="descname">online_since</code><a class="headerlink" href="#tibiawikisql.models.World.online_since" title="Permalink to this definition">¶</a></dt>
+<dd><p>Date when the world became online for the first time, in ISO 8601 format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.offline_since">
+<code class="descname">offline_since</code><a class="headerlink" href="#tibiawikisql.models.World.offline_since" title="Permalink to this definition">¶</a></dt>
+<dd><p>Date when the world went offline, in ISO 8601 format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.merged_into">
+<code class="descname">merged_into</code><a class="headerlink" href="#tibiawikisql.models.World.merged_into" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the world this world got merged into, if applicable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, optional.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.battleye">
+<code class="descname">battleye</code><a class="headerlink" href="#tibiawikisql.models.World.battleye" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the world is BattlEye protected or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.protected_since">
+<code class="descname">protected_since</code><a class="headerlink" href="#tibiawikisql.models.World.protected_since" title="Permalink to this definition">¶</a></dt>
+<dd><p>Date when the world started being protected by BattlEye, in ISO 8601 format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.world_board">
+<code class="descname">world_board</code><a class="headerlink" href="#tibiawikisql.models.World.world_board" title="Permalink to this definition">¶</a></dt>
+<dd><p>The board ID for the world’s board.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.trade_board">
+<code class="descname">trade_board</code><a class="headerlink" href="#tibiawikisql.models.World.trade_board" title="Permalink to this definition">¶</a></dt>
+<dd><p>The board ID for the world’s trade board.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="tibiawikisql.models.World.from_article">
+<em class="property">classmethod </em><code class="descname">from_article</code><span class="sig-paren">(</span><em>article</em><span class="sig-paren">)</span><a class="headerlink" href="#tibiawikisql.models.World.from_article" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses an article into a TibiaWiki model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>article</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code>) – The article from where the model is parsed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An inherited model object for the current article.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Type[abc.Parseable]</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="tibiawikisql.models.World.from_row">
+<em class="property">classmethod </em><code class="descname">from_row</code><span class="sig-paren">(</span><em>row</em><span class="sig-paren">)</span><a class="headerlink" href="#tibiawikisql.models.World.from_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an instance of the model from a row or dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>row</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Row" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sqlite3.Row</span></code></a>) – A dict representing a row or a Row object.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of the class, based on the row.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">cls</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="tibiawikisql.models.World.get_by_field">
+<em class="property">classmethod </em><code class="descname">get_by_field</code><span class="sig-paren">(</span><em>c</em>, <em>field</em>, <em>value</em>, <em>use_like=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tibiawikisql.models.World.get_by_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets an element by a specific field’s value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sqlite3.Connection</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Cursor" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sqlite3.Cursor</span></code></a>) – A connection or cursor of the database.</p></li>
+<li><p><strong>field</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The field to filter with.</p></li>
+<li><p><strong>value</strong> – The value to look for.</p></li>
+<li><p><strong>use_like</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Whether to use <code class="docutils literal notranslate"><span class="pre">LIKE</span></code> as a comparator instead of <code class="docutils literal notranslate"><span class="pre">=</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The object found, or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">cls</span></code></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – The specified field doesn’t exist in the table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="tibiawikisql.models.World.insert">
+<code class="descname">insert</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#tibiawikisql.models.World.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts the current model into its respective database table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Cursor" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sqlite3.Cursor</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sqlite3.Connection</span></code></a>) – A cursor or connection of the database.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="tibiawikisql.models.World.search">
+<em class="property">classmethod </em><code class="descname">search</code><span class="sig-paren">(</span><em>c</em>, <em>field=None</em>, <em>value=None</em>, <em>use_like=False</em>, <em>sort_by=None</em>, <em>ascending=True</em><span class="sig-paren">)</span><a class="headerlink" href="#tibiawikisql.models.World.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds elements matching the provided values.</p>
+<p>If no values are provided, it will return all elements.</p>
+<p>Note that this won’t get values found in child tables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sqlite3.Connection</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Cursor" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sqlite3.Cursor</span></code></a>) – A connection or cursor of the database.</p></li>
+<li><p><strong>field</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, optional) – The field to filter by.</p></li>
+<li><p><strong>value</strong> (<em>optional</em>) – The value to filter by.</p></li>
+<li><p><strong>use_like</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, optional) – Whether to use <code class="docutils literal notranslate"><span class="pre">LIKE</span></code> as a comparator instead of <code class="docutils literal notranslate"><span class="pre">=</span></code>.</p></li>
+<li><p><strong>sort_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, optional) – The column to sort by.</p></li>
+<li><p><strong>ascending</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, optional) – Whether to sort ascending or descending.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list containing all matching objects.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of <code class="xref py py-class docutils literal notranslate"><span class="pre">cls</span></code></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> – The specified field doesn’t exist in the table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tibiawikisql.models.World.url">
+<code class="descname">url</code><a class="headerlink" href="#tibiawikisql.models.World.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>The URL to the article’s display page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 <div class="section" id="module-tibiawikisql.utils">
 <span id="utility-functions"></span><h2>Utility Functions<a class="headerlink" href="#module-tibiawikisql.utils" title="Permalink to this headline">¶</a></h2>
@@ -5159,7 +5510,7 @@ They consist of two numbers separated by a hyphen, e.g. <code class="docutils li
       &copy;2018, Allan Galarza.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

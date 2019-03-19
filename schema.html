@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Database &#8212; TibiaWikiSQL 2.0.2 documentation</title>
+    <title>Database &#8212; TibiaWikiSQL 2.1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -84,6 +84,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#quest-reward">quest_reward</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rashid-position">rashid_position</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#spell">spell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#world">world</a></li>
 </ul>
 </li>
 </ul>
@@ -230,6 +231,9 @@ every day of the week.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#spell">spell</a></p></td>
 <td><p>Contains information for all spells.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#world">world</a></p></td>
+<td><p>Contains information for all worlds.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1449,7 +1453,7 @@ article.</p></td>
 </tr>
 <tr class="row-odd"><td><p>words</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
-<td><p>The words used to cast the spell</p></td>
+<td><p>The words used to cast the spell.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
@@ -1521,6 +1525,85 @@ paladins or not.</p></td>
 </tbody>
 </table>
 </div>
+<div class="section" id="world">
+<h3>world<a class="headerlink" href="#world" title="Permalink to this headline">¶</a></h3>
+<table class="docutils">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 12%" />
+<col style="width: 72%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>article_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
+<td><p>The id of the article containing this world.</p></td>
+</tr>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The title of the article containing the world.</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The name of the world.</p></td>
+</tr>
+<tr class="row-odd"><td><p>location</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The world’s server’s physical location.</p></td>
+</tr>
+<tr class="row-even"><td><p>pvp_type</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The world’s PvP type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>preview</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether the world is a preview world or not.</p></td>
+</tr>
+<tr class="row-even"><td><p>experimental</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether the world is a experimental world or not.</p></td>
+</tr>
+<tr class="row-odd"><td><p>online_since</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>Date when the world became online for the first time, in ISO 8601 format.</p></td>
+</tr>
+<tr class="row-even"><td><p>offline_since</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>Date when the world went offline, in ISO 8601 format.</p></td>
+</tr>
+<tr class="row-odd"><td><p>merged_into</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The name of the world this world got merged into, if applicable.</p></td>
+</tr>
+<tr class="row-even"><td><p>battleye</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether the world is BattlEye protected or not.</p></td>
+</tr>
+<tr class="row-odd"><td><p>protected_since</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>Date when the world started being protected by BattlEye, in ISO 8601 format.</p></td>
+</tr>
+<tr class="row-even"><td><p>world_board</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The board ID for the world’s board.</p></td>
+</tr>
+<tr class="row-odd"><td><p>trade_board</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The board ID for the world’s trade board.</p></td>
+</tr>
+<tr class="row-even"><td><p>timestamp</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Unix timestamp of the article’s last edit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 
@@ -1535,7 +1618,7 @@ paladins or not.</p></td>
       &copy;2018, Allan Galarza.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>tibiawikisql.models.world &#8212; TibiaWikiSQL 2.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">TibiaWikiSQL</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/galarzaa90/tibiawiki-sql">
+    <img
+        alt="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+        src="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+<p>
+<a class="badge" href="https://beerpay.io/Galarzaa90/tibiawiki-sql">
+<img src="https://img.shields.io/badge/donate-%E2%9D%A4%C2%A0-ff69b4.svg?style=flat" alt="Donate">
+</a>
+</p>
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for tibiawikisql.models.world</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1">#  Copyright 2019 Allan Galarza</span>
+<span class="c1">#</span>
+<span class="c1">#  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1">#  you may not use this file except in compliance with the License.</span>
+<span class="c1">#  You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#  http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1">#  Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">#  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">#  See the License for the specific language governing permissions and</span>
+<span class="c1">#  limitations under the License.</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">tibiawikisql</span> <span class="k">import</span> <span class="n">schema</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.models</span> <span class="k">import</span> <span class="n">abc</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="k">import</span> <span class="n">parse_boolean</span><span class="p">,</span> <span class="n">parse_integer</span>
+
+
+<span class="k">def</span> <span class="nf">parse_date</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;%B </span><span class="si">%d</span><span class="s2">, %Y&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;%b </span><span class="si">%d</span><span class="s2">, %Y&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="World"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.World">[docs]</a><span class="k">class</span> <span class="nc">World</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">World</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a Game World.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    article_id: :class:`int`</span>
+<span class="sd">        The id of the containing article.</span>
+<span class="sd">    title: :class:`str`</span>
+<span class="sd">        The title of the containing article.</span>
+<span class="sd">    timestamp: :class:`int`</span>
+<span class="sd">        The last time the containing article was edited.</span>
+<span class="sd">    name: :class:`str`</span>
+<span class="sd">        The name of the world.</span>
+<span class="sd">    pvp_type: :class:`str`</span>
+<span class="sd">        The world&#39;s PvP type.</span>
+<span class="sd">    location: :class:`str`</span>
+<span class="sd">        The world&#39;s server&#39;s physical location.</span>
+<span class="sd">    preview: :class:`bool`</span>
+<span class="sd">        Whether the world is a preview world or not.</span>
+<span class="sd">    experimental: :class:`bool`</span>
+<span class="sd">        Whether the world is a experimental world or not.</span>
+<span class="sd">    online_since: :class:`str`</span>
+<span class="sd">        Date when the world became online for the first time, in ISO 8601 format.</span>
+<span class="sd">    offline_since: :class:`str`, optional</span>
+<span class="sd">        Date when the world went offline, in ISO 8601 format.</span>
+<span class="sd">    merged_into: :class:`str`, optional.</span>
+<span class="sd">        The name of the world this world got merged into, if applicable.</span>
+<span class="sd">    battleye: :class:`bool`</span>
+<span class="sd">        Whether the world is BattlEye protected or not.</span>
+<span class="sd">    protected_since: :class:`str`</span>
+<span class="sd">        Date when the world started being protected by BattlEye, in ISO 8601 format.</span>
+<span class="sd">    world_board: :class:`int`</span>
+<span class="sd">        The board ID for the world&#39;s board.</span>
+<span class="sd">    trade_board: :class:`int`</span>
+<span class="sd">        The board ID for the world&#39;s trade board.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;pvp_type&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;preview&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;preview&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
+        <span class="s2">&quot;experimental&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;experimental&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
+        <span class="s2">&quot;online&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;online_since&quot;</span><span class="p">,</span> <span class="n">parse_date</span><span class="p">),</span>
+        <span class="s2">&quot;offline&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;offline_since&quot;</span><span class="p">,</span> <span class="n">parse_date</span><span class="p">),</span>
+        <span class="s2">&quot;mergedinto&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;merged_into&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;battleye&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;battleye&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
+        <span class="s2">&quot;protectedsince&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;protected_since&quot;</span><span class="p">,</span> <span class="n">parse_date</span><span class="p">),</span>
+        <span class="s2">&quot;worldboardid&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;world_board&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;tradeboardid&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;trade_board&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]World&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="s2">&quot;pvp_type&quot;</span><span class="p">,</span> <span class="s2">&quot;preview&quot;</span><span class="p">,</span> <span class="s2">&quot;experimental&quot;</span><span class="p">,</span> <span class="s2">&quot;online_since&quot;</span><span class="p">,</span> <span class="s2">&quot;offline_since&quot;</span><span class="p">,</span> 
+                <span class="s2">&quot;merged_into&quot;</span><span class="p">,</span> <span class="s2">&quot;battleye&quot;</span><span class="p">,</span> <span class="s2">&quot;protected_since&quot;</span><span class="p">,</span> <span class="s2">&quot;world_board&quot;</span><span class="p">,</span> <span class="s2">&quot;trade_board&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018, Allan Galarza.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

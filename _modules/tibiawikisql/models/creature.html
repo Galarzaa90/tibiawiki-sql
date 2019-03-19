@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.creature &#8212; TibiaWikiSQL 2.0.2 documentation</title>
+    <title>tibiawikisql.models.creature &#8212; TibiaWikiSQL 2.1.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -115,7 +115,7 @@
           <div class="body" role="main">
             
   <h1>Source code for tibiawikisql.models.creature</h1><div class="highlight"><pre>
-<span></span><span class="c1">#  Copyright 2018 Allan Galarza</span>
+<span></span><span class="c1">#  Copyright 2019 Allan Galarza</span>
 <span class="c1">#</span>
 <span class="c1">#  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1">#  you may not use this file except in compliance with the License.</span>
@@ -130,12 +130,32 @@
 <span class="c1">#  limitations under the License.</span>
 
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">tibiawikisql</span> <span class="k">import</span> <span class="n">schema</span>
 <span class="kn">from</span> <span class="nn">tibiawikisql.models</span> <span class="k">import</span> <span class="n">abc</span>
 <span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="k">import</span> <span class="n">clean_links</span><span class="p">,</span> <span class="n">int_pattern</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">,</span> <span class="n">parse_min_max</span>
 
 <span class="n">creature_loot_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)&quot;</span><span class="p">)</span>
+
+<span class="n">KILLS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Harmless&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="s2">&quot;Trivial&quot;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span>
+    <span class="s2">&quot;Easy&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+    <span class="s2">&quot;Medium&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="s2">&quot;Hard&quot;</span><span class="p">:</span> <span class="mi">2500</span>
+<span class="p">}</span>
+
+<span class="n">CHARM_POINTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Harmless&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;Trivial&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s2">&quot;Easy&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s2">&quot;Medium&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="s2">&quot;Hard&quot;</span><span class="p">:</span> <span class="mi">50</span>
+<span class="p">}</span>
+
+<span class="n">ELEMENTAL_MODIFIERS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;physical&quot;</span> <span class="s2">&quot;earth&quot;</span><span class="p">,</span> <span class="s2">&quot;fire&quot;</span><span class="p">,</span> <span class="s2">&quot;ice&quot;</span><span class="p">,</span> <span class="s2">&quot;energy&quot;</span><span class="p">,</span> <span class="s2">&quot;death&quot;</span><span class="p">,</span> <span class="s2">&quot;holy&quot;</span><span class="p">,</span> <span class="s2">&quot;drown&quot;</span><span class="p">,</span> <span class="s2">&quot;hpdrain&quot;</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">parse_maximum_integer</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -335,6 +355,44 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bestiary_kills</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;:class:`int`, optional:Total kills needed to complete the bestiary entry if applicable.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">KILLS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bestiary_level</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestiary_occurrence</span> <span class="o">!=</span> <span class="s1">&#39;Very Rare&#39;</span> <span class="k">else</span> <span class="mi">5</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">charm_points</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;:class:`int`, optional: Charm points awarded for completing the creature&#39;s bestiary entry, if applicable.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CHARM_POINTS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bestiary_level</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestiary_occurrence</span> <span class="o">!=</span> <span class="s1">&#39;Very Rare&#39;</span> <span class="k">else</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">elemental_modifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;:class:`OrderedDict`: Returns a dictionary containing all elemental modifiers, sorted in descending order.&quot;&quot;&quot;</span>
+        <span class="n">modifiers</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;modifier_</span><span class="si">{k}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ELEMENTAL_MODIFIERS</span> <span class="k">if</span>
+                     <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;modifier_</span><span class="si">{k}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">modifiers</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">immune_to</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;:class:`list` of :class:`str`: Gets a list of the elements the creature is immune to.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elemental_modifiers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">weak_to</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;:class:`OrderedDict`: Dictionary containing the elements the creature is weak to and modifier.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elemental_modifiers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">})</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">resistant_to</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;:class:`OrderedDict`: Dictionary containing the elements the creature is resistant to and modifier.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elemental_modifiers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="mi">100</span> <span class="o">&gt;</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">})</span>
+
 <div class="viewcode-block" id="Creature.from_article"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature.from_article">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_article</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">article</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -457,8 +515,6 @@
         <span class="k">return</span> <span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">%s</span><span class="s2">.*, item.title as item_title, creature.title as creature_title FROM </span><span class="si">%s</span><span class="s2"></span>
 <span class="s2">                  LEFT JOIN creature ON creature.article_id = creature_id</span>
 <span class="s2">                  LEFT JOIN item ON item.article_id = item_id&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span></div>
-
-
 </pre></div>
 
           </div>
@@ -471,7 +527,7 @@
       &copy;2018, Allan Galarza.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

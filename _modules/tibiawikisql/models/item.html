@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.item &#8212; TibiaWikiSQL 2.0.2 documentation</title>
+    <title>tibiawikisql.models.item &#8212; TibiaWikiSQL 2.1.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -115,7 +115,7 @@
           <div class="body" role="main">
             
   <h1>Source code for tibiawikisql.models.item</h1><div class="highlight"><pre>
-<span></span><span class="c1">#  Copyright 2018 Allan Galarza</span>
+<span></span><span class="c1">#  Copyright 2019 Allan Galarza</span>
 <span class="c1">#</span>
 <span class="c1">#  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1">#  you may not use this file except in compliance with the License.</span>
@@ -333,7 +333,6 @@
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;levelrequired&quot;</span><span class="p">,</span>
         <span class="s2">&quot;attack&quot;</span><span class="p">:</span> <span class="s2">&quot;attack&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;elemental_attack&quot;</span><span class="p">:</span> <span class="s2">&quot;elementattack&quot;</span><span class="p">,</span>
         <span class="s2">&quot;defense&quot;</span><span class="p">:</span> <span class="s2">&quot;defense&quot;</span><span class="p">,</span>
         <span class="s2">&quot;defense_modifier&quot;</span><span class="p">:</span> <span class="s2">&quot;defensemod&quot;</span><span class="p">,</span>
         <span class="s2">&quot;armor&quot;</span><span class="p">:</span> <span class="s2">&quot;armor&quot;</span><span class="p">,</span>
@@ -358,6 +357,10 @@
         <span class="s2">&quot;charges&quot;</span><span class="p">:</span> <span class="s2">&quot;charges&quot;</span><span class="p">,</span>
         <span class="s2">&quot;food_time&quot;</span><span class="p">:</span> <span class="s2">&quot;regenseconds&quot;</span><span class="p">,</span>
         <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="s2">&quot;duration&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fire_attack&quot;</span><span class="p">:</span> <span class="s2">&quot;fire_attack&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;energy_attack&quot;</span><span class="p">:</span> <span class="s2">&quot;energy_attack&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ice_attack&quot;</span><span class="p">:</span> <span class="s2">&quot;ice_attack&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;earth_attack&quot;</span><span class="p">:</span> <span class="s2">&quot;earth_attack&quot;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">}</span>
 
@@ -376,7 +379,7 @@
       &copy;2018, Allan Galarza.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
