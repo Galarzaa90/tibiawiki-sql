@@ -4,7 +4,7 @@ Changelog
 
 .. _v2.1.0:
 
-2.1.0 (Unreleased)
+2.1.0 (2019-03-19)
 ==================
 
 - `elemental_attack` Item Attribute split into ``fire_attack``, ``ice_attack``, ``energy_attack`` and ``earth_attack`` to
