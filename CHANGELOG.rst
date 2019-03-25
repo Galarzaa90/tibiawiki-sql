@@ -2,6 +2,14 @@
 Changelog
 =========
 
+.. v2.1.1:
+
+2.1.1 (2019-03-25)
+==================
+- Fixed phyisical and earth modifiers not showing up in ``weak_to``, ``imunute_to`` and ``resistant_to`` ``Creature`` properties.
+- Fixed incorrect ``weak_to`` property.
+- Fixed missing ``modifier_hpdrain`` ``Creature`` attribute.
+
 .. _v2.1.0:
 
 2.1.0 (2019-03-19)

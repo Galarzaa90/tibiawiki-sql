@@ -38,7 +38,7 @@ CHARM_POINTS = {
     "Hard": 50
 }
 
-ELEMENTAL_MODIFIERS = ["physical" "earth", "fire", "ice", "energy", "death", "holy", "drown", "hpdrain"]
+ELEMENTAL_MODIFIERS = ["physical", "earth", "fire", "ice", "energy", "death", "holy", "drown", "hpdrain"]
 
 
 def parse_maximum_integer(value):
@@ -232,7 +232,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
                  "bestiary_level", "bestiary_class", "bestiary_occurrence", "hitpoints", "experience", "armor", "speed",
                  "max_damage", "summon_cost", "convince_cost", "illusionable", "pushable", "sees_invisible",
                  "paralysable", "boss", "modifier_physical", "modifier_earth", "modifier_fire", "modifier_energy",
-                 "modifier_ice", "modifier_death", "modifier_holy", "modifier_lifedrain", "modifier_drown", "abilities",
+                 "modifier_ice", "modifier_death", "modifier_holy", "modifier_hpdrain", "modifier_drown", "abilities",
                  "walks_through", "walks_around", "version", "image", "loot")
 
     def __init__(self, **kwargs):
@@ -269,7 +269,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
     @property
     def weak_to(self):
         """:class:`OrderedDict`: Dictionary containing the elements the creature is weak to and modifier."""
-        return OrderedDict({k: v for k, v in self.elemental_modifiers.items() if v > 0})
+        return OrderedDict({k: v for k, v in self.elemental_modifiers.items() if v > 100})
 
     @property
     def resistant_to(self):
