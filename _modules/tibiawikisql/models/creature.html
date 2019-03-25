@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.creature &#8212; TibiaWikiSQL 2.1.0 documentation</title>
+    <title>tibiawikisql.models.creature &#8212; TibiaWikiSQL 2.1.1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -155,7 +155,7 @@
     <span class="s2">&quot;Hard&quot;</span><span class="p">:</span> <span class="mi">50</span>
 <span class="p">}</span>
 
-<span class="n">ELEMENTAL_MODIFIERS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;physical&quot;</span> <span class="s2">&quot;earth&quot;</span><span class="p">,</span> <span class="s2">&quot;fire&quot;</span><span class="p">,</span> <span class="s2">&quot;ice&quot;</span><span class="p">,</span> <span class="s2">&quot;energy&quot;</span><span class="p">,</span> <span class="s2">&quot;death&quot;</span><span class="p">,</span> <span class="s2">&quot;holy&quot;</span><span class="p">,</span> <span class="s2">&quot;drown&quot;</span><span class="p">,</span> <span class="s2">&quot;hpdrain&quot;</span><span class="p">]</span>
+<span class="n">ELEMENTAL_MODIFIERS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;physical&quot;</span><span class="p">,</span> <span class="s2">&quot;earth&quot;</span><span class="p">,</span> <span class="s2">&quot;fire&quot;</span><span class="p">,</span> <span class="s2">&quot;ice&quot;</span><span class="p">,</span> <span class="s2">&quot;energy&quot;</span><span class="p">,</span> <span class="s2">&quot;death&quot;</span><span class="p">,</span> <span class="s2">&quot;holy&quot;</span><span class="p">,</span> <span class="s2">&quot;drown&quot;</span><span class="p">,</span> <span class="s2">&quot;hpdrain&quot;</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">parse_maximum_integer</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -349,7 +349,7 @@
                  <span class="s2">&quot;bestiary_level&quot;</span><span class="p">,</span> <span class="s2">&quot;bestiary_class&quot;</span><span class="p">,</span> <span class="s2">&quot;bestiary_occurrence&quot;</span><span class="p">,</span> <span class="s2">&quot;hitpoints&quot;</span><span class="p">,</span> <span class="s2">&quot;experience&quot;</span><span class="p">,</span> <span class="s2">&quot;armor&quot;</span><span class="p">,</span> <span class="s2">&quot;speed&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;max_damage&quot;</span><span class="p">,</span> <span class="s2">&quot;summon_cost&quot;</span><span class="p">,</span> <span class="s2">&quot;convince_cost&quot;</span><span class="p">,</span> <span class="s2">&quot;illusionable&quot;</span><span class="p">,</span> <span class="s2">&quot;pushable&quot;</span><span class="p">,</span> <span class="s2">&quot;sees_invisible&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;paralysable&quot;</span><span class="p">,</span> <span class="s2">&quot;boss&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_physical&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_earth&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_fire&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_energy&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;modifier_ice&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_death&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_holy&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_lifedrain&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_drown&quot;</span><span class="p">,</span> <span class="s2">&quot;abilities&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;modifier_ice&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_death&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_holy&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_hpdrain&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_drown&quot;</span><span class="p">,</span> <span class="s2">&quot;abilities&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;walks_through&quot;</span><span class="p">,</span> <span class="s2">&quot;walks_around&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="s2">&quot;loot&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -386,7 +386,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">weak_to</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;:class:`OrderedDict`: Dictionary containing the elements the creature is weak to and modifier.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elemental_modifiers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elemental_modifiers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">})</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">resistant_to</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
