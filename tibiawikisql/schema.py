@@ -290,6 +290,16 @@ class World(Table):
     timestamp = Column(Integer)
 
 
+class Mount(Table):
+    article_id = Column(Integer, primary_key=True)
+    title = Column(Text, unique=True)
+    name = Column(Text)
+    version = Column(Text)
+    image = Column(Blob)
+    timestamp = Column(Integer)
+
+
+
 def create_tables(conn):
     """
     Creates all the tables in the database.
