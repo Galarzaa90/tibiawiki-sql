@@ -2,6 +2,21 @@
 Changelog
 =========
 
+.. v2.2.0:
+
+2.2.0 (Unreleased)
+==================
+- New table `mount`, containing all mounts and their information.
+- Fixed incorrect entries due to NPC Minzy.
+
+.. v2.1.1:
+
+2.1.1 (2019-03-25)
+==================
+- Fixed physical and earth modifiers not showing up in ``weak_to``, ``immune_to`` and ``resistant_to`` ``Creature`` properties.
+- Fixed incorrect ``weak_to`` property.
+- Fixed missing ``modifier_hpdrain`` ``Creature`` attribute.
+
 .. _v2.1.0:
 
 2.1.0 (2019-03-19)
@@ -12,7 +27,6 @@ Changelog
 - Added ``bestiary_kills`` and ``charm_points`` properties to ``Creature``.
 - Added ``elemental_modifiers``, ``weak_to``, ``immune_to`` and ``resistant_to`` properties to ``Creature``.
 - New table ``world`` and model ``World``. Contains information of Game worlds, including now offline worlds.
-- Fixed incorrect entries due to NPC Minzy.
 
 .. _v2.0.2:
 

@@ -191,17 +191,17 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         super().__init__(**kwargs)
 
     _map = {
-        "name": ("name", lambda x: x),
-        "actualname": ("name", lambda x: x),
+        "name": ("name", str.strip),
+        "actualname": ("name", str.strip),
         "location": ("location", clean_links),
-        "gender": ("gender", lambda x: x),
-        "race": ("race", lambda x: x),
-        "job": ("job", lambda x: x),
-        "city": ("city", lambda x: x),
+        "gender": ("gender", str.strip),
+        "race": ("race", str.strip),
+        "job": ("job", str.strip),
+        "city": ("city", str.strip),
         "posx": ("x", convert_tibiawiki_position),
         "posy": ("y", convert_tibiawiki_position),
         "posz": ("z", int),
-        "implemented": ("version", lambda x: x)
+        "implemented": ("version", str.strip)
     }
     _pattern = re.compile(r"Infobox[\s_]NPC")
 

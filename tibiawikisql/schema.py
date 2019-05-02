@@ -296,7 +296,7 @@ class Mount(Table):
     name = Column(Text)
     speed = Column(Integer)
     taming_method = Column(Text)
-    bought = Column(Boolean, default=False)
+    buyable = Column(Boolean, default=False)
     price = Column(Integer)
     achievement = Column(Text)
     light_color = Column(Integer)

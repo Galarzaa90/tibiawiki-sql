@@ -62,10 +62,10 @@ class House(abc.Row, abc.Parseable, table=schema.House):
                  "size", "rooms", "floors", "x", "y", "z", "version")
     _map = {
         "houseid": ("house_id", parse_integer),
-        "name": ("name", lambda x: x),
+        "name": ("name", str.strip),
         "type": ("guildhall", lambda x: x is not None and "guildhall" in x.lower()),
-        "city": ("city", lambda x: x),
-        "street": ("street", lambda x: x),
+        "city": ("city", str.strip),
+        "street": ("street", str.strip),
         "beds": ("beds", lambda x: parse_integer(x, None)),
         "rent": ("rent", lambda x: parse_integer(x, None)),
         "size": ("size", lambda x: parse_integer(x, None)),
@@ -74,7 +74,7 @@ class House(abc.Row, abc.Parseable, table=schema.House):
         "posx": ("x", convert_tibiawiki_position),
         "posy": ("y", convert_tibiawiki_position),
         "posz": ("z", int),
-        "implemented": ("version", lambda x: x),
+        "implemented": ("version", str.strip),
     }
 
     def __init__(self, **kwargs):

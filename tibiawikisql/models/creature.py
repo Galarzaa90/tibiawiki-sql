@@ -193,14 +193,14 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The items dropped by this creature.
     """
     _map = {
-        "article": ("article", lambda x: x),
-        "name": ("name", lambda x: x),
-        "actualname": ("name", lambda x: x),
-        "creatureclass": ("class", lambda x: x),
-        "bestiaryclass": ("bestiary_class", lambda x: x),
-        "bestiarylevel": ("bestiary_level", lambda x: x),
-        "occurrence": ("bestiary_occurrence", lambda x: x),
-        "primarytype": ("type", lambda x: x),
+        "article": ("article", str.strip),
+        "name": ("name", str.strip),
+        "actualname": ("name", str.strip),
+        "creatureclass": ("class", str.strip),
+        "bestiaryclass": ("bestiary_class", str.strip),
+        "bestiarylevel": ("bestiary_level", str.strip),
+        "occurrence": ("bestiary_occurrence", str.strip),
+        "primarytype": ("type", str.strip),
         "hp": ("hitpoints", lambda x: parse_integer(x, None)),
         "exp": ("experience", lambda x: parse_integer(x, None)),
         "armor": ("armor", lambda x: parse_integer(x, None)),
@@ -225,7 +225,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "abilities": ("abilities", clean_links),
         "walksthrough": ("walks_through", parse_monster_walks),
         "walksaround": ("walks_around", parse_monster_walks),
-        "implemented": ("version", lambda x: x)
+        "implemented": ("version", str.strip)
     }
     _pattern = re.compile(r"Infobox[\s_]Creature")
     __slots__ = ("article_id", "title", "timestamp", "raw_attribute", "article", "name", "class", "type",
@@ -398,3 +398,5 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
         return """SELECT %s.*, item.title as item_title, creature.title as creature_title FROM %s
                   LEFT JOIN creature ON creature.article_id = creature_id
                   LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
+
+

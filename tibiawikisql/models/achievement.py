@@ -47,15 +47,15 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         The client version where this was first implemented.
     """
     _map = {
-        "name": ("name", lambda x: x.strip()),
-        "actualname": ("name", lambda x: x.strip()),
+        "name": ("name", str.strip),
+        "actualname": ("name", str.strip),
         "grade": ("grade", lambda x: parse_integer(x, None)),
         "points": ("points", lambda x: parse_integer(x, None)),
         "premium": ("premium", parse_boolean),
-        "description": ("description", lambda x: x.strip()),
+        "description": ("description", str.strip),
         "spoiler": ("spoiler", clean_links),
         "secret": ("secret", parse_boolean),
-        "implemented": ("version", lambda x: x),
+        "implemented": ("version", str.strip),
     }
     _pattern = re.compile(r"Infobox[\s_]Achievement")
     __slots__ = ("article_id", "title", "timestamp", "name", "grade", "points", "description", "spoiler", "secret",

@@ -115,11 +115,11 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         The materials needed for the imbuement.
     """
     _map = {
-        "name": ("name", lambda x: x),
-        "prefix": ("tier", lambda x: x),
-        "type": ("type", lambda x: x),
+        "name": ("name", str.strip),
+        "prefix": ("tier", str.strip),
+        "type": ("type", str.strip),
         "effect": ("effect", parse_effect),
-        "implemented": ("version", lambda x: x)
+        "implemented": ("version", str.strip)
     }
     _pattern = re.compile(r"Infobox[\s_]Imbuement")
 

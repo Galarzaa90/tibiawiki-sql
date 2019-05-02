@@ -24,11 +24,41 @@ def remove_mount(name):
 
 
 class Mount(abc.Row, abc.Parseable, table=schema.Mount):
+    """
+    Represents a Game World.
+
+    Attributes
+    ----------
+    article_id: :class:`int`
+        The id of the containing article.
+    title: :class:`str`
+        The title of the containing article.
+    timestamp: :class:`int`
+        The last time the containing article was edited.
+    name: :class:`str`
+        The name of the mount.
+    speed: :class:`int`
+        The speed given by the mount.
+    taming_method: :class:`str`
+        A brief description on how the mount is obtained.
+    buyable: :class:`bool`
+        Whether the mount can be bought from the store or not.
+    price: :class:`int`, optional
+        The price in Tibia coins.
+    achievement: :class:`str`, optional
+        The achievement obtained for obtaining this mount.
+    light_color: :class:`int`, optional.
+        The color of the light emitted by this mount, if any.
+    light_radius: :class:`int`
+        The radius of the light emitted by this mount, if any.
+    versin: :class:`str`
+        The client version where this mount was introduced to the game.
+    """
     _map = {
         "name": ("name", remove_mount),
         "speed": ("speed", int),
         "taming_method": ("taming_method", clean_links),
-        "bought": ("bought", parse_boolean),
+        "bought": ("buyable", parse_boolean),
         "price": ("price", parse_integer),
         "achievement": ("achievement", str.strip),
         "lightcolor": ("light_color", int),

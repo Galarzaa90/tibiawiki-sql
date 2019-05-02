@@ -78,7 +78,7 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
         "lvl": ("level_required", parse_integer),
         "lvlrec": ("level_recommended", parse_integer),
         "premium": ("premium", parse_boolean),
-        "implemented": ("version", lambda x: x),
+        "implemented": ("version", str.strip),
     }
     _pattern = re.compile(r"Infobox[\s_]Quest")
 

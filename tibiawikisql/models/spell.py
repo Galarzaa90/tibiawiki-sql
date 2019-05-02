@@ -73,12 +73,12 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
                  "soul", "price", "cooldown", "level", "premium", "taught_by", "knight", "sorcerer", "druid",
                  "paladin", "image", "version", "effect")
     _map = {
-        "name": ("name", lambda x: x),
+        "name": ("name", str.strip),
         "effect": ("effect", clean_links),
-        "words": ("words", lambda x: x),
-        "type": ("type", lambda x: x),
-        "subclass": ("class", lambda x: x),
-        "damagetype": ("element", lambda x: x),
+        "words": ("words", str.strip),
+        "type": ("type", str.strip),
+        "subclass": ("class", str.strip),
+        "damagetype": ("element", str.strip),
         "mana": ("mana", parse_integer),
         "soul": ("soul", parse_integer),
         "spellcost": ("price", parse_integer),
