@@ -1,4 +1,4 @@
-#  Copyright 2018 Allan Galarza
+#  Copyright 2019 Allan Galarza
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -107,6 +107,22 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
                     attribute = m.group(1).replace("fighting", "").replace("level", "").strip()
                     value = m.group(2)
                     item.attributes.append(ItemAttribute(item_id=item.article_id, name=attribute, value=value))
+        if "resist" in item._raw_attributes:
+            resistances = item._raw_attributes["resist"].split(",")
+            for element in resistances:
+                element = element.strip()
+                m = re.search(r'([a-zA-Z0-9_ ]+) +(-?\+?\d+)%', element)
+                if m:
+                    attribute = m.group(1) + "%"
+                    try:
+                        value = int(m.group(2))
+                    except ValueError:
+                        value = 0
+                    item.attributes.append(ItemAttribute(item_id=item.article_id, name=attribute, value=value))
+        vocations = item._raw_attributes.get('vocrequired')
+        if vocations and "none" not in vocations.lower():
+            vocation = vocations.replace('and', '+').replace(',', '+').replace(' ', '')
+            item.attributes.append(ItemAttribute(item_id=item.article_id, name="vocation", value=vocation))
         return item
 
     def insert(self, c):
@@ -200,7 +216,6 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
     _map = {
         "level": "levelrequired",
         "attack": "attack",
-        "elemental_attack": "elementattack",
         "defense": "defense",
         "defense_modifier": "defensemod",
         "armor": "armor",
@@ -225,6 +240,10 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "charges": "charges",
         "food_time": "regenseconds",
         "duration": "duration",
+        "fire_attack": "fire_attack",
+        "energy_attack": "energy_attack",
+        "ice_attack": "ice_attack",
+        "earth_attack": "earth_attack",
     }
     __slots__ = {"item_id", "name", "value"}
 

@@ -1,4 +1,4 @@
-#  Copyright 2018 Allan Galarza
+#  Copyright 2019 Allan Galarza
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -270,6 +270,24 @@ class RashidPosition(Table, table_name="rashid_position"):
     x = Column(Integer)
     y = Column(Integer)
     z = Column(Integer)
+
+
+class World(Table):
+    article_id = Column(Integer, primary_key=True)
+    title = Column(Text, unique=True)
+    name = Column(Text)
+    location = Column(Text)
+    pvp_type = Column(Text)
+    preview = Column(Boolean, default=False)
+    experimental = Column(Boolean, default=False)
+    online_since = Column(Text)
+    offline_since = Column(Text)
+    merged_into = Column(Text)
+    battleye = Column(Boolean, default=False)
+    protected_since = Column(Text)
+    world_board = Column(Integer)
+    trade_board = Column(Integer)
+    timestamp = Column(Integer)
 
 
 def create_tables(conn):

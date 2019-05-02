@@ -42,12 +42,19 @@ class TestWikiApi(unittest.TestCase):
         self.assertIsInstance(creature, models.Creature)
 
         creature.insert(self.conn)
-        db_creature = models.Creature.get_by_field(self.conn, "article_id", 1)
+        db_creature: models.Creature = models.Creature.get_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_creature, models.Creature)
         self.assertEqual(db_creature.name, creature.name)
         self.assertEqual(db_creature.modifier_earth, creature.modifier_earth)
         self.assertGreater(len(db_creature.loot), 0)
+
+        # Dynamic properties
+        self.assertEqual(50, db_creature.charm_points)
+        self.assertEqual(2500, db_creature.bestiary_kills)
+        self.assertEqual(3, len(db_creature.immune_to))
+        self.assertEqual(2, len(db_creature.resistant_to))
+        self.assertEqual(4, len(db_creature.weak_to))
 
         db_creature = models.Creature.get_by_field(self.conn, "name", "demon", use_like=True)
         self.assertIsInstance(db_creature, models.Creature)

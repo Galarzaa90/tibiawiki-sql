@@ -1,4 +1,4 @@
-#  Copyright 2018 Allan Galarza
+#  Copyright 2019 Allan Galarza
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@ import json
 import urllib.parse
 
 import requests
+
+from tibiawikisql import __version__
 
 BASE_URL = "https://tibia.fandom.com"
 
@@ -131,7 +133,7 @@ class WikiClient:
     ENDPOINT = "%s/api.php" % BASE_URL
 
     headers = {
-        'User-Agent': 'tibiawikisql v1.1.1'
+        'User-Agent': f'tibiawikisql {__version__}'
     }
 
     @classmethod

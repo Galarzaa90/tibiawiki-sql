@@ -1,4 +1,4 @@
-#  Copyright 2018 Allan Galarza
+#  Copyright 2019 Allan Galarza
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -13,12 +13,32 @@
 #  limitations under the License.
 
 import re
+from collections import OrderedDict
+from typing import List, Optional
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
 from tibiawikisql.utils import clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max
 
 creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
+
+KILLS = {
+    "Harmless": 25,
+    "Trivial": 250,
+    "Easy": 500,
+    "Medium": 1000,
+    "Hard": 2500
+}
+
+CHARM_POINTS = {
+    "Harmless": 1,
+    "Trivial": 5,
+    "Easy": 15,
+    "Medium": 25,
+    "Hard": 50
+}
+
+ELEMENTAL_MODIFIERS = ["physical" "earth", "fire", "ice", "energy", "death", "holy", "drown", "hpdrain"]
 
 
 def parse_maximum_integer(value):
@@ -218,6 +238,44 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+    @property
+    def bestiary_kills(self) -> Optional[int]:
+        """:class:`int`, optional:Total kills needed to complete the bestiary entry if applicable."""
+        try:
+            return KILLS[self.bestiary_level] if self.bestiary_occurrence != 'Very Rare' else 5
+        except KeyError:
+            return None
+
+    @property
+    def charm_points(self) -> Optional[int]:
+        """:class:`int`, optional: Charm points awarded for completing the creature's bestiary entry, if applicable."""
+        try:
+            return CHARM_POINTS[self.bestiary_level] * (1 if self.bestiary_occurrence != 'Very Rare' else 2)
+        except KeyError:
+            return None
+
+    @property
+    def elemental_modifiers(self):
+        """:class:`OrderedDict`: Returns a dictionary containing all elemental modifiers, sorted in descending order."""
+        modifiers = {k: getattr(self, f"modifier_{k}", None) for k in ELEMENTAL_MODIFIERS if
+                     getattr(self, f"modifier_{k}", None) is not None}
+        return OrderedDict(sorted(modifiers.items(), key=lambda t: t[1], reverse=True))
+
+    @property
+    def immune_to(self) -> List[str]:
+        """:class:`list` of :class:`str`: Gets a list of the elements the creature is immune to."""
+        return [k for k, v in self.elemental_modifiers.items() if v == 0]
+
+    @property
+    def weak_to(self):
+        """:class:`OrderedDict`: Dictionary containing the elements the creature is weak to and modifier."""
+        return OrderedDict({k: v for k, v in self.elemental_modifiers.items() if v > 0})
+
+    @property
+    def resistant_to(self):
+        """:class:`OrderedDict`: Dictionary containing the elements the creature is resistant to and modifier."""
+        return OrderedDict({k: v for k, v in self.elemental_modifiers.items() if 100 > v > 0})
+
     @classmethod
     def from_article(cls, article):
         """
@@ -340,5 +398,3 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
         return """SELECT %s.*, item.title as item_title, creature.title as creature_title FROM %s
                   LEFT JOIN creature ON creature.article_id = creature_id
                   LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
-
-
