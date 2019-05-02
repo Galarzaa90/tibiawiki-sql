@@ -12,27 +12,29 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import datetime
 import re
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
-from tibiawikisql.utils import parse_boolean, parse_integer
+from tibiawikisql.utils import parse_boolean, parse_integer, clean_links
 
-
-def parse_date(value):
-    try:
-        return datetime.datetime.strptime(value, "%B %d, %Y").date().isoformat()
-    except ValueError:
-        return datetime.datetime.strptime(value, "%b %d, %Y").date().isoformat()
 
 def remove_mount(name):
     return name.replace("(Mount)", "").strip()
 
+
 class Mount(abc.Row, abc.Parseable, table=schema.Mount):
     _map = {
         "name": ("name", remove_mount),
-        "implemented": ("version", lambda x: x)
+        "speed": ("speed", int),
+        "taming_method": ("taming_method", clean_links),
+        "bought": ("bought", parse_boolean),
+        "price": ("price", parse_integer),
+        "achievement": ("achievement", str.strip),
+        "lightcolor": ("light_color", int),
+        "lightradius": ("light_radius", int),
+        "implemented": ("version", str.strip),
+
     }
     _pattern = re.compile(r"Infobox[\s_]Mount")
     __slots__ = ("name",)
