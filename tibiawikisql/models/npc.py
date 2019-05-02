@@ -210,9 +210,9 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         npc = super().from_article(article)
         if npc is None:
             return None
-        if "buys" in npc._raw_attributes:
+        if "buys" in npc._raw_attributes and article.title != "Minzy":
             cls._parse_buy_offers(npc)
-        if "sells" in npc._raw_attributes:
+        if "sells" in npc._raw_attributes and article.title != "Minzy":
             cls._parse_sell_offers(npc)
             cls._parse_spells(npc)
         destinations = []

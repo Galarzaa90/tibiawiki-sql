@@ -651,6 +651,8 @@ rashid_position
 +--------+-------------+------------------------------------------+
 | city   | ``TEXT``    | Name of the city Rashid is located.      |
 +--------+-------------+------------------------------------------+
+| location | ``TEXT``    | Location where Rashid is that day.     |
++----------+-------------+----------------------------------------+
 | x      | ``INTEGER`` | The x position where Rashid is that day. |
 +--------+-------------+------------------------------------------+
 | y      | ``INTEGER`` | The y position where Rashid is that day. |
