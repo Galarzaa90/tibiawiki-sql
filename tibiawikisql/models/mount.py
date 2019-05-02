@@ -44,15 +44,17 @@ class Mount(abc.Row, abc.Parseable, table=schema.Mount):
     buyable: :class:`bool`
         Whether the mount can be bought from the store or not.
     price: :class:`int`, optional
-        The price in Tibia coins.
+        The price in Tibia coins to buy the mount.
     achievement: :class:`str`, optional
         The achievement obtained for obtaining this mount.
     light_color: :class:`int`, optional.
         The color of the light emitted by this mount, if any.
     light_radius: :class:`int`
         The radius of the light emitted by this mount, if any.
-    versin: :class:`str`
+    version: :class:`str`
         The client version where this mount was introduced to the game.
+    image: :class:`bytes`
+        The NPC's image in bytes.
     """
     _map = {
         "name": ("name", remove_mount),
@@ -67,7 +69,8 @@ class Mount(abc.Row, abc.Parseable, table=schema.Mount):
 
     }
     _pattern = re.compile(r"Infobox[\s_]Mount")
-    __slots__ = ("name",)
+    __slots__ = ("article_id", "title", "timestamp", "name", "speed", "taming_method", "buyable", "price",
+                 "achievement", "light_color", "light_radius", "version", "image")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
