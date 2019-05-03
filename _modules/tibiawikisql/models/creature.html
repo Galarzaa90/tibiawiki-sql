@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.creature &#8212; TibiaWikiSQL 2.1.1 documentation</title>
+    <title>tibiawikisql.models.creature &#8212; TibiaWikiSQL 2.2.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -84,8 +84,6 @@
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -310,14 +308,14 @@
 <span class="sd">        The items dropped by this creature.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;article&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;article&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;actualname&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;creatureclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;bestiaryclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_class&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;bestiarylevel&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_level&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;occurrence&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_occurrence&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;primarytype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;article&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;article&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;actualname&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;creatureclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;bestiaryclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_class&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;bestiarylevel&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_level&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;occurrence&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_occurrence&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;primarytype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;hp&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;hitpoints&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
         <span class="s2">&quot;exp&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;experience&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
         <span class="s2">&quot;armor&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;armor&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
@@ -342,7 +340,7 @@
         <span class="s2">&quot;abilities&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;abilities&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
         <span class="s2">&quot;walksthrough&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;walks_through&quot;</span><span class="p">,</span> <span class="n">parse_monster_walks</span><span class="p">),</span>
         <span class="s2">&quot;walksaround&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;walks_around&quot;</span><span class="p">,</span> <span class="n">parse_monster_walks</span><span class="p">),</span>
-        <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+        <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Creature&quot;</span><span class="p">)</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;article_id&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;raw_attribute&quot;</span><span class="p">,</span> <span class="s2">&quot;article&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span>
@@ -515,6 +513,8 @@
         <span class="k">return</span> <span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">%s</span><span class="s2">.*, item.title as item_title, creature.title as creature_title FROM </span><span class="si">%s</span><span class="s2"></span>
 <span class="s2">                  LEFT JOIN creature ON creature.article_id = creature_id</span>
 <span class="s2">                  LEFT JOIN item ON item.article_id = item_id&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span></div>
+
+
 </pre></div>
 
           </div>
@@ -524,10 +524,10 @@
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2018, Allan Galarza.
+      &copy;2019, Allan Galarza.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

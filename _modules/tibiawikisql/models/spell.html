@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.spell &#8212; TibiaWikiSQL 2.1.1 documentation</title>
+    <title>tibiawikisql.models.spell &#8212; TibiaWikiSQL 2.2.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -84,8 +84,6 @@
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -190,12 +188,12 @@
                  <span class="s2">&quot;soul&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;cooldown&quot;</span><span class="p">,</span> <span class="s2">&quot;level&quot;</span><span class="p">,</span> <span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="s2">&quot;taught_by&quot;</span><span class="p">,</span> <span class="s2">&quot;knight&quot;</span><span class="p">,</span> <span class="s2">&quot;sorcerer&quot;</span><span class="p">,</span> <span class="s2">&quot;druid&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;paladin&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;effect&quot;</span><span class="p">)</span>
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;effect&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
-        <span class="s2">&quot;words&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;words&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;subclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;damagetype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;element&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;words&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;words&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;subclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;damagetype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;element&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;mana&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;mana&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;soul&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;soul&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;spellcost&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
@@ -235,10 +233,10 @@
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2018, Allan Galarza.
+      &copy;2019, Allan Galarza.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

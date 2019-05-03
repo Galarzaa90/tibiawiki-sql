@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Database &#8212; TibiaWikiSQL 2.1.1 documentation</title>
+    <title>Database &#8212; TibiaWikiSQL 2.2.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -74,6 +74,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#item-attribute">item_attribute</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#item-key">item_key</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#map">map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mount">mount</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#npc">npc</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#npc-destination">npc_destination</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#npc-offer-buy">npc_offer_buy</a></li>
@@ -115,8 +116,6 @@
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -152,7 +151,7 @@
 <p>The generated database has the following tables.</p>
 <div class="section" id="tables">
 <h2>Tables<a class="headerlink" href="#tables" title="Permalink to this headline">¶</a></h2>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 32%" />
 <col style="width: 68%" />
@@ -200,39 +199,42 @@ items that only apply to certain types.</p></td>
 <tr class="row-odd"><td><p><a class="reference internal" href="#map">map</a></p></td>
 <td><p>Contains the world map’s images.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#npc">npc</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#mount">mount</a></p></td>
+<td><p>Contains information for all mounts.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#npc">npc</a></p></td>
 <td><p>Contains information for all NPCs.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#npc-destination">npc_destination</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#npc-destination">npc_destination</a></p></td>
 <td><p>Contains all the NPCs’ travel destinations.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#npc-offer-buy">npc_offer_buy</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#npc-offer-buy">npc_offer_buy</a></p></td>
 <td><p>Contains all the NPCs’ buy offers.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#npc-offer-sell">npc_offer_sell</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#npc-offer-sell">npc_offer_sell</a></p></td>
 <td><p>Contains all the NPCs’ sell offers.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#npc-spell">npc_spell</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#npc-spell">npc_spell</a></p></td>
 <td><p>Contains all the spells NPCs teach.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#quest">quest</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#quest">quest</a></p></td>
 <td><p>Contains information for all quests.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#quest-danger">quest_danger</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#quest-danger">quest_danger</a></p></td>
 <td><p>Contains creatures that can be found in a
 quest.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#quest-reward">quest_reward</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#quest-reward">quest_reward</a></p></td>
 <td><p>Contains item rewards for quests.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rashid-position">rashid_position</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rashid-position">rashid_position</a></p></td>
 <td><p>Contains the positions for the NPC Rashid
 every day of the week.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#spell">spell</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#spell">spell</a></p></td>
 <td><p>Contains information for all spells.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#world">world</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#world">world</a></p></td>
 <td><p>Contains information for all worlds.</p></td>
 </tr>
 </tbody>
@@ -249,7 +251,7 @@ every day of the week.</p></td>
 </div>
 <div class="section" id="achievement">
 <h3>achievement<a class="headerlink" href="#achievement" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 16%" />
 <col style="width: 16%" />
@@ -317,7 +319,7 @@ was implemented in.</p></td>
 </div>
 <div class="section" id="charm">
 <h3>charm<a class="headerlink" href="#charm" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 14%" />
 <col style="width: 14%" />
@@ -355,7 +357,7 @@ was implemented in.</p></td>
 </div>
 <div class="section" id="creature">
 <h3>creature<a class="headerlink" href="#creature" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 24%" />
 <col style="width: 15%" />
@@ -587,7 +589,7 @@ was introduced to the game.</p></td>
 </div>
 <div class="section" id="creature-drop">
 <h3>creature_drop<a class="headerlink" href="#creature-drop" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 15%" />
 <col style="width: 15%" />
@@ -625,7 +627,7 @@ was introduced to the game.</p></td>
 </div>
 <div class="section" id="database-info">
 <h3>database_info<a class="headerlink" href="#database-info" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 15%" />
 <col style="width: 24%" />
@@ -651,7 +653,7 @@ was introduced to the game.</p></td>
 </div>
 <div class="section" id="house">
 <h3>house<a class="headerlink" href="#house" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 16%" />
 <col style="width: 18%" />
@@ -738,7 +740,7 @@ was introduced to the game.</p></td>
 </div>
 <div class="section" id="imbuement">
 <h3>imbuement<a class="headerlink" href="#imbuement" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 13%" />
 <col style="width: 15%" />
@@ -794,7 +796,7 @@ was introduced to the game.</p></td>
 </div>
 <div class="section" id="imbuement-material">
 <h3>imbuement_material<a class="headerlink" href="#imbuement-material" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 18%" />
 <col style="width: 17%" />
@@ -824,7 +826,7 @@ was introduced to the game.</p></td>
 </div>
 <div class="section" id="item">
 <h3>item<a class="headerlink" href="#item" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 18%" />
 <col style="width: 18%" />
@@ -905,7 +907,7 @@ introduced to the game.</p></td>
 </div>
 <div class="section" id="item-attribute">
 <h3>item_attribute<a class="headerlink" href="#item-attribute" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 13%" />
 <col style="width: 19%" />
@@ -935,7 +937,7 @@ introduced to the game.</p></td>
 </div>
 <div class="section" id="item-key">
 <h3>item_key<a class="headerlink" href="#item-key" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 17%" />
 <col style="width: 18%" />
@@ -1001,7 +1003,7 @@ introduced to the game.</p></td>
 </div>
 <div class="section" id="map">
 <h3>map<a class="headerlink" href="#map" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 11%" />
 <col style="width: 18%" />
@@ -1026,9 +1028,80 @@ introduced to the game.</p></td>
 </tbody>
 </table>
 </div>
+<div class="section" id="mount">
+<h3>mount<a class="headerlink" href="#mount" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 14%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>article_id</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
+<td><p>The id of the article containing this mount.</p></td>
+</tr>
+<tr class="row-odd"><td><p>title</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The title of the article containing the mount.</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The name of the mount.</p></td>
+</tr>
+<tr class="row-odd"><td><p>speed</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The speed given by the mount.</p></td>
+</tr>
+<tr class="row-even"><td><p>taming_method</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>A brief description on how the mount is obtained.</p></td>
+</tr>
+<tr class="row-odd"><td><p>buyable</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
+<td><p>Whether the mount can be bought from the store or not.</p></td>
+</tr>
+<tr class="row-even"><td><p>price</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The price in Tibia coins to buy the mount.</p></td>
+</tr>
+<tr class="row-odd"><td><p>achievement</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The achievement obtained for obtaining this mount.</p></td>
+</tr>
+<tr class="row-even"><td><p>light_color</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The color of the light emitted by this mount, if any.</p></td>
+</tr>
+<tr class="row-odd"><td><p>light_radius</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>The radius of the light emitted by this mount, if any.</p></td>
+</tr>
+<tr class="row-even"><td><p>version</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The client version where this mount was introduced to the game.</p></td>
+</tr>
+<tr class="row-odd"><td><p>image</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BLOB</span></code></p></td>
+<td><p>The mount’s image bytes.</p></td>
+</tr>
+<tr class="row-even"><td><p>timestamp</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Unix timestamp of the article’s last edit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="npc">
 <h3>npc<a class="headerlink" href="#npc" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 16%" />
 <col style="width: 17%" />
@@ -1056,11 +1129,11 @@ introduced to the game.</p></td>
 </tr>
 <tr class="row-odd"><td><p>gender</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
-<td><p>The actual gender of the NPC in-game.</p></td>
+<td><p>The gender of the NPC in-game.</p></td>
 </tr>
 <tr class="row-even"><td><p>race</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
-<td><p>The actual race of the NPC in-game.</p></td>
+<td><p>The race of the NPC in-game.</p></td>
 </tr>
 <tr class="row-odd"><td><p>job</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
@@ -1104,7 +1177,7 @@ to the game.</p></td>
 </div>
 <div class="section" id="npc-destination">
 <h3>npc_destination<a class="headerlink" href="#npc-destination" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 14%" />
 <col style="width: 23%" />
@@ -1143,7 +1216,7 @@ exceptions.</p></td>
 </div>
 <div class="section" id="npc-offer-buy">
 <h3>npc_offer_buy<a class="headerlink" href="#npc-offer-buy" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 18%" />
 <col style="width: 23%" />
@@ -1182,7 +1255,7 @@ coins.</p></td>
 </div>
 <div class="section" id="npc-offer-sell">
 <h3>npc_offer_sell<a class="headerlink" href="#npc-offer-sell" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 18%" />
 <col style="width: 23%" />
@@ -1221,7 +1294,7 @@ coins.</p></td>
 </div>
 <div class="section" id="npc-spell">
 <h3>npc_spell<a class="headerlink" href="#npc-spell" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 15%" />
 <col style="width: 19%" />
@@ -1267,7 +1340,7 @@ paladins.</p></td>
 </div>
 <div class="section" id="quest">
 <h3>quest<a class="headerlink" href="#quest" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 24%" />
 <col style="width: 17%" />
@@ -1334,7 +1407,7 @@ article.</p></td>
 </div>
 <div class="section" id="quest-danger">
 <h3>quest_danger<a class="headerlink" href="#quest-danger" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 19%" />
 <col style="width: 19%" />
@@ -1360,7 +1433,7 @@ article.</p></td>
 </div>
 <div class="section" id="quest-reward">
 <h3>quest_reward<a class="headerlink" href="#quest-reward" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 16%" />
 <col style="width: 20%" />
@@ -1386,46 +1459,48 @@ article.</p></td>
 </div>
 <div class="section" id="rashid-position">
 <h3>rashid_position<a class="headerlink" href="#rashid-position" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 13%" />
-<col style="width: 21%" />
-<col style="width: 67%" />
+<col style="width: 2%" />
+<col style="width: 18%" />
+<col style="width: 2%" />
+<col style="width: 66%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
-<th class="head"><p>Type</p></th>
-<th class="head"><p>Description</p></th>
+<th class="head" colspan="2"><p>Type</p></th>
+<th class="head" colspan="2"><p>Description</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>day</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
+<td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code>
 <code class="docutils literal notranslate"><span class="pre">PRIMARY</span></code></p></td>
-<td><p>Day of the week, where Monday is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></td>
+<td colspan="2"><p>Day of the week, where Monday is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p>city</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
-<td><p>Name of the city Rashid is located.</p></td>
+<td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td colspan="2"><p>Name of the city Rashid is located.</p></td>
 </tr>
-<tr class="row-even"><td><p>x</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
-<td><p>The x position where Rashid is that day.</p></td>
+<tr class="row-even"><td colspan="5"><p>location | <code class="docutils literal notranslate"><span class="pre">TEXT</span></code>    | Location where Rashid is that day.</p></td>
 </tr>
-<tr class="row-odd"><td><p>y</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
-<td><p>The y position where Rashid is that day.</p></td>
+<tr class="row-odd"><td colspan="5"><p>x      | <code class="docutils literal notranslate"><span class="pre">INTEGER</span></code> | The x position where Rashid is that day.</p></td>
 </tr>
-<tr class="row-even"><td><p>z</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
-<td><p>The z position where Rashid is that day.</p></td>
+<tr class="row-even"><td><p>y</p></td>
+<td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td colspan="2"><p>The y position where Rashid is that day.</p></td>
+</tr>
+<tr class="row-odd"><td><p>z</p></td>
+<td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td colspan="2"><p>The z position where Rashid is that day.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="spell">
 <h3>spell<a class="headerlink" href="#spell" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 15%" />
 <col style="width: 16%" />
@@ -1527,7 +1602,7 @@ paladins or not.</p></td>
 </div>
 <div class="section" id="world">
 <h3>world<a class="headerlink" href="#world" title="Permalink to this headline">¶</a></h3>
-<table class="docutils">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 16%" />
 <col style="width: 12%" />
@@ -1615,10 +1690,10 @@ paladins or not.</p></td>
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2018, Allan Galarza.
+      &copy;2019, Allan Galarza.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

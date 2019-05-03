@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Changelog &#8212; TibiaWikiSQL 2.1.1 documentation</title>
+    <title>Changelog &#8212; TibiaWikiSQL 2.2.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -61,7 +61,8 @@
 <li class="toctree-l1"><a class="reference internal" href="schema.html">Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">2.1.1 (2019-03-25)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">2.2.0 (2019-05-03)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">2.1.1 (2019-03-25)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#v2-1-0">2.1.0 (2019-03-19)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#v2-0-2">2.0.2 (2019-01-14)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#v2-0-1">2.0.1 (2018-11-26)</a></li>
@@ -100,8 +101,6 @@
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -133,15 +132,22 @@
   <div class="section" id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2>2.1.1 (2019-03-25)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2>2.2.0 (2019-05-03)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Fixed phyisical and earth modifiers not showing up in <code class="docutils literal notranslate"><span class="pre">weak_to</span></code>, <code class="docutils literal notranslate"><span class="pre">imunute_to</span></code> and <code class="docutils literal notranslate"><span class="pre">resistant_to</span></code> <code class="docutils literal notranslate"><span class="pre">Creature</span></code> properties.</p></li>
+<li><p>New table <code class="docutils literal notranslate"><span class="pre">mount</span></code>, containing all mounts and their information.</p></li>
+<li><p>Fixed incorrect potions entries due to NPC Minzy.</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>2.1.1 (2019-03-25)<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Fixed physical and earth modifiers not showing up in <code class="docutils literal notranslate"><span class="pre">weak_to</span></code>, <code class="docutils literal notranslate"><span class="pre">immune_to</span></code> and <code class="docutils literal notranslate"><span class="pre">resistant_to</span></code> <code class="docutils literal notranslate"><span class="pre">Creature</span></code> properties.</p></li>
 <li><p>Fixed incorrect <code class="docutils literal notranslate"><span class="pre">weak_to</span></code> property.</p></li>
 <li><p>Fixed missing <code class="docutils literal notranslate"><span class="pre">modifier_hpdrain</span></code> <code class="docutils literal notranslate"><span class="pre">Creature</span></code> attribute.</p></li>
 </ul>
 </div>
 <div class="section" id="v2-1-0">
-<span id="id2"></span><h2>2.1.0 (2019-03-19)<a class="headerlink" href="#v2-1-0" title="Permalink to this headline">¶</a></h2>
+<span id="id3"></span><h2>2.1.0 (2019-03-19)<a class="headerlink" href="#v2-1-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><cite>elemental_attack</cite> Item Attribute split into <code class="docutils literal notranslate"><span class="pre">fire_attack</span></code>, <code class="docutils literal notranslate"><span class="pre">ice_attack</span></code>, <code class="docutils literal notranslate"><span class="pre">energy_attack</span></code> and <code class="docutils literal notranslate"><span class="pre">earth_attack</span></code> to
 reflect changes in TibiaWiki’s template.</p></li>
@@ -151,30 +157,28 @@ reflect changes in TibiaWiki’s template.</p></li>
 </ul>
 </div>
 <div class="section" id="v2-0-2">
-<span id="id3"></span><h2>2.0.2 (2019-01-14)<a class="headerlink" href="#v2-0-2" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2>2.0.2 (2019-01-14)<a class="headerlink" href="#v2-0-2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Elemental protection and required vocation item attributes were not getting set.</p></li>
 </ul>
 </div>
 <div class="section" id="v2-0-1">
-<span id="id4"></span><h2>2.0.1 (2018-11-26)<a class="headerlink" href="#v2-0-1" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>2.0.1 (2018-11-26)<a class="headerlink" href="#v2-0-1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Fixed imbuement materials not getting saved in the database.</p></li>
 </ul>
 </div>
 <div class="section" id="v2-0-0">
-<span id="id5"></span><h2>2.0.0 (2018-11-22)<a class="headerlink" href="#v2-0-0" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>2.0.0 (2018-11-22)<a class="headerlink" href="#v2-0-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>New model classes, to unify the generation process.</p></li>
 <li><p>Live fetching is now possible, obtain data directly from the Wiki.</p></li>
 <li><p>Database generation now shows progress bars and time estimates.</p></li>
 <li><p>The database schema is now generated dynamically.</p></li>
 <li><dl class="simple">
-<dt>The database structure has changed:</dt>
-<dd><ul>
+<dt>The database structure has changed:</dt><dd><ul>
 <li><dl class="simple">
-<dt>Renamed tables:</dt>
-<dd><ul>
+<dt>Renamed tables:</dt><dd><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">achievements</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">achievement</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">creatures</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">creature</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">creatures_drops</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">creature_drop</span></code></p></li>
@@ -198,11 +202,9 @@ reflect changes in TibiaWiki’s template.</p></li>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>Renamed columns:</dt>
-<dd><ul>
+<dt>Renamed columns:</dt><dd><ul>
 <li><dl class="simple">
-<dt>All tables:</dt>
-<dd><ul>
+<dt>All tables:</dt><dd><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">article_id</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">last_edit</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">timestamp</span></code></p></li>
 </ul>
@@ -210,8 +212,7 @@ reflect changes in TibiaWiki’s template.</p></li>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>Table: <code class="docutils literal notranslate"><span class="pre">creature</span></code>:</dt>
-<dd><ul>
+<dt>Table: <code class="docutils literal notranslate"><span class="pre">creature</span></code>:</dt><dd><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">summon</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">summon_cost</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">convince</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">convince_cost</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">occurrence</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">bestiary_occurrence</span></code></p></li>
@@ -225,8 +226,7 @@ reflect changes in TibiaWiki’s template.</p></li>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>Table: <code class="docutils literal notranslate"><span class="pre">item</span></code></dt>
-<dd><ul>
+<dt>Table: <code class="docutils literal notranslate"><span class="pre">item</span></code></dt><dd><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">value</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">value_sell</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">price</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">value_buy</span></code></p></li>
 </ul>
@@ -241,8 +241,7 @@ reflect changes in TibiaWiki’s template.</p></li>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>Added columns:</dt>
-<dd><ul>
+<dt>Added columns:</dt><dd><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">title</span></code> in all tables, except child tables and <code class="docutils literal notranslate"><span class="pre">charm</span></code>, <code class="docutils literal notranslate"><span class="pre">rashid_position</span></code> and <code class="docutils literal notranslate"><span class="pre">map</span></code>:</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">client_id</span></code> in table <code class="docutils literal notranslate"><span class="pre">item</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">location</span></code> in <code class="docutils literal notranslate"><span class="pre">npc</span></code> and <code class="docutils literal notranslate"><span class="pre">rashid_position</span></code> tables.</p></li>
@@ -252,8 +251,7 @@ reflect changes in TibiaWiki’s template.</p></li>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>Removed columns:</dt>
-<dd><ul>
+<dt>Removed columns:</dt><dd><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">day_name</span></code> from <code class="docutils literal notranslate"><span class="pre">rashid_position</span></code></p></li>
 </ul>
 </dd>
@@ -266,19 +264,19 @@ reflect changes in TibiaWiki’s template.</p></li>
 </ul>
 </div>
 <div class="section" id="v1-2-0">
-<span id="id6"></span><h2>1.2.0 (2018-10-16)<a class="headerlink" href="#v1-2-0" title="Permalink to this headline">¶</a></h2>
+<span id="id7"></span><h2>1.2.0 (2018-10-16)<a class="headerlink" href="#v1-2-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>New <code class="docutils literal notranslate"><span class="pre">charm</span></code> table, contains information about all charms.</p></li>
 </ul>
 </div>
 <div class="section" id="v1-1-1">
-<span id="id7"></span><h2>1.1.1 (2018-09-23)<a class="headerlink" href="#v1-1-1" title="Permalink to this headline">¶</a></h2>
+<span id="id8"></span><h2>1.1.1 (2018-09-23)<a class="headerlink" href="#v1-1-1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Improved parsing of <code class="docutils literal notranslate"><span class="pre">walksaround</span></code> and <code class="docutils literal notranslate"><span class="pre">walksthrough</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="v1-1-0">
-<span id="id8"></span><h2>1.1.0 (2018-09-22)<a class="headerlink" href="#v1-1-0" title="Permalink to this headline">¶</a></h2>
+<span id="id9"></span><h2>1.1.0 (2018-09-22)<a class="headerlink" href="#v1-1-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Added new columns to creatures table:</p>
 <ul>
@@ -289,13 +287,13 @@ reflect changes in TibiaWiki’s template.</p></li>
 </ul>
 </div>
 <div class="section" id="v1-0-1">
-<span id="id9"></span><h2>1.0.1 (2018-07-02)<a class="headerlink" href="#v1-0-1" title="Permalink to this headline">¶</a></h2>
+<span id="id10"></span><h2>1.0.1 (2018-07-02)<a class="headerlink" href="#v1-0-1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Fixed bug caused when a category had a number of articles that was exactly a multiple of 50.</p></li>
 </ul>
 </div>
 <div class="section" id="v1-0-0">
-<span id="id10"></span><h2>1.0.0 (2018-07-01)<a class="headerlink" href="#v1-0-0" title="Permalink to this headline">¶</a></h2>
+<span id="id11"></span><h2>1.0.0 (2018-07-01)<a class="headerlink" href="#v1-0-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> is now TibiaWiki’s article id for the element, making them more reliable than autoincremented ids.</p></li>
 <li><p>Fixed bug with potion’s prices.</p></li>
@@ -314,7 +312,7 @@ reflect changes in TibiaWiki’s template.</p></li>
 </ul>
 </div>
 <div class="section" id="v0-3-0">
-<span id="id11"></span><h2>0.3.0 (2017-12-18)<a class="headerlink" href="#v0-3-0" title="Permalink to this headline">¶</a></h2>
+<span id="id12"></span><h2>0.3.0 (2017-12-18)<a class="headerlink" href="#v0-3-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>New <code class="docutils literal notranslate"><span class="pre">items_keys</span></code> table, contains key numbers with their uses and
 locations.</p></li>
@@ -325,7 +323,7 @@ locations.</p></li>
 </ul>
 </div>
 <div class="section" id="v0-2-0">
-<span id="id12"></span><h2>0.2.0 (2017-11-14)<a class="headerlink" href="#v0-2-0" title="Permalink to this headline">¶</a></h2>
+<span id="id13"></span><h2>0.2.0 (2017-11-14)<a class="headerlink" href="#v0-2-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Improved the parsing of all data tables, resulting in more
 consistency in values, less empty strings (not <code class="docutils literal notranslate"><span class="pre">NULL</span></code>) and better
@@ -342,7 +340,7 @@ including item trades (e.g. 1 fighting spirit for 2 royal helmets).</p></li>
 </ul>
 </div>
 <div class="section" id="v0-1-1">
-<span id="id13"></span><h2>0.1.1 (2017-11-12)<a class="headerlink" href="#v0-1-1" title="Permalink to this headline">¶</a></h2>
+<span id="id14"></span><h2>0.1.1 (2017-11-12)<a class="headerlink" href="#v0-1-1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Better attribute parsing, this means values should me more consistent
 and there are no entries without the <code class="docutils literal notranslate"><span class="pre">name</span></code> column</p></li>
@@ -350,7 +348,7 @@ and there are no entries without the <code class="docutils literal notranslate">
 </ul>
 </div>
 <div class="section" id="v0-1-0">
-<span id="id14"></span><h2>0.1.0 (2017-11-09)<a class="headerlink" href="#v0-1-0" title="Permalink to this headline">¶</a></h2>
+<span id="id15"></span><h2>0.1.0 (2017-11-09)<a class="headerlink" href="#v0-1-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Creatures table, with all their attributes, including a separate
 table for all their loot.</p></li>
@@ -373,10 +371,10 @@ attributes on a separate table</p></li>
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2018, Allan Galarza.
+      &copy;2019, Allan Galarza.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.npc &#8212; TibiaWikiSQL 2.1.1 documentation</title>
+    <title>tibiawikisql.models.npc &#8212; TibiaWikiSQL 2.2.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -84,8 +84,6 @@
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -308,17 +306,17 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;actualname&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;actualname&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
-        <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;race&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;race&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;job&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;job&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
-        <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">),</span>
+        <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;race&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;race&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;job&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;job&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;posx&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">convert_tibiawiki_position</span><span class="p">),</span>
         <span class="s2">&quot;posy&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">convert_tibiawiki_position</span><span class="p">),</span>
         <span class="s2">&quot;posz&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
-        <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+        <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]NPC&quot;</span><span class="p">)</span>
 
@@ -327,9 +325,9 @@
         <span class="n">npc</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_article</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">npc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="s2">&quot;buys&quot;</span> <span class="ow">in</span> <span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;buys&quot;</span> <span class="ow">in</span> <span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span> <span class="ow">and</span> <span class="n">article</span><span class="o">.</span><span class="n">title</span> <span class="o">!=</span> <span class="s2">&quot;Minzy&quot;</span><span class="p">:</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">_parse_buy_offers</span><span class="p">(</span><span class="n">npc</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;sells&quot;</span> <span class="ow">in</span> <span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;sells&quot;</span> <span class="ow">in</span> <span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span> <span class="ow">and</span> <span class="n">article</span><span class="o">.</span><span class="n">title</span> <span class="o">!=</span> <span class="s2">&quot;Minzy&quot;</span><span class="p">:</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">_parse_sell_offers</span><span class="p">(</span><span class="n">npc</span><span class="p">)</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">_parse_spells</span><span class="p">(</span><span class="n">npc</span><span class="p">)</span>
         <span class="n">destinations</span> <span class="o">=</span> <span class="p">[]</span>
@@ -732,10 +730,10 @@
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2018, Allan Galarza.
+      &copy;2019, Allan Galarza.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
