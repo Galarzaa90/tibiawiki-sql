@@ -67,16 +67,16 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         List of quests that give this item as reward.
     """
     _map = {
-        "article": ("article", lambda x: x),
-        "actualname": ("name", lambda x: x),
+        "article": ("article", str.strip),
+        "actualname": ("name", str.strip),
         "weight": ("weight", parse_float),
         "stackable": ("stackable", parse_boolean),
         "npcvalue": ("value_sell", parse_integer),
         "npcprice": ("value_buy", parse_integer),
-        "flavortext": ("flavor_text", lambda x: x),
-        "itemclass": ("class", lambda x: x),
-        "primarytype": ("type", lambda x: x),
-        "implemented": ("version", lambda x: x),
+        "flavortext": ("flavor_text", str.strip),
+        "itemclass": ("class", str.strip),
+        "primarytype": ("type", str.strip),
+        "implemented": ("version", str.strip),
         "itemid": ("client_id", parse_integer)
     }
     _pattern = re.compile(r"Infobox[\s_]Item")
@@ -177,11 +177,11 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
     _map = {
         "aka": ("name", clean_links),
         "number": ("number", int),
-        "primarytype": ("material", lambda x: x),
+        "primarytype": ("material", str.strip),
         "location": ("location", clean_links),
         "origin": ("origin", clean_links),
         "shortnotes": ("notes", clean_links),
-        "implemented": ("version", lambda x: x),
+        "implemented": ("version", str.strip),
     }
     _pattern = re.compile(r"Infobox[\s_]Key")
 

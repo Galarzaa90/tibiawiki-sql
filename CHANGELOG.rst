@@ -2,11 +2,18 @@
 Changelog
 =========
 
+.. v2.2.0:
+
+2.2.0 (2019-05-03)
+==================
+- New table ``mount``, containing all mounts and their information.
+- Fixed incorrect potions entries due to NPC Minzy.
+
 .. v2.1.1:
 
 2.1.1 (2019-03-25)
 ==================
-- Fixed phyisical and earth modifiers not showing up in ``weak_to``, ``imunute_to`` and ``resistant_to`` ``Creature`` properties.
+- Fixed physical and earth modifiers not showing up in ``weak_to``, ``immune_to`` and ``resistant_to`` ``Creature`` properties.
 - Fixed incorrect ``weak_to`` property.
 - Fixed missing ``modifier_hpdrain`` ``Creature`` attribute.
 

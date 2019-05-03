@@ -70,7 +70,8 @@ categories = {
     "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
     "house": Category("Player-Ownable Buildings", models.House, no_images=True),
     "charm": Category(None, models.Charm, extension=".png", no_title=True),
-    "worlds": Category("Gameworlds", models.World, no_images=True, include_deprecated=True)
+    "worlds": Category("Gameworlds", models.World, no_images=True, include_deprecated=True),
+    "mounts": Category("Mounts", models.Mount),
 }
 
 

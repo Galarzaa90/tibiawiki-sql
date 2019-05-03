@@ -1,0 +1,20 @@
+{{Infobox World
+| name     = Mortera
+| type     = Retro Open PvP
+| online   = Oct 15, 2014
+| offline    = April 19, 2018
+| ingamestatus = deprecated
+| mergedinto = Firmera
+| battleye = yes
+| protectedsince = September 26, 2017
+| location = USA
+| worldboardid  = 135438
+| tradeboardid  = 135441
+}}
+
+== General Information ==
+Upon its creation, it was {{OfficialNewsArchive|2946|announced}} that this server would temporarily be [[premium]]-only. This phase ended when free account players were also allowed access on {{OfficialNewsArchive|3126|March 24, 2015}}.
+
+[[Character World Transfer]]s to and from this world were impossible until {{OfficialNewsArchive|4298|September 14, 2017}}, when this restriction was removed.
+
+First player to get into mainland was {{Character|Huasteck}}

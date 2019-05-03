@@ -168,3 +168,31 @@ class TestWikiApi(unittest.TestCase):
 
         self.assertIsInstance(db_spell, models.Spell)
         self.assertEqual(db_spell.name, spell.name)
+
+    def testWorld(self):
+        article = Article(1, "Mortera", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_world.txt"))
+        world = models.World.from_article(article)
+        self.assertIsInstance(world, models.World)
+        self.assertIsInstance(world.trade_board, int)
+
+        world.insert(self.conn)
+        db_world = models.World.get_by_field(self.conn, "article_id", 1)
+
+        self.assertIsInstance(db_world, models.World)
+        self.assertEqual(db_world.name, world.name)
+
+    def testMount(self):
+        article = Article(1, "Doombringer", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_mount.txt"))
+        mount = models.Mount.from_article(article)
+        self.assertIsInstance(mount, models.Mount)
+        self.assertIsInstance(mount.price, int)
+        self.assertIsInstance(mount.speed, int)
+        self.assertIsInstance(mount.buyable, int)
+
+        mount.insert(self.conn)
+        db_mount = models.Mount.get_by_field(self.conn, "article_id", 1)
+
+        self.assertIsInstance(db_mount, models.Mount)
+        self.assertEqual(db_mount.name, mount.name)
