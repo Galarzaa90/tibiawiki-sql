@@ -53,8 +53,8 @@ class TestWikiApi(unittest.TestCase):
         self.assertEqual(50, db_creature.charm_points)
         self.assertEqual(2500, db_creature.bestiary_kills)
         self.assertEqual(3, len(db_creature.immune_to))
-        self.assertEqual(2, len(db_creature.resistant_to))
-        self.assertEqual(4, len(db_creature.weak_to))
+        self.assertEqual(4, len(db_creature.resistant_to))
+        self.assertEqual(2, len(db_creature.weak_to))
 
         db_creature = models.Creature.get_by_field(self.conn, "name", "demon", use_like=True)
         self.assertIsInstance(db_creature, models.Creature)

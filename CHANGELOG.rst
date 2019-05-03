@@ -4,9 +4,9 @@ Changelog
 
 .. v2.2.0:
 
-2.2.0 (Unreleased)
+2.2.0 (2019-05-03)
 ==================
-- New table `mount`, containing all mounts and their information.
+- New table ``mount``, containing all mounts and their information.
 - Fixed incorrect potions entries due to NPC Minzy.
 
 .. v2.1.1:
