@@ -4,7 +4,7 @@ Script that generates a sqlite database for the MMO Tibia.
 
 Inspired in [Mytherin's Tibiaylzer](https://github.com/Mytherin/Tibialyzer) TibiaWiki parsing script.
 
-This script fetches data from TibiaWiki via its API, compared to relying on [database dumps](http://tibia.wikia.com/wiki/Special:Statistics)
+This script fetches data from TibiaWiki via its API, compared to relying on [database dumps](http://tibia.fandom.com/wiki/Special:Statistics)
 that are not updated as frequently. By using the API, the data obtained is always fresh.
 
 This script is not intended to be running constantly, it is meant to be run once, generate a sqlite database and use it 
@@ -56,10 +56,12 @@ When done, a database file called `tibiawiki.db` will be found on the folder.
 * Houses
 * Imbuements
 * Items
+* Mounts
 * NPCs
 * NPC offers
 * Quests
 * Spells
+* Worlds
 
 ## Documentation
 Check out the [documentation page](https://galarzaa90.github.io/tibiawiki-sql/).
@@ -69,4 +71,6 @@ Check out the [documentation page](https://galarzaa90.github.io/tibiawiki-sql/).
 Improvements and bug fixes are welcome, via pull requests  
 For questions, suggestions and bug reports, submit an issue.
 
-The best way to contribute to this project is by contributing to [TibiaWiki](http://tibia.wikia.com).
+The best way to contribute to this project is by contributing to [TibiaWiki](https://tibia.fandom.com).
+
+![image](https://vignette.wikia.nocookie.net/tibia/images/d/d9/Tibiawiki_Small.gif/revision/latest?cb=20150129101832&path-prefix=en)
