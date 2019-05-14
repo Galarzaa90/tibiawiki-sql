@@ -30,11 +30,15 @@ class Achievement(Table):
 
 
 class Charm(Table):
-    name = Column(Text, unique=True)
+    article_id = Column(Integer, primary_key=True)
+    title = Column(Text, unique=True)
+    name = Column(Text)
     type = Column(Text)
-    description = Column(Text)
-    points = Column(Integer)
+    effect = Column(Text)
+    cost = Column(Integer)
     image = Column(Blob)
+    version = Column(Text)
+    timestamp = Column(Integer)
 
 
 class Creature(Table):

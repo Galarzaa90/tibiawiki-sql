@@ -11,67 +11,53 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+import re
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
+from tibiawikisql.utils import clean_links, parse_integer
 
 
-class Charm(abc.Row, table=schema.Charm):
+class Charm(abc.Row, abc.Parseable, table=schema.Charm):
     """Represents a charm.
 
     Attributes
     ----------
+    article_id: :class:`int`
+        The id of the  containing article.
+    title: :class:`str`
+        The title of the containing article.
+    timestamp: :class:`int`
+        The last time the containing article was edited.
     name: :class:`str`
         The name of the charm.
     type: :class:`str`
         The type of the charm.
-    description: :class:`str`
+    effect: :class:`str`
         The charm's description.
-    points: :class:`int`
+    cost: :class:`int`
         The number of charm points needed to unlock.
+    version: :class:`str`
+        The client version where this creature was first implemented.
     image: :class:`bytes`
         The charm's icon."""
 
-    __slots__ = ("name", "type", "description", "points", "image")
+    _map = {
+        "name": ("name", str.strip),
+        "actualname": ("name", str.strip),
+        "type": ("type", str.strip),
+        "effect": ("effect", clean_links),
+        "cost": ("cost", parse_integer),
+        "implemented": ("version", str.strip)
+    }
+    _pattern = re.compile(r"Infobox[\s_]Charm")
+
+    __slots__ = ("article_id", "title", "timestamp", "name", "type", "effect", "cost", "image", "version")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
     def __repr__(self):
-        return "%s(name=%r,type=%r,points=%r)" % (self.__class__.__name__, self.name, self.type, self.points)
+        return "%s(name=%r,type=%r,cost=%r)" % (self.__class__.__name__, self.name, self.type, self.cost)
 
 
-charms = [
-    Charm(name="Wound", type="Offensive", points=600,
-          description="Wounds the creature and deals 5% of its initial hit points as Physical Damage."),
-    Charm(name="Enflame", type="Offensive", points=1000,
-          description="Burns the creature and deals 5% of its initial hit points as Fire Damage."),
-    Charm(name="Poison", type="Offensive", points=600,
-          description="Poisons the creature and deals 5% of its initial hit points as Earth Damage."),
-    Charm(name="Freeze", type="Offensive", points=800,
-          description="Freezes the creature and deals 5% of its initial hit points as Ice Damage."),
-    Charm(name="Zap", type="Offensive", points=800,
-          description="Electrifies the creature and deals 5% of its initial hit points as Energy Damage."),
-    Charm(name="Curse", type="Offensive", points=900,
-          description="Curses the creature and deals 5% of its initial hit points as Death Damage."),
-    Charm(name="Cripple", type="Offensive", points=500,
-          description="Cripples the creature and paralyses it for 10 seconds, even if it's immune to the Paralyse Rune."),
-    Charm(name="Parry", type="Defensive", points=1000,
-          description="Any damage taken is reflected to the aggressor with a certain chance."),
-    Charm(name="Dodge", type="Defensive", points=600,
-          description="Dodges an attack without taking any damage at all."),
-    Charm(name="Adrenaline Burst", type="Defensive", points=500,
-          description="Bursts of adrenaline enhance your reflexes after you get hit and let you move more than twice as faster for 10 seconds."),
-    Charm(name="Numb", type="Defensive", points=500,
-          description="Numbs the creature after its attack and paralyses the creature for 10 seconds, even if it's immune to the Paralyse Rune."),
-    Charm(name="Cleanse", type="Defensive", points=700,
-          description="Cleanses you from within after you get hit and removes one random active negative Status Condition and temporarily makes you immune against it."),
-    Charm(name="Bless", type="Passive", points=2000,
-          description="Blesses you and reduces skill and xp loss by 3% when killed by the chosen creature."),
-    Charm(name="Scavenge", type="Passive", points=1500,
-          description="Enhances your chances to successfully skin a skinnable creature. Applies to Skinning and Dusting."),
-    Charm(name="Gut", type="Passive", points=2000,
-          description="Gutting the creature yields 10% more Creature Products."),
-    Charm(name="Low Blow", type="Passive", points=2000,
-          description="Adds 3% critical hit chance to attacks with Critical Hit weapons.")
-]

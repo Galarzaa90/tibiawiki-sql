@@ -2,6 +2,16 @@
 Changelog
 =========
 
+
+.. v3.0.0
+
+3.0.0 (Unreleased)
+==================
+- Charms are now read from their TibiaWiki articles instead of a static json file.
+    - ``charm`` database structure changed:
+        - Added columns: ``article_id``, ``title``, ``timestamp`` and ``version``
+        - Renamed ``description`` column to ``effect``.
+
 .. v2.2.0:
 
 2.2.0 (2019-05-03)

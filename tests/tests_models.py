@@ -26,15 +26,6 @@ class TestWikiApi(unittest.TestCase):
         db_achievement = models.Achievement.get_by_field(self.conn, "name", "demonic barkeeper", use_like=True)
         self.assertIsInstance(db_achievement, models.Achievement)
 
-    def testCharm(self):
-        for charm in models.charm.charms:
-            charm.insert(self.conn)
-
-        charm = models.Charm.get_by_field(self.conn, "name", "dodge", use_like=True)
-
-        self.assertIsInstance(charm, models.Charm)
-        self.assertIsInstance(charm.points, int)
-
     def testCreature(self):
         article = Article(1, "Demon", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_creature.txt"))
@@ -196,3 +187,19 @@ class TestWikiApi(unittest.TestCase):
 
         self.assertIsInstance(db_mount, models.Mount)
         self.assertEqual(db_mount.name, mount.name)
+
+    def testCharm(self):
+        article = Article(1, "Curse (Charm)", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_charm.txt"))
+        charm = models.Charm.from_article(article)
+        self.assertIsInstance(charm, models.Charm)
+        self.assertEqual(charm.cost, 900)
+        self.assertEqual(charm.type, "Offensive")
+        self.assertIsInstance(charm.effect, str)
+        self.assertEqual(charm.version, "11.50")
+
+        charm.insert(self.conn)
+        db_charm = models.Charm.get_by_field(self.conn, "article_id", 1)
+
+        self.assertIsInstance(db_charm, models.Charm)
+        self.assertEqual(db_charm.name, charm.name)
