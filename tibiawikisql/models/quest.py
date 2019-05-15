@@ -56,12 +56,22 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
         The name of the quest.
     location: :class:`str`
         The location of the quest.
+    rookgaard: :class:`bool`
+        Whether this quest is in Rookgaard or not.
+    type: :class:`str`
+        The type of quest.
+    quest_log: :class:`bool`
+        Whether this quest is registered in the quest log or not.
     legend: :class:`str`
         The legend of the quest.
     level_required: :class:`int`
         The level required to finish the quest.
     level_recommended: :class:`int`
         The recommended level to finish the quest.
+    active_time: :class:`str`
+        Times of the year when this quest is active.
+    estimated_time: :class:`str`:
+        Estimated time to finish this quest.
     version: :class:`str`
         The client version where this item was first implemented.
     dangers: list of :class:`QuestDanger`

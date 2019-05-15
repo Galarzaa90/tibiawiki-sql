@@ -649,6 +649,12 @@ quest
 | location          | ``TEXT``    | Location where the quest starts or           |
 |                   |             | takes place.                                 |
 +-------------------+-------------+----------------------------------------------+
+| rookgaard | ``BOOLEAN`` | Whether this quest is in Rookgaard or not. |
++-------------------+-------------+----------------------------------------------+
+| type | ``TEXT`` | The type of quest. |
++-------------------+-------------+----------------------------------------------+
+| quest_log | ``BOOLEAN`` | Whether this quest is registered in the quest log or not. |
++-------------------+-------------+----------------------------------------------+
 | legend            | ``TEXT``    | Short description of the quest.              |
 +-------------------+-------------+----------------------------------------------+
 | level_required    | ``INTEGER`` | The level required to finish the             |
@@ -656,6 +662,10 @@ quest
 +-------------------+-------------+----------------------------------------------+
 | level_recommended | ``INTEGER`` | The level recommended to finish              |
 |                   |             | the quest.                                   |
++-------------------+-------------+----------------------------------------------+
+| active_time | ``TEXT`` | Times of the year when this quest is active. |
++-------------------+-------------+----------------------------------------------+
+| estimated_time | ``TEXT`` | Estimated time to finish this quest. |
 +-------------------+-------------+----------------------------------------------+
 | premium           | ``BOOLEAN`` | Whether premium account is                   |
 |                   |             | required to finish the quest.                |
