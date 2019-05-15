@@ -53,6 +53,13 @@ Achievement
    :members:
    :inherited-members:
 
+
+Charm
+~~~~~~~~
+.. autoclass:: tibiawikisql.models.Charm()
+   :members:
+   :inherited-members:
+
 Creature
 ~~~~~~~~
 .. autoclass:: tibiawikisql.models.Creature()

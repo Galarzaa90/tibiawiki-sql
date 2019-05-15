@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.creature &#8212; TibiaWikiSQL 2.2.0 documentation</title>
+    <title>tibiawikisql.models.creature &#8212; TibiaWikiSQL 3.0.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -133,9 +133,10 @@
 
 <span class="kn">from</span> <span class="nn">tibiawikisql</span> <span class="k">import</span> <span class="n">schema</span>
 <span class="kn">from</span> <span class="nn">tibiawikisql.models</span> <span class="k">import</span> <span class="n">abc</span>
-<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="k">import</span> <span class="n">clean_links</span><span class="p">,</span> <span class="n">int_pattern</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">,</span> <span class="n">parse_min_max</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="k">import</span> <span class="n">clean_links</span><span class="p">,</span> <span class="n">int_pattern</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">,</span> <span class="n">parse_min_max</span><span class="p">,</span> <span class="n">parse_sounds</span>
 
 <span class="n">creature_loot_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)&quot;</span><span class="p">)</span>
+
 
 <span class="n">KILLS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;Harmless&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
@@ -201,7 +202,7 @@
 <span class="sd">    Matches the values against a regex to filter typos or bad data on the wiki.</span>
 <span class="sd">    Element names followed by any character that is not a comma will be considered unknown and will not be returned.</span>
 
-<span class="sd">    Examples\:</span>
+<span class="sd">    Examples:</span>
 <span class="sd">        - ``Poison?, fire`` will return ``fire``.</span>
 <span class="sd">        - ``Poison?, fire.`` will return neither.</span>
 <span class="sd">        - ``Poison, earth, fire?, [[ice]]`` will return ``poison,earth``.</span>
@@ -270,6 +271,8 @@
 <span class="sd">        Whether the creature can be illusioned into using `Creature Illusion`.</span>
 <span class="sd">    pushable: :class:`bool`</span>
 <span class="sd">        Whether the creature can be pushed or not.</span>
+<span class="sd">    push_objects: :class:`bool`</span>
+<span class="sd">        Whether the creature can push objects or not.</span>
 <span class="sd">    sees_invisible: :class:`bool`</span>
 <span class="sd">        Whether the creature can see invisible players or not.</span>
 <span class="sd">    paralysable: :class:`bool`</span>
@@ -325,6 +328,7 @@
         <span class="s2">&quot;convince&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;convince_cost&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;illusionable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;illusionable&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_boolean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
         <span class="s2">&quot;pushable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;pushable&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_boolean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+        <span class="s2">&quot;pushobjects&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;push_objects&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_boolean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
         <span class="s2">&quot;senseinvis&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;sees_invisible&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_boolean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
         <span class="s2">&quot;paraimmune&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;paralysable&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_boolean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">True</span><span class="p">)),</span>
         <span class="s2">&quot;isboss&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;boss&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
@@ -343,12 +347,48 @@
         <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Creature&quot;</span><span class="p">)</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;article_id&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;raw_attribute&quot;</span><span class="p">,</span> <span class="s2">&quot;article&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;bestiary_level&quot;</span><span class="p">,</span> <span class="s2">&quot;bestiary_class&quot;</span><span class="p">,</span> <span class="s2">&quot;bestiary_occurrence&quot;</span><span class="p">,</span> <span class="s2">&quot;hitpoints&quot;</span><span class="p">,</span> <span class="s2">&quot;experience&quot;</span><span class="p">,</span> <span class="s2">&quot;armor&quot;</span><span class="p">,</span> <span class="s2">&quot;speed&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;max_damage&quot;</span><span class="p">,</span> <span class="s2">&quot;summon_cost&quot;</span><span class="p">,</span> <span class="s2">&quot;convince_cost&quot;</span><span class="p">,</span> <span class="s2">&quot;illusionable&quot;</span><span class="p">,</span> <span class="s2">&quot;pushable&quot;</span><span class="p">,</span> <span class="s2">&quot;sees_invisible&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;paralysable&quot;</span><span class="p">,</span> <span class="s2">&quot;boss&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_physical&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_earth&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_fire&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_energy&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;modifier_ice&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_death&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_holy&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_hpdrain&quot;</span><span class="p">,</span> <span class="s2">&quot;modifier_drown&quot;</span><span class="p">,</span> <span class="s2">&quot;abilities&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;walks_through&quot;</span><span class="p">,</span> <span class="s2">&quot;walks_around&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="s2">&quot;loot&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;article_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;raw_attribute&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;article&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;class&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bestiary_level&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bestiary_class&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bestiary_occurrence&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hitpoints&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;experience&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;armor&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;speed&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_damage&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;summon_cost&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;convince_cost&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;illusionable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pushable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;push_objects&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sees_invisible&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;paralysable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;boss&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;modifier_physical&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;modifier_earth&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;modifier_fire&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;modifier_energy&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;modifier_ice&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;modifier_death&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;modifier_holy&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;modifier_hpdrain&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;modifier_drown&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;abilities&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;walks_through&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;walks_around&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;version&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;image&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;loot&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sounds&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -421,6 +461,10 @@
                     <span class="n">_min</span><span class="p">,</span> <span class="n">_max</span> <span class="o">=</span> <span class="n">parse_min_max</span><span class="p">(</span><span class="n">amounts</span><span class="p">)</span>
                 <span class="n">loot_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CreatureDrop</span><span class="p">(</span><span class="n">creature_id</span><span class="o">=</span><span class="n">creature</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">item_title</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">_min</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">_max</span><span class="p">))</span>
             <span class="n">creature</span><span class="o">.</span><span class="n">loot</span> <span class="o">=</span> <span class="n">loot_items</span>
+        <span class="k">if</span> <span class="s2">&quot;sounds&quot;</span> <span class="ow">in</span> <span class="n">creature</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+            <span class="n">sounds</span> <span class="o">=</span> <span class="n">parse_sounds</span><span class="p">(</span><span class="n">creature</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;sounds&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">sounds</span><span class="p">:</span>
+                <span class="n">creature</span><span class="o">.</span><span class="n">sounds</span> <span class="o">=</span> <span class="p">[</span><span class="n">CreatureSound</span><span class="p">(</span><span class="n">creature_id</span><span class="o">=</span><span class="n">creature</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">sound</span><span class="p">)</span> <span class="k">for</span> <span class="n">sound</span> <span class="ow">in</span> <span class="n">sounds</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">creature</span></div>
 
 <div class="viewcode-block" id="Creature.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
@@ -436,6 +480,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;loot&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">attribute</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;sounds&quot;</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="n">attribute</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Creature.get_by_field"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature.get_by_field">[docs]</a>    <span class="nd">@classmethod</span>
@@ -444,6 +490,7 @@
         <span class="k">if</span> <span class="n">creature</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="n">creature</span><span class="o">.</span><span class="n">loot</span> <span class="o">=</span> <span class="n">CreatureDrop</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;creature_id&quot;</span><span class="p">,</span> <span class="n">creature</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;chance&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">creature</span><span class="o">.</span><span class="n">sounds</span> <span class="o">=</span> <span class="n">CreatureSound</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;creature_id&quot;</span><span class="p">,</span> <span class="n">creature</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">creature</span></div></div>
 
 
@@ -513,6 +560,40 @@
         <span class="k">return</span> <span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">%s</span><span class="s2">.*, item.title as item_title, creature.title as creature_title FROM </span><span class="si">%s</span><span class="s2"></span>
 <span class="s2">                  LEFT JOIN creature ON creature.article_id = creature_id</span>
 <span class="s2">                  LEFT JOIN item ON item.article_id = item_id&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">CreatureSound</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">CreatureSound</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a sound made by a creature.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    creature_id: :class:`int`</span>
+<span class="sd">        The article id of the creature that does this sound.</span>
+<span class="sd">    content: :class:`str`</span>
+<span class="sd">        The content of the sound.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;creature_id&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0.__class__.__name__}</span><span class="s2">(</span><span class="si">{1}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">creature_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">creature_id</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span>
+
 
 
 </pre></div>

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.quest &#8212; TibiaWikiSQL 2.2.0 documentation</title>
+    <title>tibiawikisql.models.quest &#8212; TibiaWikiSQL 3.0.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -171,12 +171,22 @@
 <span class="sd">        The name of the quest.</span>
 <span class="sd">    location: :class:`str`</span>
 <span class="sd">        The location of the quest.</span>
+<span class="sd">    rookgaard: :class:`bool`</span>
+<span class="sd">        Whether this quest is in Rookgaard or not.</span>
+<span class="sd">    type: :class:`str`</span>
+<span class="sd">        The type of quest.</span>
+<span class="sd">    quest_log: :class:`bool`</span>
+<span class="sd">        Whether this quest is registered in the quest log or not.</span>
 <span class="sd">    legend: :class:`str`</span>
 <span class="sd">        The legend of the quest.</span>
 <span class="sd">    level_required: :class:`int`</span>
 <span class="sd">        The level required to finish the quest.</span>
 <span class="sd">    level_recommended: :class:`int`</span>
 <span class="sd">        The recommended level to finish the quest.</span>
+<span class="sd">    active_time: :class:`str`</span>
+<span class="sd">        Times of the year when this quest is active.</span>
+<span class="sd">    estimated_time: :class:`str`:</span>
+<span class="sd">        Estimated time to finish this quest.</span>
 <span class="sd">    version: :class:`str`</span>
 <span class="sd">        The client version where this item was first implemented.</span>
 <span class="sd">    dangers: list of :class:`QuestDanger`</span>
@@ -184,14 +194,35 @@
 <span class="sd">    rewards: list of :class:`QuestReward`</span>
 <span class="sd">        Items rewarded in the quest.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;article_id&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="s2">&quot;legend&quot;</span><span class="p">,</span> <span class="s2">&quot;level_required&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;level_recommended&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;dangers&quot;</span><span class="p">,</span> <span class="s2">&quot;rewards&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;article_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;location&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;rookgaard&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;quest_log&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;legend&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;level_required&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;level_recommended&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;active_time&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;estimated_time&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;version&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dangers&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;rewards&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">),</span>
         <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
+        <span class="s2">&quot;rookgaardquest&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;rookgaard&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;quest_log&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
         <span class="s2">&quot;legend&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;legend&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
         <span class="s2">&quot;lvl&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;level_required&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;lvlrec&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;level_recommended&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;active_time&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;timealloc&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;estimated_time&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;premium&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
         <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
     <span class="p">}</span>

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.item &#8212; TibiaWikiSQL 2.2.0 documentation</title>
+    <title>tibiawikisql.models.item &#8212; TibiaWikiSQL 3.0.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -134,7 +134,7 @@
 <span class="kn">from</span> <span class="nn">tibiawikisql.models.creature</span> <span class="k">import</span> <span class="n">CreatureDrop</span>
 <span class="kn">from</span> <span class="nn">tibiawikisql.models.npc</span> <span class="k">import</span> <span class="n">NpcBuyOffer</span><span class="p">,</span> <span class="n">NpcSellOffer</span>
 <span class="kn">from</span> <span class="nn">tibiawikisql.models.quest</span> <span class="k">import</span> <span class="n">QuestReward</span>
-<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="k">import</span> <span class="n">clean_links</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">,</span> <span class="n">parse_float</span><span class="p">,</span> <span class="n">parse_integer</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="k">import</span> <span class="n">clean_links</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">,</span> <span class="n">parse_float</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">,</span> <span class="n">parse_sounds</span><span class="p">,</span> <span class="n">client_color_to_rgb</span>
 
 
 <div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Item">[docs]</a><span class="k">class</span> <span class="nc">Item</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">Item</span><span class="p">):</span>
@@ -152,8 +152,12 @@
 <span class="sd">        The in-game name of the item.</span>
 <span class="sd">    article: :class:`str`</span>
 <span class="sd">        The article that goes before the name when looking at the item.</span>
+<span class="sd">    marketable: :class:`bool`</span>
+<span class="sd">        Whether the item can be traded on the Market or not.</span>
 <span class="sd">    stackable: :class:`bool`</span>
 <span class="sd">        Whether the item can be stacked or not.</span>
+<span class="sd">    pickupable: :class:`bool`</span>
+<span class="sd">        Whether the item can be picked up or not.</span>
 <span class="sd">    value_sell: :class:`int`</span>
 <span class="sd">        The highest price an NPC will buy this item for.</span>
 <span class="sd">    value_buy: :class:`int`</span>
@@ -166,6 +170,12 @@
 <span class="sd">        The item&#39;s type</span>
 <span class="sd">    flavor_text: :class:`str`</span>
 <span class="sd">        The extra text that is displayed when some items are looked at.</span>
+<span class="sd">    light_color: :class:`int`, optional.</span>
+<span class="sd">        The color of the light emitted by this item in RGB, if any.</span>
+<span class="sd">    light_radius: :class:`int`</span>
+<span class="sd">        The radius of the light emitted by this item, if any.</span>
+<span class="sd">    client_id: :class:`int`</span>
+<span class="sd">        The internal id of the item in the client.</span>
 <span class="sd">    version: :class:`str`</span>
 <span class="sd">        The client version where this item was first implemented.</span>
 <span class="sd">    image: :class:`bytes`</span>
@@ -180,28 +190,65 @@
 <span class="sd">        List of NPCs that buy this item.</span>
 <span class="sd">    awarded_in: list of :class:`QuestReward`</span>
 <span class="sd">        List of quests that give this item as reward.</span>
+<span class="sd">    sounds: list of :class:`ItemSound`.</span>
+<span class="sd">        List of sounds made when using the item.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;article&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;article&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;actualname&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
-        <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="n">parse_float</span><span class="p">),</span>
+        <span class="s2">&quot;marketable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;marketable&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
         <span class="s2">&quot;stackable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;stackable&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
+        <span class="s2">&quot;pickupable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;pickupable&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
+        <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="n">parse_float</span><span class="p">),</span>
         <span class="s2">&quot;npcvalue&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;value_sell&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;npcprice&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;value_buy&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;flavortext&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;flavor_text&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;itemclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;primarytype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;lightcolor&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;light_color&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">client_color_to_rgb</span><span class="p">(</span><span class="n">parse_integer</span><span class="p">(</span><span class="n">x</span><span class="p">))),</span>
+        <span class="s2">&quot;lightradius&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;light_radius&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;itemid&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;client_id&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Item&quot;</span><span class="p">)</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;article_id&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;article&quot;</span><span class="p">,</span> <span class="s2">&quot;stackable&quot;</span><span class="p">,</span> <span class="s2">&quot;value_sell&quot;</span><span class="p">,</span> <span class="s2">&quot;value_buy&quot;</span><span class="p">,</span> <span class="s2">&quot;class&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;dropped_by&quot;</span><span class="p">,</span> <span class="s2">&quot;sold_by&quot;</span><span class="p">,</span> <span class="s2">&quot;bought_by&quot;</span><span class="p">,</span> <span class="s2">&quot;flavor_text&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="s2">&quot;awarded_in&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;article_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;article&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;marketable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;stackable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pickupable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;value_sell&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;value_buy&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weight&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;class&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;flavor_text&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;light_color&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;light_radius&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;client_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;version&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;image&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;attributes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dropped_by&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sold_by&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bought_by&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;awarded_in&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sounds&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">attributes_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;:class:`dict`, optional: A mapping of the attributes this item has.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">}</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Item.from_article"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Item.from_article">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_article</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">article</span><span class="p">):</span>
@@ -238,11 +285,17 @@
         <span class="k">if</span> <span class="n">vocations</span> <span class="ow">and</span> <span class="s2">&quot;none&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vocations</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
             <span class="n">vocation</span> <span class="o">=</span> <span class="n">vocations</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
             <span class="n">item</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vocation&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">vocation</span><span class="p">))</span>
+        <span class="k">if</span> <span class="s2">&quot;sounds&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+            <span class="n">sounds</span> <span class="o">=</span> <span class="n">parse_sounds</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;sounds&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">sounds</span><span class="p">:</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">sounds</span> <span class="o">=</span> <span class="p">[</span><span class="n">ItemSound</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">sound</span><span class="p">)</span> <span class="k">for</span> <span class="n">sound</span> <span class="ow">in</span> <span class="n">sounds</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">item</span></div>
 
 <div class="viewcode-block" id="Item.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Item.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">attribute</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;sounds&quot;</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="n">attribute</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Item.get_by_field"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Item.get_by_field">[docs]</a>    <span class="nd">@classmethod</span>
@@ -255,6 +308,7 @@
         <span class="n">item</span><span class="o">.</span><span class="n">sold_by</span> <span class="o">=</span> <span class="n">NpcSellOffer</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">item</span><span class="o">.</span><span class="n">bought_by</span> <span class="o">=</span> <span class="n">NpcBuyOffer</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">item</span><span class="o">.</span><span class="n">awarded_in</span> <span class="o">=</span> <span class="n">QuestReward</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">sounds</span> <span class="o">=</span> <span class="n">ItemSound</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">item</span></div></div>
 
 
@@ -359,12 +413,53 @@
         <span class="s2">&quot;energy_attack&quot;</span><span class="p">:</span> <span class="s2">&quot;energy_attack&quot;</span><span class="p">,</span>
         <span class="s2">&quot;ice_attack&quot;</span><span class="p">:</span> <span class="s2">&quot;ice_attack&quot;</span><span class="p">,</span>
         <span class="s2">&quot;earth_attack&quot;</span><span class="p">:</span> <span class="s2">&quot;earth_attack&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;destructible&quot;</span><span class="p">:</span> <span class="s2">&quot;destructible&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;holds_liquid&quot;</span><span class="p">:</span> <span class="s2">&quot;holdsliquid&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hangable&quot;</span><span class="p">:</span> <span class="s2">&quot;hangable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;writable&quot;</span><span class="p">:</span> <span class="s2">&quot;writable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;rewritable&quot;</span><span class="p">:</span> <span class="s2">&quot;rewritable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;writable_chars&quot;</span><span class="p">:</span> <span class="s2">&quot;writechars&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;consumable&quot;</span><span class="p">:</span> <span class="s2">&quot;consumable&quot;</span><span class="p">,</span>
     <span class="p">}</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">}</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ItemAttribute.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.ItemAttribute.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">item_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">ItemSound</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">ItemSound</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a sound made by an item.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    item_id: :class:`int`</span>
+<span class="sd">        The article id of the item that does this sound.</span>
+<span class="sd">    content: :class:`str`</span>
+<span class="sd">        The content of the sound.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0.__class__.__name__}</span><span class="s2">(</span><span class="si">{1}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">item_id</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span>
+
 </pre></div>
 
           </div>

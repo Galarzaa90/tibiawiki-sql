@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.utils &#8212; TibiaWikiSQL 2.2.0 documentation</title>
+    <title>tibiawikisql.utils &#8212; TibiaWikiSQL 3.0.0 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
@@ -140,6 +140,10 @@
 <span class="n">links_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\[\[([^]]+)\]\]&#39;</span><span class="p">)</span>
 <span class="n">external_links_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\[[^]]+\]&#39;</span><span class="p">)</span>
 <span class="n">no_wiki_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&lt;nowiki&gt;([^&lt;]+)&lt;/nowiki&gt;&#39;</span><span class="p">)</span>
+<span class="n">comments_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&lt;!--.*--&gt;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+
+<span class="n">sounds_template</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{{Sound List([^}]+)}}&quot;</span><span class="p">)</span>
+<span class="n">sound_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\|([^|}]+)&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="clean_links"><a class="viewcode-back" href="../../api.html#tibiawikisql.utils.clean_links">[docs]</a><span class="k">def</span> <span class="nf">clean_links</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
@@ -156,8 +160,6 @@
 <span class="sd">    :class:`str`:</span>
 <span class="sd">        The clean string, with no links.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">content</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
     <span class="c1"># Images</span>
     <span class="n">content</span> <span class="o">=</span> <span class="n">file_pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
     <span class="c1"># Named links</span>
@@ -170,6 +172,8 @@
     <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
     <span class="c1"># No wiki</span>
     <span class="n">content</span> <span class="o">=</span> <span class="n">no_wiki_pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\g&lt;1&gt;&#39;</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+    <span class="c1"># Comments</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">comments_pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
 
 
@@ -226,7 +230,7 @@
         <span class="k">return</span> <span class="n">default</span></div>
 
 
-<div class="viewcode-block" id="parse_float"><a class="viewcode-back" href="../../api.html#tibiawikisql.utils.parse_float">[docs]</a><span class="k">def</span> <span class="nf">parse_float</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="parse_float"><a class="viewcode-back" href="../../api.html#tibiawikisql.utils.parse_float">[docs]</a><span class="k">def</span> <span class="nf">parse_float</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    From a string, parses a floating value.</span>
 <span class="sd">    Parameters</span>
@@ -241,8 +245,6 @@
 <span class="sd">    :class:`float`</span>
 <span class="sd">        The floating number found, or the default value provided.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">default</span>
     <span class="n">match</span> <span class="o">=</span> <span class="n">float_pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
@@ -266,8 +268,6 @@
 <span class="sd">    :class:`int`:</span>
 <span class="sd">        The numeric value found, or the default value provided.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">default</span>
     <span class="n">match</span> <span class="o">=</span> <span class="n">int_pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
@@ -292,7 +292,7 @@
     <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span> <span class="n">loot_stats_pattern</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[]</span></div>
 
 
 <div class="viewcode-block" id="parse_min_max"><a class="viewcode-back" href="../../api.html#tibiawikisql.utils.parse_min_max">[docs]</a><span class="k">def</span> <span class="nf">parse_min_max</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -316,6 +316,31 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="parse_sounds"><a class="viewcode-back" href="../../api.html#tibiawikisql.utils.parse_sounds">[docs]</a><span class="k">def</span> <span class="nf">parse_sounds</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parses a list of sounds, using Template:Sound_List.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value: :class:`str`</span>
+<span class="sd">        A string containing the list of sounds.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list:</span>
+<span class="sd">        A list of sounds.&quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">sounds_template</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+        <span class="n">sounds</span> <span class="o">=</span> <span class="n">sound_pattern</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">sounds</span>
+    <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<span class="k">def</span> <span class="nf">client_color_to_rgb</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">215</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">value</span> <span class="o">//</span> <span class="mi">36</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">value</span> <span class="o">//</span> <span class="mi">6</span> <span class="o">%</span> <span class="mi">6</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">value</span> <span class="o">%</span> <span class="mi">6</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">)</span>
 </pre></div>
 
           </div>
