@@ -26,6 +26,9 @@ links_pattern = re.compile(r'\[\[([^]]+)\]\]')
 external_links_pattern = re.compile(r'\[[^]]+\]')
 no_wiki_pattern = re.compile(r'<nowiki>([^<]+)</nowiki>')
 
+sounds_template = re.compile(r"{{Sound List([^}]+)}}")
+sound_pattern = re.compile(r"\|([^|}]+)")
+
 
 def clean_links(content):
     """
@@ -200,4 +203,12 @@ def parse_min_max(value):
         return int(match.group(1)), int(match.group(2))
     else:
         return 0, parse_integer(value, 1)
+
+
+def parse_sounds(value):
+    m = sounds_template.search(value)
+    if m:
+        sounds = sound_pattern.findall(m.group(1))
+        return sounds
+    return None
 

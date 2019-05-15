@@ -18,11 +18,10 @@ from typing import List, Optional
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
-from tibiawikisql.utils import clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max
+from tibiawikisql.utils import clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max, parse_sounds
 
 creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
-sounds_template = re.compile(r"{{Sound List([^}]+)}}")
-sound_pattern = re.compile(r"\|([^|}]+)")
+
 
 KILLS = {
     "Harmless": 25,
@@ -82,13 +81,6 @@ def parse_loot(value):
     """
     return creature_loot_pattern.findall(value)
 
-
-def parse_sounds(value):
-    m = sounds_template.search(value)
-    if m:
-        sounds = sound_pattern.findall(m.group(1))
-        return sounds
-    return None
 
 
 def parse_monster_walks(value):
@@ -339,6 +331,8 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         super().insert(c)
         for attribute in getattr(self, "loot", []):
             attribute.insert(c)
+        for attribute in getattr(self, "sounds", []):
+            attribute.insert(c)
 
     @classmethod
     def get_by_field(cls, c, field, value, use_like=False):
@@ -419,12 +413,12 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
 
 class CreatureSound(abc.Row, table=schema.CreatureSound):
     """
-    Represents an item dropped by a creature.
+    Represents a sound made by a creature.
 
     Attributes
     ----------
     creature_id: :class:`int`
-        The article id of the creature the drop belongs to.
+        The article id of the creature that does this sound.
     content: :class:`str`
         The content of the sound.
     """
@@ -432,7 +426,6 @@ class CreatureSound(abc.Row, table=schema.CreatureSound):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.creature_title = kwargs.get("creature_title")
 
     def __repr__(self):
         attributes = []

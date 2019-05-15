@@ -19,7 +19,7 @@ from tibiawikisql.models import abc
 from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
 from tibiawikisql.models.quest import QuestReward
-from tibiawikisql.utils import clean_links, parse_boolean, parse_float, parse_integer
+from tibiawikisql.utils import clean_links, parse_boolean, parse_float, parse_integer, parse_sounds
 
 
 class Item(abc.Row, abc.Parseable, table=schema.Item):
@@ -37,8 +37,16 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         The in-game name of the item.
     article: :class:`str`
         The article that goes before the name when looking at the item.
+    marketable: :class:`bool`
+        Whether the item can be traded on the Market or not.
     stackable: :class:`bool`
         Whether the item can be stacked or not.
+    usable: :class:`bool`
+        Whether the item can be used or not.
+    pickupable: :class:`bool`
+        Whether the item can be picked up or not.
+    walkable: :class:`bool`
+        Whether the item can be walked over or not.
     value_sell: :class:`int`
         The highest price an NPC will buy this item for.
     value_buy: :class:`int`
@@ -51,6 +59,10 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         The item's type
     flavor_text: :class:`str`
         The extra text that is displayed when some items are looked at.
+    light_color: :class:`int`, optional.
+        The color of the light emitted by this item, if any.
+    light_radius: :class:`int`
+        The radius of the light emitted by this item, if any.
     version: :class:`str`
         The client version where this item was first implemented.
     image: :class:`bytes`
@@ -65,25 +77,52 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         List of NPCs that buy this item.
     awarded_in: list of :class:`QuestReward`
         List of quests that give this item as reward.
+    sounds: list of :class:`ItemSound`.
+        List of sounds made when using the item.
     """
     _map = {
         "article": ("article", str.strip),
         "actualname": ("name", str.strip),
-        "weight": ("weight", parse_float),
+        "marketable": ("marketable", parse_boolean),
         "stackable": ("stackable", parse_boolean),
+        "weight": ("weight", parse_float),
         "npcvalue": ("value_sell", parse_integer),
         "npcprice": ("value_buy", parse_integer),
         "flavortext": ("flavor_text", str.strip),
         "itemclass": ("class", str.strip),
         "primarytype": ("type", str.strip),
+        "lightcolor": ("light_color", parse_integer),
+        "lightradius": ("light_radius", parse_integer),
         "implemented": ("version", str.strip),
         "itemid": ("client_id", parse_integer)
     }
     _pattern = re.compile(r"Infobox[\s_]Item")
 
-    __slots__ = ("article_id", "title", "timestamp", "name", "article", "stackable", "value_sell", "value_buy", "class",
-                 "type", "version", "image", "attributes", "dropped_by", "sold_by", "bought_by", "flavor_text",
-                 "weight", "awarded_in")
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "name",
+        "article",
+        "marketable",
+        "stackable",
+        "value_sell",
+        "value_buy",
+        "weight",
+        "class",
+        "type",
+        "flavor_text",
+        "light_color",
+        "light_radius",
+        "version",
+        "image",
+        "attributes",
+        "dropped_by",
+        "sold_by",
+        "bought_by",
+        "awarded_in"
+        "sounds",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -123,11 +162,17 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         if vocations and "none" not in vocations.lower():
             vocation = vocations.replace('and', '+').replace(',', '+').replace(' ', '')
             item.attributes.append(ItemAttribute(item_id=item.article_id, name="vocation", value=vocation))
+        if "sounds" in item._raw_attributes:
+            sounds = parse_sounds(item._raw_attributes["sounds"])
+            if sounds:
+                item.sounds = [ItemSound(item_id=item.article_id, content=sound) for sound in sounds]
         return item
 
     def insert(self, c):
         super().insert(c)
         for attribute in getattr(self, "attributes", []):
+            attribute.insert(c)
+        for attribute in getattr(self, "sounds", []):
             attribute.insert(c)
 
     @classmethod
@@ -244,9 +289,49 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "energy_attack": "energy_attack",
         "ice_attack": "ice_attack",
         "earth_attack": "earth_attack",
+        "destructible": "destructible",
+        "holds_liquid": "holdsliquid",
+        "hangable": "hangable",
+        "writable": "writable",
+        "rewritable": "rewritable",
+        "consumable": "consumable",
     }
-    __slots__ = {"item_id", "name", "value"}
+    __slots__ = ("item_id", "name", "value")
 
     def insert(self, c):
         columns = dict(item_id=self.item_id, name=self.name, value=str(self.value))
         self.table.insert(c, **columns)
+
+
+class ItemSound(abc.Row, table=schema.ItemSound):
+    """
+    Represents a sound made by an item.
+
+    Attributes
+    ----------
+    item_id: :class:`int`
+        The article id of the item that does this sound.
+    content: :class:`str`
+        The content of the sound.
+    """
+    __slots__ = ("item_id", "content")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def __repr__(self):
+        attributes = []
+        for attr in self.__slots__:
+            try:
+                v = getattr(self, attr)
+                if v is None:
+                    continue
+                attributes.append("%s=%r" % (attr, v))
+            except AttributeError:
+                pass
+        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
+
+    def insert(self, c):
+        columns = dict(item_id=self.item_id, content=self.content)
+        self.table.insert(c, **columns)
+

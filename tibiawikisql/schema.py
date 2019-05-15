@@ -83,13 +83,15 @@ class Creature(Table):
 
 class CreatureSound(Table, table_name="creature_sound"):
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"))
-    content = Column(Integer)
+    content = Column(Text)
+
 
 class Item(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     name = Column(Text)
     article = Column(Text)
+    marketable = Column(Boolean, default=False)
     stackable = Column(Boolean, default=False)
     value_sell = Column(Integer)
     value_buy = Column(Integer)
@@ -97,10 +99,17 @@ class Item(Table):
     classz = Column(Text, name="class")
     type = Column(Text)
     flavor_text = Column(Text)
+    light_color = Column(Integer)
+    light_radius = Column(Integer)
     version = Column(Text)
     client_id = Column(Integer)
     image = Column(Blob)
     timestamp = Column(Integer)
+
+
+class ItemSound(Table, table_name="item_sound"):
+    item_id = Column(ForeignKey(Integer, table="item", column="article_id"))
+    content = Column(Text)
 
 
 class CreatureDrop(Table, table_name="creature_drop"):
