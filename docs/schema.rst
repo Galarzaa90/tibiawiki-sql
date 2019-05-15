@@ -1,5 +1,5 @@
 Database
-===============
+========
 
 The SQLite database contains a series of tables dedicated to each of the model types. Following SQL best practices where possible.
 
@@ -21,6 +21,8 @@ Tables
 +-----------------------+-------------------------------------------------+
 | `creature_drop`_      | Contains all the items dropped by creatures.    |
 +-----------------------+-------------------------------------------------+
+| `creature_sound`_     | Contains all the sounds made by creatures.      |
++-----------------------+-------------------------------------------------+
 | `database_info`_      | Contains information about the database itself. |
 +-----------------------+-------------------------------------------------+
 | `house`_              | Contains all houses and guildhalls.             |
@@ -35,6 +37,8 @@ Tables
 |                       | items that only apply to certain types.         |
 +-----------------------+-------------------------------------------------+
 | `item_key`_           | Contains the different key variations.          |
++-----------------------+-------------------------------------------------+
+| `item_sound`_         | Contains all the sounds made by items.          |
 +-----------------------+-------------------------------------------------+
 | `map`_                | Contains the world map’s images.                |
 +-----------------------+-------------------------------------------------+
@@ -71,8 +75,8 @@ Table schemas
 
 .. note::
 
-    | SQLite does not have an actual Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true).
-    | This is not much of an issue in Python, but it might be an issue on more strict typed langauges.
+    | SQLite does not have an actual Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true). |
+    | This is not much of an issue in Python, but it might be an issue on more strict typed langauges.                             |
 
 achievement
 ~~~~~~~~~~~
@@ -184,20 +188,16 @@ creature
 +---------------------+-------------+-----------------------------------------------------+
 | max_damage          | ``INTEGER`` | The maximum damage a creature may                   |
 |                     |             | deal if it were to use all it’s                     |
-|                     |             | abilities at once. May be ``NULL``                  |
-|                     |             | if unknown.                                         |
+|                     |             | abilities at once. May be ``NULL`` if unknown.      |
 +---------------------+-------------+-----------------------------------------------------+
 | summon_cost         | ``INTEGER`` | The mana cost to summon this                        |
-|                     |             | creature. ``0`` means it is not                     |
-|                     |             | summonable.                                         |
+|                     |             | creature. ``0`` means it is not summonable.         |
 +---------------------+-------------+-----------------------------------------------------+
 | convince_cost       | ``INTEGER`` | The mana cost to convince this                      |
-|                     |             | creature. ``0`` means it is not                     |
-|                     |             | convincible.                                        |
+|                     |             | creature. ``0`` means it is not convincible.        |
 +---------------------+-------------+-----------------------------------------------------+
 | illusionable        | ``BOOLEAN`` | Whether the player can turn into                    |
-|                     |             | this creature with Creature                         |
-|                     |             | Illusion.                                           |
+|                     |             | this creature with Creature Illusion.               |
 +---------------------+-------------+-----------------------------------------------------+
 | pushable            | ``BOOLEAN`` | Whether this creature can be pushed or not.         |
 +---------------------+-------------+-----------------------------------------------------+
@@ -287,7 +287,7 @@ creature
 creature_drop
 ~~~~~~~~~~~~~
 +-------------+-------------+----------------------------------------------------------+
-| Column      | Type        | Description                                              |
+|   Column    |    Type     |                       Description                        |
 +=============+=============+==========================================================+
 | creature_id | ``INTEGER`` | The id of the creature that yields this drop.            |
 +-------------+-------------+----------------------------------------------------------+
@@ -300,10 +300,20 @@ creature_drop
 | max         | ``INTEGER`` | The maximum count of the dropped item.                   |
 +-------------+-------------+----------------------------------------------------------+
 
+creature_sound
+~~~~~~~~~~~~~~
++-------------+-------------+----------------------------------------------+
+|   Column    |    Type     |                 Description                  |
++=============+=============+==============================================+
+| creature_id | ``INTEGER`` | The id of the creature that does this sound. |
++-------------+-------------+----------------------------------------------+
+| content     | ``TET``     | The content of the sound.                    |
++-------------+-------------+----------------------------------------------+
+
 database_info
 ~~~~~~~~~~~~~
 +--------+-------------+----------------------------------+
-| Column | Type        | Description                      |
+| Column |    Type     |           Description            |
 +========+=============+==================================+
 | key    | ``INTEGER`` | The name of the value contained. |
 +--------+-------------+----------------------------------+
@@ -380,7 +390,7 @@ imbuement
 imbuement_material
 ~~~~~~~~~~~~~~~~~~
 +--------------+-------------+--------------------------------------------------+
-| Column       | Type        | Description                                      |
+|    Column    |    Type     |                   Description                    |
 +==============+=============+==================================================+
 | imbuement_id | ``INTEGER`` | The id of the imbuement this material belongs to |
 +--------------+-------------+--------------------------------------------------+
@@ -391,44 +401,52 @@ imbuement_material
 
 item
 ~~~~
-+-------------+-------------+------------------------------------------------+
-|   Column    |    Type     |                  Description                   |
-+=============+=============+================================================+
-| article_id  | ``INTEGER`` | The id of the article containing this item.    |
-|             | ``PRIMARY`` |                                                |
-+-------------+-------------+------------------------------------------------+
-| title       | ``TEXT``    | The title of the article containing this item. |
-+-------------+-------------+------------------------------------------------+
-| name        | ``TEXT``    | The actual name of the item in-game.           |
-+-------------+-------------+------------------------------------------------+
-| stackable   | ``BOOLEAN`` | Whether this item is stackable or not.         |
-+-------------+-------------+------------------------------------------------+
-| value       | ``INTEGER`` | The maximum value of this item                 |
-|             |             | when sold to NPCs                              |
-+-------------+-------------+------------------------------------------------+
-| price       | ``INTEGER`` | The maximum price of this item                 |
-|             |             | when bought from NPCs.                         |
-+-------------+-------------+------------------------------------------------+
-| weight      | ``REAL``    | The weight of this item in ounces.             |
-+-------------+-------------+------------------------------------------------+
-| class       | ``TEXT``    | The class this item belongs to                 |
-|             |             | (e.g. ``Body Equipment`` , ``Weapons``).       |
-+-------------+-------------+------------------------------------------------+
-| type        | ``TEXT``    | The category this item belongs to              |
-|             |             | (e.g. ``Helmets``, ``Club Weapons``).          |
-+-------------+-------------+------------------------------------------------+
-| flavor_text | ``TEXT``    | The extra text that is displayed               |
-|             |             | when some items are looked at.                 |
-+-------------+-------------+------------------------------------------------+
-| client_id   | ``INTEGER`` | The client id of the item.                     |
-+-------------+-------------+------------------------------------------------+
-| version     | ``TEXT``    | The client version this item was               |
-|             |             | introduced to the game.                        |
-+-------------+-------------+------------------------------------------------+
-| image       | ``BLOB``    | The item’s image bytes.                        |
-+-------------+-------------+------------------------------------------------+
-| timestamp   | ``INTEGER`` | Unix timestamp of the article's last edit.     |
-+-------------+-------------+------------------------------------------------+
++--------------+-------------+-------------------------------------------------------+
+|    Column    |    Type     |                      Description                      |
++==============+=============+=======================================================+
+| article_id   | ``INTEGER`` | The id of the article containing this item.           |
+|              | ``PRIMARY`` |                                                       |
++--------------+-------------+-------------------------------------------------------+
+| title        | ``TEXT``    | The title of the article containing this item.        |
++--------------+-------------+-------------------------------------------------------+
+| name         | ``TEXT``    | The actual name of the item in-game.                  |
++--------------+-------------+-------------------------------------------------------+
+| marketable   | ``BOOLEAN`` | Whether this item can be traded in the market or not. |
++--------------+-------------+-------------------------------------------------------+
+| stackable    | ``BOOLEAN`` | Whether this item is stackable or not.                |
++--------------+-------------+-------------------------------------------------------+
+| pickupable   | ``BOOLEAN`` | Whether this item can be picked up or not.            |
++--------------+-------------+-------------------------------------------------------+
+| value        | ``INTEGER`` | The maximum value of this item                        |
+|              |             | when sold to NPCs                                     |
++--------------+-------------+-------------------------------------------------------+
+| price        | ``INTEGER`` | The maximum price of this item                        |
+|              |             | when bought from NPCs.                                |
++--------------+-------------+-------------------------------------------------------+
+| weight       | ``REAL``    | The weight of this item in ounces.                    |
++--------------+-------------+-------------------------------------------------------+
+| class        | ``TEXT``    | The class this item belongs to                        |
+|              |             | (e.g. ``Body Equipment`` , ``Weapons``).              |
++--------------+-------------+-------------------------------------------------------+
+| type         | ``TEXT``    | The category this item belongs to                     |
+|              |             | (e.g. ``Helmets``, ``Club Weapons``).                 |
++--------------+-------------+-------------------------------------------------------+
+| flavor_text  | ``TEXT``    | The extra text that is displayed                      |
+|              |             | when some items are looked at.                        |
++--------------+-------------+-------------------------------------------------------+
+| client_id    | ``INTEGER`` | The client id of the item.                            |
++--------------+-------------+-------------------------------------------------------+
+| light_color  | ``INTEGER`` | The color of the light emitted by this item, if any.  |
++--------------+-------------+-------------------------------------------------------+
+| light_radius | ``INTEGER`` | The radius of the light emitted by this item, if any. |
++--------------+-------------+-------------------------------------------------------+
+| version      | ``TEXT``    | The client version this item was                      |
+|              |             | introduced to the game.                               |
++--------------+-------------+-------------------------------------------------------+
+| image        | ``BLOB``    | The item’s image bytes.                               |
++--------------+-------------+-------------------------------------------------------+
+| timestamp    | ``INTEGER`` | Unix timestamp of the article's last edit.            |
++--------------+-------------+-------------------------------------------------------+
 
 item_attribute
 ~~~~~~~~~~~~~~
@@ -473,6 +491,16 @@ item_key
 +------------+-------------+-----------------------------------------------+
 | timestamp  | ``INTEGER`` | Unix timestamp of the article's last edit.    |
 +------------+-------------+-----------------------------------------------+
+
+item_sound
+~~~~~~~~~~~
++---------+-------------+------------------------------------------+
+| Column  |    Type     |               Description                |
++=========+=============+==========================================+
+| item_id | ``INTEGER`` | The id of the item that does this sound. |
++---------+-------------+------------------------------------------+
+| content | ``TEXT``    | The content of the sound.                |
++---------+-------------+------------------------------------------+
 
 map
 ~~~
@@ -683,7 +711,7 @@ quest
 quest_danger
 ~~~~~~~~~~~~
 +-------------+-------------+-----------------------------------------+
-| Column      | Type        | Description                             |
+|   Column    |    Type     |               Description               |
 +=============+=============+=========================================+
 | quest_id    | ``INTEGER`` | Id of the quest this danger belongs to. |
 +-------------+-------------+-----------------------------------------+
@@ -693,7 +721,7 @@ quest_danger
 quest_reward
 ~~~~~~~~~~~~
 +----------+-------------+-----------------------------------------+
-| Column   | Type        | Description                             |
+|  Column  |    Type     |               Description               |
 +==========+=============+=========================================+
 | quest_id | ``INTEGER`` | Id of the quest this reward belongs to. |
 +----------+-------------+-----------------------------------------+
@@ -732,6 +760,8 @@ spell
 | name       | ``TEXT``    | The name of the spell.                                |
 +------------+-------------+-------------------------------------------------------+
 | words      | ``TEXT``    | The words used to cast the spell.                     |
++------------+-------------+-------------------------------------------------------+
+| effect     | ``TEXT``    | The effect of this spell.                             |
 +------------+-------------+-------------------------------------------------------+
 | type       | ``TEXT``    | Whether the spell is ``Instant`` or a ``Rune`` spell. |
 +------------+-------------+-------------------------------------------------------+

@@ -59,6 +59,8 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         The color of the light emitted by this item, if any.
     light_radius: :class:`int`
         The radius of the light emitted by this item, if any.
+    client_id: :class:`int`
+        The internal id of the item in the client.
     version: :class:`str`
         The client version where this item was first implemented.
     image: :class:`bytes`
@@ -111,6 +113,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "flavor_text",
         "light_color",
         "light_radius",
+        "client_id",
         "version",
         "image",
         "attributes",
