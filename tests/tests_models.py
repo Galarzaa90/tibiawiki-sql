@@ -98,6 +98,41 @@ class TestWikiApi(unittest.TestCase):
         db_item = models.Item.get_by_field(self.conn, "name", "fire sword", use_like=True)
         self.assertIsInstance(db_item, models.Item)
 
+    def testItemResist(self):
+        article = Article(1, "Dream Shroud", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_item_resist.txt"))
+        item = models.Item.from_article(article)
+        self.assertIsInstance(item, models.Item)
+        self.assertTrue("energy%" in item.attributes_dict)
+        self.assertEqual(item.attributes_dict['magic'], "+3")
+
+        item.insert(self.conn)
+        db_item = models.Item.get_by_field(self.conn, "article_id", 1)
+
+        self.assertIsInstance(db_item, models.Item)
+        self.assertEqual(db_item.name, item.name)
+        self.assertGreater(len(db_item.attributes), 0)
+
+        db_item = models.Item.get_by_field(self.conn, "name", "dream shroud", use_like=True)
+        self.assertIsInstance(db_item, models.Item)
+
+    def testItemSounds(self):
+        article = Article(1, "Goromaphone", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_item_sounds.txt"))
+        item = models.Item.from_article(article)
+        self.assertIsInstance(item, models.Item)
+        self.assertEqual(len(item.sounds), 6)
+
+        item.insert(self.conn)
+        db_item = models.Item.get_by_field(self.conn, "article_id", 1)
+
+        self.assertIsInstance(db_item, models.Item)
+        self.assertEqual(db_item.name, item.name)
+
+        db_item = models.Item.get_by_field(self.conn, "name", "goromaphone", use_like=True)
+        self.assertEqual(len(item.sounds), len(db_item.sounds))
+        self.assertIsInstance(db_item, models.Item)
+
     def testKey(self):
         article = Article(1, "Key 3940", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_key.txt"))

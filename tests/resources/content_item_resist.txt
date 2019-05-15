@@ -1,0 +1,27 @@
+{{Infobox Item|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name           = Dream Shroud
+| article        = a
+| actualname     = dream shroud
+| plural         =
+| itemid         = 29423
+| marketable     = yes
+| flavortext     =
+| implemented    = 12.00
+| itemclass      = Body Equipment
+| primarytype    = Armors
+| secondarytype  =
+| levelrequired  = 180
+| vocrequired    = sorcerers and druids
+| imbueslots     = 1
+| armor          = 12
+| resist         = energy +10%
+| attrib         = magic level +3
+| weight         = 25.00
+| droppedby      = {{Dropped By|Alptramun}}
+| value          = Negotiable
+| npcvalue       = 0
+| npcprice       = 0
+| buyfrom        = --
+| sellto         = --
+| notes          =
+}}

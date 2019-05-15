@@ -1,0 +1,21 @@
+{{Infobox Item|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name          = Goromaphone
+| marketable    = no
+| article       = a
+| actualname    = Goromaphone
+| plural        =
+| itemid        = 26085, 26086
+| flavortext    = There's a small record that seeminly has an endless aura of sweet tunes playing thought its crude speaker, however, something about it seems off. It's the official audio device of RadioGoroma.com.br.
+| implemented   = 11.40
+| itemclass     = Household Items
+| primarytype   = Contest Prizes
+| weight        = 66.60
+| sounds        = {{Sound List|It's the Eye of the Panther!|You are now listening to 66.6 RadioGoroma FM! Your Tibian Radio!|~ And Iiiiii-eeee-iii Will always Heal youuuuuu-hooooo! ~|~ I Love Loot 'N Gold! Put a Crystal Coin in my Backpack, Baby! ~|~ I'm Hungry Like the Warwolf ~|~ Keep spending most of our lives, Living in E.K's paradise ~}}
+| droppedby     = {{Dropped By}}
+| value         = Negotiable
+| npcvalue      = 0
+| npcprice      = 0
+| buyfrom       = --
+| sellto        = --
+| notes         = This is [[RadioGoroma]]'s fansite item. If you ''use'' it, it will turn into a [[Goromaphone (Activated)]] [[File:Goromaphone (Activated).gif]] for a few seconds.
+}}

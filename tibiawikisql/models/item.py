@@ -102,7 +102,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "article",
         "marketable",
         "stackable",
-        "pickupable"
+        "pickupable",
         "value_sell",
         "value_buy",
         "weight",
@@ -117,12 +117,19 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "dropped_by",
         "sold_by",
         "bought_by",
-        "awarded_in"
+        "awarded_in",
         "sounds",
     )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+    @property
+    def attributes_dict(self):
+        """:class:`dict`, optional: A mapping of the attributes this item has."""
+        if self.attributes:
+            return {a.name: a.value for a in self.attributes}
+        return None
 
     @classmethod
     def from_article(cls, article):
@@ -182,6 +189,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         item.sold_by = NpcSellOffer.search(c, "item_id", item.article_id, sort_by="value", ascending=True)
         item.bought_by = NpcBuyOffer.search(c, "item_id", item.article_id, sort_by="value", ascending=False)
         item.awarded_in = QuestReward.search(c, "item_id", item.article_id)
+        item.sounds = ItemSound.search(c, "item_id", item.article_id)
         return item
 
 
