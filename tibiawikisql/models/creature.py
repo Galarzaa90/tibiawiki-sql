@@ -82,7 +82,6 @@ def parse_loot(value):
     return creature_loot_pattern.findall(value)
 
 
-
 def parse_monster_walks(value):
     """
     Matches the values against a regex to filter typos or bad data on the wiki.
@@ -233,12 +232,48 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "implemented": ("version", str.strip)
     }
     _pattern = re.compile(r"Infobox[\s_]Creature")
-    __slots__ = ("article_id", "title", "timestamp", "raw_attribute", "article", "name", "class", "type",
-                 "bestiary_level", "bestiary_class", "bestiary_occurrence", "hitpoints", "experience", "armor", "speed",
-                 "max_damage", "summon_cost", "convince_cost", "illusionable", "pushable", "sees_invisible",
-                 "paralysable", "boss", "modifier_physical", "modifier_earth", "modifier_fire", "modifier_energy",
-                 "modifier_ice", "modifier_death", "modifier_holy", "modifier_hpdrain", "modifier_drown", "abilities",
-                 "walks_through", "walks_around", "version", "image", "loot", "sounds")
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "raw_attribute",
+        "article",
+        "name",
+        "class",
+        "type",
+        "bestiary_level",
+        "bestiary_class",
+        "bestiary_occurrence",
+        "hitpoints",
+        "experience",
+        "armor",
+        "speed",
+        "max_damage",
+        "summon_cost",
+        "convince_cost",
+        "illusionable",
+        "pushable",
+        "push_objects",
+        "sees_invisible",
+        "paralysable",
+        "boss",
+        "modifier_physical",
+        "modifier_earth",
+        "modifier_fire",
+        "modifier_energy",
+        "modifier_ice",
+        "modifier_death",
+        "modifier_holy",
+        "modifier_hpdrain",
+        "modifier_drown",
+        "abilities",
+        "walks_through",
+        "walks_around",
+        "version",
+        "image",
+        "loot",
+        "sounds",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -8,9 +8,26 @@ Changelog
 3.0.0 (Unreleased)
 ==================
 - Charms are now read from their TibiaWiki articles instead of a static json file.
-    - ``charm`` database structure changed:
-        - Added columns: ``article_id``, ``title``, ``timestamp`` and ``version``
-        - Renamed ``description`` column to ``effect``.
+- ``Charm`` class and ``charm`` table changes:
+    - Added ``article_id``, ``title``, ``timestamp`` and ``version``
+    - Renamed ``description`` to ``effect``.
+- New ``creature_sound`` and ``item_sound``, containing "sounds" made by creatures and items respectively.
+- ``Creature`` class and ``creature`` table changes:
+    - Added ``push_objects``.
+    - Added ``sounds`` to class.
+- ``Quest`` class and ``quest`` table changes:
+    - Added ``rookgaard``, ``type``, ``quest_log``, ``active_time`` and ``estimated_time``.
+- ``Item`` class and ``item``table changes:
+    - Added ``marketable``, ``pickupable``, ``light_color`` and ``light_radius``,
+    - Added ``sounds`` to class.
+- New tracked attributes in ``item_attribute``
+    - ``destructible``
+    - ``holds_liquid``
+    - ``writeable``
+    - ``rewriteable``
+    - ``consumable``
+    - ``writable_chars``
+
 
 .. v2.2.0:
 

@@ -41,12 +41,8 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         Whether the item can be traded on the Market or not.
     stackable: :class:`bool`
         Whether the item can be stacked or not.
-    usable: :class:`bool`
-        Whether the item can be used or not.
     pickupable: :class:`bool`
         Whether the item can be picked up or not.
-    walkable: :class:`bool`
-        Whether the item can be walked over or not.
     value_sell: :class:`int`
         The highest price an NPC will buy this item for.
     value_buy: :class:`int`
@@ -106,6 +102,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "article",
         "marketable",
         "stackable",
+        "pickupable"
         "value_sell",
         "value_buy",
         "weight",
@@ -294,6 +291,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "hangable": "hangable",
         "writable": "writable",
         "rewritable": "rewritable",
+        "writable_chars": "writechars",
         "consumable": "consumable",
     }
     __slots__ = ("item_id", "name", "value")

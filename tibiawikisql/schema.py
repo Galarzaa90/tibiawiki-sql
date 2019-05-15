@@ -93,6 +93,7 @@ class Item(Table):
     article = Column(Text)
     marketable = Column(Boolean, default=False)
     stackable = Column(Boolean, default=False)
+    pickupable = Column(Boolean, default=True)
     value_sell = Column(Integer)
     value_buy = Column(Integer)
     weight = Column(Real)
