@@ -30,11 +30,15 @@ class Achievement(Table):
 
 
 class Charm(Table):
-    name = Column(Text, unique=True)
+    article_id = Column(Integer, primary_key=True)
+    title = Column(Text, unique=True)
+    name = Column(Text)
     type = Column(Text)
-    description = Column(Text)
-    points = Column(Integer)
+    effect = Column(Text)
+    cost = Column(Integer)
     image = Column(Blob)
+    version = Column(Text)
+    timestamp = Column(Integer)
 
 
 class Creature(Table):
@@ -56,6 +60,7 @@ class Creature(Table):
     convince_cost = Column(Integer)
     illusionable = Column(Boolean)
     pushable = Column(Boolean)
+    push_objects = Column(Boolean)
     paralysable = Column(Boolean)
     sees_invisible = Column(Integer)
     boss = Column(Integer)
@@ -76,22 +81,36 @@ class Creature(Table):
     timestamp = Column(Integer)
 
 
+class CreatureSound(Table, table_name="creature_sound"):
+    creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"))
+    content = Column(Text)
+
+
 class Item(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     name = Column(Text)
     article = Column(Text)
+    marketable = Column(Boolean, default=False)
     stackable = Column(Boolean, default=False)
+    pickupable = Column(Boolean, default=True)
     value_sell = Column(Integer)
     value_buy = Column(Integer)
     weight = Column(Real)
     classz = Column(Text, name="class")
     type = Column(Text)
     flavor_text = Column(Text)
+    light_color = Column(Integer)
+    light_radius = Column(Integer)
     version = Column(Text)
     client_id = Column(Integer)
     image = Column(Blob)
     timestamp = Column(Integer)
+
+
+class ItemSound(Table, table_name="item_sound"):
+    item_id = Column(ForeignKey(Integer, table="item", column="article_id"))
+    content = Column(Text)
 
 
 class CreatureDrop(Table, table_name="creature_drop"):
@@ -245,9 +264,14 @@ class Quest(Table):
     title = Column(Text)
     name = Column(Text)
     location = Column(Text)
+    rookgaard = Column(Boolean, default=False)
+    type = Column(Text, default="quest")
+    quest_log = Column(Boolean, default=False)
     legend = Column(Text)
     level_required = Column(Integer)
     level_recommended = Column(Integer)
+    active_time = Column(Text)
+    estimated_time = Column(Text)
     premium = Column(Boolean)
     version = Column(Text)
     timestamp = Column(Integer)

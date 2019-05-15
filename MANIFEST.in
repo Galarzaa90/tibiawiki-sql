@@ -2,6 +2,6 @@ include README.md
 include LICENSE
 include CHANGELOG.rst
 include requirements.txt
-recursive-include tibiawikisql *.json
+recursive-include tibiawikisql
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]

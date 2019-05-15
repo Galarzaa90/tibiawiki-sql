@@ -1,12 +1,12 @@
 {{Infobox Item|List={{{1|}}}|GetValue={{{GetValue|}}}
 | name          = Fire Sword
-| marketable    = yes
-| usable        = yes
-| sprites       = {{Frames|{{Frame Sprite|55262|500}}|{{Frame Sprite|55263|500}}}}
 | article       = a
 | actualname    = fire sword
 | plural        = ?
 | itemid        = 3280
+| marketable    = yes
+| usable        = yes
+| sprites       = {{Frames|{{Frame Sprite|55262|500}}|{{Frame Sprite|55263|500}}}}
 | flavortext    = The blade is a magic flame.
 | implemented   = Pre-6.0
 | itemclass     = Weapons
@@ -17,24 +17,23 @@
 | hands         = One
 | type          = Sword
 | attack        = 24
-| elementattack = 11 Fire
+| fire_attack   = 11
 | defense       = 20
 | defensemod    = +1
 | enchantable   = no
-| attrib        =
 | weight        = 23.00
-| droppedby     = {{Dropped By|Demodras|Dragon Lord|Hellfire Fighter|Hellhound|Hero|Kalyassa|Kerberos|Lava Golem|Magma Crawler|Massive Fire Elemental|Mawhawk|Renegade Knight|Retching Horror|Ushuriel|Vile Grandmaster|Vulcongra|Weeper}}
+| droppedby     = {{Dropped By|Demodras|Dragon Lord|Guardian of Tales|Hellfire Fighter|Hellhound|Hero|Kalyassa|Kerberos|Lava Golem|Magma Crawler|Massive Fire Elemental|Mawhawk|Renegade Knight|Retching Horror|The Baron from Below|The Count of the Core|The Duke of the Depths|Ushuriel|Vile Grandmaster|Vulcongra|Weeper}}
 | value         = 4,000 - 8,000
 | npcvalue      = 4000
 | npcprice      = 0
 | buyfrom       = --
 | sellto        = Baltim: 1000, Brengus: 1000, Cedrik: 1000, Esrik: 1000, Flint: 1000, Gamel: 1000, H.L.: 335, Habdel: 1000, Hardek: 1000, Memech: 1000, Morpel: 1000, Nah'Bob, Robert: 1000, Rock In A Hard Place: 1000, Romella: 1000, Rowenna: 1000, Sam: 1000, Shanar: 1000, Turvy: 1000, Ulrik: 1000, Uzgod: 1000, Willard: 1000
-| notes         = Mainly used from [[level]] 30 to 35 by [[Knight]]s. This sword is also used by higher level Knights to fight creatures immune to [[Physical Damage]], like [[Ghost]]s, since its [[Fire Damage]] is stronger than [[Fiery Mystic Blade]]'s. '''Note''': For creatures who aren't immune to physical damage it's better to use [[Fiery Mystic Blade]] since its physical damage is higher. Provides a small amount of red light. The graphic for the Fire Sword is an edit of the old [[Rapier]] sprite.
+| notes         = Mainly used from [[level]] 30 to 35 by [[Knight]]s. This sword is also used by higher level Knights to fight creatures immune to [[Physical Damage]], like [[Ghost]]s. Provides a small amount of red light. The graphic for the Fire Sword is an edit of the old [[Rapier]] sprite.
 {{JSpoiler|
 * Can be obtained in the [[Orc Fortress Quest]].
 * 3 Fire Swords can be traded for a [[Magic Sulphur]] with [[Haroun]] or [[Yaman]].
 }}
-| history        = Before [[Updates/7.2|Update 7.2]] the Fire Sword was the best easy-obtainable one handed sword on all [[Game World]]s but [[Antica]]. It was possible to inflict two rounds of damage at a time because of its weight.
+| history       = Before [[Updates/7.2|Update 7.2]] the Fire Sword was the best easy-obtainable one handed sword on all [[Game World]]s but [[Antica]]. It was possible to inflict two rounds of damage at a time because of its weight.
 
 == Earlier ways of obtaining ==
 [[Dragon]]s used to drop these [[sword]]s. Long ago they were also obtainable from a [[quest]] [[A Sweaty Cyclops]] was part of.

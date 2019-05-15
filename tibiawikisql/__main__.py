@@ -25,7 +25,6 @@ import requests
 
 from tibiawikisql import WikiClient, __version__, models, schema
 from tibiawikisql.models import abc
-from tibiawikisql.models.charm import charms
 from tibiawikisql.models.npc import rashid_positions
 from tibiawikisql.utils import parse_loot_statistics, parse_min_max
 
@@ -69,7 +68,7 @@ categories = {
     "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
     "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
     "house": Category("Player-Ownable Buildings", models.House, no_images=True),
-    "charm": Category(None, models.Charm, extension=".png", no_title=True),
+    "charm": Category("Charms", models.Charm, extension=".png"),
     "worlds": Category("Gameworlds", models.World, no_images=True, include_deprecated=True),
     "mounts": Category("Mounts", models.Mount),
 }
@@ -120,8 +119,6 @@ def generate(skip_images, db_name):
 
     for position in rashid_positions:
         position.insert(conn)
-    for charm in charms:
-        charm.insert(conn)
 
     c = conn.cursor()
     try:

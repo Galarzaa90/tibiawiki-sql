@@ -18,9 +18,10 @@ from typing import List, Optional
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
-from tibiawikisql.utils import clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max
+from tibiawikisql.utils import clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max, parse_sounds
 
 creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
+
 
 KILLS = {
     "Harmless": 25,
@@ -86,7 +87,7 @@ def parse_monster_walks(value):
     Matches the values against a regex to filter typos or bad data on the wiki.
     Element names followed by any character that is not a comma will be considered unknown and will not be returned.
 
-    Examples\:
+    Examples:
         - ``Poison?, fire`` will return ``fire``.
         - ``Poison?, fire.`` will return neither.
         - ``Poison, earth, fire?, [[ice]]`` will return ``poison,earth``.
@@ -155,6 +156,8 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         Whether the creature can be illusioned into using `Creature Illusion`.
     pushable: :class:`bool`
         Whether the creature can be pushed or not.
+    push_objects: :class:`bool`
+        Whether the creature can push objects or not.
     sees_invisible: :class:`bool`
         Whether the creature can see invisible players or not.
     paralysable: :class:`bool`
@@ -210,6 +213,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "convince": ("convince_cost", parse_integer),
         "illusionable": ("illusionable", lambda x: parse_boolean(x, None)),
         "pushable": ("pushable", lambda x: parse_boolean(x, None)),
+        "pushobjects": ("push_objects", lambda x: parse_boolean(x, None)),
         "senseinvis": ("sees_invisible", lambda x: parse_boolean(x, None)),
         "paraimmune": ("paralysable", lambda x: parse_boolean(x, None, True)),
         "isboss": ("boss", parse_boolean),
@@ -228,12 +232,48 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "implemented": ("version", str.strip)
     }
     _pattern = re.compile(r"Infobox[\s_]Creature")
-    __slots__ = ("article_id", "title", "timestamp", "raw_attribute", "article", "name", "class", "type",
-                 "bestiary_level", "bestiary_class", "bestiary_occurrence", "hitpoints", "experience", "armor", "speed",
-                 "max_damage", "summon_cost", "convince_cost", "illusionable", "pushable", "sees_invisible",
-                 "paralysable", "boss", "modifier_physical", "modifier_earth", "modifier_fire", "modifier_energy",
-                 "modifier_ice", "modifier_death", "modifier_holy", "modifier_hpdrain", "modifier_drown", "abilities",
-                 "walks_through", "walks_around", "version", "image", "loot")
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "raw_attribute",
+        "article",
+        "name",
+        "class",
+        "type",
+        "bestiary_level",
+        "bestiary_class",
+        "bestiary_occurrence",
+        "hitpoints",
+        "experience",
+        "armor",
+        "speed",
+        "max_damage",
+        "summon_cost",
+        "convince_cost",
+        "illusionable",
+        "pushable",
+        "push_objects",
+        "sees_invisible",
+        "paralysable",
+        "boss",
+        "modifier_physical",
+        "modifier_earth",
+        "modifier_fire",
+        "modifier_energy",
+        "modifier_ice",
+        "modifier_death",
+        "modifier_holy",
+        "modifier_hpdrain",
+        "modifier_drown",
+        "abilities",
+        "walks_through",
+        "walks_around",
+        "version",
+        "image",
+        "loot",
+        "sounds",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -306,6 +346,10 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
                     _min, _max = parse_min_max(amounts)
                 loot_items.append(CreatureDrop(creature_id=creature.article_id, item_title=item, min=_min, max=_max))
             creature.loot = loot_items
+        if "sounds" in creature._raw_attributes:
+            sounds = parse_sounds(creature._raw_attributes["sounds"])
+            if sounds:
+                creature.sounds = [CreatureSound(creature_id=creature.article_id, content=sound) for sound in sounds]
         return creature
 
     def insert(self, c):
@@ -322,6 +366,8 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         super().insert(c)
         for attribute in getattr(self, "loot", []):
             attribute.insert(c)
+        for attribute in getattr(self, "sounds", []):
+            attribute.insert(c)
 
     @classmethod
     def get_by_field(cls, c, field, value, use_like=False):
@@ -329,6 +375,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         if creature is None:
             return None
         creature.loot = CreatureDrop.search(c, "creature_id", creature.article_id, sort_by="chance", ascending=False)
+        creature.sounds = CreatureSound.search(c, "creature_id", creature.article_id)
         return creature
 
 
@@ -398,5 +445,39 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
         return """SELECT %s.*, item.title as item_title, creature.title as creature_title FROM %s
                   LEFT JOIN creature ON creature.article_id = creature_id
                   LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
+
+
+class CreatureSound(abc.Row, table=schema.CreatureSound):
+    """
+    Represents a sound made by a creature.
+
+    Attributes
+    ----------
+    creature_id: :class:`int`
+        The article id of the creature that does this sound.
+    content: :class:`str`
+        The content of the sound.
+    """
+    __slots__ = ("creature_id", "content")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def __repr__(self):
+        attributes = []
+        for attr in self.__slots__:
+            try:
+                v = getattr(self, attr)
+                if v is None:
+                    continue
+                attributes.append("%s=%r" % (attr, v))
+            except AttributeError:
+                pass
+        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
+
+    def insert(self, c):
+        columns = dict(creature_id=self.creature_id, content=self.content)
+        self.table.insert(c, **columns)
+
 
 

@@ -26,15 +26,6 @@ class TestWikiApi(unittest.TestCase):
         db_achievement = models.Achievement.get_by_field(self.conn, "name", "demonic barkeeper", use_like=True)
         self.assertIsInstance(db_achievement, models.Achievement)
 
-    def testCharm(self):
-        for charm in models.charm.charms:
-            charm.insert(self.conn)
-
-        charm = models.Charm.get_by_field(self.conn, "name", "dodge", use_like=True)
-
-        self.assertIsInstance(charm, models.Charm)
-        self.assertIsInstance(charm.points, int)
-
     def testCreature(self):
         article = Article(1, "Demon", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_creature.txt"))
@@ -105,6 +96,41 @@ class TestWikiApi(unittest.TestCase):
         self.assertGreater(len(db_item.attributes), 0)
 
         db_item = models.Item.get_by_field(self.conn, "name", "fire sword", use_like=True)
+        self.assertIsInstance(db_item, models.Item)
+
+    def testItemResist(self):
+        article = Article(1, "Dream Shroud", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_item_resist.txt"))
+        item = models.Item.from_article(article)
+        self.assertIsInstance(item, models.Item)
+        self.assertTrue("energy%" in item.attributes_dict)
+        self.assertEqual(item.attributes_dict['magic'], "+3")
+
+        item.insert(self.conn)
+        db_item = models.Item.get_by_field(self.conn, "article_id", 1)
+
+        self.assertIsInstance(db_item, models.Item)
+        self.assertEqual(db_item.name, item.name)
+        self.assertGreater(len(db_item.attributes), 0)
+
+        db_item = models.Item.get_by_field(self.conn, "name", "dream shroud", use_like=True)
+        self.assertIsInstance(db_item, models.Item)
+
+    def testItemSounds(self):
+        article = Article(1, "Goromaphone", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_item_sounds.txt"))
+        item = models.Item.from_article(article)
+        self.assertIsInstance(item, models.Item)
+        self.assertEqual(len(item.sounds), 6)
+
+        item.insert(self.conn)
+        db_item = models.Item.get_by_field(self.conn, "article_id", 1)
+
+        self.assertIsInstance(db_item, models.Item)
+        self.assertEqual(db_item.name, item.name)
+
+        db_item = models.Item.get_by_field(self.conn, "name", "goromaphone", use_like=True)
+        self.assertEqual(len(item.sounds), len(db_item.sounds))
         self.assertIsInstance(db_item, models.Item)
 
     def testKey(self):
@@ -196,3 +222,19 @@ class TestWikiApi(unittest.TestCase):
 
         self.assertIsInstance(db_mount, models.Mount)
         self.assertEqual(db_mount.name, mount.name)
+
+    def testCharm(self):
+        article = Article(1, "Curse (Charm)", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_charm.txt"))
+        charm = models.Charm.from_article(article)
+        self.assertIsInstance(charm, models.Charm)
+        self.assertEqual(charm.cost, 900)
+        self.assertEqual(charm.type, "Offensive")
+        self.assertIsInstance(charm.effect, str)
+        self.assertEqual(charm.version, "11.50")
+
+        charm.insert(self.conn)
+        db_charm = models.Charm.get_by_field(self.conn, "article_id", 1)
+
+        self.assertIsInstance(db_charm, models.Charm)
+        self.assertEqual(db_charm.name, charm.name)

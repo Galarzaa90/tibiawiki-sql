@@ -16,7 +16,7 @@ import re
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
-from tibiawikisql.utils import parse_boolean, parse_integer, clean_links
+from tibiawikisql.utils import parse_boolean, parse_integer, clean_links, client_color_to_rgb
 
 
 def remove_mount(name):
@@ -48,7 +48,7 @@ class Mount(abc.Row, abc.Parseable, table=schema.Mount):
     achievement: :class:`str`, optional
         The achievement obtained for obtaining this mount.
     light_color: :class:`int`, optional.
-        The color of the light emitted by this mount, if any.
+        The color of the light emitted by this mount in RGB, if any.
     light_radius: :class:`int`
         The radius of the light emitted by this mount, if any.
     version: :class:`str`
@@ -63,7 +63,7 @@ class Mount(abc.Row, abc.Parseable, table=schema.Mount):
         "bought": ("buyable", parse_boolean),
         "price": ("price", parse_integer),
         "achievement": ("achievement", str.strip),
-        "lightcolor": ("light_color", int),
+        "lightcolor": ("light_color", lambda x: client_color_to_rgb(parse_integer(x))),
         "lightradius": ("light_radius", int),
         "implemented": ("version", str.strip),
 

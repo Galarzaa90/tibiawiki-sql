@@ -41,7 +41,7 @@ coverage:
     paths:
       - htmlcov/
 
-databse:
+database:
   stage: deploy
   script:
     - python setup.py install
@@ -52,7 +52,6 @@ databse:
   artifacts:
     paths:
     - tibiawiki.db
-  when: manual
 
 
 pages:
