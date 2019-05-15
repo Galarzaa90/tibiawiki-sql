@@ -2,39 +2,39 @@ __NOWYSIWYG__
 
 {{Loot2
 |version=10.37
-|kills=32045
+|kills=33023
 |name=Demon
 |Empty, times:99
-|Gold Coin, times:31859, amount:1-200, total:1603957
-|Platinum Coin, times:31857, amount:1-8, total:137370
-|Great Mana Potion, times:8025, amount:1-3, total:16057
-|Great Spirit Potion, times:7969, amount:1-3, total:15866
-|Demon Horn, times:6444, amount:1, total:6444
-|Demonic Essence, times:6338
-|Ultimate Health Potion, times:6327, amount:1-3, total:12683
-|Fire Mushroom, times:6316, amount:1-6, total:22072
-|Assassin Star, times:4936, amount:1-10, total:27234
-|Small Topaz, times:3276, amount:1-5, total:9752
-|Small Ruby, times:3224, amount:1-5, total:9512
-|Small Emerald, times:3140, amount:1-5, total:9401
-|Small Amethyst, times:3128, amount:1-5, total:9517
-|Fire Axe, times:1291, amount:1, total:1291
-|Talon, times:1088, amount:1, total:1088
-|Red Gem, times:948, amount:1, total:948
-|Orb, times:933, amount:1, total:933
-|Ring of Healing, times:850, amount:1, total:850
-|Might Ring, times:798, amount:1, total:798
-|Stealth Ring, times:749, amount:1, total:749
-|Giant Sword, times:634, amount:1, total:634
-|Ice Rapier, times:605, amount:1, total:605
-|Golden Sickle, times:443, amount:1, total:443
-|Purple Tome, times:397, amount:1, total:397
-|Devil Helmet, times:396, amount:1, total:396
-|Gold Ring, times:333, amount:1, total:333
-|Demon Shield, times:244, amount:1, total:244
-|Platinum Amulet, times:228, amount:1, total:228
-|Mastermind Shield, times:153, amount:1, total:153
-|Golden Legs, times:126
+|Gold Coin, times:32837, amount:1-200, total:1652569
+|Platinum Coin, times:32835, amount:1-8, total:141546
+|Great Mana Potion, times:8284, amount:1-3, total:16598
+|Great Spirit Potion, times:8210, amount:1-3, total:16338
+|Demon Horn, times:6664, amount:1, total:6664
+|Demonic Essence, times:6547
+|Ultimate Health Potion, times:6530, amount:1-3, total:13078
+|Fire Mushroom, times:6495, amount:1-6, total:22754
+|Assassin Star, times:5082, amount:1-10, total:28062
+|Small Topaz, times:3370, amount:1-5, total:10016
+|Small Ruby, times:3322, amount:1-5, total:9805
+|Small Emerald, times:3233, amount:1-5, total:9694
+|Small Amethyst, times:3218, amount:1-5, total:9768
+|Fire Axe, times:1327, amount:1, total:1327
+|Talon, times:1119, amount:1, total:1119
+|Red Gem, times:973, amount:1, total:973
+|Orb, times:967, amount:1, total:967
+|Ring of Healing, times:871, amount:1, total:871
+|Might Ring, times:818, amount:1, total:818
+|Stealth Ring, times:784, amount:1, total:784
+|Giant Sword, times:651, amount:1, total:651
+|Ice Rapier, times:621, amount:1, total:621
+|Golden Sickle, times:456, amount:1, total:456
+|Purple Tome, times:409, amount:1, total:409
+|Devil Helmet, times:402, amount:1, total:402
+|Gold Ring, times:341, amount:1, total:341
+|Demon Shield, times:252, amount:1, total:252
+|Platinum Amulet, times:234, amount:1, total:234
+|Mastermind Shield, times:156, amount:1, total:156
+|Golden Legs, times:132
 |Demon Trophy, times:29, amount:1, total:29
 |Magic Plate Armor, times:26, amount:1, total:26
 |Small Stone, times:21, amount:1-3, total:38

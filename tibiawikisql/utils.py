@@ -25,6 +25,7 @@ file_pattern = re.compile(r'\[\[(?:File|Image):[^\]]+\]\]')
 links_pattern = re.compile(r'\[\[([^]]+)\]\]')
 external_links_pattern = re.compile(r'\[[^]]+\]')
 no_wiki_pattern = re.compile(r'<nowiki>([^<]+)</nowiki>')
+comments_pattern = re.compile(r'<!--.*-->', re.DOTALL | re.MULTILINE)
 
 sounds_template = re.compile(r"{{Sound List([^}]+)}}")
 sound_pattern = re.compile(r"\|([^|}]+)")
@@ -44,8 +45,6 @@ def clean_links(content):
     :class:`str`:
         The clean string, with no links.
     """
-    if content is None:
-        return None
     # Images
     content = file_pattern.sub(' ', content)
     # Named links
@@ -58,6 +57,8 @@ def clean_links(content):
     content = content.replace('  ', ' ')
     # No wiki
     content = no_wiki_pattern.sub(r'\g<1>', content)
+    # Comments
+    content = comments_pattern.sub('', content)
     return content.strip()
 
 
@@ -114,7 +115,7 @@ def parse_boolean(value: str, default=False, invert=False):
         return default
 
 
-def parse_float(value, default=0):
+def parse_float(value, default=0.0):
     """
     From a string, parses a floating value.
     Parameters
@@ -129,8 +130,6 @@ def parse_float(value, default=0):
     :class:`float`
         The floating number found, or the default value provided.
     """
-    if value is None:
-        return default
     match = float_pattern.search(value)
     if match:
         return float(match.group(0))
@@ -154,8 +153,6 @@ def parse_integer(value, default=0):
     :class:`int`:
         The numeric value found, or the default value provided.
     """
-    if value is None:
-        return default
     match = int_pattern.search(value)
     if match:
         return int(match.group(0))
@@ -180,7 +177,7 @@ def parse_loot_statistics(value):
     if match:
         return int(match.group(1)), loot_stats_pattern.findall(value)
     else:
-        return 0, None
+        return 0, []
 
 
 def parse_min_max(value):
@@ -210,5 +207,5 @@ def parse_sounds(value):
     if m:
         sounds = sound_pattern.findall(m.group(1))
         return sounds
-    return None
+    return []
 

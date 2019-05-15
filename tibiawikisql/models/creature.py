@@ -375,6 +375,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         if creature is None:
             return None
         creature.loot = CreatureDrop.search(c, "creature_id", creature.article_id, sort_by="chance", ascending=False)
+        creature.sounds = CreatureSound.search(c, "creature_id", creature.article_id)
         return creature
 
 
