@@ -5,7 +5,7 @@ Changelog
 
 .. v3.0.0
 
-3.0.0 (Unreleased)
+3.0.0 (2019-05-15)
 ==================
 - Charms are now read from their TibiaWiki articles instead of a static json file.
 - ``Charm`` class and ``charm`` table changes:

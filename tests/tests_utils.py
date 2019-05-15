@@ -51,3 +51,10 @@ class TestWikiApi(unittest.TestCase):
         kills, loot_statistics = parse_loot_statistics("Something else")
         self.assertEqual(kills, 0)
         self.assertFalse(loot_statistics)
+
+    def testClientLightToRgb(self):
+        self.assertEqual(client_color_to_rgb(-1), 0)
+        self.assertEqual(client_color_to_rgb(0), 0)
+        self.assertEqual(client_color_to_rgb(3), 0x99)
+        self.assertEqual(client_color_to_rgb(215), 0xffffff)
+        self.assertEqual(client_color_to_rgb(216), 0)

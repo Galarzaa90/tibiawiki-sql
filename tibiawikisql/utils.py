@@ -203,9 +203,26 @@ def parse_min_max(value):
 
 
 def parse_sounds(value):
+    """Parses a list of sounds, using Template:Sound_List.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        A string containing the list of sounds.
+
+    Returns
+    -------
+    list:
+        A list of sounds."""
     m = sounds_template.search(value)
     if m:
         sounds = sound_pattern.findall(m.group(1))
         return sounds
     return []
 
+
+def client_color_to_rgb(value: int):
+    """"""
+    if value < 0 or value > 215:
+        return 0
+    return ((value // 36 * 0x33) << 16) + ((value // 6 % 6 * 0x33) << 8) + ((value % 6 * 0x33) & 0xFF)

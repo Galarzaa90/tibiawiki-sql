@@ -19,7 +19,7 @@ from tibiawikisql.models import abc
 from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
 from tibiawikisql.models.quest import QuestReward
-from tibiawikisql.utils import clean_links, parse_boolean, parse_float, parse_integer, parse_sounds
+from tibiawikisql.utils import clean_links, parse_boolean, parse_float, parse_integer, parse_sounds, client_color_to_rgb
 
 
 class Item(abc.Row, abc.Parseable, table=schema.Item):
@@ -56,7 +56,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     flavor_text: :class:`str`
         The extra text that is displayed when some items are looked at.
     light_color: :class:`int`, optional.
-        The color of the light emitted by this item, if any.
+        The color of the light emitted by this item in RGB, if any.
     light_radius: :class:`int`
         The radius of the light emitted by this item, if any.
     client_id: :class:`int`
@@ -83,13 +83,14 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "actualname": ("name", str.strip),
         "marketable": ("marketable", parse_boolean),
         "stackable": ("stackable", parse_boolean),
+        "pickupable": ("pickupable", parse_boolean),
         "weight": ("weight", parse_float),
         "npcvalue": ("value_sell", parse_integer),
         "npcprice": ("value_buy", parse_integer),
         "flavortext": ("flavor_text", str.strip),
         "itemclass": ("class", str.strip),
         "primarytype": ("type", str.strip),
-        "lightcolor": ("light_color", parse_integer),
+        "lightcolor": ("light_color", lambda x: client_color_to_rgb(parse_integer(x))),
         "lightradius": ("light_radius", parse_integer),
         "implemented": ("version", str.strip),
         "itemid": ("client_id", parse_integer)
