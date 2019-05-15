@@ -60,6 +60,7 @@ class Creature(Table):
     convince_cost = Column(Integer)
     illusionable = Column(Boolean)
     pushable = Column(Boolean)
+    push_objects = Column(Boolean)
     paralysable = Column(Boolean)
     sees_invisible = Column(Integer)
     boss = Column(Integer)
@@ -79,6 +80,10 @@ class Creature(Table):
     image = Column(Blob)
     timestamp = Column(Integer)
 
+
+class CreatureSound(Table, table_name="creature_sound"):
+    creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"))
+    content = Column(Integer)
 
 class Item(Table):
     article_id = Column(Integer, primary_key=True)
