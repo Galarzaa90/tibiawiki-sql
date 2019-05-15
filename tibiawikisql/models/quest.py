@@ -69,14 +69,35 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
     rewards: list of :class:`QuestReward`
         Items rewarded in the quest.
     """
-    __slots__ = ("article_id", "title", "timestamp", "name", "location", "legend", "level_required",
-                 "level_recommended", "version", "dangers", "rewards")
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "name",
+        "location",
+        "rookgaard",
+        "type",
+        "quest_log",
+        "legend",
+        "level_required",
+        "level_recommended",
+        "active_time",
+        "estimated_time",
+        "version",
+        "dangers",
+        "rewards",
+    )
     _map = {
         "name": ("name", html.unescape),
         "location": ("location", clean_links),
+        "rookgaardquest": ("rookgaard", parse_boolean),
+        "type": ("type", str.strip),
+        "log": ("quest_log", parse_boolean),
         "legend": ("legend", clean_links),
         "lvl": ("level_required", parse_integer),
         "lvlrec": ("level_recommended", parse_integer),
+        "time": ("active_time", str.strip),
+        "timealloc": ("estimated_time", str.strip),
         "premium": ("premium", parse_boolean),
         "implemented": ("version", str.strip),
     }
