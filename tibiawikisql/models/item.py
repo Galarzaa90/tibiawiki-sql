@@ -133,7 +133,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         """:class:`dict`, optional: A mapping of the attributes this item has."""
         if self.attributes:
             return {a.name: a.value for a in self.attributes}
-        return None
+        return dict()
 
     @classmethod
     def from_article(cls, article):

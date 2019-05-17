@@ -2,6 +2,12 @@
 Changelog
 =========
 
+.. v3.0.1
+
+3.0.1 (2019-05-16)
+==================
+- ``Item.attribute_dict`` returns empty dictionary instead of ``None`` if ``Item.attributes`` is empty.
+
 
 .. v3.0.0
 
