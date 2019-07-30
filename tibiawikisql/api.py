@@ -261,9 +261,12 @@ class WikiClient:
                 if "missing" in image:
                     yield None
                     continue
-                image = Image(image["pageid"], image["title"], timestamp=image["imageinfo"][0]["timestamp"],
-                              file_url=image["imageinfo"][0]["url"])
-                yield image
+                try:
+                    image = Image(image["pageid"], image["title"], timestamp=image["imageinfo"][0]["timestamp"],
+                                  file_url=image["imageinfo"][0]["url"])
+                    yield image
+                except KeyError:
+                    continue
 
     @classmethod
     def get_articles(cls, names):
