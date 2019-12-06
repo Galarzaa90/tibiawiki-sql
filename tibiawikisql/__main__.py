@@ -233,7 +233,7 @@ def save_images(conn, key, value):
     if failed:
         print(f"\33[31m\tCould not fetch {len(failed):,} images.\033[0m")
         print("\t-> \33[31m%s\033[0m" % '\033[0m,\33[31m'.join(failed))
-    print(f"\33[32m\tParsed {key} images in {dt:.2f} seconds."
+    print(f"\33[32m\tSaved {key} images in {dt:.2f} seconds."
           f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
 
 

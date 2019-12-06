@@ -17,44 +17,44 @@ from tibiawikisql.database import Blob, Boolean, Column, ForeignKey, Integer, Re
 
 class Achievement(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True)
-    name = Column(Text)
+    title = Column(Text, unique=True, no_case=True)
+    name = Column(Text, no_case=True, index=True)
     grade = Column(Integer)
     points = Column(Integer)
     description = Column(Text)
     spoiler = Column(Text)
     secret = Column(Boolean)
     premium = Column(Boolean)
-    version = Column(Text)
+    version = Column(Text, index=True)
     timestamp = Column(Integer)
 
 
 class Charm(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True)
-    name = Column(Text)
+    title = Column(Text, unique=True, no_case=True)
+    name = Column(Text, no_case=True, index=True)
     type = Column(Text)
     effect = Column(Text)
     cost = Column(Integer)
     image = Column(Blob)
-    version = Column(Text)
+    version = Column(Text, index=True)
     timestamp = Column(Integer)
 
 
 class Creature(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True)
-    name = Column(Text)
+    title = Column(Text, unique=True, no_case=True)
+    name = Column(Text, no_case=True, index=True)
     article = Column(Text)
     hitpoints = Column(Integer)
     experience = Column(Integer)
     armor = Column(Integer)
     speed = Column(Integer)
-    classz = Column(Text, name="class")
-    type = Column(Text)
-    bestiary_class = Column(Text)
-    bestiary_level = Column(Text)
-    bestiary_occurrence = Column(Text)
+    classz = Column(Text, name="class", index=True)
+    type = Column(Text, index=True)
+    bestiary_class = Column(Text, index=True)
+    bestiary_level = Column(Text, index=True)
+    bestiary_occurrence = Column(Text, index=True)
     max_damage = Column(Integer)
     summon_cost = Column(Integer)
     convince_cost = Column(Integer)
@@ -76,20 +76,20 @@ class Creature(Table):
     abilities = Column(Text)
     walks_through = Column(Text)
     walks_around = Column(Text)
-    version = Column(Text)
+    version = Column(Text, index=True)
     image = Column(Blob)
     timestamp = Column(Integer)
 
 
 class CreatureSound(Table, table_name="creature_sound"):
-    creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"))
+    creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
     content = Column(Text)
 
 
 class Item(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True)
-    name = Column(Text)
+    title = Column(Text, unique=True, no_case=True)
+    name = Column(Text, no_case=True, index=True)
     article = Column(Text)
     marketable = Column(Boolean, default=False)
     stackable = Column(Boolean, default=False)
@@ -97,33 +97,33 @@ class Item(Table):
     value_sell = Column(Integer)
     value_buy = Column(Integer)
     weight = Column(Real)
-    classz = Column(Text, name="class")
-    type = Column(Text)
+    classz = Column(Text, name="class", index=True)
+    type = Column(Text, index=True)
     flavor_text = Column(Text)
     light_color = Column(Integer)
     light_radius = Column(Integer)
-    version = Column(Text)
+    version = Column(Text, index=True)
     client_id = Column(Integer)
     image = Column(Blob)
     timestamp = Column(Integer)
 
 
 class ItemSound(Table, table_name="item_sound"):
-    item_id = Column(ForeignKey(Integer, table="item", column="article_id"))
+    item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True)
     content = Column(Text)
 
 
 class CreatureDrop(Table, table_name="creature_drop"):
-    creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"))
-    item_id = Column(ForeignKey(Integer, table="item", column="article_id"))
+    creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
+    item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True)
     chance = Column(Real)
     min = Column(Integer)
     max = Column(Integer)
 
 
 class ItemAttribute(Table, table_name="item_attribute"):
-    item_id = Column(ForeignKey(Integer, "item", "article_id"))
-    name = Column(Text)
+    item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True)
+    name = Column(Text, index=True)
     value = Column(Text)
 
 
@@ -135,10 +135,10 @@ class DatabaseInfo(Table, table_name="database_info"):
 class House(Table):
     article_id = Column(Integer, primary_key=True)
     house_id = Column(Integer, unique=True)
-    title = Column(Text, unique=True)
-    name = Column(Text, unique=True)
-    city = Column(Text)
-    street = Column(Text)
+    title = Column(Text, unique=True, no_case=True)
+    name = Column(Text, unique=True, no_case=True)
+    city = Column(Text, index=True)
+    street = Column(Text, index=True)
     beds = Column(Integer)
     rent = Column(Integer)
     size = Column(Integer)
@@ -147,26 +147,26 @@ class House(Table):
     x = Column(Integer)
     y = Column(Integer)
     z = Column(Integer)
-    guildhall = Column(Integer)
-    version = Column(Text)
+    guildhall = Column(Integer, index=True)
+    version = Column(Text, index=True)
     timestamp = Column(Integer)
 
 
 class Imbuement(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True)
-    name = Column(Text, unique=True)
+    title = Column(Text, unique=True, index=True)
+    name = Column(Text, unique=True, index=True)
     tier = Column(Text)
     type = Column(Text)
     effect = Column(Text)
-    version = Column(Text)
+    version = Column(Text, index=True)
     image = Column(Blob)
     timestamp = Column(Integer)
 
 
 class ImbuementMaterial(Table, table_name="imbuement_material"):
-    imbuement_id = Column(ForeignKey(Integer, "imbuement", "article_id"))
-    item_id = Column(ForeignKey(Integer, "item", "article_id"))
+    imbuement_id = Column(ForeignKey(Integer, "imbuement", "article_id"), index=True)
+    item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True)
     amount = Column(Integer)
 
 
@@ -174,13 +174,13 @@ class ItemKey(Table, table_name="item_key"):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     number = Column(Integer, unique=True)
-    item_id = Column(ForeignKey(Integer, "item", "article_id"))
+    item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True)
     name = Column(Text)
     material = Column(Text)
     location = Column(Text)
     origin = Column(Text)
     notes = Column(Text)
-    version = Column(Text)
+    version = Column(Text, index=True)
     timestamp = Column(Integer)
 
 
@@ -192,12 +192,12 @@ class Map(Table):
 class Spell(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
-    name = Column(Text)
-    words = Column(Text)
+    name = Column(Text, no_case=True, index=True)
+    words = Column(Text, index=True)
     effect = Column(Text)
-    type = Column(Text)
-    classz = Column(Text, name="class")
-    element = Column(Text)
+    type = Column(Text, index=True)
+    classz = Column(Text, name="class", index=True)
+    element = Column(Text, index=True)
     level = Column(Integer)
     mana = Column(Integer)
     soul = Column(Integer, default=0)
@@ -214,14 +214,14 @@ class Spell(Table):
 
 class Npc(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True)
-    name = Column(Text)
+    title = Column(Text, unique=True, no_case=True)
+    name = Column(Text, no_case=True, index=True)
     race = Column(Text)
-    gender = Column(Text)
-    city = Column(Text)
+    gender = Column(Text, index=True)
+    city = Column(Text, index=True)
     location = Column(Text)
     job = Column(Text)
-    version = Column(Text)
+    version = Column(Text, index=True)
     x = Column(Integer)
     y = Column(Integer)
     z = Column(Integer)
@@ -230,29 +230,29 @@ class Npc(Table):
 
 
 class NpcBuying(Table, table_name="npc_offer_buy"):
-    npc_id = Column(ForeignKey(Integer, "npc", "article_id"))
-    item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
+    npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
+    item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False, index=True)
     value = Column(Integer, nullable=False)
     currency_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
 
 
 class NpcSelling(Table, table_name="npc_offer_sell"):
-    npc_id = Column(ForeignKey(Integer, "npc", "article_id"))
-    item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
+    npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
+    item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False, index=True)
     value = Column(Integer, nullable=False)
     currency_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
 
 
 class NpcDestination(Table, table_name="npc_destination"):
-    npc_id = Column(ForeignKey(Integer, "npc", "article_id"))
-    name = Column(Text)
+    npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
+    name = Column(Text, index=True)
     price = Column(Integer)
     notes = Column(Text)
 
 
 class NpcSpell(Table, table_name="npc_spell"):
-    npc_id = Column(ForeignKey(Integer, "npc", "article_id"))
-    spell_id = Column(ForeignKey(Integer, "spell", "article_id"))
+    npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
+    spell_id = Column(ForeignKey(Integer, "spell", "article_id"), index=True)
     knight = Column(Boolean, nullable=False, default=False)
     sorcerer = Column(Boolean, nullable=False, default=False)
     paladin = Column(Boolean, nullable=False, default=False)
@@ -261,11 +261,11 @@ class NpcSpell(Table, table_name="npc_spell"):
 
 class Quest(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text)
-    name = Column(Text)
+    title = Column(Text, no_case=True, unique=True)
+    name = Column(Text, index=True, no_case=True)
     location = Column(Text)
     rookgaard = Column(Boolean, default=False)
-    type = Column(Text, default="quest")
+    type = Column(Text, default="quest", index=True)
     quest_log = Column(Boolean, default=False)
     legend = Column(Text)
     level_required = Column(Integer)
@@ -273,18 +273,18 @@ class Quest(Table):
     active_time = Column(Text)
     estimated_time = Column(Text)
     premium = Column(Boolean)
-    version = Column(Text)
+    version = Column(Text, index=True)
     timestamp = Column(Integer)
 
 
 class QuestDanger(Table, table_name="quest_danger"):
-    quest_id = Column(ForeignKey(Integer, "quest", "article_id"))
-    creature_id = Column(ForeignKey(Integer, "creature", "article_id"), nullable=False)
+    quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True)
+    creature_id = Column(ForeignKey(Integer, "creature", "article_id"), nullable=False, index=True)
 
 
 class QuestReward(Table, table_name="quest_reward"):
-    quest_id = Column(ForeignKey(Integer, "quest", "article_id"))
-    item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
+    quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True)
+    item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False, index=True)
 
 
 class RashidPosition(Table, table_name="rashid_position"):
@@ -298,10 +298,10 @@ class RashidPosition(Table, table_name="rashid_position"):
 
 class World(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True)
-    name = Column(Text)
-    location = Column(Text)
-    pvp_type = Column(Text)
+    title = Column(Text, unique=True, no_case=True)
+    name = Column(Text, no_case=True, index=True)
+    location = Column(Text, index=True)
+    pvp_type = Column(Text, index=True)
     preview = Column(Boolean, default=False)
     experimental = Column(Boolean, default=False)
     online_since = Column(Text)
@@ -316,8 +316,8 @@ class World(Table):
 
 class Mount(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True)
-    name = Column(Text)
+    title = Column(Text, unique=True, no_case=True)
+    name = Column(Text, no_case=True, index=True)
     speed = Column(Integer)
     taming_method = Column(Text)
     buyable = Column(Boolean, default=False)
@@ -325,7 +325,7 @@ class Mount(Table):
     achievement = Column(Text)
     light_color = Column(Integer)
     light_radius = Column(Integer)
-    version = Column(Text)
+    version = Column(Text, index=True)
     image = Column(Blob)
     timestamp = Column(Integer)
 
@@ -340,4 +340,4 @@ def create_tables(conn):
     """
     for table in Table.all_tables():
         conn.execute(table.drop())
-        conn.execute(table.create_table())
+        conn.executescript(table.create_table())
