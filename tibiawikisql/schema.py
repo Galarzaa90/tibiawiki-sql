@@ -139,6 +139,7 @@ class House(Table):
     name = Column(Text, unique=True, no_case=True)
     city = Column(Text, index=True)
     street = Column(Text, index=True)
+    location = Column(Text, index=True)
     beds = Column(Integer)
     rent = Column(Integer)
     size = Column(Integer)

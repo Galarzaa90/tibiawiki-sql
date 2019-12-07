@@ -14,7 +14,7 @@
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
-from tibiawikisql.utils import convert_tibiawiki_position, parse_integer
+from tibiawikisql.utils import convert_tibiawiki_position, parse_integer, clean_links
 
 
 class House(abc.Row, abc.Parseable, table=schema.House):
@@ -39,6 +39,8 @@ class House(abc.Row, abc.Parseable, table=schema.House):
         The city where the house is located.
     street: :class:`str`
         The name of the street where the house is located.
+    location: :class:`str`
+        A brief description of where the house is.
     beds: :class:`int`
         The number of beds in the house.
     rent: :class:`int`
@@ -58,7 +60,7 @@ class House(abc.Row, abc.Parseable, table=schema.House):
     version: :class:`str`
         The client version where this creature was first implemented.
     """
-    __slots__ = ("article_id", "title", "timestamp", "house_id", "name", "guildhall", "city", "street", "beds", "rent",
+    __slots__ = ("article_id", "title", "timestamp", "house_id", "name", "location", "guildhall", "city", "street", "beds", "rent",
                  "size", "rooms", "floors", "x", "y", "z", "version")
     _map = {
         "houseid": ("house_id", parse_integer),
@@ -66,6 +68,7 @@ class House(abc.Row, abc.Parseable, table=schema.House):
         "type": ("guildhall", lambda x: x is not None and "guildhall" in x.lower()),
         "city": ("city", str.strip),
         "street": ("street", str.strip),
+        "location": ("location", clean_links),
         "beds": ("beds", lambda x: parse_integer(x, None)),
         "rent": ("rent", lambda x: parse_integer(x, None)),
         "size": ("size", lambda x: parse_integer(x, None)),
