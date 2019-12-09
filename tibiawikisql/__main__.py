@@ -59,18 +59,19 @@ class Category:
 
 
 categories = {
-    "achievements": Category("Achievements", models.Achievement, no_images=True),
-    "spells": Category("Spells", models.Spell),
-    "items": Category("Items", models.Item),
-    "creatures": Category("Creatures", models.Creature),
-    "keys": Category("Keys", models.Key, no_images=True),
-    "npcs": Category("NPCs", models.Npc),
-    "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
-    "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
-    "house": Category("Player-Ownable Buildings", models.House, no_images=True),
-    "charm": Category("Charms", models.Charm, extension=".png"),
-    "worlds": Category("Gameworlds", models.World, no_images=True, include_deprecated=True),
-    "mounts": Category("Mounts", models.Mount),
+    # "achievements": Category("Achievements", models.Achievement, no_images=True),
+    # "spells": Category("Spells", models.Spell),
+    # "items": Category("Items", models.Item),
+    # "creatures": Category("Creatures", models.Creature),
+    # "keys": Category("Keys", models.Key, no_images=True),
+    # "npcs": Category("NPCs", models.Npc),
+    # "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
+    # "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
+    # "house": Category("Player-Ownable Buildings", models.House, no_images=True),
+    # "charm": Category("Charms", models.Charm, extension=".png"),
+    "outfits": Category("Outfits", models.Outfit, no_images=True),
+    # "worlds": Category("Gameworlds", models.World, no_images=True, include_deprecated=True),
+    # "mounts": Category("Mounts", models.Mount),
 }
 
 
@@ -173,6 +174,7 @@ def generate(skip_images, db_name):
                 if value.no_images:
                     continue
                 save_images(conn, key, value)
+            save_outfit_images(conn)
             save_maps(conn)
     with conn:
         gen_time = datetime.datetime.utcnow()
@@ -235,6 +237,50 @@ def save_images(conn, key, value):
         print("\t-> \33[31m%s\033[0m" % '\033[0m,\33[31m'.join(failed))
     print(f"\33[32m\tSaved {key} images in {dt:.2f} seconds."
           f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
+
+
+def save_outfit_images(conn):
+    if "outfits" not in categories:
+        return
+    category = categories["outfits"]
+    table = category.model.table.__tablename__
+    results = conn.execute(f"SELECT article_id, name FROM {table}")
+    images = []
+    for article_id, name in results:
+        images.extend([
+            article_id, f"Outfit {name} Male.gif",
+            article_id, f"Outfit {name} Male Addon 1.gif",
+            article_id, f"Outfit {name} Male Addon 2.gif",
+            article_id, f"Outfit {name} Male Addon 3.gif",
+            article_id, f"Outfit {name} Female.gif",
+            article_id, f"Outfit {name} Female Addon 1.gif",
+            article_id, f"Outfit {name} Female Addon 2.gif",
+            article_id, f"Outfit {name} Female Addon 3.gif",
+        ])
+    titles = [image[1] for image in images]
+    generator = WikiClient.get_images_info(titles)
+    cache_count = 0
+    fetch_count = 0
+    failed = []
+    with progress_bar(generator, f"Fetching outfit images", len(titles), item_show_func=img_show) as bar:
+        for image in bar:
+            if image is None:
+                continue
+            try:
+                with open(f"images/{table}/{image.file_name}", "rb") as f:
+                    image_bytes = f.read()
+                cache_count += 1
+            except FileNotFoundError:
+                r = requests.get(image.file_url)
+                r.raise_for_status()
+                image_bytes = r.content
+                fetch_count += 1
+                with open(f"images/{table}/{image.file_name}", "wb") as f:
+                    f.write(image_bytes)
+            except requests.HTTPError:
+                failed.append(image.file_name)
+                continue
+            conn.execute(f"INSERT INTO outfit_image SET image = ? WHERE {column} = ?", (image_bytes, image.clean_name))
 
 
 def get_articles(category, data_store, key=None, include_deprecated=False):

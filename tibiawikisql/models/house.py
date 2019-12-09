@@ -42,7 +42,7 @@ class House(abc.Row, abc.Parseable, table=schema.House):
     location: :class:`str`
         A brief description of where the house is.
     beds: :class:`int`
-        The number of beds in the house.
+        The maximum number of beds the house can have.
     rent: :class:`int`
         The monthly rent of the house.
     size: :class:`int`
@@ -60,8 +60,27 @@ class House(abc.Row, abc.Parseable, table=schema.House):
     version: :class:`str`
         The client version where this creature was first implemented.
     """
-    __slots__ = ("article_id", "title", "timestamp", "house_id", "name", "location", "guildhall", "city", "street", "beds", "rent",
-                 "size", "rooms", "floors", "x", "y", "z", "version")
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "house_id",
+        "name",
+        "guildhall",
+        "city",
+        "street",
+        "location",
+        "beds",
+        "rent",
+        "size",
+        "rooms",
+        "floors",
+        "x",
+        "y",
+        "z",
+        "version",
+    )
+
     _map = {
         "houseid": ("house_id", parse_integer),
         "name": ("name", str.strip),

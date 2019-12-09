@@ -260,6 +260,28 @@ class NpcSpell(Table, table_name="npc_spell"):
     druid = Column(Boolean, nullable=False, default=False)
 
 
+class Outfit(Table):
+    article_id = Column(Integer, primary_key=True)
+    title = Column(Text, no_case=True, unique=True)
+    name = Column(Text, no_case=True, index=True)
+    type = Column(Text, index=True)
+    premium = Column(Boolean, nullable=False, default=False)
+    outfit = Column(Text)
+    addons = Column(Text)
+    bought = Column(Boolean, nullable=False, default=False)
+    tournament = Column(Boolean, nullable=False, default=False)
+    full_price = Column(Integer)
+    achievement = Column(Text)
+    version = Column(Text)
+    timestamp = Column(Integer)
+
+
+class OutfitImage(Table, table_name="outfit_image"):
+    outfit_id = Column(Integer, ForeignKey(Integer, "outfit", "article_id"), index=True)
+    name = Column(Text)
+    image = Column(Blob)
+
+
 class Quest(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, no_case=True, unique=True)
