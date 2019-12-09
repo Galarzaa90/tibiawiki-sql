@@ -59,19 +59,19 @@ class Category:
 
 
 categories = {
-    # "achievements": Category("Achievements", models.Achievement, no_images=True),
-    # "spells": Category("Spells", models.Spell),
-    # "items": Category("Items", models.Item),
-    # "creatures": Category("Creatures", models.Creature),
-    # "keys": Category("Keys", models.Key, no_images=True),
-    # "npcs": Category("NPCs", models.Npc),
-    # "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
-    # "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
-    # "house": Category("Player-Ownable Buildings", models.House, no_images=True),
-    # "charm": Category("Charms", models.Charm, extension=".png"),
+    "achievements": Category("Achievements", models.Achievement, no_images=True),
+    "spells": Category("Spells", models.Spell),
+    "items": Category("Items", models.Item),
+    "creatures": Category("Creatures", models.Creature),
+    "keys": Category("Keys", models.Key, no_images=True),
+    "npcs": Category("NPCs", models.Npc),
+    "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
+    "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
+    "house": Category("Player-Ownable Buildings", models.House, no_images=True),
+    "charm": Category("Charms", models.Charm, extension=".png"),
     "outfits": Category("Outfits", models.Outfit, no_images=True),
-    # "worlds": Category("Gameworlds", models.World, no_images=True, include_deprecated=True),
-    # "mounts": Category("Mounts", models.Mount),
+    "worlds": Category("Gameworlds", models.World, no_images=True, include_deprecated=True),
+    "mounts": Category("Mounts", models.Mount),
 }
 
 
@@ -244,24 +244,28 @@ def save_outfit_images(conn):
         return
     category = categories["outfits"]
     table = category.model.table.__tablename__
+    os.makedirs(f"images/{table}", exist_ok=True)
     results = conn.execute(f"SELECT article_id, name FROM {table}")
-    images = []
+    image_info = {}
+    titles = []
     for article_id, name in results:
-        images.extend([
-            article_id, f"Outfit {name} Male.gif",
-            article_id, f"Outfit {name} Male Addon 1.gif",
-            article_id, f"Outfit {name} Male Addon 2.gif",
-            article_id, f"Outfit {name} Male Addon 3.gif",
-            article_id, f"Outfit {name} Female.gif",
-            article_id, f"Outfit {name} Female Addon 1.gif",
-            article_id, f"Outfit {name} Female Addon 2.gif",
-            article_id, f"Outfit {name} Female Addon 3.gif",
-        ])
-    titles = [image[1] for image in images]
+        image_names = [
+            f"Outfit {name} Male.gif",
+            f"Outfit {name} Male Addon 1.gif",
+            f"Outfit {name} Male Addon 2.gif",
+            f"Outfit {name} Male Addon 3.gif",
+            f"Outfit {name} Female.gif",
+            f"Outfit {name} Female Addon 1.gif",
+            f"Outfit {name} Female Addon 2.gif",
+            f"Outfit {name} Female Addon 3.gif",
+        ]
+        image_info.update({name: article_id for name in image_names})
+        titles.extend(image_names)
     generator = WikiClient.get_images_info(titles)
     cache_count = 0
     fetch_count = 0
     failed = []
+    start = time.perf_counter()
     with progress_bar(generator, f"Fetching outfit images", len(titles), item_show_func=img_show) as bar:
         for image in bar:
             if image is None:
@@ -280,7 +284,14 @@ def save_outfit_images(conn):
             except requests.HTTPError:
                 failed.append(image.file_name)
                 continue
-            conn.execute(f"INSERT INTO outfit_image SET image = ? WHERE {column} = ?", (image_bytes, image.clean_name))
+            conn.execute(f"INSERT INTO outfit_image(outfit_id, name, image) VALUES(?, ?, ?)",
+                         (image_info[image.file_name], image.clean_name.replace("Outfit ", ""), image_bytes))
+    dt = (time.perf_counter() - start)
+    if failed:
+        print(f"\33[31m\tCould not fetch {len(failed):,} images.\033[0m")
+        print("\t-> \33[31m%s\033[0m" % '\033[0m,\33[31m'.join(failed))
+    print(f"\33[32m\tSaved outfit images in {dt:.2f} seconds."
+          f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
 
 
 def get_articles(category, data_store, key=None, include_deprecated=False):
