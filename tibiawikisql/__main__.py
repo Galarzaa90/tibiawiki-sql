@@ -248,19 +248,23 @@ def save_outfit_images(conn):
     results = conn.execute(f"SELECT article_id, name FROM {table}")
     image_info = {}
     titles = []
+    name_templates = [
+        "Outfit %s Male.gif",
+        "Outfit %s Male Addon 1.gif",
+        "Outfit %s Male Addon 2.gif",
+        "Outfit %s Male Addon 3.gif",
+        "Outfit %s Female.gif",
+        "Outfit %s Female Addon 1.gif",
+        "Outfit %s Female Addon 2.gif",
+        "Outfit %s Female Addon 3.gif",
+    ]
+    addon_sequence = (0, 1, 2, 3, 0, 1, 2, 3)
+    sex_sequence = ["Male"]*4 + ["Female"]*4
     for article_id, name in results:
-        image_names = [
-            f"Outfit {name} Male.gif",
-            f"Outfit {name} Male Addon 1.gif",
-            f"Outfit {name} Male Addon 2.gif",
-            f"Outfit {name} Male Addon 3.gif",
-            f"Outfit {name} Female.gif",
-            f"Outfit {name} Female Addon 1.gif",
-            f"Outfit {name} Female Addon 2.gif",
-            f"Outfit {name} Female Addon 3.gif",
-        ]
-        image_info.update({name: article_id for name in image_names})
-        titles.extend(image_names)
+        for i, image_name in enumerate(name_templates):
+            file_name = image_name % name
+            image_info[file_name] = [article_id, addon_sequence[i], sex_sequence[i]]
+            titles.append(file_name)
     generator = WikiClient.get_images_info(titles)
     cache_count = 0
     fetch_count = 0
@@ -284,8 +288,9 @@ def save_outfit_images(conn):
             except requests.HTTPError:
                 failed.append(image.file_name)
                 continue
-            conn.execute(f"INSERT INTO outfit_image(outfit_id, name, image) VALUES(?, ?, ?)",
-                         (image_info[image.file_name], image.clean_name.replace("Outfit ", ""), image_bytes))
+            article_id, addons, sex = image_info[image.file_name]
+            conn.execute(f"INSERT INTO outfit_image(outfit_id, addon, sex, image) VALUES(?, ?, ?, ?)",
+                         (article_id, addons, sex, image_bytes))
     dt = (time.perf_counter() - start)
     if failed:
         print(f"\33[31m\tCould not fetch {len(failed):,} images.\033[0m")

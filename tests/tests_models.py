@@ -238,3 +238,17 @@ class TestWikiApi(unittest.TestCase):
 
         self.assertIsInstance(db_charm, models.Charm)
         self.assertEqual(db_charm.name, charm.name)
+
+    def testOutfit(self):
+        article = Article(1, "Barbarian Outfits", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_outfit.txt"))
+        outfit = models.Outfit.from_article(article)
+        self.assertIsInstance(outfit, models.Outfit)
+        self.assertTrue(outfit.premium)
+        self.assertEqual(outfit.achievement, "Brutal Politeness")
+
+        outfit.insert(self.conn)
+        db_outfit = models.Outfit.get_by_field(self.conn, "article_id", 1)
+
+        self.assertIsInstance(db_outfit, models.Outfit)
+        self.assertEqual(db_outfit.name, outfit.name)

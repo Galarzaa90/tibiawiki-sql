@@ -139,6 +139,13 @@ class OutfitQuest(abc.Row, table=schema.OutfitQuest):
     @classmethod
     def _get_base_query(cls):
         return """SELECT %s.*, quest.title as quest_title outfit.title as outfit_title FROM %s
-                      LEFT JOIN quest ON quest.article_id = quest_id
-                      LEFT JOIN outfit ON outfit.article_id = outfit_id
-                      """ % (cls.table.__tablename__, cls.table.__tablename__)
+              LEFT JOIN quest ON quest.article_id = quest_id
+              LEFT JOIN outfit ON outfit.article_id = outfit_id
+              """ % (cls.table.__tablename__, cls.table.__tablename__)
+
+class OutfitImage(abc.Row, table=schema.OutfitImage):
+    __slots__ = ("outfit_id", "sex", "addon")
+
+    @classmethod
+    def _get_base_query(cls):
+        return """SELECT * FROM %s""" % (cls.table.__tablename__)

@@ -276,7 +276,8 @@ class Outfit(Table):
 
 class OutfitImage(Table, table_name="outfit_image"):
     outfit_id = Column(ForeignKey(Integer, "outfit", "article_id"), index=True)
-    name = Column(Text)
+    sex = Column(Text)
+    addon = Column(Integer)
     image = Column(Blob)
 
 
