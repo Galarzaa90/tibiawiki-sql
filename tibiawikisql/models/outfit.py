@@ -17,16 +17,37 @@ import sqlite3
 from tibiawikisql import schema
 from tibiawikisql.models import abc
 from tibiawikisql.models.quest import parse_links
-from tibiawikisql.utils import convert_tibiawiki_position, parse_integer, clean_links, parse_boolean
+from tibiawikisql.utils import parse_integer, parse_boolean
 
 
 class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
     """
-    Represents a house or guildhall.
+    Represents an outfit.
 
     Attributes
     ----------
-
+    article_id: :class:`int`
+        The id of the containing article.
+    title: :class:`str`
+        The title of the containing article.
+    timestamp: :class:`int`
+        The last time the containing article was edited.
+    name: :class:`str`
+        The name of the outfit.
+    type: :class:`str`
+        The type of outfit.
+    premium: :class:`bool`
+        Whether the outfit requires a premium account or not.
+    bought: :class:`bool`
+        Whether the outfit can be bought from the Store or not.
+    tournament: :class:`bool`
+        Whether the outfit can be bought with Tournament coins or not.
+    full_price: :class:`int`
+        The full price of this outfit in the Tibia Store.
+    achievement: :class:`str`
+        The achievement obtained for acquiring this full outfit.
+    version: :class:`str`
+        The client version where this outfit was first implemented.
     """
     __slots__ = (
         "article_id",

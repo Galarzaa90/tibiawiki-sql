@@ -47,7 +47,7 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
     Attributes
     ----------
     article_id: :class:`int`
-        The id of the  containing article.
+        The id of the containing article.
     title: :class:`str`
         The title of the containing article.
     timestamp: :class:`int`
@@ -73,7 +73,7 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
     estimated_time: :class:`str`:
         Estimated time to finish this quest.
     version: :class:`str`
-        The client version where this item was first implemented.
+        The client version where this outfit was first implemented.
     dangers: list of :class:`QuestDanger`
         Creatures found in the quest.
     rewards: list of :class:`QuestReward`
