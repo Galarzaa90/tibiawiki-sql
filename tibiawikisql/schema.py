@@ -298,6 +298,11 @@ class Quest(Table):
     timestamp = Column(Integer)
 
 
+class OutfitQuest(Table, table_name="outfit_quest"):
+    outfit_id = Column(ForeignKey(Integer, "outfit", "article_id"), index=True, nullable=False)
+    quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True, nullable=False)
+
+
 class QuestDanger(Table, table_name="quest_danger"):
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True)
     creature_id = Column(ForeignKey(Integer, "creature", "article_id"), nullable=False, index=True)
