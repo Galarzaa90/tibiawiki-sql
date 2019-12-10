@@ -18,7 +18,8 @@ from typing import List, Optional
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
-from tibiawikisql.utils import clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max, parse_sounds
+from tibiawikisql.utils import clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max, parse_sounds, \
+    clean_question_mark
 
 creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
 
@@ -202,7 +203,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
     _map = {
         "article": ("article", str.strip),
         "name": ("name", str.strip),
-        "plural": ("plural", str.strip),
+        "plural": ("plural", clean_question_mark),
         "actualname": ("name", str.strip),
         "creatureclass": ("class", str.strip),
         "bestiaryclass": ("bestiary_class", str.strip),

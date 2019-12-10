@@ -31,6 +31,26 @@ sounds_template = re.compile(r"{{Sound List([^}]+)}}")
 sound_pattern = re.compile(r"\|([^|}]+)")
 
 
+def clean_question_mark(content):
+    """Removes question mark strings, turning them to nulls.
+
+    Parameters
+    ----------
+    content: :class:`str`
+        A string to clean.
+
+    Returns
+    -------
+    :class:`str`
+        The string, or None if it was a question mark.
+    """
+    if not content:
+        return None
+    if "?" in content:
+        return None
+    return content.strip()
+
+
 def clean_links(content):
     """
     Removes any links from the string, changing them for their plan version.
@@ -222,7 +242,17 @@ def parse_sounds(value):
 
 
 def client_color_to_rgb(value: int):
-    """"""
+    """Converts a color number from Tibia's client data to a RGB value.
+
+    Parameters
+    ----------
+    value: :class:`int`
+        A numeric value representing a color.
+
+    Returns
+    -------
+    int:
+        The hexadecimal color represented."""
     if value < 0 or value > 215:
         return 0
     return ((value // 36 * 0x33) << 16) + ((value // 6 % 6 * 0x33) << 8) + ((value % 6 * 0x33) & 0xFF)

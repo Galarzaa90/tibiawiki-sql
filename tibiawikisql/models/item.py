@@ -19,7 +19,8 @@ from tibiawikisql.models import abc
 from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
 from tibiawikisql.models.quest import QuestReward
-from tibiawikisql.utils import clean_links, parse_boolean, parse_float, parse_integer, parse_sounds, client_color_to_rgb
+from tibiawikisql.utils import clean_links, parse_boolean, parse_float, parse_integer, parse_sounds, \
+    client_color_to_rgb, clean_question_mark
 
 
 class Item(abc.Row, abc.Parseable, table=schema.Item):
@@ -85,7 +86,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     _map = {
         "article": ("article", str.strip),
         "actualname": ("name", str.strip),
-        "plural": ("plural", str.strip),
+        "plural": ("plural", clean_question_mark),
         "marketable": ("marketable", parse_boolean),
         "stackable": ("stackable", parse_boolean),
         "pickupable": ("pickupable", parse_boolean),
