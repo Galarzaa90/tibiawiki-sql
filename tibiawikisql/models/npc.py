@@ -138,7 +138,7 @@ def replace_ilinks(value):
     :class:`str`
         The string with regular links instead of ILink templates.
     """
-    return ilink_pattern.sub("[[\g<1>]]", value)
+    return ilink_pattern.sub(r"[[\g<1>]]", value)
 
 
 class Npc(abc.Row, abc.Parseable, table=schema.Npc):

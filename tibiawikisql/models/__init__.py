@@ -21,7 +21,7 @@ from tibiawikisql.models.imbuement import Imbuement, ImbuementMaterial
 from tibiawikisql.models.item import Item, ItemAttribute, Key
 from tibiawikisql.models.mount import Mount
 from tibiawikisql.models.npc import Npc, NpcBuyOffer, NpcDestination, NpcOffer, NpcSellOffer, NpcSpell, RashidPosition
-from tibiawikisql.models.outfit import Outfit
+from tibiawikisql.models.outfit import Outfit, OutfitImage, OutfitQuest
 from tibiawikisql.models.quest import Quest, QuestDanger, QuestReward
 from tibiawikisql.models.spell import Spell
 from tibiawikisql.models.world import World

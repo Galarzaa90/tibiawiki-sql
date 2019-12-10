@@ -48,6 +48,10 @@ class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
         The achievement obtained for acquiring this full outfit.
     version: :class:`str`
         The client version where this outfit was first implemented.
+    images: list of :class:`OutfitImage`
+        The outfit's images.
+    quests: list of :class:`OutfitQuest`
+        Quests that grant the outfit or its addons.
     """
     __slots__ = (
         "article_id",
@@ -62,6 +66,7 @@ class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
         "achievement",
         "version",
         "quests",
+        "images"
     )
 
     _map = {
@@ -91,8 +96,8 @@ class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
             outfit_quests = parse_links(outfit._raw_attributes["outfit"])
             for quest in outfit_quests:
                 outfit.quests.append(OutfitQuest(outfit_id=outfit.article_id, quest_title=quest.strip()))
-        if "addon" in outfit._raw_attributes:
-            addon_quests = parse_links(outfit._raw_attributes["addon"])
+        if "addons" in outfit._raw_attributes:
+            addon_quests = parse_links(outfit._raw_attributes["addons"])
             for quest in addon_quests:
                 if quest in outfit_quests:
                     continue
@@ -110,10 +115,24 @@ class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
         if outfit is None:
             return None
         outfit.quests = OutfitQuest.search(c, "outfit_id", outfit.article_id)
+        outfit.images = OutfitImage.search(c, "outfit_id", outfit.article_id)
         return outfit
 
 
 class OutfitQuest(abc.Row, table=schema.OutfitQuest):
+    """Represents a quest that grants an outfit or it's addon.
+
+    Attributes
+    -----------
+    outfit_id: :class:`int`
+        The article id of the outfit given.
+    outfit_title: :class:`str`
+        The title of the outfit given.
+    quest_id: :class:`int`
+        The article id of the quest that gives the outfit or its addons.
+    quest_title: :class:`str`
+        The title of the quest.
+    """
     __slots__ = ("outfit_id", "outfit_title", "quest_id", "quest_title",)
 
     def __init__(self, **kwargs):
@@ -138,14 +157,43 @@ class OutfitQuest(abc.Row, table=schema.OutfitQuest):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, quest.title as quest_title outfit.title as outfit_title FROM %s
+        return """SELECT %s.*, quest.title as quest_title, outfit.title as outfit_title FROM %s
               LEFT JOIN quest ON quest.article_id = quest_id
               LEFT JOIN outfit ON outfit.article_id = outfit_id
               """ % (cls.table.__tablename__, cls.table.__tablename__)
 
+
 class OutfitImage(abc.Row, table=schema.OutfitImage):
-    __slots__ = ("outfit_id", "sex", "addon")
+    """Represents an outfit image.
+
+    Attributes
+    ----------
+    outfit_id: :class:`int`
+        The article id of the outfit the image belongs to.
+    outfit_name: :class:`str`
+        The name of the outfit.
+    sex: :class:`str`
+        The sex the outfit is for.
+    addon: :class:`int`
+        The addons represented by the image.
+        0 for no addons, 1 for first addon, 2 for second addon and 3 for both addons.
+    image: :class:`bytes`
+        The outfit's image in bytes.
+    """
+    __slots__ = ("outfit_id", "sex", "addon", "outfit_name", "image")
+
+    def __init__(self, **kwargs):
+        self.outfit_id = kwargs.get("outfit_id")
+        self.sex = kwargs.get("sex")
+        self.addon = kwargs.get("addon")
+        self.outfit_name = kwargs.get("outfit_name")
+        self.image = kwargs.get("image")
+
+    def __repr__(self):
+        return "<%s outfit_id=%r outfit_name=%r sex=%r addon=%r>" \
+               % (self.__class__.__name__, self.outfit_id, self.outfit_name, self.sex, self.addon)
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT * FROM %s""" % (cls.table.__tablename__)
+        return """SELECT %s.*, outfit.name as outfit_name FROM %s 
+        LEFT JOIN outfit on outfit.article_id = outfit_id""" % (cls.table.__tablename__, cls.table.__tablename__)
