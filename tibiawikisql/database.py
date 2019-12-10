@@ -157,7 +157,7 @@ class Column:
         if not self.nullable:
             builder.append('NOT NULL')
 
-        if not self.no_case:
+        if self.no_case:
             builder.append('COLLATE NOCASE')
 
         return ' '.join(builder)
