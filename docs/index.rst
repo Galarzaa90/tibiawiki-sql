@@ -20,6 +20,10 @@ TibiaWikiSQL is a script that generates a SQLite database from TibiaWiki article
 
 This allows you to have all the data available at once, as well as take advantage of the features of a relational database.
 
+All information is gathered from TibiaWiki, click the image to visit and contribute to the project!
+
+.. image:: images/TibiaWiki.gif
+   :target: https://tibia.fandom.com
 
 * :ref:`genindex`
 * :ref:`modindex`

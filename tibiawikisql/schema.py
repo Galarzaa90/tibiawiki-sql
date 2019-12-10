@@ -302,6 +302,7 @@ class Quest(Table):
 class OutfitQuest(Table, table_name="outfit_quest"):
     outfit_id = Column(ForeignKey(Integer, "outfit", "article_id"), index=True, nullable=False)
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True, nullable=False)
+    type = Column(Text)
 
 
 class QuestDanger(Table, table_name="quest_danger"):

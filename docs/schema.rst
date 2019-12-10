@@ -54,6 +54,12 @@ Tables
 +-----------------------+-------------------------------------------------+
 | `npc_spell`_          | Contains all the spells NPCs teach.             |
 +-----------------------+-------------------------------------------------+
+| `outfit`_             | Contains information for all outfits.           |
++-----------------------+-------------------------------------------------+
+| `outfit_image`_       | Contains images for all outfits.                |
++-----------------------+-------------------------------------------------+
+| `outfit_quest`_       | Contains outfit and addon rewards for quests.   |
++-----------------------+-------------------------------------------------+
 | `quest`_              | Contains information for all quests.            |
 +-----------------------+-------------------------------------------------+
 | `quest_danger`_       | Contains creatures that can be found in a       |
@@ -662,6 +668,64 @@ npc_spell
 | paladin  | ``BOOLEAN`` | Whether this NPC teaches this spell to     |
 |          |             | paladins.                                  |
 +----------+-------------+--------------------------------------------+
+
+
+outfit
+~~~~~~
++-------------+-------------+------------------------------------------------------------+
+|   Column    |    Type     |                        Description                         |
++=============+=============+============================================================+
+| article_id  | ``INTEGER`` | The id of the article containing this outfit.              |
+|             | ``PRIMARY`` |                                                            |
++-------------+-------------+------------------------------------------------------------+
+| title       | ``TEXT``    | The title of the article containing the outfit.            |
++-------------+-------------+------------------------------------------------------------+
+| name        | ``TEXT``    | The name of the outfit.                                    |
++-------------+-------------+------------------------------------------------------------+
+| type        | ``TEXT``    | The type of outfit. Basic, Quest, Special, Premium.        |
++-------------+-------------+------------------------------------------------------------+
+| premium     | ``BOOLEAN`` | Whether this outfit is requires a premium account or not.  |
++-------------+-------------+------------------------------------------------------------+
+| bought      | ``BOOLEAN`` | Whether this outfit can be bought from the store.          |
++-------------+-------------+------------------------------------------------------------+
+| tournament  | ``BOOLEAN`` | Whether this outfit can be obtained with Tournament coins. |
++-------------+-------------+------------------------------------------------------------+
+| full_price  | ``INTEGER`` | The price of the full outfit in Tibia Coins.               |
++-------------+-------------+------------------------------------------------------------+
+| achievement | ``INTEGER`` | The achievement obtained by getting this full outfit.      |
++-------------+-------------+------------------------------------------------------------+
+| version     | ``TEXT``    | Client version where this outfit was implemented.          |
++-------------+-------------+------------------------------------------------------------+
+| timestamp   | ``INTEGER`` | Unix timestamp of the UTC time of                          |
+|             |             | the last edit made to this                                 |
+|             |             | article.                                                   |
++-------------+-------------+------------------------------------------------------------+
+
+outfit_image
+~~~~~~~~~~~~
++-----------+-------------+----------------------------------------+
+|  Column   |    Type     |              Description               |
++===========+=============+========================================+
+| outfit_id | ``INTEGER`` | Id of the outfit this image belongs to |
++-----------+-------------+----------------------------------------+
+| sex       | ``TEXT``    | The sex this outfit image is for.      |
++-----------+-------------+----------------------------------------+
+| addon     | ``TEXT``    | The addon used in the image.           |
++-----------+-------------+----------------------------------------+
+| image     | ``BLOB``    | The outfit's image's bytes.            |
++-----------+-------------+----------------------------------------+
+
+outfit_quest
+~~~~~~~~~~~~
++-----------+-------------+----------------------------------------------------+
+|  Column   |    Type     |                    Description                     |
++===========+=============+====================================================+
+| outfit_id | ``INTEGER`` | Id of the outfit this image belongs to             |
++-----------+-------------+----------------------------------------------------+
+| quest_id  | ``INTEGER`` | Id of the quest this image belongs to              |
++-----------+-------------+----------------------------------------------------+
+| type      | ``TEXT``    | Whether the quest is for the outfit or its addons. |
++-----------+-------------+----------------------------------------------------+
 
 quest
 ~~~~~

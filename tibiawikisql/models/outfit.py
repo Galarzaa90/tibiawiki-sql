@@ -35,7 +35,7 @@ class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
     name: :class:`str`
         The name of the outfit.
     type: :class:`str`
-        The type of outfit.
+        The type of outfit. Basic, Quest, Special, Premium.
     premium: :class:`bool`
         Whether the outfit requires a premium account or not.
     bought: :class:`bool`
@@ -91,17 +91,14 @@ class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
         if outfit is None:
             return outfit
         outfit.quests = []
-        outfit_quests = []
         if "outfit" in outfit._raw_attributes:
-            outfit_quests = parse_links(outfit._raw_attributes["outfit"])
-            for quest in outfit_quests:
-                outfit.quests.append(OutfitQuest(outfit_id=outfit.article_id, quest_title=quest.strip()))
+            quests = parse_links(outfit._raw_attributes["outfit"])
+            for quest in quests:
+                outfit.quests.append(OutfitQuest(outfit_id=outfit.article_id, quest_title=quest.strip(), type="outfit"))
         if "addons" in outfit._raw_attributes:
-            addon_quests = parse_links(outfit._raw_attributes["addons"])
-            for quest in addon_quests:
-                if quest in outfit_quests:
-                    continue
-                outfit.quests.append(OutfitQuest(outfit_id=outfit.article_id, quest_title=quest.strip()))
+            quests = parse_links(outfit._raw_attributes["addons"])
+            for quest in quests:
+                outfit.quests.append(OutfitQuest(outfit_id=outfit.article_id, quest_title=quest.strip(), type="addons"))
         return outfit
 
     def insert(self, c):
@@ -132,22 +129,33 @@ class OutfitQuest(abc.Row, table=schema.OutfitQuest):
         The article id of the quest that gives the outfit or its addons.
     quest_title: :class:`str`
         The title of the quest.
+    type: :class:`str`
+        Whether the quest is for the outfit or addons.
     """
-    __slots__ = ("outfit_id", "outfit_title", "quest_id", "quest_title",)
+    __slots__ = (
+        "outfit_id",
+        "outfit_title",
+        "quest_id",
+        "quest_title",
+        "type",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.quest_title = kwargs.get("quest_title")
         self.outfit_id = kwargs.get("outfit_id")
+        self.outfit_title = kwargs.get("outfit_title")
+        self.quest_id = kwargs.get("quest_id")
+        self.quest_title = kwargs.get("quest_title")
+        self.type = kwargs.get("type")
 
     def insert(self, c):
         if getattr(self, "item_id", None):
             super().insert(c)
             return
         try:
-            c.execute(f"""INSERT INTO {self.table.__tablename__}(outfit_id, quest_id)
-                          VALUES(?, (SELECT article_id FROM quest WHERE title = ?))""",
-                      (self.outfit_id, self.quest_title))
+            c.execute(f"""INSERT INTO {self.table.__tablename__}(outfit_id, quest_id, type)
+                          VALUES(?, (SELECT article_id FROM quest WHERE title = ?), ?)""",
+                      (self.outfit_id, self.quest_title, self.type))
         except sqlite3.IntegrityError:
             pass
 
@@ -180,9 +188,16 @@ class OutfitImage(abc.Row, table=schema.OutfitImage):
     image: :class:`bytes`
         The outfit's image in bytes.
     """
-    __slots__ = ("outfit_id", "sex", "addon", "outfit_name", "image")
+    __slots__ = (
+        "outfit_id",
+        "sex",
+        "addon",
+        "outfit_name",
+        "image",
+    )
 
     def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.outfit_id = kwargs.get("outfit_id")
         self.sex = kwargs.get("sex")
         self.addon = kwargs.get("addon")
