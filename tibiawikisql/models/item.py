@@ -144,6 +144,54 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
             return {a.name: a.value for a in self.attributes}
         return dict()
 
+    @property
+    def look_text(self):
+        """:class:`str`: Generates the item's look text."""
+        look_text = ["You see ", self.article or self.name[0] in ["a", "e", "i", "o", "u"], " %s" % self.name]
+        attributes = self.attributes_dict
+        self._get_attributes_look_text(attributes, look_text)
+        look_text.append(".")
+        if "level" in attributes:
+            vocation = attributes.get("vocation", "players")
+            look_text.append("It can only be wielded by %s of level %s or higher." % (vocation, attributes["level"]))
+        if self.weight:
+            look_text.append("It weights %.2f oz." % self.weight)
+        if self.flavor_text:
+            look_text.append(self.flavor_text)
+        return "".join(look_text)
+
+    @staticmethod
+    def _get_attributes_look_text(attributes, look_text):
+        attributes_rep = []
+        if "range" in attributes:
+            attributes_rep.append("Range: %s" % attributes["range"])
+        if "attack+" in attributes:
+            attributes_rep.append("Atk+%s" % attributes["attack+"])
+        if "hit%+" in attributes:
+            attributes_rep.append("Hit%%+%s" % attributes["hit%+"])
+        if "attack" in attributes:
+            attack = "Atk: %s" % attributes["attack"]
+            if "fire_attack" in attributes:
+                attack += " physical + %s fire" % attributes["fire_attack"]
+            if "ice_attack" in attributes:
+                attack += " physical + %s ice" % attributes["ice_attack"]
+            if "earth_attack" in attributes:
+                attack += " physical + %s earth" % attributes["earth_attack"]
+            if "energy_attack" in attributes:
+                attack += " physical + %s energy" % attributes["energy_attack"]
+            if "earth_attack" in attributes:
+                attack += " physical + %s earth" % attributes["earth_attack"]
+            attributes_rep.append(attack)
+        if "defense" in attributes:
+            defense = "Def: %s" % attributes["defense"]
+            if "defense_modifier" in attributes:
+                defense += " %s" % attributes["defense_modifier"]
+            attributes_rep.append(defense)
+        if "armor" in attributes:
+            attributes_rep.append("Arm:%s" % attributes["armor"])
+        if attributes_rep:
+            look_text.append(" (%s)" % ", ".join(attributes_rep))
+
     @classmethod
     def from_article(cls, article):
         item = super().from_article(article)
