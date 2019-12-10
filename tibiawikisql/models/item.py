@@ -35,6 +35,8 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         The last time the containing article was edited.
     name: :class:`str`
         The in-game name of the item.
+    plural: :class:`str`
+        The plural of the name.
     article: :class:`str`
         The article that goes before the name when looking at the item.
     marketable: :class:`bool`
@@ -52,7 +54,9 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     class: :class:`str`
         The item class the item belongs to.
     type: :class:`str`
-        The item's type
+        The item's type.
+    type_secondary: :class:`str`
+        The item's secondary type, if any.
     flavor_text: :class:`str`
         The extra text that is displayed when some items are looked at.
     light_color: :class:`int`, optional.
@@ -81,6 +85,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     _map = {
         "article": ("article", str.strip),
         "actualname": ("name", str.strip),
+        "plural": ("plural", str.strip),
         "marketable": ("marketable", parse_boolean),
         "stackable": ("stackable", parse_boolean),
         "pickupable": ("pickupable", parse_boolean),
@@ -90,6 +95,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "flavortext": ("flavor_text", str.strip),
         "itemclass": ("class", str.strip),
         "primarytype": ("type", str.strip),
+        "secondarytype": ("type_secondary", str.strip),
         "lightcolor": ("light_color", lambda x: client_color_to_rgb(parse_integer(x))),
         "lightradius": ("light_radius", parse_integer),
         "implemented": ("version", str.strip),
@@ -102,6 +108,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "title",
         "timestamp",
         "name",
+        "plural",
         "article",
         "marketable",
         "stackable",
@@ -111,6 +118,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "weight",
         "class",
         "type",
+        "type_secondary",
         "flavor_text",
         "light_color",
         "light_radius",
@@ -305,6 +313,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "rewritable": "rewritable",
         "writable_chars": "writechars",
         "consumable": "consumable",
+        "fansite": "fansite"
     }
     __slots__ = ("item_id", "name", "value")
 

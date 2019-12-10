@@ -58,11 +58,18 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         "implemented": ("version", str.strip),
     }
     _pattern = re.compile(r"Infobox[\s_]Achievement")
-    __slots__ = ("article_id", "title", "timestamp", "name", "grade", "points", "description", "spoiler", "secret",
-                 "version")
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "name",
+        "grade",
+        "points",
+        "description",
+        "spoiler",
+        "secret",
+        "version",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-
-

@@ -156,6 +156,8 @@ creature
 +---------------------+-------------+-----------------------------------------------------+
 | name                | ``TEXT``    | The name of the creature in-game.                   |
 +---------------------+-------------+-----------------------------------------------------+
+| plural                | ``TEXT``    | The plural of the name.                  |
++---------------------+-------------+-----------------------------------------------------+
 | article             | ``TEXT``    | The grammatical article before the creature’s name. |
 |                     |             | This is shown when looking at creatures.            |
 |                     |             | Bosses have no article.                             |
@@ -176,9 +178,11 @@ creature
 |                     |             | (e.g. ``Demons``, ``Humanoids``,                    |
 |                     |             | ``Mammals``).                                       |
 +---------------------+-------------+-----------------------------------------------------+
-| type                | ``TEXT``    | The class this creature belongs to                  |
+| type                | ``TEXT``    | The type this creature belongs to                   |
 |                     |             | (e.g. ``Archdemons``, ``Dwarves``,                  |
 |                     |             | ``Apes``).                                          |
++---------------------+-------------+-----------------------------------------------------+
+| type_secondary      | ``TEXT``    | A secondary type this creature belongs to, if any.  |
 +---------------------+-------------+-----------------------------------------------------+
 | bestiary_class      | ``TEXT``    | The bestiary category of this                       |
 |                     |             | creature. ``NULL`` for creatures                    |
@@ -409,52 +413,56 @@ imbuement_material
 
 item
 ~~~~
-+--------------+-------------+-------------------------------------------------------+
-|    Column    |    Type     |                      Description                      |
-+==============+=============+=======================================================+
-| article_id   | ``INTEGER`` | The id of the article containing this item.           |
-|              | ``PRIMARY`` |                                                       |
-+--------------+-------------+-------------------------------------------------------+
-| title        | ``TEXT``    | The title of the article containing this item.        |
-+--------------+-------------+-------------------------------------------------------+
-| name         | ``TEXT``    | The actual name of the item in-game.                  |
-+--------------+-------------+-------------------------------------------------------+
-| marketable   | ``BOOLEAN`` | Whether this item can be traded in the market or not. |
-+--------------+-------------+-------------------------------------------------------+
-| stackable    | ``BOOLEAN`` | Whether this item is stackable or not.                |
-+--------------+-------------+-------------------------------------------------------+
-| pickupable   | ``BOOLEAN`` | Whether this item can be picked up or not.            |
-+--------------+-------------+-------------------------------------------------------+
-| value        | ``INTEGER`` | The maximum value of this item                        |
-|              |             | when sold to NPCs                                     |
-+--------------+-------------+-------------------------------------------------------+
-| price        | ``INTEGER`` | The maximum price of this item                        |
-|              |             | when bought from NPCs.                                |
-+--------------+-------------+-------------------------------------------------------+
-| weight       | ``REAL``    | The weight of this item in ounces.                    |
-+--------------+-------------+-------------------------------------------------------+
-| class        | ``TEXT``    | The class this item belongs to                        |
-|              |             | (e.g. ``Body Equipment`` , ``Weapons``).              |
-+--------------+-------------+-------------------------------------------------------+
-| type         | ``TEXT``    | The category this item belongs to                     |
-|              |             | (e.g. ``Helmets``, ``Club Weapons``).                 |
-+--------------+-------------+-------------------------------------------------------+
-| flavor_text  | ``TEXT``    | The extra text that is displayed                      |
-|              |             | when some items are looked at.                        |
-+--------------+-------------+-------------------------------------------------------+
-| client_id    | ``INTEGER`` | The client id of the item.                            |
-+--------------+-------------+-------------------------------------------------------+
-| light_color  | ``INTEGER`` | The color of the light emitted by this item, if any.  |
-+--------------+-------------+-------------------------------------------------------+
-| light_radius | ``INTEGER`` | The radius of the light emitted by this item, if any. |
-+--------------+-------------+-------------------------------------------------------+
-| version      | ``TEXT``    | The client version this item was                      |
-|              |             | introduced to the game.                               |
-+--------------+-------------+-------------------------------------------------------+
-| image        | ``BLOB``    | The item’s image bytes.                               |
-+--------------+-------------+-------------------------------------------------------+
-| timestamp    | ``INTEGER`` | Unix timestamp of the article's last edit.            |
-+--------------+-------------+-------------------------------------------------------+
++----------------+-------------+-------------------------------------------------------+
+|     Column     |    Type     |                      Description                      |
++================+=============+=======================================================+
+| article_id     | ``INTEGER`` | The id of the article containing this item.           |
+|                | ``PRIMARY`` |                                                       |
++----------------+-------------+-------------------------------------------------------+
+| title          | ``TEXT``    | The title of the article containing this item.        |
++----------------+-------------+-------------------------------------------------------+
+| name           | ``TEXT``    | The actual name of the item in-game.                  |
++----------------+-------------+-------------------------------------------------------+
+| plural         | ``TEXT``    | The plural of the item's name.                        |
++----------------+-------------+-------------------------------------------------------+
+| marketable     | ``BOOLEAN`` | Whether this item can be traded in the market or not. |
++----------------+-------------+-------------------------------------------------------+
+| stackable      | ``BOOLEAN`` | Whether this item is stackable or not.                |
++----------------+-------------+-------------------------------------------------------+
+| pickupable     | ``BOOLEAN`` | Whether this item can be picked up or not.            |
++----------------+-------------+-------------------------------------------------------+
+| value          | ``INTEGER`` | The maximum value of this item                        |
+|                |             | when sold to NPCs                                     |
++----------------+-------------+-------------------------------------------------------+
+| price          | ``INTEGER`` | The maximum price of this item                        |
+|                |             | when bought from NPCs.                                |
++----------------+-------------+-------------------------------------------------------+
+| weight         | ``REAL``    | The weight of this item in ounces.                    |
++----------------+-------------+-------------------------------------------------------+
+| class          | ``TEXT``    | The class this item belongs to                        |
+|                |             | (e.g. ``Body Equipment`` , ``Weapons``).              |
++----------------+-------------+-------------------------------------------------------+
+| type           | ``TEXT``    | The category this item belongs to                     |
+|                |             | (e.g. ``Helmets``, ``Club Weapons``).                 |
++----------------+-------------+-------------------------------------------------------+
+| type_secondary | ``TEXT``    | A secondary type this item belongs to, if any.        |
++----------------+-------------+-------------------------------------------------------+
+| flavor_text    | ``TEXT``    | The extra text that is displayed                      |
+|                |             | when some items are looked at.                        |
++----------------+-------------+-------------------------------------------------------+
+| client_id      | ``INTEGER`` | The client id of the item.                            |
++----------------+-------------+-------------------------------------------------------+
+| light_color    | ``INTEGER`` | The color of the light emitted by this item, if any.  |
++----------------+-------------+-------------------------------------------------------+
+| light_radius   | ``INTEGER`` | The radius of the light emitted by this item, if any. |
++----------------+-------------+-------------------------------------------------------+
+| version        | ``TEXT``    | The client version this item was                      |
+|                |             | introduced to the game.                               |
++----------------+-------------+-------------------------------------------------------+
+| image          | ``BLOB``    | The item’s image bytes.                               |
++----------------+-------------+-------------------------------------------------------+
+| timestamp      | ``INTEGER`` | Unix timestamp of the article's last edit.            |
++----------------+-------------+-------------------------------------------------------+
 
 item_attribute
 ~~~~~~~~~~~~~~

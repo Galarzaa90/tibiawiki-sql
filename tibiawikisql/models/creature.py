@@ -128,10 +128,14 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The article that goes before the name when looking at the creature.
     name: :class:`str`
         The name of the creature, as displayed in-game.
+    plural: :class:`str`
+        The plural of the name.
     class: :class:`str`
         The creature's classification.
     type: :class:`str`
         The creature's type.
+    type_secondary: :class:`str`
+        The creature's secondary type, if any.
     bestiary_class: :class:`str`
         The creature's bestiary class, if applicable.
     bestiary_level: :class:`str`
@@ -198,12 +202,14 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
     _map = {
         "article": ("article", str.strip),
         "name": ("name", str.strip),
+        "plural": ("plural", str.strip),
         "actualname": ("name", str.strip),
         "creatureclass": ("class", str.strip),
         "bestiaryclass": ("bestiary_class", str.strip),
         "bestiarylevel": ("bestiary_level", str.strip),
         "occurrence": ("bestiary_occurrence", str.strip),
         "primarytype": ("type", str.strip),
+        "secondarytype": ("type_secondary", str.strip),
         "hp": ("hitpoints", lambda x: parse_integer(x, None)),
         "exp": ("experience", lambda x: parse_integer(x, None)),
         "armor": ("armor", lambda x: parse_integer(x, None)),
@@ -236,11 +242,12 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "article_id",
         "title",
         "timestamp",
-        "raw_attribute",
         "article",
         "name",
+        "plural",
         "class",
         "type",
+        "type_secondary",
         "bestiary_level",
         "bestiary_class",
         "bestiary_occurrence",
