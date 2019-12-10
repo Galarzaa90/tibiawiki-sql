@@ -148,6 +148,20 @@ class OutfitQuest(abc.Row, table=schema.OutfitQuest):
         self.quest_title = kwargs.get("quest_title")
         self.type = kwargs.get("type")
 
+    def __repr__(self):
+        attributes = []
+        for attr in self.__slots__:
+            try:
+                v = getattr(self, attr)
+                if v is None:
+                    continue
+                if isinstance(v, bool) and not v:
+                    continue
+                attributes.append("%s=%r" % (attr, v))
+            except AttributeError:
+                pass
+        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
+
     def insert(self, c):
         if getattr(self, "item_id", None):
             super().insert(c)

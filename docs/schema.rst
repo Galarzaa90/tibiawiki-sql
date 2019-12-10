@@ -334,7 +334,7 @@ house
 | article_id | ``INTEGER`` | The id of the article containing this house.    |
 |            | ``PRIMARY`` |                                                 |
 +------------+-------------+-------------------------------------------------+
-| houseid    | ``INTEGER`` | The id of the house according to tibia.com.     |
+| house_id   | ``INTEGER`` | The id of the house according to tibia.com.     |
 +------------+-------------+-------------------------------------------------+
 | title      | ``TEXT``    | The title of the article containing this house. |
 +------------+-------------+-------------------------------------------------+
@@ -344,7 +344,9 @@ house
 +------------+-------------+-------------------------------------------------+
 | street     | ``TEXT``    | The street this house is located in.            |
 +------------+-------------+-------------------------------------------------+
-| beds       | ``INTEGER`` | The number of beds the house has.               |
+| location   | ``TEXT``    | A brief description of the house's location.    |
++------------+-------------+-------------------------------------------------+
+| beds       | ``INTEGER`` | The maximum amount of beds the house can have.  |
 +------------+-------------+-------------------------------------------------+
 | rent       | ``INTEGER`` | The monthly rent of this house.                 |
 +------------+-------------+-------------------------------------------------+
