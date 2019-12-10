@@ -79,8 +79,24 @@ class World(abc.Row, abc.Parseable, table=schema.World):
         "tradeboardid": ("trade_board", parse_integer),
     }
     _pattern = re.compile(r"Infobox[\s_]World")
-    __slots__ = ("name","location", "pvp_type", "preview", "experimental", "online_since", "offline_since", 
-                "merged_into", "battleye", "protected_since", "world_board", "trade_board")
+
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "name",
+        "location",
+        "pvp_type",
+        "preview",
+        "experimental",
+        "online_since",
+        "offline_since",
+        "merged_into",
+        "battleye",
+        "protected_since",
+        "world_board",
+        "trade_board"
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

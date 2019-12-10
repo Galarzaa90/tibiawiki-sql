@@ -238,7 +238,9 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "walksaround": ("walks_around", parse_monster_walks),
         "implemented": ("version", str.strip)
     }
+
     _pattern = re.compile(r"Infobox[\s_]Creature")
+
     __slots__ = (
         "article_id",
         "title",

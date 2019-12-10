@@ -66,7 +66,7 @@ class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
         "achievement",
         "version",
         "quests",
-        "images"
+        "images",
     )
 
     _map = {

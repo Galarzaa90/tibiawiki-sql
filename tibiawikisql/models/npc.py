@@ -567,7 +567,12 @@ class NpcDestination(abc.Row, table=schema.NpcDestination):
     notes: :class:`str`
         Notes about the destination, such as requirements.
     """
-    __slots__ = ("npc_id", "name", "price", "notes")
+    __slots__ = (
+        "npc_id",
+        "name",
+        "price",
+        "notes",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -591,7 +596,14 @@ class RashidPosition(abc.Row, table=schema.RashidPosition):
     location: :class:`str`
         The location where Rashid is that day.
     """
-    __slots__ = ("day", "x", "y", "z", "city", "location")
+    __slots__ = (
+        "day",
+        "x",
+        "y",
+        "z",
+        "city",
+        "location",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

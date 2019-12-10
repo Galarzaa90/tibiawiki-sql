@@ -153,7 +153,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         for name, attribute in ItemAttribute._map.items():
             if attribute in item._raw_attributes and item._raw_attributes[attribute]:
                 item.attributes.append(ItemAttribute(item_id=item.article_id, name=name, value=
-                                       item._raw_attributes[attribute]))
+                item._raw_attributes[attribute]))
         if "attrib" in item._raw_attributes:
             attribs = item._raw_attributes["attrib"].split(",")
             for attr in attribs:
@@ -235,8 +235,19 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
     version: :class:`str`
         The client version where this creature was first implemented.
     """
-    __slots__ = {"article_id", "title", "timestamp", "name", "number", "item_id", "material",
-                 "notes", "origin", "version", "location"}
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "name",
+        "number",
+        "item_id",
+        "material",
+        "notes",
+        "origin",
+        "version",
+        "location",
+    )
     _map = {
         "aka": ("name", clean_links),
         "number": ("number", int),
@@ -316,7 +327,11 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "consumable": "consumable",
         "fansite": "fansite"
     }
-    __slots__ = ("item_id", "name", "value")
+    __slots__ = (
+        "item_id",
+        "name",
+        "value",
+    )
 
     def insert(self, c):
         columns = dict(item_id=self.item_id, name=self.name, value=str(self.value))
@@ -334,7 +349,10 @@ class ItemSound(abc.Row, table=schema.ItemSound):
     content: :class:`str`
         The content of the sound.
     """
-    __slots__ = ("item_id", "content")
+    __slots__ = (
+        "item_id",
+        "content",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -354,4 +372,3 @@ class ItemSound(abc.Row, table=schema.ItemSound):
     def insert(self, c):
         columns = dict(item_id=self.item_id, content=self.content)
         self.table.insert(c, **columns)
-

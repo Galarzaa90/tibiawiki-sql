@@ -69,8 +69,21 @@ class Mount(abc.Row, abc.Parseable, table=schema.Mount):
 
     }
     _pattern = re.compile(r"Infobox[\s_]Mount")
-    __slots__ = ("article_id", "title", "timestamp", "name", "speed", "taming_method", "buyable", "price",
-                 "achievement", "light_color", "light_radius", "version", "image")
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "name",
+        "speed",
+        "taming_method",
+        "buyable",
+        "price",
+        "achievement",
+        "light_color",
+        "light_radius",
+        "version",
+        "image",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -164,7 +164,12 @@ class QuestReward(abc.Row, table=schema.QuestReward):
     item_title: :class:`str`
         The title of the rewarded item.
     """
-    __slots__ = ("quest_id", "quest_title", "item_id", "item_title")
+    __slots__ = (
+        "quest_id",
+        "quest_title",
+        "item_id",
+        "item_title",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -208,7 +213,12 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
         creature_title: :class:`str`
             The title of the found creature.
         """
-    __slots__ = ("quest_id", "quest_title", "creature_id", "creature_title")
+    __slots__ = (
+        "quest_id",
+        "quest_title",
+        "creature_id",
+        "creature_title"
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -69,9 +69,29 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
     image: :class:`bytes`
         The spell's image in bytes.
     """
-    __slots__ = ("article_id", "title", "extra_attributes", "timestamp", "name", "words", "type", "element", "mana",
-                 "soul", "price", "cooldown", "level", "premium", "taught_by", "knight", "sorcerer", "druid",
-                 "paladin", "image", "version", "effect")
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "name",
+        "words",
+        "type",
+        "element",
+        "mana",
+        "soul",
+        "price",
+        "cooldown",
+        "level",
+        "premium",
+        "taught_by",
+        "knight",
+        "sorcerer",
+        "druid",
+        "paladin",
+        "image",
+        "version",
+        "effect",
+    )
     _map = {
         "name": ("name", str.strip),
         "effect": ("effect", clean_links),

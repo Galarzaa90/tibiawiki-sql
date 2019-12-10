@@ -123,8 +123,18 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
     }
     _pattern = re.compile(r"Infobox[\s_]Imbuement")
 
-    __slots__ = ("article_id", "title", "timestamp", "name", "tier", "type", "effect", "version",
-                 "image", "materials")
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "name",
+        "tier",
+        "type",
+        "effect",
+        "version",
+        "image",
+        "materials",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -174,7 +184,13 @@ class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
     amount: :class:`int`
         The amount of items required.
     """
-    __slots__ = {"imbuement_id", "imbuement_title", "item_id", "item_title", "amount"}
+    __slots__ = (
+        "imbuement_id",
+        "imbuement_title",
+        "item_id",
+        "item_title",
+        "amount",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
