@@ -11,8 +11,9 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
+import operator
 import re
+from collections import OrderedDict
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
@@ -143,6 +144,16 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         if self.attributes:
             return {a.name: a.value for a in self.attributes}
         return dict()
+    
+    @property
+    def resistances(self):
+        elements = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
+        resistances = dict()
+        for element in elements:
+            value = self.attributes_dict.pop(element, None)
+            if value is not None:
+                resistances[element[:-1]] = int(value)
+        return OrderedDict(sorted(resistances.items(), key=operator.itemgetter(1), reverse=True))
 
     @property
     def look_text(self):
@@ -166,7 +177,10 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         if "without" in vocation:
             vocation = "players without vocations"
         if "level" in attributes or vocation != "players":
-            look_text.append("It can only be wielded by %s of level %s or higher." % (vocation, attributes["level"]))
+            look_text.append("It can only be wielded by %s" % vocation)
+            if "level" in attributes:
+                look_text.append(" of level %s or higher" % attributes["level"])
+            look_text.append(".")
 
     def _get_attributes_look_text(self, look_text):
         attributes = self.attributes_dict
@@ -197,6 +211,11 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
             attributes_rep.append(defense)
         if "armor" in attributes:
             attributes_rep.append("Arm:%s" % attributes["armor"])
+        if "magic" in attributes:
+            attributes_rep.append("magic level %s" % attributes["magic"])
+        resist_attributes = ["earth%", "fire%", "energy%", "ice%"]
+        if any(attr in attributes for attr in resist_attributes):
+            resist = "protection "
         if attributes_rep:
             look_text.append(" (%s)" % ", ".join(attributes_rep))
 
