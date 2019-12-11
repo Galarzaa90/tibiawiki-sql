@@ -52,7 +52,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         The lowest price an NPC will sell this item for.
     weight: :class:`float`
         The item's weight in ounces.
-    class: :class:`str`
+    item_class: :class:`str`
         The item class the item belongs to.
     type: :class:`str`
         The item's type.
@@ -94,7 +94,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "npcvalue": ("value_sell", parse_integer),
         "npcprice": ("value_buy", parse_integer),
         "flavortext": ("flavor_text", str.strip),
-        "itemclass": ("class", str.strip),
+        "itemclass": ("item_class", str.strip),
         "primarytype": ("type", str.strip),
         "secondarytype": ("type_secondary", str.strip),
         "lightcolor": ("light_color", lambda x: client_color_to_rgb(parse_integer(x))),
@@ -117,7 +117,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "value_sell",
         "value_buy",
         "weight",
-        "class",
+        "item_class",
         "type",
         "type_secondary",
         "flavor_text",
@@ -148,20 +148,28 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     def look_text(self):
         """:class:`str`: Generates the item's look text."""
         look_text = ["You see ", self.article or self.name[0] in ["a", "e", "i", "o", "u"], " %s" % self.name]
-        attributes = self.attributes_dict
-        self._get_attributes_look_text(attributes, look_text)
+        self._get_attributes_look_text(look_text)
         look_text.append(".")
-        if "level" in attributes:
-            vocation = attributes.get("vocation", "players")
-            look_text.append("It can only be wielded by %s of level %s or higher." % (vocation, attributes["level"]))
+        self._get_requirements(look_text)
         if self.weight:
             look_text.append("It weights %.2f oz." % self.weight)
         if self.flavor_text:
             look_text.append(self.flavor_text)
         return "".join(look_text)
 
-    @staticmethod
-    def _get_attributes_look_text(attributes, look_text):
+    def _get_requirements(self, look_text):
+        attributes = self.attributes_dict
+        separator = " and " if self.item_class != "Runes" else ", "
+        vocation = "players"
+        if "vocation" in attributes:
+            vocation = separator.join(attributes["vocation"].split("+"))
+        if "without" in vocation:
+            vocation = "players without vocations"
+        if "level" in attributes or vocation != "players":
+            look_text.append("It can only be wielded by %s of level %s or higher." % (vocation, attributes["level"]))
+
+    def _get_attributes_look_text(self, look_text):
+        attributes = self.attributes_dict
         attributes_rep = []
         if "range" in attributes:
             attributes_rep.append("Range: %s" % attributes["range"])

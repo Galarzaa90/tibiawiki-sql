@@ -131,7 +131,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The name of the creature, as displayed in-game.
     plural: :class:`str`
         The plural of the name.
-    class: :class:`str`
+    creature_class: :class:`str`
         The creature's classification.
     type: :class:`str`
         The creature's type.
@@ -205,7 +205,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "name": ("name", str.strip),
         "plural": ("plural", clean_question_mark),
         "actualname": ("name", str.strip),
-        "creatureclass": ("class", str.strip),
+        "creatureclass": ("creature_class", str.strip),
         "bestiaryclass": ("bestiary_class", str.strip),
         "bestiarylevel": ("bestiary_level", str.strip),
         "occurrence": ("bestiary_occurrence", str.strip),
@@ -248,7 +248,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "article",
         "name",
         "plural",
-        "class",
+        "creature_class",
         "type",
         "type_secondary",
         "bestiary_level",

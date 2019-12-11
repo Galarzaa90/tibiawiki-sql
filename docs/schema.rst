@@ -156,7 +156,7 @@ creature
 +---------------------+-------------+-----------------------------------------------------+
 | name                | ``TEXT``    | The name of the creature in-game.                   |
 +---------------------+-------------+-----------------------------------------------------+
-| plural                | ``TEXT``    | The plural of the name.                  |
+| plural              | ``TEXT``    | The plural of the name.                             |
 +---------------------+-------------+-----------------------------------------------------+
 | article             | ``TEXT``    | The grammatical article before the creature’s name. |
 |                     |             | This is shown when looking at creatures.            |
@@ -174,7 +174,7 @@ creature
 | speed               | ``INTEGER`` | The speed value of the creature.                    |
 |                     |             | May be ``NULL`` if unknown.                         |
 +---------------------+-------------+-----------------------------------------------------+
-| class               | ``TEXT``    | The class this creature belongs to                  |
+| creature_class      | ``TEXT``    | The class this creature belongs to                  |
 |                     |             | (e.g. ``Demons``, ``Humanoids``,                    |
 |                     |             | ``Mammals``).                                       |
 +---------------------+-------------+-----------------------------------------------------+
@@ -439,7 +439,7 @@ item
 +----------------+-------------+-------------------------------------------------------+
 | weight         | ``REAL``    | The weight of this item in ounces.                    |
 +----------------+-------------+-------------------------------------------------------+
-| class          | ``TEXT``    | The class this item belongs to                        |
+| item_class     | ``TEXT``    | The class this item belongs to                        |
 |                |             | (e.g. ``Body Equipment`` , ``Weapons``).              |
 +----------------+-------------+-------------------------------------------------------+
 | type           | ``TEXT``    | The category this item belongs to                     |
