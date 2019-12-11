@@ -149,22 +149,29 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     def resistances(self):
         elements = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
         resistances = dict()
+        attributes = self.attributes_dict
         for element in elements:
-            value = self.attributes_dict.pop(element, None)
+            value = attributes.get(element)
             if value is not None:
                 resistances[element[:-1]] = int(value)
-        return OrderedDict(sorted(resistances.items(), key=operator.itemgetter(1), reverse=True))
+        return OrderedDict(sorted(resistances.items(), key=lambda t: t[1], reverse=True))
 
     @property
     def look_text(self):
         """:class:`str`: Generates the item's look text."""
         look_text = ["You see ", self.article or self.name[0] in ["a", "e", "i", "o", "u"], " %s" % self.name]
         self._get_attributes_look_text(look_text)
+        attributes = self.attributes_dict
+        if "charges" in attributes:
+            look_text.append(" that has %s charges left" % attributes["charges"])
+        if "duration" in attributes:
+            look_text.append(" that is brand-new")
         look_text.append(".")
         self._get_requirements(look_text)
         if self.weight:
-            look_text.append("It weights %.2f oz." % self.weight)
+            look_text.append("\nIt weights %.2f oz." % self.weight)
         if self.flavor_text:
+            look_text.append("\n")
             look_text.append(self.flavor_text)
         return "".join(look_text)
 
@@ -172,14 +179,18 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         attributes = self.attributes_dict
         separator = " and " if self.item_class != "Runes" else ", "
         vocation = "players"
+        verb = "wielded properly" if self.item_class != "Runes" else "used"
         if "vocation" in attributes:
             vocation = separator.join(attributes["vocation"].split("+"))
         if "without" in vocation:
             vocation = "players without vocations"
         if "level" in attributes or vocation != "players":
-            look_text.append("It can only be wielded by %s" % vocation)
+            look_text.append("It can only be %s by %s" % (verb, vocation))
             if "level" in attributes:
-                look_text.append(" of level %s or higher" % attributes["level"])
+                look_text.append(" of level %s" % attributes["level"])
+                if "magic_level" in attributes and attributes["magic_level"] != "0":
+                    look_text.append(" and magic level %s" % attributes["magic_level"])
+                look_text.append(" or higher")
             look_text.append(".")
 
     def _get_attributes_look_text(self, look_text):
@@ -213,9 +224,27 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
             attributes_rep.append("Arm:%s" % attributes["armor"])
         if "magic" in attributes:
             attributes_rep.append("magic level %s" % attributes["magic"])
-        resist_attributes = ["earth%", "fire%", "energy%", "ice%"]
-        if any(attr in attributes for attr in resist_attributes):
-            resist = "protection "
+        if "axe" in attributes:
+            attributes_rep.append("axe fighting %s" % attributes["axe"])
+        if "sword" in attributes:
+            attributes_rep.append("sword fighting %s" % attributes["sword"])
+        if "club" in attributes:
+            attributes_rep.append("club fighting %s" % attributes["club"])
+        if "distance" in attributes:
+            attributes_rep.append("distance %s" % attributes["distance"])
+        if "shielding" in attributes:
+            attributes_rep.append("shielding %s" % attributes["shielding"])
+        if "fist" in attributes:
+            attributes_rep.append("fist fighting %s" % attributes["fist"])
+        if "regeneration" in attributes:
+            attributes_rep.append(attributes["regeneration"])
+        if self.resistances:
+            resistances = []
+            for element, value in self.resistances.items():
+                resistances.append("%s %+d%%" % (element, value))
+            attributes_rep.append("protection %s" % ", ".join(resistances))
+        if "volume" in attributes:
+            attributes_rep.append("Vol:%s" % attributes["volume"])
         if attributes_rep:
             look_text.append(" (%s)" % ", ".join(attributes_rep))
 
@@ -238,6 +267,9 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
                     attribute = m.group(1).replace("fighting", "").replace("level", "").strip()
                     value = m.group(2)
                     item.attributes.append(ItemAttribute(item_id=item.article_id, name=attribute, value=value))
+                if "regeneration" in attr:
+                    item.attributes.append(ItemAttribute(item_id=item.article_id, name="regeneration",
+                                                         value="faster regeneration"))
         if "resist" in item._raw_attributes:
             resistances = item._raw_attributes["resist"].split(",")
             for element in resistances:
@@ -409,7 +441,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
     )
 
     def insert(self, c):
-        columns = dict(item_id=self.item_id, name=self.name, value=str(self.value))
+        columns = dict(item_id=self.item_id, name=self.name, value=clean_links(str(self.value)))
         self.table.insert(c, **columns)
 
 
