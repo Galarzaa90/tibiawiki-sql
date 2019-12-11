@@ -68,6 +68,6 @@ class Charm(abc.Row, abc.Parseable, table=schema.Charm):
         super().__init__(**kwargs)
 
     def __repr__(self):
-        return "%s(name=%r,type=%r,cost=%r)" % (self.__class__.__name__, self.name, self.type, self.cost)
+        return f"{self.__class__.__name__}(name={self.name!r},type={self.type!r},cost={self.cost!r})"
 
 

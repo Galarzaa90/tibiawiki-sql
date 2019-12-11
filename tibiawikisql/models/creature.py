@@ -23,7 +23,6 @@ from tibiawikisql.utils import clean_links, int_pattern, parse_boolean, parse_in
 
 creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
 
-
 KILLS = {
     "Harmless": 25,
     "Trivial": 250,
@@ -410,7 +409,15 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
     chance: :class:`float`
         The chance percentage of getting this item dropped by this creature.
     """
-    __slots__ = ("creature_id", "creature_title", "item_id", "item_title", "min", "max", "chance")
+    __slots__ = (
+        "creature_id",
+        "creature_title",
+        "item_id",
+        "item_title",
+        "min",
+        "max",
+        "chance",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -424,10 +431,10 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
                 v = getattr(self, attr)
                 if v is None:
                     continue
-                attributes.append("%s=%r" % (attr, v))
+                attributes.append(f"{attr}={v!r}")
             except AttributeError:
                 pass
-        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
+        return f"{self.__class__.__name__}({','.join(attributes)})"
 
     def insert(self, c):
         """Inserts the current model into its respective database.
@@ -452,9 +459,10 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.title as item_title, creature.title as creature_title FROM %s
-                  LEFT JOIN creature ON creature.article_id = creature_id
-                  LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
+        return f"""SELECT {cls.table.__tablename__}.*, item.title as item_title, creature.title as creature_title
+                   FROM {cls.table.__tablename__}
+                   LEFT JOIN creature ON creature.article_id = creature_id
+                   LEFT JOIN item ON item.article_id = item_id"""
 
 
 class CreatureSound(abc.Row, table=schema.CreatureSound):
@@ -480,7 +488,7 @@ class CreatureSound(abc.Row, table=schema.CreatureSound):
                 v = getattr(self, attr)
                 if v is None:
                     continue
-                attributes.append("%s=%r" % (attr, v))
+                attributes.append(f"{attr}={v!r}")
             except AttributeError:
                 pass
         return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
@@ -488,6 +496,3 @@ class CreatureSound(abc.Row, table=schema.CreatureSound):
     def insert(self, c):
         columns = dict(creature_id=self.creature_id, content=self.content)
         self.table.insert(c, **columns)
-
-
-

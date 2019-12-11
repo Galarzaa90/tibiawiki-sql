@@ -157,10 +157,10 @@ class OutfitQuest(abc.Row, table=schema.OutfitQuest):
                     continue
                 if isinstance(v, bool) and not v:
                     continue
-                attributes.append("%s=%r" % (attr, v))
+                attributes.append(f"{attr}={v!r}")
             except AttributeError:
                 pass
-        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
+        return f"{self.__class__.__name__}({','.join(attributes)})"
 
     def insert(self, c):
         if getattr(self, "item_id", None):
@@ -179,10 +179,10 @@ class OutfitQuest(abc.Row, table=schema.OutfitQuest):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, quest.title as quest_title, outfit.title as outfit_title FROM %s
-              LEFT JOIN quest ON quest.article_id = quest_id
-              LEFT JOIN outfit ON outfit.article_id = outfit_id
-              """ % (cls.table.__tablename__, cls.table.__tablename__)
+        return f"""SELECT {cls.table.__tablename__}.*, quest.title as quest_title, outfit.title as outfit_title
+                   FROM {cls.table.__tablename__}
+                   LEFT JOIN quest ON quest.article_id = quest_id
+                   LEFT JOIN outfit ON outfit.article_id = outfit_id"""
 
 
 class OutfitImage(abc.Row, table=schema.OutfitImage):
@@ -219,10 +219,11 @@ class OutfitImage(abc.Row, table=schema.OutfitImage):
         self.image = kwargs.get("image")
 
     def __repr__(self):
-        return "<%s outfit_id=%r outfit_name=%r sex=%r addon=%r>" \
-               % (self.__class__.__name__, self.outfit_id, self.outfit_name, self.sex, self.addon)
+        return f"<{self.__class__.__name__} outfit_id={self.outfit_id!r} outfit_name={self.outfit_name!r} " \
+               f"sex={self.sex!r} addon={self.addon!r}>"
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, outfit.name as outfit_name FROM %s 
-        LEFT JOIN outfit on outfit.article_id = outfit_id""" % (cls.table.__tablename__, cls.table.__tablename__)
+        return f"""SELECT {cls.table.__tablename__}.*, outfit.name as outfit_name
+                   FROM {cls.table.__tablename__} 
+                   LEFT JOIN outfit on outfit.article_id = outfit_id"""

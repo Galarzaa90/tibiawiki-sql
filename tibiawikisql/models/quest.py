@@ -193,10 +193,10 @@ class QuestReward(abc.Row, table=schema.QuestReward):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.title as item_title, quest.title as quest_title FROM %s
-                  LEFT JOIN item ON item.article_id = item_id
-                  LEFT JOIN quest ON quest.article_id = quest_id
-                  """ % (cls.table.__tablename__, cls.table.__tablename__)
+        return f"""SELECT {cls.table.__tablename__}.*, item.title as item_title, quest.title as quest_title
+                   FROM {cls.table.__tablename__}
+                   LEFT JOIN item ON item.article_id = item_id
+                   LEFT JOIN quest ON quest.article_id = quest_id"""
 
 
 class QuestDanger(abc.Row, table=schema.QuestDanger):
@@ -242,7 +242,7 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, creature.title as creature_title, quest.title as quest_title FROM %s
-                  LEFT JOIN creature ON creature.article_id = creature_id
-                  LEFT JOIN quest ON quest.article_id = quest_id
-                  """ % (cls.table.__tablename__, cls.table.__tablename__)
+        return f"""SELECT {cls.table.__tablename__}.*, creature.title as creature_title, quest.title as quest_title
+                   FROM {cls.table.__tablename__}
+                   LEFT JOIN creature ON creature.article_id = creature_id
+                   LEFT JOIN quest ON quest.article_id = quest_id"""

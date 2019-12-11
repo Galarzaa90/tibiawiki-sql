@@ -160,17 +160,17 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     @property
     def look_text(self):
         """:class:`str`: Generates the item's look text."""
-        look_text = ["You see ", self.article or self.name[0] in ["a", "e", "i", "o", "u"], " %s" % self.name]
+        look_text = ["You see ", self.article or self.name[0] in ["a", "e", "i", "o", "u"], f" {self.name}"]
         self._get_attributes_look_text(look_text)
         attributes = self.attributes_dict
         if "charges" in attributes:
-            look_text.append(" that has %s charges left" % attributes["charges"])
+            look_text.append(f" that has {attributes['charges']} charges left")
         if "duration" in attributes:
             look_text.append(" that is brand-new")
         look_text.append(".")
         self._get_requirements(look_text)
         if self.weight:
-            look_text.append("\nIt weights %.2f oz." % self.weight)
+            look_text.append(f"\nIt weights {self.weight:.2f} oz.")
         if self.flavor_text:
             look_text.append("\n")
             look_text.append(self.flavor_text)
@@ -186,11 +186,11 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         if "without" in vocation:
             vocation = "players without vocations"
         if "level" in attributes or vocation != "players":
-            look_text.append("It can only be %s by %s" % (verb, vocation))
+            look_text.append(f"It can only be {verb} by {vocation}")
             if "level" in attributes:
-                look_text.append(" of level %s" % attributes["level"])
+                look_text.append(f" of level {attributes['level']}")
                 if "magic_level" in attributes and attributes["magic_level"] != "0":
-                    look_text.append(" and magic level %s" % attributes["magic_level"])
+                    look_text.append(f" and magic level {attributes['magic_level']}")
                 look_text.append(" or higher")
             look_text.append(".")
 
@@ -204,21 +204,21 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         if self.resistances:
             resistances = []
             for element, value in self.resistances.items():
-                resistances.append("%s %+d%%" % (element, value))
-            attributes_rep.append("protection %s" % ", ".join(resistances))
+                resistances.append(f"{element} {value:+d}%")
+            attributes_rep.append(f"protection {', '.join(resistances)}")
         if "volume" in attributes:
-            attributes_rep.append("Vol:%s" % attributes["volume"])
+            attributes_rep.append(f"Vol:{attributes['volume']}")
         if attributes_rep:
-            look_text.append(" (%s)" % ", ".join(attributes_rep))
+            look_text.append(f" ({', '.join(attributes_rep)})")
 
     @staticmethod
     def _parse_combat_attributes(attributes, attributes_rep):
         if "range" in attributes:
-            attributes_rep.append("Range: %s" % attributes["range"])
+            attributes_rep.append(f"Range: {attributes['range']}")
         if "attack+" in attributes:
-            attributes_rep.append("Atk+%s" % attributes["attack+"])
+            attributes_rep.append(f"Atk+{attributes['attack+']}")
         if "hit%+" in attributes:
-            attributes_rep.append("Hit%%+%s" % attributes["hit%+"])
+            attributes_rep.append(f"Hit%+{attributes['hit%+']}")
 
         if "attack" in attributes:
             elements = ['fire_attack', 'earth_attack', 'ice_attack', 'energy_attack']
@@ -228,35 +228,35 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
                 value = attributes.pop(element, None)
                 if value:
                     attacks[element[:-7]] = int(value)
-            attack = "Atk:%s" % physical_attack
+            attack = f"Atk:{physical_attack}"
             if attacks:
                 attack += " physical + "
                 attack += "+ ".join(f"{v} {e}" for e,v in attacks.items())
             attributes_rep.append(attack)
         if "defense" in attributes:
-            defense = "Def:%s" % attributes["defense"]
+            defense = f"Def:{attributes['defense']}"
             if "defense_modifier" in attributes:
-                defense += " %s" % attributes["defense_modifier"]
+                defense += f" {attributes['defense_modifier']}"
             attributes_rep.append(defense)
         if "armor" in attributes:
-            attributes_rep.append("Arm:%s" % attributes["armor"])
+            attributes_rep.append(f"Arm:{attributes['armor']}")
 
     @staticmethod
     def _parse_skill_attributes(attributes, attributes_rep):
         if "magic" in attributes:
-            attributes_rep.append("magic level %s" % attributes["magic"])
+            attributes_rep.append(f"magic level {attributes['magic']}")
         if "axe" in attributes:
-            attributes_rep.append("axe fighting %s" % attributes["axe"])
+            attributes_rep.append(f"axe fighting {attributes['axe']}")
         if "sword" in attributes:
-            attributes_rep.append("sword fighting %s" % attributes["sword"])
+            attributes_rep.append(f"sword fighting {attributes['sword']}")
         if "club" in attributes:
-            attributes_rep.append("club fighting %s" % attributes["club"])
+            attributes_rep.append(f"club fighting {attributes['club']}")
         if "distance" in attributes:
-            attributes_rep.append("distance %s" % attributes["distance"])
+            attributes_rep.append(f"distance fighting {attributes['distance']}")
         if "shielding" in attributes:
-            attributes_rep.append("shielding %s" % attributes["shielding"])
+            attributes_rep.append(f"shielding {attributes['shielding']}")
         if "fist" in attributes:
-            attributes_rep.append("fist fighting %s" % attributes["fist"])
+            attributes_rep.append(f"fist fighting {attributes['fist']}")
 
     @classmethod
     def from_article(cls, article):
@@ -481,10 +481,10 @@ class ItemSound(abc.Row, table=schema.ItemSound):
                 v = getattr(self, attr)
                 if v is None:
                     continue
-                attributes.append("%s=%r" % (attr, v))
+                attributes.append(f"{attr}={v!r}")
             except AttributeError:
                 pass
-        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
+        return f"{self.__class__.__name__}({','.join(attributes)})"
 
     def insert(self, c):
         columns = dict(item_id=self.item_id, content=self.content)

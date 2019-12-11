@@ -52,7 +52,7 @@ class WikiEntry:
             self.timestamp = int(timestamp.timestamp())
 
     def __repr__(self):
-        return "%s(article_id=%d,title=%r)" % (self.__class__.__name__, self.article_id, self.title)
+        return f"{self.__class__.__name__}(article_id={self.article_id},title={self.title!r})"
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -64,7 +64,7 @@ class WikiEntry:
         """
         :class:`str`: The URL to the article's display page.
         """
-        return "%s/wiki/%s" % (BASE_URL, urllib.parse.quote(self.title))
+        return f"{BASE_URL}/wiki/{urllib.parse.quote(self.title)}"
 
 
 class Article(WikiEntry):
@@ -113,7 +113,7 @@ class Image(WikiEntry):
         parts = self.title.split(".")
         if len(parts) == 1:
             return None
-        return ".%s" % parts[-1]
+        return f".{parts[-1]}"
 
     @property
     def file_name(self):
@@ -130,7 +130,7 @@ class WikiClient:
     """
     Contains methods to communicate with TibiaWiki's API.
     """
-    ENDPOINT = "%s/api.php" % BASE_URL
+    ENDPOINT = f"{BASE_URL}/api.php"
 
     headers = {
         'User-Agent': f'tibiawikisql {__version__}'
@@ -159,7 +159,7 @@ class WikiClient:
         params = {
             "action": "query",
             "list": "categorymembers",
-            "cmtitle": "Category:%s" % name,
+            "cmtitle": f"Category:{name}",
             "cmlimit": 500,
             "cmtype": "page",
             "cmprop": "ids|title|sortkeyprefix|timestamp",
@@ -253,7 +253,7 @@ class WikiClient:
         while True:
             if i >= len(names):
                 break
-            params["titles"] = "|".join("File:%s" % n for n in names[i:min(i+50, len(names))])
+            params["titles"] = "|".join(f"File:{n}" for n in names[i:min(i + 50, len(names))])
             i += 50
             r = s.get(cls.ENDPOINT, params=params)
             data = json.loads(r.text)

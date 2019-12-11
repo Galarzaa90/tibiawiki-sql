@@ -207,9 +207,10 @@ class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, imbuement.title as imbuement_title, item.title as item_title FROM %s
+        return f"""SELECT {cls.table.__tablename__}.*, imbuement.title as imbuement_title, item.title as item_title
+                   FROM {cls.table.__tablename__}
                    LEFT JOIN imbuement ON imbuement.article_id = imbuement_id
-                   LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
+                   LEFT JOIN item ON item.article_id = item_id"""
 
     @classmethod
     def _is_column(cls, name):

@@ -143,11 +143,11 @@ class Column:
         if default is not None:
             builder.append('DEFAULT')
             if isinstance(default, str) and isinstance(self.column_type, Text):
-                builder.append("'%s'" % default)
+                builder.append(f"'{default}'")
             elif isinstance(default, bool):
                 builder.append(str(int(default)))
             else:
-                builder.append("%s" % default)
+                builder.append(str(default))
         elif self.unique:
             builder.append('UNIQUE')
 
@@ -183,7 +183,7 @@ class TableMeta(type):
                 if value.name is None:
                     value.name = elem
                 if value.index:
-                    value.index_name = '%s_%s_idx' % (table_name, value.name)
+                    value.index_name = f'{table_name}_{value.name}_idx'
                 columns.append(value)
 
         dct['columns'] = columns
@@ -214,8 +214,8 @@ class Table(metaclass=TableMeta):
                 primary_keys.append(col.name)
 
         if primary_keys:
-            column_creations.append('PRIMARY KEY (%s)' % ', '.join(primary_keys))
-        builder.append('(%s)' % ', '.join(column_creations))
+            column_creations.append(f'PRIMARY KEY ({", ".join(primary_keys)})')
+        builder.append(f'({", ".join(column_creations)})')
         statements.append(' '.join(builder) + ';')
 
         for column in cls.columns:
@@ -243,7 +243,7 @@ class Table(metaclass=TableMeta):
 
             check = column.column_type.python
             if value is None and not column.nullable:
-                raise TypeError('Cannot pass None to non-nullable column %s.' % column.name)
+                raise TypeError(f'Cannot pass None to non-nullable column {column.name}.')
             elif (not check or not isinstance(value, check)) and value is not None:
                 fmt = 'column {0.name} expected {1.__name__}, received {2.__class__.__name__}'
                 raise TypeError(fmt.format(column, check, value))
@@ -257,4 +257,4 @@ class Table(metaclass=TableMeta):
 
     @classmethod
     def drop(cls):
-        return 'DROP TABLE IF EXISTS %s' % cls.__tablename__
+        return f'DROP TABLE IF EXISTS {cls.__tablename__}'
