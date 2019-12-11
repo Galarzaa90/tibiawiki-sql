@@ -140,13 +140,14 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
 
     @property
     def attributes_dict(self):
-        """:class:`dict`, optional: A mapping of the attributes this item has."""
+        """:class:`dict`: A mapping of the attributes this item has."""
         if self.attributes:
             return {a.name: a.value for a in self.attributes}
         return dict()
     
     @property
     def resistances(self):
+        """:class:`OrderedDict`: A mapping of the elemental resistances of this item."""
         elements = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
         resistances = dict()
         attributes = self.attributes_dict
@@ -196,32 +197,52 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     def _get_attributes_look_text(self, look_text):
         attributes = self.attributes_dict
         attributes_rep = []
+        self._parse_combat_attributes(attributes, attributes_rep)
+        self._parse_skill_attributes(attributes, attributes_rep)
+        if "regeneration" in attributes:
+            attributes_rep.append(attributes["regeneration"])
+        if self.resistances:
+            resistances = []
+            for element, value in self.resistances.items():
+                resistances.append("%s %+d%%" % (element, value))
+            attributes_rep.append("protection %s" % ", ".join(resistances))
+        if "volume" in attributes:
+            attributes_rep.append("Vol:%s" % attributes["volume"])
+        if attributes_rep:
+            look_text.append(" (%s)" % ", ".join(attributes_rep))
+
+    @staticmethod
+    def _parse_combat_attributes(attributes, attributes_rep):
         if "range" in attributes:
             attributes_rep.append("Range: %s" % attributes["range"])
         if "attack+" in attributes:
             attributes_rep.append("Atk+%s" % attributes["attack+"])
         if "hit%+" in attributes:
             attributes_rep.append("Hit%%+%s" % attributes["hit%+"])
+
         if "attack" in attributes:
-            attack = "Atk: %s" % attributes["attack"]
-            if "fire_attack" in attributes:
-                attack += " physical + %s fire" % attributes["fire_attack"]
-            if "ice_attack" in attributes:
-                attack += " physical + %s ice" % attributes["ice_attack"]
-            if "earth_attack" in attributes:
-                attack += " physical + %s earth" % attributes["earth_attack"]
-            if "energy_attack" in attributes:
-                attack += " physical + %s energy" % attributes["energy_attack"]
-            if "earth_attack" in attributes:
-                attack += " physical + %s earth" % attributes["earth_attack"]
+            elements = ['fire_attack', 'earth_attack', 'ice_attack', 'energy_attack']
+            attacks = dict()
+            physical_attack = int(attributes["attack"])
+            for element in elements:
+                value = attributes.pop(element, None)
+                if value:
+                    attacks[element[:-7]] = int(value)
+            attack = "Atk:%s" % physical_attack
+            if attacks:
+                attack += " physical + "
+                attack += "+ ".join(f"{v} {e}" for e,v in attacks.items())
             attributes_rep.append(attack)
         if "defense" in attributes:
-            defense = "Def: %s" % attributes["defense"]
+            defense = "Def:%s" % attributes["defense"]
             if "defense_modifier" in attributes:
                 defense += " %s" % attributes["defense_modifier"]
             attributes_rep.append(defense)
         if "armor" in attributes:
             attributes_rep.append("Arm:%s" % attributes["armor"])
+
+    @staticmethod
+    def _parse_skill_attributes(attributes, attributes_rep):
         if "magic" in attributes:
             attributes_rep.append("magic level %s" % attributes["magic"])
         if "axe" in attributes:
@@ -236,17 +257,6 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
             attributes_rep.append("shielding %s" % attributes["shielding"])
         if "fist" in attributes:
             attributes_rep.append("fist fighting %s" % attributes["fist"])
-        if "regeneration" in attributes:
-            attributes_rep.append(attributes["regeneration"])
-        if self.resistances:
-            resistances = []
-            for element, value in self.resistances.items():
-                resistances.append("%s %+d%%" % (element, value))
-            attributes_rep.append("protection %s" % ", ".join(resistances))
-        if "volume" in attributes:
-            attributes_rep.append("Vol:%s" % attributes["volume"])
-        if attributes_rep:
-            look_text.append(" (%s)" % ", ".join(attributes_rep))
 
     @classmethod
     def from_article(cls, article):
