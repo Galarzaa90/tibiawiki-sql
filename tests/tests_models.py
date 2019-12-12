@@ -11,7 +11,7 @@ class TestWikiApi(unittest.TestCase):
         self.conn.row_factory = sqlite3.Row
         schema.create_tables(self.conn)
 
-    def testAchievement(self):
+    def test_achievement(self):
         article = Article(1, "Demonic Barkeeper", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_achievement.txt"))
         achievement = models.Achievement.from_article(article)
@@ -26,7 +26,7 @@ class TestWikiApi(unittest.TestCase):
         db_achievement = models.Achievement.get_by_field(self.conn, "name", "demonic barkeeper", use_like=True)
         self.assertIsInstance(db_achievement, models.Achievement)
 
-    def testCreature(self):
+    def test_creature(self):
         article = Article(1, "Demon", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_creature.txt"))
         creature = models.Creature.from_article(article)
@@ -50,7 +50,7 @@ class TestWikiApi(unittest.TestCase):
         db_creature = models.Creature.get_by_field(self.conn, "name", "demon", use_like=True)
         self.assertIsInstance(db_creature, models.Creature)
 
-    def testHouse(self):
+    def test_house(self):
         article = Article(1, "Crystal Glance", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_house.txt"))
         house = models.House.from_article(article)
@@ -65,7 +65,7 @@ class TestWikiApi(unittest.TestCase):
         models.House.get_by_field(self.conn, "house_id", 55302)
         self.assertIsInstance(db_house, models.House)
 
-    def testImbuement(self):
+    def test_imbuement(self):
         article = Article(1, "Powerful Strike", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_imbuement.txt"))
         imbuement = models.Imbuement.from_article(article)
@@ -82,7 +82,7 @@ class TestWikiApi(unittest.TestCase):
         db_imbuement = models.Imbuement.get_by_field(self.conn, "name", "powerful strike", use_like=True)
         self.assertIsInstance(db_imbuement, models.Imbuement)
 
-    def testItem(self):
+    def test_item(self):
         article = Article(1, "Fire Sword", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_item.txt"))
         item = models.Item.from_article(article)
@@ -98,7 +98,7 @@ class TestWikiApi(unittest.TestCase):
         db_item = models.Item.get_by_field(self.conn, "name", "fire sword", use_like=True)
         self.assertIsInstance(db_item, models.Item)
 
-    def testItemResist(self):
+    def test_item_resist(self):
         article = Article(1, "Dream Shroud", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_item_resist.txt"))
         item = models.Item.from_article(article)
@@ -116,7 +116,7 @@ class TestWikiApi(unittest.TestCase):
         db_item = models.Item.get_by_field(self.conn, "name", "dream shroud", use_like=True)
         self.assertIsInstance(db_item, models.Item)
 
-    def testItemSounds(self):
+    def test_item_sounds(self):
         article = Article(1, "Goromaphone", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_item_sounds.txt"))
         item = models.Item.from_article(article)
@@ -133,7 +133,7 @@ class TestWikiApi(unittest.TestCase):
         self.assertEqual(len(item.sounds), len(db_item.sounds))
         self.assertIsInstance(db_item, models.Item)
 
-    def testKey(self):
+    def test_key(self):
         article = Article(1, "Key 3940", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_key.txt"))
         key = models.Key.from_article(article)
@@ -148,7 +148,7 @@ class TestWikiApi(unittest.TestCase):
         db_key = models.Key.get_by_field(self.conn, "number", 3940)
         self.assertIsInstance(db_key, models.Key)
 
-    def testNpc(self):
+    def test_npc(self):
         article = Article(1, "Yaman", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_npc.txt"))
         npc = models.Npc.from_article(article)
@@ -171,7 +171,7 @@ class TestWikiApi(unittest.TestCase):
         npc = models.Npc.from_article(article)
         self.assertIsInstance(npc, models.Npc)
 
-    def testQuest(self):
+    def test_quest(self):
         article = Article(1, "The Annihilator Quest", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_quest.txt"))
         quest = models.Quest.from_article(article)
@@ -183,7 +183,7 @@ class TestWikiApi(unittest.TestCase):
         self.assertIsInstance(db_quest, models.Quest)
         self.assertEqual(db_quest.name, quest.name)
 
-    def testSpell(self):
+    def test_spell(self):
         article = Article(1, "The Annihilator Quest", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_spell.txt"))
         spell = models.Spell.from_article(article)
@@ -195,7 +195,7 @@ class TestWikiApi(unittest.TestCase):
         self.assertIsInstance(db_spell, models.Spell)
         self.assertEqual(db_spell.name, spell.name)
 
-    def testWorld(self):
+    def test_world(self):
         article = Article(1, "Mortera", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_world.txt"))
         world = models.World.from_article(article)
@@ -208,7 +208,7 @@ class TestWikiApi(unittest.TestCase):
         self.assertIsInstance(db_world, models.World)
         self.assertEqual(db_world.name, world.name)
 
-    def testMount(self):
+    def test_mount(self):
         article = Article(1, "Doombringer", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_mount.txt"))
         mount = models.Mount.from_article(article)
@@ -223,7 +223,7 @@ class TestWikiApi(unittest.TestCase):
         self.assertIsInstance(db_mount, models.Mount)
         self.assertEqual(db_mount.name, mount.name)
 
-    def testCharm(self):
+    def test_charm(self):
         article = Article(1, "Curse (Charm)", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_charm.txt"))
         charm = models.Charm.from_article(article)
@@ -239,7 +239,7 @@ class TestWikiApi(unittest.TestCase):
         self.assertIsInstance(db_charm, models.Charm)
         self.assertEqual(db_charm.name, charm.name)
 
-    def testOutfit(self):
+    def test_outfit(self):
         article = Article(1, "Barbarian Outfits", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_outfit.txt"))
         outfit = models.Outfit.from_article(article)
