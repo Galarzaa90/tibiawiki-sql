@@ -23,7 +23,7 @@ This allows you to have all the data available at once, as well as take advantag
 All information is gathered from TibiaWiki, click the image to visit and contribute to the project!
 
 .. image:: images/TibiaWiki.gif
-   :target: https://tibia.fandom.com
+   :target: https://tibia.fandom.com/wiki/Main_Page
 
 * :ref:`genindex`
 * :ref:`modindex`
