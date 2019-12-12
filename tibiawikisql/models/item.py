@@ -23,6 +23,8 @@ from tibiawikisql.models.quest import QuestReward
 from tibiawikisql.utils import clean_links, parse_boolean, parse_float, parse_integer, parse_sounds, \
     client_color_to_rgb, clean_question_mark
 
+ELEMENTAL_RESISTANCES = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
+
 
 class Item(abc.Row, abc.Parseable, table=schema.Item):
     """Represents an Item.
@@ -147,11 +149,10 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     
     @property
     def resistances(self):
-        """:class:`OrderedDict`: A mapping of the elemental resistances of this item."""
-        elements = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
+        """:class:`collections.OrderedDict`: A mapping of the elemental resistances of this item."""
         resistances = dict()
         attributes = self.attributes_dict
-        for element in elements:
+        for element in ELEMENTAL_RESISTANCES:
             value = attributes.get(element)
             if value is not None:
                 resistances[element[:-1]] = int(value)
@@ -159,7 +160,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
 
     @property
     def look_text(self):
-        """:class:`str`: Generates the item's look text."""
+        """:class:`str`: The item's look text."""
         look_text = ["You see ", self.article or self.name[0] in ["a", "e", "i", "o", "u"], f" {self.name}"]
         self._get_attributes_look_text(look_text)
         attributes = self.attributes_dict

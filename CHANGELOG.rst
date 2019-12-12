@@ -2,6 +2,24 @@
 Changelog
 =========
 
+.. v4.0.0
+
+4.0.0 (Unreleased)
+==================
+- Fixed database generation failing for images with redirects
+- Added indexes to various columns and various tables, this should increase search performance.
+- Made title and name columns case insensitive.
+- Added ``location`` column to ``House`` class and ``house`` table.
+- Added  ``Outfit`` class and ``outfit`` table.
+    - Added ``OutfitImage`` class and ``outfit_image`` table since outfits have multiple images.
+    - Added ``OutfitQuest`` class and ``outfit_quest`` table for quests required for outfits or its addons.
+- Added ``type_secondary`` column and field to ``item`` and ``creature`` tables and ``Item`` and ``Creature`` classes.
+- Added ``look_text`` property to ``Item``, renders the item's look text.
+- Added ``reistances`` property to ``Item``, gets a dictionary of the item's resistances.
+- **Breaking change**: Renamed ``class`` columns and fields in ``item`` table and ``Item`` class to  ``item_class``.
+- **Breaking change**: Renamed ``class`` columns and fields in ``creature`` table and ``Creature`` class to  ``creature_class``.
+
+
 .. v3.0.1
 
 3.0.1 (2019-05-16)
