@@ -11,7 +11,6 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import operator
 import re
 from collections import OrderedDict
 
@@ -20,8 +19,8 @@ from tibiawikisql.models import abc
 from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
 from tibiawikisql.models.quest import QuestReward
-from tibiawikisql.utils import clean_links, parse_boolean, parse_float, parse_integer, parse_sounds, \
-    client_color_to_rgb, clean_question_mark
+from tibiawikisql.utils import clean_links, clean_question_mark, client_color_to_rgb, parse_boolean, parse_float, \
+    parse_integer, parse_sounds
 
 ELEMENTAL_RESISTANCES = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
 
@@ -232,7 +231,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
             attack = f"Atk:{physical_attack}"
             if attacks:
                 attack += " physical + "
-                attack += "+ ".join(f"{v} {e}" for e,v in attacks.items())
+                attack += "+ ".join(f"{v} {e}" for e, v in attacks.items())
             attributes_rep.append(attack)
         if "defense" in attributes:
             defense = f"Def:{attributes['defense']}"
@@ -267,8 +266,8 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         item.attributes = []
         for name, attribute in ItemAttribute._map.items():
             if attribute in item._raw_attributes and item._raw_attributes[attribute]:
-                item.attributes.append(ItemAttribute(item_id=item.article_id, name=name, value=
-                item._raw_attributes[attribute]))
+                item.attributes.append(ItemAttribute(item_id=item.article_id, name=name,
+                                                     value=item._raw_attributes[attribute]))
         if "attrib" in item._raw_attributes:
             attribs = item._raw_attributes["attrib"].split(",")
             for attr in attribs:

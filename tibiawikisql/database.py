@@ -103,7 +103,7 @@ class ForeignKey(SQLType):
 
 
 class Column:
-    __slots__ = ( 'column_type', 'index', 'primary_key', 'nullable',
+    __slots__ = ('column_type', 'index', 'primary_key', 'nullable',
                   'default', 'unique', 'name', 'index_name', 'auto_increment', 'no_case')
 
     def __init__(self, column_type, name=None, *, unique=False, primary_key=False, nullable=True, default=None,
@@ -189,7 +189,7 @@ class TableMeta(type):
         dct['columns'] = columns
         return super().__new__(mcs, name, parents, dct)
 
-    def __init__(cls, name, parents, dct, **kwargs):
+    def __init__(cls, name, parents, dct):
         super().__init__(name, parents, dct)
 
 
@@ -253,7 +253,6 @@ class Table(metaclass=TableMeta):
         sql = 'INSERT INTO {0} ({1}) VALUES ({2});'.format(cls.__tablename__, ', '.join(verified),
                                                            ', '.join('?' for _ in verified))
         c.execute(sql, tuple(verified.values()))
-
 
     @classmethod
     def drop(cls):

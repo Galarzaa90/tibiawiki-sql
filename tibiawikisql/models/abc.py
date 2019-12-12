@@ -113,7 +113,12 @@ class Parseable(Article, metaclass=abc.ABCMeta):
 
         if article is None or (cls._pattern and not cls._pattern.search(article.content)):
             return None
-        row = {"article_id": article.article_id, "timestamp": article.timestamp, "title": article.title, "attributes": {}}
+        row = {
+            "article_id": article.article_id,
+            "timestamp": article.timestamp,
+            "title": article.title,
+            "attributes": dict(),
+        }
         attributes = parse_attributes(article.content)
         row["_raw_attributes"] = {}
         for attribute, value in attributes.items():
