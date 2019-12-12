@@ -1,7 +1,8 @@
 import unittest
 
 from tests import load_resource
-from tibiawikisql.utils import *
+from tibiawikisql.utils import clean_links, client_color_to_rgb, parse_boolean, parse_float, parse_integer, \
+    parse_loot_statistics, parse_min_max, parse_sounds
 
 
 class TestWikiApi(unittest.TestCase):

@@ -5,7 +5,7 @@ from tests import load_resource
 from tibiawikisql import Article, models, schema
 
 
-class TestWikiApi(unittest.TestCase):
+class TestModels(unittest.TestCase):
     def setUp(self):
         self.conn = sqlite3.connect(":memory:")
         self.conn.row_factory = sqlite3.Row
@@ -95,6 +95,14 @@ class TestWikiApi(unittest.TestCase):
         self.assertEqual(db_item.name, item.name)
         self.assertGreater(len(db_item.attributes), 0)
 
+        # Dynamic properties:
+        self.assertEqual(len(item.attributes_dict.keys()), len(item.attributes))
+        fire_sword_look_text = 'You see a fire sword (Atk:24 physical + 11 fire, Def:20 +1).' \
+                               ' It can only be wielded properly by players of level 30 or higher.' \
+                               '\nIt weights 23.00 oz.\n' \
+                               'The blade is a magic flame.'
+        self.assertEqual(fire_sword_look_text, item.look_text)
+
         db_item = models.Item.get_by_field(self.conn, "name", "fire sword", use_like=True)
         self.assertIsInstance(db_item, models.Item)
 
@@ -105,6 +113,13 @@ class TestWikiApi(unittest.TestCase):
         self.assertIsInstance(item, models.Item)
         self.assertTrue("energy%" in item.attributes_dict)
         self.assertEqual(item.attributes_dict['magic'], "+3")
+
+        dream_shroud_look_text = 'You see a dream shroud (Arm:12, magic level +3, protection energy +10%).' \
+                                 ' It can only be wielded properly by sorcerers and druids of level 180 or higher.' \
+                                 '\nIt weights 25.00 oz.'
+        self.assertEqual(dream_shroud_look_text, item.look_text)
+        self.assertEqual(len(item.resistances), 1)
+        self.assertEqual(item.resistances["energy"], 10)
 
         item.insert(self.conn)
         db_item = models.Item.get_by_field(self.conn, "article_id", 1)

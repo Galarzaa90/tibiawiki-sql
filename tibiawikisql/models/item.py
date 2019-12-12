@@ -187,7 +187,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         if "without" in vocation:
             vocation = "players without vocations"
         if "level" in attributes or vocation != "players":
-            look_text.append(f"It can only be {verb} by {vocation}")
+            look_text.append(f" It can only be {verb} by {vocation}")
             if "level" in attributes:
                 look_text.append(f" of level {attributes['level']}")
                 if "magic_level" in attributes and attributes["magic_level"] != "0":
