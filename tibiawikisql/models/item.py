@@ -24,6 +24,15 @@ from tibiawikisql.utils import clean_links, clean_question_mark, client_color_to
 
 ELEMENTAL_RESISTANCES = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
 
+SKILL_ATTRIBUTES_MAPPING = {
+    "magic": "magic level {0}",
+    "axe": "axe fighting {0}",
+    "sword": "sword fighting {0}",
+    "club": "club fighting {0}",
+    "distance": "distance fighting {0}",
+    "shielding": "shielding {0}",
+    "fist": "fist fighting {0}",
+}
 
 class Item(abc.Row, abc.Parseable, table=schema.Item):
     """Represents an Item.
@@ -243,20 +252,9 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
 
     @staticmethod
     def _parse_skill_attributes(attributes, attributes_rep):
-        if "magic" in attributes:
-            attributes_rep.append(f"magic level {attributes['magic']}")
-        if "axe" in attributes:
-            attributes_rep.append(f"axe fighting {attributes['axe']}")
-        if "sword" in attributes:
-            attributes_rep.append(f"sword fighting {attributes['sword']}")
-        if "club" in attributes:
-            attributes_rep.append(f"club fighting {attributes['club']}")
-        if "distance" in attributes:
-            attributes_rep.append(f"distance fighting {attributes['distance']}")
-        if "shielding" in attributes:
-            attributes_rep.append(f"shielding {attributes['shielding']}")
-        if "fist" in attributes:
-            attributes_rep.append(f"fist fighting {attributes['fist']}")
+        for attribute, template in SKILL_ATTRIBUTES_MAPPING.items():
+            if attribute in attributes:
+                attributes_rep.append(template.format(attributes[attribute]))
 
     @classmethod
     def from_article(cls, article):

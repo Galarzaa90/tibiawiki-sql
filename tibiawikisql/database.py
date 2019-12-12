@@ -189,7 +189,7 @@ class TableMeta(type):
         dct['columns'] = columns
         return super().__new__(mcs, name, parents, dct)
 
-    def __init__(cls, name, parents, dct):
+    def __init__(cls, name, parents, dct, **kwargs):
         super().__init__(name, parents, dct)
 
 
