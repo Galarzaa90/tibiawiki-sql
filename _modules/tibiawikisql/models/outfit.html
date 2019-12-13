@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>tibiawikisql.models.outfit &#8212; TibiaWikiSQL 4.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../../_static/custom.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tibiawikisql.models.outfit</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright 2019 Allan Galarza</span>
+<span class="c1">#</span>
+<span class="c1">#  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1">#  you may not use this file except in compliance with the License.</span>
+<span class="c1">#  You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#  http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1">#  Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">#  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">#  See the License for the specific language governing permissions and</span>
+<span class="c1">#  limitations under the License.</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="kn">from</span> <span class="nn">tibiawikisql</span> <span class="kn">import</span> <span class="n">schema</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.models</span> <span class="kn">import</span> <span class="n">abc</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.models.quest</span> <span class="kn">import</span> <span class="n">parse_links</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="kn">import</span> <span class="n">parse_integer</span><span class="p">,</span> <span class="n">parse_boolean</span>
+
+
+<div class="viewcode-block" id="Outfit"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Outfit">[docs]</a><span class="k">class</span> <span class="nc">Outfit</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">Outfit</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents an outfit.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    article_id: :class:`int`</span>
+<span class="sd">        The id of the containing article.</span>
+<span class="sd">    title: :class:`str`</span>
+<span class="sd">        The title of the containing article.</span>
+<span class="sd">    timestamp: :class:`int`</span>
+<span class="sd">        The last time the containing article was edited.</span>
+<span class="sd">    name: :class:`str`</span>
+<span class="sd">        The name of the outfit.</span>
+<span class="sd">    type: :class:`str`</span>
+<span class="sd">        The type of outfit. Basic, Quest, Special, Premium.</span>
+<span class="sd">    premium: :class:`bool`</span>
+<span class="sd">        Whether the outfit requires a premium account or not.</span>
+<span class="sd">    bought: :class:`bool`</span>
+<span class="sd">        Whether the outfit can be bought from the Store or not.</span>
+<span class="sd">    tournament: :class:`bool`</span>
+<span class="sd">        Whether the outfit can be bought with Tournament coins or not.</span>
+<span class="sd">    full_price: :class:`int`</span>
+<span class="sd">        The full price of this outfit in the Tibia Store.</span>
+<span class="sd">    achievement: :class:`str`</span>
+<span class="sd">        The achievement obtained for acquiring this full outfit.</span>
+<span class="sd">    version: :class:`str`</span>
+<span class="sd">        The client version where this outfit was first implemented.</span>
+<span class="sd">    images: list of :class:`OutfitImage`</span>
+<span class="sd">        The outfit&#39;s images.</span>
+<span class="sd">    quests: list of :class:`OutfitQuest`</span>
+<span class="sd">        Quests that grant the outfit or its addons.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;article_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;premium&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bought&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tournament&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;full_price&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;achievement&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;version&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;quests&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;images&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;primarytype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;tournament&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;tournament&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
+        <span class="s2">&quot;fulloutfitprice&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;full_price&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;achievement&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;achievement&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;bought&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bought&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
+        <span class="s2">&quot;premium&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
+        <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Outfit&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Outfit.from_article"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Outfit.from_article">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_article</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">article</span><span class="p">):</span>
+        <span class="n">outfit</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_article</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">outfit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">outfit</span>
+        <span class="n">outfit</span><span class="o">.</span><span class="n">quests</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="s2">&quot;outfit&quot;</span> <span class="ow">in</span> <span class="n">outfit</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+            <span class="n">quests</span> <span class="o">=</span> <span class="n">parse_links</span><span class="p">(</span><span class="n">outfit</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;outfit&quot;</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">quest</span> <span class="ow">in</span> <span class="n">quests</span><span class="p">:</span>
+                <span class="n">outfit</span><span class="o">.</span><span class="n">quests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">OutfitQuest</span><span class="p">(</span><span class="n">outfit_id</span><span class="o">=</span><span class="n">outfit</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">quest_title</span><span class="o">=</span><span class="n">quest</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;outfit&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="s2">&quot;addons&quot;</span> <span class="ow">in</span> <span class="n">outfit</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+            <span class="n">quests</span> <span class="o">=</span> <span class="n">parse_links</span><span class="p">(</span><span class="n">outfit</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;addons&quot;</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">quest</span> <span class="ow">in</span> <span class="n">quests</span><span class="p">:</span>
+                <span class="n">outfit</span><span class="o">.</span><span class="n">quests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">OutfitQuest</span><span class="p">(</span><span class="n">outfit_id</span><span class="o">=</span><span class="n">outfit</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">quest_title</span><span class="o">=</span><span class="n">quest</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;addons&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">outfit</span></div>
+
+<div class="viewcode-block" id="Outfit.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Outfit.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">quest</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;quests&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">quest</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Outfit.get_by_field"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Outfit.get_by_field">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_by_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">use_like</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">outfit</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_by_field</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">use_like</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">outfit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">outfit</span><span class="o">.</span><span class="n">quests</span> <span class="o">=</span> <span class="n">OutfitQuest</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;outfit_id&quot;</span><span class="p">,</span> <span class="n">outfit</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+        <span class="n">outfit</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="n">OutfitImage</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;outfit_id&quot;</span><span class="p">,</span> <span class="n">outfit</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">outfit</span></div></div>
+
+
+<div class="viewcode-block" id="OutfitQuest"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.OutfitQuest">[docs]</a><span class="k">class</span> <span class="nc">OutfitQuest</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">OutfitQuest</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents a quest that grants an outfit or it&#39;s addon.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    -----------</span>
+<span class="sd">    outfit_id: :class:`int`</span>
+<span class="sd">        The article id of the outfit given.</span>
+<span class="sd">    outfit_title: :class:`str`</span>
+<span class="sd">        The title of the outfit given.</span>
+<span class="sd">    quest_id: :class:`int`</span>
+<span class="sd">        The article id of the quest that gives the outfit or its addons.</span>
+<span class="sd">    quest_title: :class:`str`</span>
+<span class="sd">        The title of the quest.</span>
+<span class="sd">    type: :class:`str`</span>
+<span class="sd">        Whether the quest is for the outfit or addons.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;outfit_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;outfit_title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;quest_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;quest_title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outfit_id</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;outfit_id&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outfit_title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;outfit_title&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quest_id</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;quest_id&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quest_title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;quest_title&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{attr}</span><span class="s2">=</span><span class="si">{v!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.__class__.__name__}</span><span class="s2">({&#39;,&#39;.join(attributes)})&quot;</span>
+
+<div class="viewcode-block" id="OutfitQuest.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.OutfitQuest.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">(outfit_id, quest_id, type)</span>
+<span class="s2">                          VALUES(?, (SELECT article_id FROM quest WHERE title = ?), ?)&quot;&quot;&quot;</span><span class="p">,</span>
+                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outfit_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">quest_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_is_column</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__slots__</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{cls.table.__tablename__}</span><span class="s2">.*, quest.title as quest_title, outfit.title as outfit_title</span>
+<span class="s2">                   FROM </span><span class="si">{cls.table.__tablename__}</span><span class="s2"></span>
+<span class="s2">                   LEFT JOIN quest ON quest.article_id = quest_id</span>
+<span class="s2">                   LEFT JOIN outfit ON outfit.article_id = outfit_id&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="OutfitImage"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.OutfitImage">[docs]</a><span class="k">class</span> <span class="nc">OutfitImage</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">OutfitImage</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents an outfit image.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    outfit_id: :class:`int`</span>
+<span class="sd">        The article id of the outfit the image belongs to.</span>
+<span class="sd">    outfit_name: :class:`str`</span>
+<span class="sd">        The name of the outfit.</span>
+<span class="sd">    sex: :class:`str`</span>
+<span class="sd">        The sex the outfit is for.</span>
+<span class="sd">    addon: :class:`int`</span>
+<span class="sd">        The addons represented by the image.</span>
+<span class="sd">        0 for no addons, 1 for first addon, 2 for second addon and 3 for both addons.</span>
+<span class="sd">    image: :class:`bytes`</span>
+<span class="sd">        The outfit&#39;s image in bytes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;outfit_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sex&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;addon&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;outfit_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;image&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outfit_id</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;outfit_id&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sex</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sex&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addon</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;addon&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outfit_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;outfit_name&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;image&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{self.__class__.__name__}</span><span class="s2"> outfit_id=</span><span class="si">{self.outfit_id!r}</span><span class="s2"> outfit_name=</span><span class="si">{self.outfit_name!r}</span><span class="s2"> &quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;sex=</span><span class="si">{self.sex!r}</span><span class="s2"> addon=</span><span class="si">{self.addon!r}</span><span class="s2">&gt;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{cls.table.__tablename__}</span><span class="s2">.*, outfit.name as outfit_name</span>
+<span class="s2">                   FROM </span><span class="si">{cls.table.__tablename__}</span><span class="s2"> </span>
+<span class="s2">                   LEFT JOIN outfit on outfit.article_id = outfit_id&quot;&quot;&quot;</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">TibiaWikiSQL</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/galarzaa90/tibiawiki-sql">
+    <img
+        alt="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+        src="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+<p>
+<a class="badge" href="https://beerpay.io/Galarzaa90/tibiawiki-sql">
+<img src="https://img.shields.io/badge/donate-%E2%9D%A4%C2%A0-ff69b4.svg?style=flat" alt="Donate">
+</a>
+</p>
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2019, Allan Galarza.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.
+  </div>
+  
+  </body>
+</html>

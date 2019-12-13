@@ -141,6 +141,26 @@ NpcSpell
    :members:
    :inherited-members:
 
+Outfit
+~~~~~
+.. autoclass:: tibiawikisql.models.Outfit()
+   :members:
+   :inherited-members:
+
+
+OutfitImage
+~~~~~
+.. autoclass:: tibiawikisql.models.OutfitImage()
+   :members:
+   :inherited-members:
+
+
+OutfitQuest
+~~~~~
+.. autoclass:: tibiawikisql.models.OutfitQuest()
+   :members:
+   :inherited-members:
+
 Quest
 ~~~~~
 .. autoclass:: tibiawikisql.models.Quest()

@@ -4,8 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.utils &#8212; TibiaWikiSQL 3.0.1 documentation</title>
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <title>tibiawikisql.utils &#8212; TibiaWikiSQL 4.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -13,103 +13,33 @@
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/custom.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
    
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head><body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../index.html">TibiaWikiSQL</a></h1>
+  
+  
 
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">TibiaWikiSQL 4.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
 
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-    
-
-<p>
-<a class="badge" href="https://travis-ci.org/galarzaa90/tibiawiki-sql">
-    <img
-        alt="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
-        src="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
-    />
-</a>
-</p>
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../schema.html">Database</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-
-
-<h3 class="donation">Donate/support</h3>
-
-
-
-<p>
-<a class="badge" href="https://beerpay.io/Galarzaa90/tibiawiki-sql">
-<img src="https://img.shields.io/badge/donate-%E2%9D%A4%C2%A0-ff69b4.svg?style=flat" alt="Donate">
-</a>
-</p>
-
-
-
-
-
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <h1>Source code for tibiawikisql.utils</h1><div class="highlight"><pre>
@@ -144,6 +74,26 @@
 
 <span class="n">sounds_template</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{{Sound List([^}]+)}}&quot;</span><span class="p">)</span>
 <span class="n">sound_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\|([^|}]+)&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="clean_question_mark"><a class="viewcode-back" href="../../api.html#tibiawikisql.utils.clean_question_mark">[docs]</a><span class="k">def</span> <span class="nf">clean_question_mark</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Removes question mark strings, turning them to nulls.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    content: :class:`str`</span>
+<span class="sd">        A string to clean.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :class:`str`</span>
+<span class="sd">        The string, or None if it was a question mark.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;?&quot;</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="clean_links"><a class="viewcode-back" href="../../api.html#tibiawikisql.utils.clean_links">[docs]</a><span class="k">def</span> <span class="nf">clean_links</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
@@ -336,30 +286,114 @@
     <span class="k">return</span> <span class="p">[]</span></div>
 
 
-<span class="k">def</span> <span class="nf">client_color_to_rgb</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="client_color_to_rgb"><a class="viewcode-back" href="../../api.html#tibiawikisql.utils.client_color_to_rgb">[docs]</a><span class="k">def</span> <span class="nf">client_color_to_rgb</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts a color number from Tibia&#39;s client data to a RGB value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value: :class:`int`</span>
+<span class="sd">        A numeric value representing a color.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int:</span>
+<span class="sd">        The hexadecimal color represented.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">215</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span>
-    <span class="k">return</span> <span class="p">((</span><span class="n">value</span> <span class="o">//</span> <span class="mi">36</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">value</span> <span class="o">//</span> <span class="mi">6</span> <span class="o">%</span> <span class="mi">6</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">value</span> <span class="o">%</span> <span class="mi">6</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">value</span> <span class="o">//</span> <span class="mi">36</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">value</span> <span class="o">//</span> <span class="mi">6</span> <span class="o">%</span> <span class="mi">6</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">value</span> <span class="o">%</span> <span class="mi">6</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
-          
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
-    <div class="footer">
-      &copy;2019, Allan Galarza.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">TibiaWikiSQL</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/galarzaa90/tibiawiki-sql">
+    <img
+        alt="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+        src="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
     </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
 
-    
 
-    
+<h3 class="donation">Donate/support</h3>
+
+
+
+<p>
+<a class="badge" href="https://beerpay.io/Galarzaa90/tibiawiki-sql">
+<img src="https://img.shields.io/badge/donate-%E2%9D%A4%C2%A0-ff69b4.svg?style=flat" alt="Donate">
+</a>
+</p>
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2019, Allan Galarza.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.
+  </div>
+  
   </body>
 </html>

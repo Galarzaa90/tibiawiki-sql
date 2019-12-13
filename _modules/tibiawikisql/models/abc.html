@@ -4,8 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.abc &#8212; TibiaWikiSQL 3.0.1 documentation</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <title>tibiawikisql.models.abc &#8212; TibiaWikiSQL 4.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -13,103 +13,33 @@
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../../_static/custom.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
-  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head><body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../index.html">TibiaWikiSQL</a></h1>
+  
+  
 
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
 
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-    
-
-<p>
-<a class="badge" href="https://travis-ci.org/galarzaa90/tibiawiki-sql">
-    <img
-        alt="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
-        src="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
-    />
-</a>
-</p>
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Database</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../../index.html">Documentation overview</a><ul>
-  <li><a href="../../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-
-
-<h3 class="donation">Donate/support</h3>
-
-
-
-<p>
-<a class="badge" href="https://beerpay.io/Galarzaa90/tibiawiki-sql">
-<img src="https://img.shields.io/badge/donate-%E2%9D%A4%C2%A0-ff69b4.svg?style=flat" alt="Donate">
-</a>
-</p>
-
-
-
-
-
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <h1>Source code for tibiawikisql.models.abc</h1><div class="highlight"><pre>
@@ -130,8 +60,8 @@
 <span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
 
-<span class="kn">from</span> <span class="nn">tibiawikisql</span> <span class="k">import</span> <span class="n">database</span>
-<span class="kn">from</span> <span class="nn">tibiawikisql.api</span> <span class="k">import</span> <span class="n">Article</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql</span> <span class="kn">import</span> <span class="n">database</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.api</span> <span class="kn">import</span> <span class="n">Article</span>
 
 
 <span class="k">def</span> <span class="nf">parse_attributes</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
@@ -228,7 +158,12 @@
 
         <span class="k">if</span> <span class="n">article</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_pattern</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">article</span><span class="o">.</span><span class="n">content</span><span class="p">)):</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;article_id&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">timestamp</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;article_id&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span>
+            <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">timestamp</span><span class="p">,</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+            <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span>
+        <span class="p">}</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="n">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
         <span class="n">row</span><span class="p">[</span><span class="s2">&quot;_raw_attributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -251,7 +186,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
             <span class="c1"># SQLite Booleans are actually stored as 0 or 1, so we convert to true boolean.</span>
@@ -264,13 +199,13 @@
     <span class="k">def</span> <span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">table</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;title&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (article_id=</span><span class="si">%d</span><span class="s2">,</span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;article_id&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.__class__.__name__}</span><span class="s2">(article_id={getattr(self, &#39;article_id&#39;, 0):d},</span><span class="si">{key}</span><span class="s2">=</span><span class="si">{value!r}</span><span class="s2">)&quot;</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_is_column</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -278,7 +213,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;SELECT * FROM </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{cls.table.__tablename__}</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="Row.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Row.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -346,9 +281,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># This is used to protect the query from possible SQL Injection.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_is_column</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Field &#39;</span><span class="si">%s</span><span class="s2">&#39; doesn&#39;t exist.&quot;</span> <span class="o">%</span> <span class="n">field</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Field &#39;</span><span class="si">{field}</span><span class="s2">&#39; doesn&#39;t exist.&quot;</span><span class="p">)</span>
         <span class="n">operator</span> <span class="o">=</span> <span class="s2">&quot;LIKE&quot;</span> <span class="k">if</span> <span class="n">use_like</span> <span class="k">else</span> <span class="s2">&quot;=&quot;</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM </span><span class="si">%s</span><span class="s2"> WHERE </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> ? LIMIT 1&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">operator</span><span class="p">)</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{cls.table.__tablename__}</span><span class="s2"> WHERE </span><span class="si">{field}</span><span class="s2"> </span><span class="si">{operator}</span><span class="s2"> ? LIMIT 1&quot;</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="n">value</span><span class="p">,))</span>
         <span class="n">c</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
         <span class="n">row</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
@@ -391,17 +326,17 @@
 <span class="sd">            The specified field doesn&#39;t exist in the table.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_is_column</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Field &#39;</span><span class="si">%s</span><span class="s2">&#39; doesn&#39;t exist.&quot;</span> <span class="o">%</span> <span class="n">field</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Field &#39;</span><span class="si">{field}</span><span class="s2">&#39; doesn&#39;t exist.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">sort_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_is_column</span><span class="p">(</span><span class="n">sort_by</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Field &#39;</span><span class="si">%s</span><span class="s2">&#39; doesn&#39;t exist.&quot;</span> <span class="o">%</span> <span class="n">sort_by</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Field &#39;</span><span class="si">{sort_by}</span><span class="s2">&#39; doesn&#39;t exist.&quot;</span><span class="p">)</span>
         <span class="n">operator</span> <span class="o">=</span> <span class="s2">&quot;LIKE&quot;</span> <span class="k">if</span> <span class="n">use_like</span> <span class="k">else</span> <span class="s2">&quot;=&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_base_query</span><span class="p">()</span>
         <span class="n">tup</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">WHERE </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> ?&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">operator</span><span class="p">)</span>
+            <span class="n">query</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">WHERE </span><span class="si">{field}</span><span class="s2"> </span><span class="si">{operator}</span><span class="s2"> ?&quot;</span>
             <span class="n">tup</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="p">,)</span>
         <span class="k">if</span> <span class="n">sort_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ORDER BY </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sort_by</span><span class="p">,</span> <span class="s2">&quot;ASC&quot;</span> <span class="k">if</span> <span class="n">ascending</span> <span class="k">else</span> <span class="s2">&quot;DESC&quot;</span><span class="p">)</span>
+            <span class="n">query</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ORDER BY </span><span class="si">{sort_by}</span><span class="s2"> {&#39;ASC&#39; if ascending else &#39;DESC&#39;}&quot;</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">tup</span><span class="p">)</span>
         <span class="n">c</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
@@ -417,22 +352,96 @@
 </pre></div>
 
           </div>
-          
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
-    <div class="footer">
-      &copy;2019, Allan Galarza.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">TibiaWikiSQL</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/galarzaa90/tibiawiki-sql">
+    <img
+        alt="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+        src="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
     </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
 
-    
 
-    
+<h3 class="donation">Donate/support</h3>
+
+
+
+<p>
+<a class="badge" href="https://beerpay.io/Galarzaa90/tibiawiki-sql">
+<img src="https://img.shields.io/badge/donate-%E2%9D%A4%C2%A0-ff69b4.svg?style=flat" alt="Donate">
+</a>
+</p>
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2019, Allan Galarza.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.
+  </div>
+  
   </body>
 </html>

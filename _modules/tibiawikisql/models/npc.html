@@ -4,8 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.npc &#8212; TibiaWikiSQL 3.0.1 documentation</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <title>tibiawikisql.models.npc &#8212; TibiaWikiSQL 4.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -13,103 +13,33 @@
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../../_static/custom.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
-  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head><body>
-  <div class="document">
-    
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../index.html">TibiaWikiSQL</a></h1>
+  
+  
 
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
 
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-    
-
-<p>
-<a class="badge" href="https://travis-ci.org/galarzaa90/tibiawiki-sql">
-    <img
-        alt="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
-        src="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
-    />
-</a>
-</p>
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Database</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
-</ul>
-
-
-<hr />
-<ul>
-    
-    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
-    
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../../index.html">Documentation overview</a><ul>
-  <li><a href="../../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-
-
-<h3 class="donation">Donate/support</h3>
-
-
-
-<p>
-<a class="badge" href="https://beerpay.io/Galarzaa90/tibiawiki-sql">
-<img src="https://img.shields.io/badge/donate-%E2%9D%A4%C2%A0-ff69b4.svg?style=flat" alt="Donate">
-</a>
-</p>
-
-
-
-
-
-        </div>
-      </div>
+    <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <h1>Source code for tibiawikisql.models.npc</h1><div class="highlight"><pre>
@@ -130,9 +60,9 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
 
-<span class="kn">from</span> <span class="nn">tibiawikisql</span> <span class="k">import</span> <span class="n">schema</span>
-<span class="kn">from</span> <span class="nn">tibiawikisql.models</span> <span class="k">import</span> <span class="n">abc</span>
-<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="k">import</span> <span class="n">clean_links</span><span class="p">,</span> <span class="n">convert_tibiawiki_position</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql</span> <span class="kn">import</span> <span class="n">schema</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.models</span> <span class="kn">import</span> <span class="n">abc</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="kn">import</span> <span class="n">clean_links</span><span class="p">,</span> <span class="n">convert_tibiawiki_position</span>
 
 <span class="n">price_to_template</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{{Price to (?:Buy|Sell)\s*([^}]+)}}&quot;</span><span class="p">)</span>
 <span class="n">npc_offers</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\|([^|:\[]+)(?::\s?(\d+))?(?:\s?\[\[([^\]]+))?&quot;</span><span class="p">)</span>
@@ -253,7 +183,7 @@
 <span class="sd">    :class:`str`</span>
 <span class="sd">        The string with regular links instead of ILink templates.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ilink_pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[[\g&lt;1&gt;]]&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ilink_pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[[\g&lt;1&gt;]]&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Npc"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Npc">[docs]</a><span class="k">class</span> <span class="nc">Npc</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">Npc</span><span class="p">):</span>
@@ -302,7 +232,7 @@
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;article_id&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;race&quot;</span><span class="p">,</span> <span class="s2">&quot;job&quot;</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="s2">&quot;sell_offers&quot;</span><span class="p">,</span> <span class="s2">&quot;buy_offers&quot;</span><span class="p">,</span> <span class="s2">&quot;destinations&quot;</span><span class="p">,</span> <span class="s2">&quot;teaches&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
@@ -443,7 +373,7 @@
 
 
 <span class="k">class</span> <span class="nc">NpcOffer</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">npc_id</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;npc_id&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">npc_title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;npc_title&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">item_id</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;item_id&quot;</span><span class="p">)</span>
@@ -453,17 +383,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">npc_city</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;npc_city&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{attr}</span><span class="s2">=</span><span class="si">{v!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                 <span class="k">pass</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0.__class__.__name__}</span><span class="s2">(</span><span class="si">{1}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">))</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.__class__.__name__}</span><span class="s2">({&#39;,&#39;.join(attributes)})&quot;</span>
 
 
 <div class="viewcode-block" id="NpcSellOffer"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcSellOffer">[docs]</a><span class="k">class</span> <span class="nc">NpcSellOffer</span><span class="p">(</span><span class="n">NpcOffer</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">NpcSelling</span><span class="p">):</span>
@@ -491,7 +421,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;npc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;npc_title&quot;</span><span class="p">,</span> <span class="s2">&quot;npc_city&quot;</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="s2">&quot;item_title&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;currency_id&quot;</span><span class="p">,</span> <span class="s2">&quot;currency_title&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="NpcSellOffer.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcSellOffer.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
@@ -499,7 +429,7 @@
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;currency_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
                 <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
 <span class="s2">                            VALUES(</span>
 <span class="s2">                            ?,</span>
 <span class="s2">                            (SELECT article_id from item WHERE title = ?),</span>
@@ -507,7 +437,7 @@
 <span class="s2">                            (SELECT article_id from item WHERE title = ?))&quot;&quot;&quot;</span>
                 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npc_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currency_title</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
 <span class="s2">                                        VALUES(</span>
 <span class="s2">                                        ?,</span>
 <span class="s2">                                        (SELECT article_id from item WHERE title = ?),</span>
@@ -523,12 +453,13 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">%s</span><span class="s2">.*, item.title as item_title, npc.title as npc_title, npc.city as npc_city,</span>
-<span class="s2">                  currency.title as currency_title FROM </span><span class="si">%s</span><span class="s2"></span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{cls.table.__tablename__}</span><span class="s2">.*, item.title as item_title, npc.title as npc_title, </span>
+<span class="s2">                  npc.city as npc_city, currency.title as currency_title </span>
+<span class="s2">                  FROM </span><span class="si">{cls.table.__tablename__}</span><span class="s2"></span>
 <span class="s2">                  LEFT JOIN npc ON npc.article_id = npc_id</span>
 <span class="s2">                  LEFT JOIN item ON item.article_id = item_id</span>
 <span class="s2">                  LEFT JOIN item currency on currency.article_id = currency_id</span>
-<span class="s2">                  &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span></div>
+<span class="s2">                  &quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="NpcBuyOffer"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcBuyOffer">[docs]</a><span class="k">class</span> <span class="nc">NpcBuyOffer</span><span class="p">(</span><span class="n">NpcOffer</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">NpcBuying</span><span class="p">):</span>
@@ -556,7 +487,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;npc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;npc_title&quot;</span><span class="p">,</span> <span class="s2">&quot;npc_city&quot;</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="s2">&quot;item_title&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;currency_id&quot;</span><span class="p">,</span> <span class="s2">&quot;currency_title&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="NpcBuyOffer.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcBuyOffer.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
@@ -564,7 +495,7 @@
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;currency_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
                 <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
 <span class="s2">                            VALUES(</span>
 <span class="s2">                            ?,</span>
 <span class="s2">                            (SELECT article_id from item WHERE title = ?),</span>
@@ -572,7 +503,7 @@
 <span class="s2">                            (SELECT article_id from item WHERE title = ?))&quot;&quot;&quot;</span>
                 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npc_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currency_title</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
 <span class="s2">                                        VALUES(</span>
 <span class="s2">                                        ?,</span>
 <span class="s2">                                        (SELECT article_id from item WHERE title = ?),</span>
@@ -588,12 +519,12 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">%s</span><span class="s2">.*, item.title as item_title, npc.title as npc_title, npc.city as npc_city,</span>
-<span class="s2">                  currency.title as currency_title FROM </span><span class="si">%s</span><span class="s2"></span>
-<span class="s2">                  LEFT JOIN npc ON npc.article_id = npc_id</span>
-<span class="s2">                  LEFT JOIN item ON item.article_id = item_id</span>
-<span class="s2">                  LEFT JOIN item currency on currency.article_id = currency_id</span>
-<span class="s2">                  &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{cls.table.__tablename__}</span><span class="s2">.*, item.title as item_title, npc.title as npc_title, </span>
+<span class="s2">                   npc.city as npc_city, currency.title as currency_title FROM </span><span class="si">{cls.table.__tablename__}</span><span class="s2"></span>
+<span class="s2">                   LEFT JOIN npc ON npc.article_id = npc_id</span>
+<span class="s2">                   LEFT JOIN item ON item.article_id = item_id</span>
+<span class="s2">                   LEFT JOIN item currency on currency.article_id = currency_id</span>
+<span class="s2">                   &quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="NpcSpell"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcSpell">[docs]</a><span class="k">class</span> <span class="nc">NpcSpell</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">NpcSpell</span><span class="p">):</span>
@@ -626,14 +557,14 @@
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;npc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;npc_title&quot;</span><span class="p">,</span> <span class="s2">&quot;npc_city&quot;</span><span class="p">,</span> <span class="s2">&quot;spell_id&quot;</span><span class="p">,</span> <span class="s2">&quot;spell_title&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;knight&quot;</span><span class="p">,</span> <span class="s2">&quot;sorcerer&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;paladin&quot;</span><span class="p">,</span> <span class="s2">&quot;druid&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">npc_city</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;npc_city&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">npc_title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;npc_title&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spell_title</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;spell_title&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
@@ -642,7 +573,7 @@
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{attr}</span><span class="s2">=</span><span class="si">{v!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                 <span class="k">pass</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0.__class__.__name__}</span><span class="s2">(</span><span class="si">{1}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">))</span>
@@ -651,7 +582,7 @@
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;spell_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(c.name for c in self.table.columns)})</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(c.name for c in self.table.columns)})</span>
 <span class="s2">                        VALUES(?, (SELECT article_id from spell WHERE title = ?), ?, ?, ?, ?)&quot;&quot;&quot;</span>
             <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npc_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spell_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">knight</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sorcerer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">paladin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">druid</span><span class="p">))</span></div>
 
@@ -661,10 +592,11 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">%s</span><span class="s2">.*, spell.title as spell_title, npc.title as npc_title, spell.price as price, </span>
-<span class="s2">                  npc.city as npc_city FROM </span><span class="si">%s</span><span class="s2"></span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{cls.table.__tablename__}</span><span class="s2">.*, spell.title as spell_title, npc.title as npc_title,</span>
+<span class="s2">                  spell.price as price, npc.city as npc_city </span>
+<span class="s2">                  FROM </span><span class="si">{cls.table.__tablename__}</span><span class="s2"></span>
 <span class="s2">                  LEFT JOIN npc ON npc.article_id = npc_id</span>
-<span class="s2">                  LEFT JOIN spell ON spell.article_id = spell_id&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span></div>
+<span class="s2">                  LEFT JOIN spell ON spell.article_id = spell_id&quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="NpcDestination"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcDestination">[docs]</a><span class="k">class</span> <span class="nc">NpcDestination</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">NpcDestination</span><span class="p">):</span>
@@ -682,9 +614,14 @@
 <span class="sd">    notes: :class:`str`</span>
 <span class="sd">        Notes about the destination, such as requirements.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;npc_id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;notes&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;npc_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;price&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;notes&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
@@ -706,9 +643,16 @@
 <span class="sd">    location: :class:`str`</span>
 <span class="sd">        The location where Rashid is that day.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;day&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;z&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;city&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;location&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
@@ -724,22 +668,96 @@
 </pre></div>
 
           </div>
-          
         </div>
       </div>
-    <div class="clearer"></div>
-  </div>
-    <div class="footer">
-      &copy;2019, Allan Galarza.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">TibiaWikiSQL</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=galarzaa90&repo=tibiawiki-sql&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/galarzaa90/tibiawiki-sql">
+    <img
+        alt="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+        src="https://secure.travis-ci.org/galarzaa90/tibiawiki-sql.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://tibia.fandom.com">Contribute to TibiaWiki</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
     </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
 
-    
 
-    
+<h3 class="donation">Donate/support</h3>
+
+
+
+<p>
+<a class="badge" href="https://beerpay.io/Galarzaa90/tibiawiki-sql">
+<img src="https://img.shields.io/badge/donate-%E2%9D%A4%C2%A0-ff69b4.svg?style=flat" alt="Donate">
+</a>
+</p>
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2019, Allan Galarza.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.
+  </div>
+  
   </body>
 </html>
