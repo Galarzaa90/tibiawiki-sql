@@ -47,7 +47,7 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
     Attributes
     ----------
     article_id: :class:`int`
-        The id of the  containing article.
+        The id of the containing article.
     title: :class:`str`
         The title of the containing article.
     timestamp: :class:`int`
@@ -73,7 +73,7 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
     estimated_time: :class:`str`:
         Estimated time to finish this quest.
     version: :class:`str`
-        The client version where this item was first implemented.
+        The client version where this outfit was first implemented.
     dangers: list of :class:`QuestDanger`
         Creatures found in the quest.
     rewards: list of :class:`QuestReward`
@@ -164,7 +164,12 @@ class QuestReward(abc.Row, table=schema.QuestReward):
     item_title: :class:`str`
         The title of the rewarded item.
     """
-    __slots__ = ("quest_id", "quest_title", "item_id", "item_title")
+    __slots__ = (
+        "quest_id",
+        "quest_title",
+        "item_id",
+        "item_title",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -188,10 +193,10 @@ class QuestReward(abc.Row, table=schema.QuestReward):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.title as item_title, quest.title as quest_title FROM %s
-                  LEFT JOIN item ON item.article_id = item_id
-                  LEFT JOIN quest ON quest.article_id = quest_id
-                  """ % (cls.table.__tablename__, cls.table.__tablename__)
+        return f"""SELECT {cls.table.__tablename__}.*, item.title as item_title, quest.title as quest_title
+                   FROM {cls.table.__tablename__}
+                   LEFT JOIN item ON item.article_id = item_id
+                   LEFT JOIN quest ON quest.article_id = quest_id"""
 
 
 class QuestDanger(abc.Row, table=schema.QuestDanger):
@@ -208,7 +213,12 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
         creature_title: :class:`str`
             The title of the found creature.
         """
-    __slots__ = ("quest_id", "quest_title", "creature_id", "creature_title")
+    __slots__ = (
+        "quest_id",
+        "quest_title",
+        "creature_id",
+        "creature_title"
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -232,7 +242,7 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, creature.title as creature_title, quest.title as quest_title FROM %s
-                  LEFT JOIN creature ON creature.article_id = creature_id
-                  LEFT JOIN quest ON quest.article_id = quest_id
-                  """ % (cls.table.__tablename__, cls.table.__tablename__)
+        return f"""SELECT {cls.table.__tablename__}.*, creature.title as creature_title, quest.title as quest_title
+                   FROM {cls.table.__tablename__}
+                   LEFT JOIN creature ON creature.article_id = creature_id
+                   LEFT JOIN quest ON quest.article_id = quest_id"""

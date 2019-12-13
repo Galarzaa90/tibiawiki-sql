@@ -103,11 +103,11 @@ class ForeignKey(SQLType):
 
 
 class Column:
-    __slots__ = ( 'column_type', 'index', 'primary_key', 'nullable',
-                  'default', 'unique', 'name', 'index_name', 'auto_increment')
+    __slots__ = ('column_type', 'index', 'primary_key', 'nullable',
+                  'default', 'unique', 'name', 'index_name', 'auto_increment', 'no_case')
 
     def __init__(self, column_type, name=None, *, unique=False, primary_key=False, nullable=True, default=None,
-                 auto_increment=None):
+                 auto_increment=None, index=False, no_case=False):
         if inspect.isclass(column_type):
             column_type = column_type()
 
@@ -115,12 +115,14 @@ class Column:
             raise TypeError('Cannot have a non-SQLType derived column_type')
 
         self.column_type = column_type
+        self.index = index
         self.unique = unique
         self.primary_key = primary_key
         self.nullable = nullable
         self.default = default
         self.name = name
         self.auto_increment = auto_increment
+        self.no_case = no_case
 
         if self.auto_increment:
             self.primary_key = True
@@ -141,22 +143,22 @@ class Column:
         if default is not None:
             builder.append('DEFAULT')
             if isinstance(default, str) and isinstance(self.column_type, Text):
-                builder.append("'%s'" % default)
+                builder.append(f"'{default}'")
             elif isinstance(default, bool):
                 builder.append(str(int(default)))
             else:
-                builder.append("%s" % default)
+                builder.append(str(default))
         elif self.unique:
             builder.append('UNIQUE')
-
-        elif self.primary_key:
-            builder.append('PRIMARY KEY')
 
         if self.auto_increment:
             builder.append('AUTOINCREMENT')
 
         if not self.nullable:
             builder.append('NOT NULL')
+
+        if self.no_case:
+            builder.append('COLLATE NOCASE')
 
         return ' '.join(builder)
 
@@ -180,6 +182,8 @@ class TableMeta(type):
             if isinstance(value, Column):
                 if value.name is None:
                     value.name = elem
+                if value.index:
+                    value.index_name = f'{table_name}_{value.name}_idx'
                 columns.append(value)
 
         dct['columns'] = columns
@@ -202,8 +206,22 @@ class Table(metaclass=TableMeta):
             builder.append('IF NOT EXISTS')
 
         builder.append(cls.__tablename__)
-        builder.append('(%s)' % ', '.join(c._create_table() for c in cls.columns))
+        column_creations = []
+        primary_keys = []
+        for col in cls.columns:
+            column_creations.append(col._create_table())
+            if col.primary_key:
+                primary_keys.append(col.name)
+
+        if primary_keys:
+            column_creations.append(f'PRIMARY KEY ({", ".join(primary_keys)})')
+        builder.append(f'({", ".join(column_creations)})')
         statements.append(' '.join(builder) + ';')
+
+        for column in cls.columns:
+            if column.index:
+                fmt = 'CREATE INDEX IF NOT EXISTS {1.index_name} ON {0} ({1.name});'.format(cls.__tablename__, column)
+                statements.append(fmt)
 
         return '\n'.join(statements)
 
@@ -225,7 +243,7 @@ class Table(metaclass=TableMeta):
 
             check = column.column_type.python
             if value is None and not column.nullable:
-                raise TypeError('Cannot pass None to non-nullable column %s.' % column.name)
+                raise TypeError(f'Cannot pass None to non-nullable column {column.name}.')
             elif (not check or not isinstance(value, check)) and value is not None:
                 fmt = 'column {0.name} expected {1.__name__}, received {2.__class__.__name__}'
                 raise TypeError(fmt.format(column, check, value))
@@ -236,7 +254,6 @@ class Table(metaclass=TableMeta):
                                                            ', '.join('?' for _ in verified))
         c.execute(sql, tuple(verified.values()))
 
-
     @classmethod
     def drop(cls):
-        return 'DROP TABLE IF EXISTS %s' % cls.__tablename__
+        return f'DROP TABLE IF EXISTS {cls.__tablename__}'

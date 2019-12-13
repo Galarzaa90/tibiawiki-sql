@@ -1,0 +1,11 @@
+{{Infobox_Outfit|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name            = Barbarian
+| primarytype     = Premium
+| premium         = yes
+| outfit          = premium
+| addons          = premium, see [[Barbarian Outfits Quest]].
+| achievement     = Brutal Politeness
+| implemented     = 7.8
+| artwork         = Barbarian Outfits Artwork.jpg
+| notes           = This outfit stands for raw power, battle cries and lack of manners. I heard that there are a few barbarians living near Northport. They might just be able to provide fitting addons.
+}}

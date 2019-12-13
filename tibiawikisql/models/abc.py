@@ -113,7 +113,12 @@ class Parseable(Article, metaclass=abc.ABCMeta):
 
         if article is None or (cls._pattern and not cls._pattern.search(article.content)):
             return None
-        row = {"article_id": article.article_id, "timestamp": article.timestamp, "title": article.title, "attributes": {}}
+        row = {
+            "article_id": article.article_id,
+            "timestamp": article.timestamp,
+            "title": article.title,
+            "attributes": dict(),
+        }
         attributes = parse_attributes(article.content)
         row["_raw_attributes"] = {}
         for attribute, value in attributes.items():
@@ -155,7 +160,7 @@ class Row(metaclass=abc.ABCMeta):
         if not value:
             key = "name"
             value = getattr(self, key, "")
-        return "%s (article_id=%d,%s=%r)" % (self.__class__.__name__, getattr(self, "article_id", 0), key, value)
+        return f"{self.__class__.__name__}(article_id={getattr(self, 'article_id', 0):d},{key}={value!r})"
 
     @classmethod
     def _is_column(cls, name):
@@ -163,7 +168,7 @@ class Row(metaclass=abc.ABCMeta):
 
     @classmethod
     def _get_base_query(cls):
-        return "SELECT * FROM %s" % cls.table.__tablename__
+        return f"SELECT * FROM {cls.table.__tablename__}"
 
     def insert(self, c):
         """
@@ -231,9 +236,9 @@ class Row(metaclass=abc.ABCMeta):
         """
         # This is used to protect the query from possible SQL Injection.
         if not cls._is_column(field):
-            raise ValueError("Field '%s' doesn't exist." % field)
+            raise ValueError(f"Field '{field}' doesn't exist.")
         operator = "LIKE" if use_like else "="
-        query = "SELECT * FROM %s WHERE %s %s ? LIMIT 1" % (cls.table.__tablename__, field, operator)
+        query = f"SELECT * FROM {cls.table.__tablename__} WHERE {field} {operator} ? LIMIT 1"
         c = c.execute(query, (value,))
         c.row_factory = sqlite3.Row
         row = c.fetchone()
@@ -276,17 +281,17 @@ class Row(metaclass=abc.ABCMeta):
             The specified field doesn't exist in the table.
         """
         if field is not None and not cls._is_column(field):
-            raise ValueError("Field '%s' doesn't exist." % field)
+            raise ValueError(f"Field '{field}' doesn't exist.")
         if sort_by is not None and not cls._is_column(sort_by):
-            raise ValueError("Field '%s' doesn't exist." % sort_by)
+            raise ValueError(f"Field '{sort_by}' doesn't exist.")
         operator = "LIKE" if use_like else "="
         query = cls._get_base_query()
         tup = tuple()
         if field is not None:
-            query += "\nWHERE %s %s ?" % (field, operator)
+            query += f"\nWHERE {field} {operator} ?"
             tup = (value,)
         if sort_by is not None:
-            query += "\nORDER BY %s %s" % (sort_by, "ASC" if ascending else "DESC")
+            query += f"\nORDER BY {sort_by} {'ASC' if ascending else 'DESC'}"
         c = c.execute(query, tup)
         c.row_factory = sqlite3.Row
         results = []

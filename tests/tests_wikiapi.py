@@ -6,7 +6,7 @@ from tibiawikisql import api, WikiClient
 
 
 class TestWikiApi(unittest.TestCase):
-    def testCategoryFunctions(self):
+    def test_category_functions(self):
         json_response = load_resource("response_category_without_continue.json")
         api.requests.Session.get = MagicMock()
         api.requests.Session.get.return_value.text = json_response
@@ -21,7 +21,7 @@ class TestWikiApi(unittest.TestCase):
         self.assertIsInstance(titles[0], str)
         self.assertEqual(len(titles), 8)
 
-    def testArticleFunctions(self):
+    def test_article_functions(self):
         json_response = load_resource("response_revisions.json")
         api.requests.Session.get = MagicMock()
         api.requests.Session.get.return_value.text = json_response
@@ -36,7 +36,7 @@ class TestWikiApi(unittest.TestCase):
         self.assertIsInstance(article, api.Article)
         self.assertEqual(article.title, titles[0])
 
-    def testImageFunctions(self):
+    def test_image_functions(self):
         json_response = load_resource("response_image_info.json")
         api.requests.Session.get = MagicMock()
         api.requests.Session.get.return_value.text = json_response

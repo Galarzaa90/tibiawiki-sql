@@ -138,7 +138,7 @@ def replace_ilinks(value):
     :class:`str`
         The string with regular links instead of ILink templates.
     """
-    return ilink_pattern.sub("[[\g<1>]]", value)
+    return ilink_pattern.sub(r"[[\g<1>]]", value)
 
 
 class Npc(abc.Row, abc.Parseable, table=schema.Npc):
@@ -345,10 +345,10 @@ class NpcOffer:
                 v = getattr(self, attr)
                 if v is None:
                     continue
-                attributes.append("%s=%r" % (attr, v))
+                attributes.append(f"{attr}={v!r}")
             except AttributeError:
                 pass
-        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
+        return f"{self.__class__.__name__}({','.join(attributes)})"
 
 
 class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
@@ -408,12 +408,13 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.title as item_title, npc.title as npc_title, npc.city as npc_city,
-                  currency.title as currency_title FROM %s
+        return f"""SELECT {cls.table.__tablename__}.*, item.title as item_title, npc.title as npc_title, 
+                  npc.city as npc_city, currency.title as currency_title 
+                  FROM {cls.table.__tablename__}
                   LEFT JOIN npc ON npc.article_id = npc_id
                   LEFT JOIN item ON item.article_id = item_id
                   LEFT JOIN item currency on currency.article_id = currency_id
-                  """ % (cls.table.__tablename__, cls.table.__tablename__)
+                  """
 
 
 class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
@@ -473,12 +474,12 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.title as item_title, npc.title as npc_title, npc.city as npc_city,
-                  currency.title as currency_title FROM %s
-                  LEFT JOIN npc ON npc.article_id = npc_id
-                  LEFT JOIN item ON item.article_id = item_id
-                  LEFT JOIN item currency on currency.article_id = currency_id
-                  """ % (cls.table.__tablename__, cls.table.__tablename__)
+        return f"""SELECT {cls.table.__tablename__}.*, item.title as item_title, npc.title as npc_title, 
+                   npc.city as npc_city, currency.title as currency_title FROM {cls.table.__tablename__}
+                   LEFT JOIN npc ON npc.article_id = npc_id
+                   LEFT JOIN item ON item.article_id = item_id
+                   LEFT JOIN item currency on currency.article_id = currency_id
+                   """
 
 
 class NpcSpell(abc.Row, table=schema.NpcSpell):
@@ -527,7 +528,7 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
                     continue
                 if isinstance(v, bool) and not v:
                     continue
-                attributes.append("%s=%r" % (attr, v))
+                attributes.append(f"{attr}={v!r}")
             except AttributeError:
                 pass
         return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
@@ -546,10 +547,11 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, spell.title as spell_title, npc.title as npc_title, spell.price as price, 
-                  npc.city as npc_city FROM %s
+        return f"""SELECT {cls.table.__tablename__}.*, spell.title as spell_title, npc.title as npc_title,
+                  spell.price as price, npc.city as npc_city 
+                  FROM {cls.table.__tablename__}
                   LEFT JOIN npc ON npc.article_id = npc_id
-                  LEFT JOIN spell ON spell.article_id = spell_id""" % (cls.table.__tablename__, cls.table.__tablename__)
+                  LEFT JOIN spell ON spell.article_id = spell_id"""
 
 
 class NpcDestination(abc.Row, table=schema.NpcDestination):
@@ -567,7 +569,12 @@ class NpcDestination(abc.Row, table=schema.NpcDestination):
     notes: :class:`str`
         Notes about the destination, such as requirements.
     """
-    __slots__ = ("npc_id", "name", "price", "notes")
+    __slots__ = (
+        "npc_id",
+        "name",
+        "price",
+        "notes",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -591,7 +598,14 @@ class RashidPosition(abc.Row, table=schema.RashidPosition):
     location: :class:`str`
         The location where Rashid is that day.
     """
-    __slots__ = ("day", "x", "y", "z", "city", "location")
+    __slots__ = (
+        "day",
+        "x",
+        "y",
+        "z",
+        "city",
+        "location",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

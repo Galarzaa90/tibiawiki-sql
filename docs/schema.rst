@@ -54,6 +54,12 @@ Tables
 +-----------------------+-------------------------------------------------+
 | `npc_spell`_          | Contains all the spells NPCs teach.             |
 +-----------------------+-------------------------------------------------+
+| `outfit`_             | Contains information for all outfits.           |
++-----------------------+-------------------------------------------------+
+| `outfit_image`_       | Contains images for all outfits.                |
++-----------------------+-------------------------------------------------+
+| `outfit_quest`_       | Contains outfit and addon rewards for quests.   |
++-----------------------+-------------------------------------------------+
 | `quest`_              | Contains information for all quests.            |
 +-----------------------+-------------------------------------------------+
 | `quest_danger`_       | Contains creatures that can be found in a       |
@@ -150,6 +156,8 @@ creature
 +---------------------+-------------+-----------------------------------------------------+
 | name                | ``TEXT``    | The name of the creature in-game.                   |
 +---------------------+-------------+-----------------------------------------------------+
+| plural              | ``TEXT``    | The plural of the name.                             |
++---------------------+-------------+-----------------------------------------------------+
 | article             | ``TEXT``    | The grammatical article before the creature’s name. |
 |                     |             | This is shown when looking at creatures.            |
 |                     |             | Bosses have no article.                             |
@@ -166,13 +174,15 @@ creature
 | speed               | ``INTEGER`` | The speed value of the creature.                    |
 |                     |             | May be ``NULL`` if unknown.                         |
 +---------------------+-------------+-----------------------------------------------------+
-| class               | ``TEXT``    | The class this creature belongs to                  |
+| creature_class      | ``TEXT``    | The class this creature belongs to                  |
 |                     |             | (e.g. ``Demons``, ``Humanoids``,                    |
 |                     |             | ``Mammals``).                                       |
 +---------------------+-------------+-----------------------------------------------------+
-| type                | ``TEXT``    | The class this creature belongs to                  |
+| type                | ``TEXT``    | The type this creature belongs to                   |
 |                     |             | (e.g. ``Archdemons``, ``Dwarves``,                  |
 |                     |             | ``Apes``).                                          |
++---------------------+-------------+-----------------------------------------------------+
+| type_secondary      | ``TEXT``    | A secondary type this creature belongs to, if any.  |
 +---------------------+-------------+-----------------------------------------------------+
 | bestiary_class      | ``TEXT``    | The bestiary category of this                       |
 |                     |             | creature. ``NULL`` for creatures                    |
@@ -328,7 +338,7 @@ house
 | article_id | ``INTEGER`` | The id of the article containing this house.    |
 |            | ``PRIMARY`` |                                                 |
 +------------+-------------+-------------------------------------------------+
-| houseid    | ``INTEGER`` | The id of the house according to tibia.com.     |
+| house_id   | ``INTEGER`` | The id of the house according to tibia.com.     |
 +------------+-------------+-------------------------------------------------+
 | title      | ``TEXT``    | The title of the article containing this house. |
 +------------+-------------+-------------------------------------------------+
@@ -338,7 +348,9 @@ house
 +------------+-------------+-------------------------------------------------+
 | street     | ``TEXT``    | The street this house is located in.            |
 +------------+-------------+-------------------------------------------------+
-| beds       | ``INTEGER`` | The number of beds the house has.               |
+| location   | ``TEXT``    | A brief description of the house's location.    |
++------------+-------------+-------------------------------------------------+
+| beds       | ``INTEGER`` | The maximum amount of beds the house can have.  |
 +------------+-------------+-------------------------------------------------+
 | rent       | ``INTEGER`` | The monthly rent of this house.                 |
 +------------+-------------+-------------------------------------------------+
@@ -401,52 +413,56 @@ imbuement_material
 
 item
 ~~~~
-+--------------+-------------+-------------------------------------------------------+
-|    Column    |    Type     |                      Description                      |
-+==============+=============+=======================================================+
-| article_id   | ``INTEGER`` | The id of the article containing this item.           |
-|              | ``PRIMARY`` |                                                       |
-+--------------+-------------+-------------------------------------------------------+
-| title        | ``TEXT``    | The title of the article containing this item.        |
-+--------------+-------------+-------------------------------------------------------+
-| name         | ``TEXT``    | The actual name of the item in-game.                  |
-+--------------+-------------+-------------------------------------------------------+
-| marketable   | ``BOOLEAN`` | Whether this item can be traded in the market or not. |
-+--------------+-------------+-------------------------------------------------------+
-| stackable    | ``BOOLEAN`` | Whether this item is stackable or not.                |
-+--------------+-------------+-------------------------------------------------------+
-| pickupable   | ``BOOLEAN`` | Whether this item can be picked up or not.            |
-+--------------+-------------+-------------------------------------------------------+
-| value        | ``INTEGER`` | The maximum value of this item                        |
-|              |             | when sold to NPCs                                     |
-+--------------+-------------+-------------------------------------------------------+
-| price        | ``INTEGER`` | The maximum price of this item                        |
-|              |             | when bought from NPCs.                                |
-+--------------+-------------+-------------------------------------------------------+
-| weight       | ``REAL``    | The weight of this item in ounces.                    |
-+--------------+-------------+-------------------------------------------------------+
-| class        | ``TEXT``    | The class this item belongs to                        |
-|              |             | (e.g. ``Body Equipment`` , ``Weapons``).              |
-+--------------+-------------+-------------------------------------------------------+
-| type         | ``TEXT``    | The category this item belongs to                     |
-|              |             | (e.g. ``Helmets``, ``Club Weapons``).                 |
-+--------------+-------------+-------------------------------------------------------+
-| flavor_text  | ``TEXT``    | The extra text that is displayed                      |
-|              |             | when some items are looked at.                        |
-+--------------+-------------+-------------------------------------------------------+
-| client_id    | ``INTEGER`` | The client id of the item.                            |
-+--------------+-------------+-------------------------------------------------------+
-| light_color  | ``INTEGER`` | The color of the light emitted by this item, if any.  |
-+--------------+-------------+-------------------------------------------------------+
-| light_radius | ``INTEGER`` | The radius of the light emitted by this item, if any. |
-+--------------+-------------+-------------------------------------------------------+
-| version      | ``TEXT``    | The client version this item was                      |
-|              |             | introduced to the game.                               |
-+--------------+-------------+-------------------------------------------------------+
-| image        | ``BLOB``    | The item’s image bytes.                               |
-+--------------+-------------+-------------------------------------------------------+
-| timestamp    | ``INTEGER`` | Unix timestamp of the article's last edit.            |
-+--------------+-------------+-------------------------------------------------------+
++----------------+-------------+-------------------------------------------------------+
+|     Column     |    Type     |                      Description                      |
++================+=============+=======================================================+
+| article_id     | ``INTEGER`` | The id of the article containing this item.           |
+|                | ``PRIMARY`` |                                                       |
++----------------+-------------+-------------------------------------------------------+
+| title          | ``TEXT``    | The title of the article containing this item.        |
++----------------+-------------+-------------------------------------------------------+
+| name           | ``TEXT``    | The actual name of the item in-game.                  |
++----------------+-------------+-------------------------------------------------------+
+| plural         | ``TEXT``    | The plural of the item's name.                        |
++----------------+-------------+-------------------------------------------------------+
+| marketable     | ``BOOLEAN`` | Whether this item can be traded in the market or not. |
++----------------+-------------+-------------------------------------------------------+
+| stackable      | ``BOOLEAN`` | Whether this item is stackable or not.                |
++----------------+-------------+-------------------------------------------------------+
+| pickupable     | ``BOOLEAN`` | Whether this item can be picked up or not.            |
++----------------+-------------+-------------------------------------------------------+
+| value          | ``INTEGER`` | The maximum value of this item                        |
+|                |             | when sold to NPCs                                     |
++----------------+-------------+-------------------------------------------------------+
+| price          | ``INTEGER`` | The maximum price of this item                        |
+|                |             | when bought from NPCs.                                |
++----------------+-------------+-------------------------------------------------------+
+| weight         | ``REAL``    | The weight of this item in ounces.                    |
++----------------+-------------+-------------------------------------------------------+
+| item_class     | ``TEXT``    | The class this item belongs to                        |
+|                |             | (e.g. ``Body Equipment`` , ``Weapons``).              |
++----------------+-------------+-------------------------------------------------------+
+| type           | ``TEXT``    | The category this item belongs to                     |
+|                |             | (e.g. ``Helmets``, ``Club Weapons``).                 |
++----------------+-------------+-------------------------------------------------------+
+| type_secondary | ``TEXT``    | A secondary type this item belongs to, if any.        |
++----------------+-------------+-------------------------------------------------------+
+| flavor_text    | ``TEXT``    | The extra text that is displayed                      |
+|                |             | when some items are looked at.                        |
++----------------+-------------+-------------------------------------------------------+
+| client_id      | ``INTEGER`` | The client id of the item.                            |
++----------------+-------------+-------------------------------------------------------+
+| light_color    | ``INTEGER`` | The color of the light emitted by this item, if any.  |
++----------------+-------------+-------------------------------------------------------+
+| light_radius   | ``INTEGER`` | The radius of the light emitted by this item, if any. |
++----------------+-------------+-------------------------------------------------------+
+| version        | ``TEXT``    | The client version this item was                      |
+|                |             | introduced to the game.                               |
++----------------+-------------+-------------------------------------------------------+
+| image          | ``BLOB``    | The item’s image bytes.                               |
++----------------+-------------+-------------------------------------------------------+
+| timestamp      | ``INTEGER`` | Unix timestamp of the article's last edit.            |
++----------------+-------------+-------------------------------------------------------+
 
 item_attribute
 ~~~~~~~~~~~~~~
@@ -662,6 +678,64 @@ npc_spell
 | paladin  | ``BOOLEAN`` | Whether this NPC teaches this spell to     |
 |          |             | paladins.                                  |
 +----------+-------------+--------------------------------------------+
+
+
+outfit
+~~~~~~
++-------------+-------------+------------------------------------------------------------+
+|   Column    |    Type     |                        Description                         |
++=============+=============+============================================================+
+| article_id  | ``INTEGER`` | The id of the article containing this outfit.              |
+|             | ``PRIMARY`` |                                                            |
++-------------+-------------+------------------------------------------------------------+
+| title       | ``TEXT``    | The title of the article containing the outfit.            |
++-------------+-------------+------------------------------------------------------------+
+| name        | ``TEXT``    | The name of the outfit.                                    |
++-------------+-------------+------------------------------------------------------------+
+| type        | ``TEXT``    | The type of outfit. Basic, Quest, Special, Premium.        |
++-------------+-------------+------------------------------------------------------------+
+| premium     | ``BOOLEAN`` | Whether this outfit is requires a premium account or not.  |
++-------------+-------------+------------------------------------------------------------+
+| bought      | ``BOOLEAN`` | Whether this outfit can be bought from the store.          |
++-------------+-------------+------------------------------------------------------------+
+| tournament  | ``BOOLEAN`` | Whether this outfit can be obtained with Tournament coins. |
++-------------+-------------+------------------------------------------------------------+
+| full_price  | ``INTEGER`` | The price of the full outfit in Tibia Coins.               |
++-------------+-------------+------------------------------------------------------------+
+| achievement | ``INTEGER`` | The achievement obtained by getting this full outfit.      |
++-------------+-------------+------------------------------------------------------------+
+| version     | ``TEXT``    | Client version where this outfit was implemented.          |
++-------------+-------------+------------------------------------------------------------+
+| timestamp   | ``INTEGER`` | Unix timestamp of the UTC time of                          |
+|             |             | the last edit made to this                                 |
+|             |             | article.                                                   |
++-------------+-------------+------------------------------------------------------------+
+
+outfit_image
+~~~~~~~~~~~~
++-----------+-------------+----------------------------------------+
+|  Column   |    Type     |              Description               |
++===========+=============+========================================+
+| outfit_id | ``INTEGER`` | Id of the outfit this image belongs to |
++-----------+-------------+----------------------------------------+
+| sex       | ``TEXT``    | The sex this outfit image is for.      |
++-----------+-------------+----------------------------------------+
+| addon     | ``TEXT``    | The addon used in the image.           |
++-----------+-------------+----------------------------------------+
+| image     | ``BLOB``    | The outfit's image's bytes.            |
++-----------+-------------+----------------------------------------+
+
+outfit_quest
+~~~~~~~~~~~~
++-----------+-------------+----------------------------------------------------+
+|  Column   |    Type     |                    Description                     |
++===========+=============+====================================================+
+| outfit_id | ``INTEGER`` | Id of the outfit this image belongs to             |
++-----------+-------------+----------------------------------------------------+
+| quest_id  | ``INTEGER`` | Id of the quest this image belongs to              |
++-----------+-------------+----------------------------------------------------+
+| type      | ``TEXT``    | Whether the quest is for the outfit or its addons. |
++-----------+-------------+----------------------------------------------------+
 
 quest
 ~~~~~

@@ -18,10 +18,10 @@ from typing import List, Optional
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
-from tibiawikisql.utils import clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max, parse_sounds
+from tibiawikisql.utils import clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max, parse_sounds, \
+    clean_question_mark
 
 creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
-
 
 KILLS = {
     "Harmless": 25,
@@ -128,10 +128,14 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The article that goes before the name when looking at the creature.
     name: :class:`str`
         The name of the creature, as displayed in-game.
-    class: :class:`str`
+    plural: :class:`str`
+        The plural of the name.
+    creature_class: :class:`str`
         The creature's classification.
     type: :class:`str`
         The creature's type.
+    type_secondary: :class:`str`
+        The creature's secondary type, if any.
     bestiary_class: :class:`str`
         The creature's bestiary class, if applicable.
     bestiary_level: :class:`str`
@@ -198,12 +202,14 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
     _map = {
         "article": ("article", str.strip),
         "name": ("name", str.strip),
+        "plural": ("plural", clean_question_mark),
         "actualname": ("name", str.strip),
-        "creatureclass": ("class", str.strip),
+        "creatureclass": ("creature_class", str.strip),
         "bestiaryclass": ("bestiary_class", str.strip),
         "bestiarylevel": ("bestiary_level", str.strip),
         "occurrence": ("bestiary_occurrence", str.strip),
         "primarytype": ("type", str.strip),
+        "secondarytype": ("type_secondary", str.strip),
         "hp": ("hitpoints", lambda x: parse_integer(x, None)),
         "exp": ("experience", lambda x: parse_integer(x, None)),
         "armor": ("armor", lambda x: parse_integer(x, None)),
@@ -231,16 +237,19 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "walksaround": ("walks_around", parse_monster_walks),
         "implemented": ("version", str.strip)
     }
+
     _pattern = re.compile(r"Infobox[\s_]Creature")
+
     __slots__ = (
         "article_id",
         "title",
         "timestamp",
-        "raw_attribute",
         "article",
         "name",
-        "class",
+        "plural",
+        "creature_class",
         "type",
+        "type_secondary",
         "bestiary_level",
         "bestiary_class",
         "bestiary_occurrence",
@@ -400,7 +409,15 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
     chance: :class:`float`
         The chance percentage of getting this item dropped by this creature.
     """
-    __slots__ = ("creature_id", "creature_title", "item_id", "item_title", "min", "max", "chance")
+    __slots__ = (
+        "creature_id",
+        "creature_title",
+        "item_id",
+        "item_title",
+        "min",
+        "max",
+        "chance",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -414,10 +431,10 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
                 v = getattr(self, attr)
                 if v is None:
                     continue
-                attributes.append("%s=%r" % (attr, v))
+                attributes.append(f"{attr}={v!r}")
             except AttributeError:
                 pass
-        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
+        return f"{self.__class__.__name__}({','.join(attributes)})"
 
     def insert(self, c):
         """Inserts the current model into its respective database.
@@ -442,9 +459,10 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, item.title as item_title, creature.title as creature_title FROM %s
-                  LEFT JOIN creature ON creature.article_id = creature_id
-                  LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
+        return f"""SELECT {cls.table.__tablename__}.*, item.title as item_title, creature.title as creature_title
+                   FROM {cls.table.__tablename__}
+                   LEFT JOIN creature ON creature.article_id = creature_id
+                   LEFT JOIN item ON item.article_id = item_id"""
 
 
 class CreatureSound(abc.Row, table=schema.CreatureSound):
@@ -470,7 +488,7 @@ class CreatureSound(abc.Row, table=schema.CreatureSound):
                 v = getattr(self, attr)
                 if v is None:
                     continue
-                attributes.append("%s=%r" % (attr, v))
+                attributes.append(f"{attr}={v!r}")
             except AttributeError:
                 pass
         return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
@@ -478,6 +496,3 @@ class CreatureSound(abc.Row, table=schema.CreatureSound):
     def insert(self, c):
         columns = dict(creature_id=self.creature_id, content=self.content)
         self.table.insert(c, **columns)
-
-
-

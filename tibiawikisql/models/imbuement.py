@@ -123,8 +123,18 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
     }
     _pattern = re.compile(r"Infobox[\s_]Imbuement")
 
-    __slots__ = ("article_id", "title", "timestamp", "name", "tier", "type", "effect", "version",
-                 "image", "materials")
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "name",
+        "tier",
+        "type",
+        "effect",
+        "version",
+        "image",
+        "materials",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -174,7 +184,13 @@ class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
     amount: :class:`int`
         The amount of items required.
     """
-    __slots__ = {"imbuement_id", "imbuement_title", "item_id", "item_title", "amount"}
+    __slots__ = (
+        "imbuement_id",
+        "imbuement_title",
+        "item_id",
+        "item_title",
+        "amount",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -191,9 +207,10 @@ class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
 
     @classmethod
     def _get_base_query(cls):
-        return """SELECT %s.*, imbuement.title as imbuement_title, item.title as item_title FROM %s
+        return f"""SELECT {cls.table.__tablename__}.*, imbuement.title as imbuement_title, item.title as item_title
+                   FROM {cls.table.__tablename__}
                    LEFT JOIN imbuement ON imbuement.article_id = imbuement_id
-                   LEFT JOIN item ON item.article_id = item_id""" % (cls.table.__tablename__, cls.table.__tablename__)
+                   LEFT JOIN item ON item.article_id = item_id"""
 
     @classmethod
     def _is_column(cls, name):

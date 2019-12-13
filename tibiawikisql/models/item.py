@@ -11,16 +11,28 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
 import re
+from collections import OrderedDict
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
 from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
 from tibiawikisql.models.quest import QuestReward
-from tibiawikisql.utils import clean_links, parse_boolean, parse_float, parse_integer, parse_sounds, client_color_to_rgb
+from tibiawikisql.utils import clean_links, clean_question_mark, client_color_to_rgb, parse_boolean, parse_float, \
+    parse_integer, parse_sounds
 
+ELEMENTAL_RESISTANCES = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
+
+SKILL_ATTRIBUTES_MAPPING = {
+    "magic": "magic level {0}",
+    "axe": "axe fighting {0}",
+    "sword": "sword fighting {0}",
+    "club": "club fighting {0}",
+    "distance": "distance fighting {0}",
+    "shielding": "shielding {0}",
+    "fist": "fist fighting {0}",
+}
 
 class Item(abc.Row, abc.Parseable, table=schema.Item):
     """Represents an Item.
@@ -35,6 +47,8 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         The last time the containing article was edited.
     name: :class:`str`
         The in-game name of the item.
+    plural: :class:`str`
+        The plural of the name.
     article: :class:`str`
         The article that goes before the name when looking at the item.
     marketable: :class:`bool`
@@ -49,10 +63,12 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         The lowest price an NPC will sell this item for.
     weight: :class:`float`
         The item's weight in ounces.
-    class: :class:`str`
+    item_class: :class:`str`
         The item class the item belongs to.
     type: :class:`str`
-        The item's type
+        The item's type.
+    type_secondary: :class:`str`
+        The item's secondary type, if any.
     flavor_text: :class:`str`
         The extra text that is displayed when some items are looked at.
     light_color: :class:`int`, optional.
@@ -81,6 +97,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     _map = {
         "article": ("article", str.strip),
         "actualname": ("name", str.strip),
+        "plural": ("plural", clean_question_mark),
         "marketable": ("marketable", parse_boolean),
         "stackable": ("stackable", parse_boolean),
         "pickupable": ("pickupable", parse_boolean),
@@ -88,8 +105,9 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "npcvalue": ("value_sell", parse_integer),
         "npcprice": ("value_buy", parse_integer),
         "flavortext": ("flavor_text", str.strip),
-        "itemclass": ("class", str.strip),
+        "itemclass": ("item_class", str.strip),
         "primarytype": ("type", str.strip),
+        "secondarytype": ("type_secondary", str.strip),
         "lightcolor": ("light_color", lambda x: client_color_to_rgb(parse_integer(x))),
         "lightradius": ("light_radius", parse_integer),
         "implemented": ("version", str.strip),
@@ -102,6 +120,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "title",
         "timestamp",
         "name",
+        "plural",
         "article",
         "marketable",
         "stackable",
@@ -109,8 +128,9 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "value_sell",
         "value_buy",
         "weight",
-        "class",
+        "item_class",
         "type",
+        "type_secondary",
         "flavor_text",
         "light_color",
         "light_radius",
@@ -130,10 +150,111 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
 
     @property
     def attributes_dict(self):
-        """:class:`dict`, optional: A mapping of the attributes this item has."""
+        """:class:`dict`: A mapping of the attributes this item has."""
         if self.attributes:
             return {a.name: a.value for a in self.attributes}
         return dict()
+    
+    @property
+    def resistances(self):
+        """:class:`collections.OrderedDict`: A mapping of the elemental resistances of this item."""
+        resistances = dict()
+        attributes = self.attributes_dict
+        for element in ELEMENTAL_RESISTANCES:
+            value = attributes.get(element)
+            if value is not None:
+                resistances[element[:-1]] = int(value)
+        return OrderedDict(sorted(resistances.items(), key=lambda t: t[1], reverse=True))
+
+    @property
+    def look_text(self):
+        """:class:`str`: The item's look text."""
+        look_text = ["You see ", self.article or self.name[0] in ["a", "e", "i", "o", "u"], f" {self.name}"]
+        self._get_attributes_look_text(look_text)
+        attributes = self.attributes_dict
+        if "charges" in attributes:
+            look_text.append(f" that has {attributes['charges']} charges left")
+        if "duration" in attributes:
+            look_text.append(" that is brand-new")
+        look_text.append(".")
+        self._get_requirements(look_text)
+        if self.weight:
+            look_text.append(f"\nIt weights {self.weight:.2f} oz.")
+        if self.flavor_text:
+            look_text.append("\n")
+            look_text.append(self.flavor_text)
+        return "".join(look_text)
+
+    def _get_requirements(self, look_text):
+        attributes = self.attributes_dict
+        separator = " and " if self.item_class != "Runes" else ", "
+        vocation = "players"
+        verb = "wielded properly" if self.item_class != "Runes" else "used"
+        if "vocation" in attributes:
+            vocation = separator.join(attributes["vocation"].split("+"))
+        if "without" in vocation:
+            vocation = "players without vocations"
+        if "level" in attributes or vocation != "players":
+            look_text.append(f" It can only be {verb} by {vocation}")
+            if "level" in attributes:
+                look_text.append(f" of level {attributes['level']}")
+                if "magic_level" in attributes and attributes["magic_level"] != "0":
+                    look_text.append(f" and magic level {attributes['magic_level']}")
+                look_text.append(" or higher")
+            look_text.append(".")
+
+    def _get_attributes_look_text(self, look_text):
+        attributes = self.attributes_dict
+        attributes_rep = []
+        self._parse_combat_attributes(attributes, attributes_rep)
+        self._parse_skill_attributes(attributes, attributes_rep)
+        if "regeneration" in attributes:
+            attributes_rep.append(attributes["regeneration"])
+        if self.resistances:
+            resistances = []
+            for element, value in self.resistances.items():
+                resistances.append(f"{element} {value:+d}%")
+            attributes_rep.append(f"protection {', '.join(resistances)}")
+        if "volume" in attributes:
+            attributes_rep.append(f"Vol:{attributes['volume']}")
+        if attributes_rep:
+            look_text.append(f" ({', '.join(attributes_rep)})")
+
+    @staticmethod
+    def _parse_combat_attributes(attributes, attributes_rep):
+        if "range" in attributes:
+            attributes_rep.append(f"Range: {attributes['range']}")
+        if "attack+" in attributes:
+            attributes_rep.append(f"Atk+{attributes['attack+']}")
+        if "hit%+" in attributes:
+            attributes_rep.append(f"Hit%+{attributes['hit%+']}")
+
+        if "attack" in attributes:
+            elements = ['fire_attack', 'earth_attack', 'ice_attack', 'energy_attack']
+            attacks = dict()
+            physical_attack = int(attributes["attack"])
+            for element in elements:
+                value = attributes.pop(element, None)
+                if value:
+                    attacks[element[:-7]] = int(value)
+            attack = f"Atk:{physical_attack}"
+            if attacks:
+                attack += " physical + "
+                attack += "+ ".join(f"{v} {e}" for e, v in attacks.items())
+            attributes_rep.append(attack)
+        if "defense" in attributes:
+            defense = f"Def:{attributes['defense']}"
+            if "defense_modifier" in attributes:
+                defense += f" {attributes['defense_modifier']}"
+            attributes_rep.append(defense)
+        if "armor" in attributes:
+            attributes_rep.append(f"Arm:{attributes['armor']}")
+
+    @staticmethod
+    def _parse_skill_attributes(attributes, attributes_rep):
+        for attribute, template in SKILL_ATTRIBUTES_MAPPING.items():
+            if attribute in attributes:
+                attributes_rep.append(template.format(attributes[attribute]))
 
     @classmethod
     def from_article(cls, article):
@@ -143,8 +264,8 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         item.attributes = []
         for name, attribute in ItemAttribute._map.items():
             if attribute in item._raw_attributes and item._raw_attributes[attribute]:
-                item.attributes.append(ItemAttribute(item_id=item.article_id, name=name, value=
-                                       item._raw_attributes[attribute]))
+                item.attributes.append(ItemAttribute(item_id=item.article_id, name=name,
+                                                     value=item._raw_attributes[attribute]))
         if "attrib" in item._raw_attributes:
             attribs = item._raw_attributes["attrib"].split(",")
             for attr in attribs:
@@ -154,6 +275,9 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
                     attribute = m.group(1).replace("fighting", "").replace("level", "").strip()
                     value = m.group(2)
                     item.attributes.append(ItemAttribute(item_id=item.article_id, name=attribute, value=value))
+                if "regeneration" in attr:
+                    item.attributes.append(ItemAttribute(item_id=item.article_id, name="regeneration",
+                                                         value="faster regeneration"))
         if "resist" in item._raw_attributes:
             resistances = item._raw_attributes["resist"].split(",")
             for element in resistances:
@@ -226,8 +350,19 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
     version: :class:`str`
         The client version where this creature was first implemented.
     """
-    __slots__ = {"article_id", "title", "timestamp", "name", "number", "item_id", "material",
-                 "notes", "origin", "version", "location"}
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "name",
+        "number",
+        "item_id",
+        "material",
+        "notes",
+        "origin",
+        "version",
+        "location",
+    )
     _map = {
         "aka": ("name", clean_links),
         "number": ("number", int),
@@ -305,11 +440,16 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "rewritable": "rewritable",
         "writable_chars": "writechars",
         "consumable": "consumable",
+        "fansite": "fansite"
     }
-    __slots__ = ("item_id", "name", "value")
+    __slots__ = (
+        "item_id",
+        "name",
+        "value",
+    )
 
     def insert(self, c):
-        columns = dict(item_id=self.item_id, name=self.name, value=str(self.value))
+        columns = dict(item_id=self.item_id, name=self.name, value=clean_links(str(self.value)))
         self.table.insert(c, **columns)
 
 
@@ -324,7 +464,10 @@ class ItemSound(abc.Row, table=schema.ItemSound):
     content: :class:`str`
         The content of the sound.
     """
-    __slots__ = ("item_id", "content")
+    __slots__ = (
+        "item_id",
+        "content",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -336,12 +479,11 @@ class ItemSound(abc.Row, table=schema.ItemSound):
                 v = getattr(self, attr)
                 if v is None:
                     continue
-                attributes.append("%s=%r" % (attr, v))
+                attributes.append(f"{attr}={v!r}")
             except AttributeError:
                 pass
-        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
+        return f"{self.__class__.__name__}({','.join(attributes)})"
 
     def insert(self, c):
         columns = dict(item_id=self.item_id, content=self.content)
         self.table.insert(c, **columns)
-

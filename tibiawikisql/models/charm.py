@@ -52,12 +52,22 @@ class Charm(abc.Row, abc.Parseable, table=schema.Charm):
     }
     _pattern = re.compile(r"Infobox[\s_]Charm")
 
-    __slots__ = ("article_id", "title", "timestamp", "name", "type", "effect", "cost", "image", "version")
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "name",
+        "type",
+        "effect",
+        "cost",
+        "image",
+        "version",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
     def __repr__(self):
-        return "%s(name=%r,type=%r,cost=%r)" % (self.__class__.__name__, self.name, self.type, self.cost)
+        return f"{self.__class__.__name__}(name={self.name!r},type={self.type!r},cost={self.cost!r})"
 
 

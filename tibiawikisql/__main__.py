@@ -69,6 +69,7 @@ categories = {
     "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
     "house": Category("Player-Ownable Buildings", models.House, no_images=True),
     "charm": Category("Charms", models.Charm, extension=".png"),
+    "outfits": Category("Outfits", models.Outfit, no_images=True),
     "worlds": Category("Gameworlds", models.World, no_images=True, include_deprecated=True),
     "mounts": Category("Mounts", models.Mount),
 }
@@ -173,6 +174,7 @@ def generate(skip_images, db_name):
                 if value.no_images:
                     continue
                 save_images(conn, key, value)
+            save_outfit_images(conn)
             save_maps(conn)
     with conn:
         gen_time = datetime.datetime.utcnow()
@@ -233,7 +235,67 @@ def save_images(conn, key, value):
     if failed:
         print(f"\33[31m\tCould not fetch {len(failed):,} images.\033[0m")
         print("\t-> \33[31m%s\033[0m" % '\033[0m,\33[31m'.join(failed))
-    print(f"\33[32m\tParsed {key} images in {dt:.2f} seconds."
+    print(f"\33[32m\tSaved {key} images in {dt:.2f} seconds."
+          f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
+
+
+def save_outfit_images(conn):
+    if "outfits" not in categories:
+        return
+    category = categories["outfits"]
+    table = category.model.table.__tablename__
+    os.makedirs(f"images/{table}", exist_ok=True)
+    results = conn.execute(f"SELECT article_id, name FROM {table}")
+    image_info = {}
+    titles = []
+    name_templates = [
+        "Outfit %s Male.gif",
+        "Outfit %s Male Addon 1.gif",
+        "Outfit %s Male Addon 2.gif",
+        "Outfit %s Male Addon 3.gif",
+        "Outfit %s Female.gif",
+        "Outfit %s Female Addon 1.gif",
+        "Outfit %s Female Addon 2.gif",
+        "Outfit %s Female Addon 3.gif",
+    ]
+    addon_sequence = (0, 1, 2, 3, 0, 1, 2, 3)
+    sex_sequence = ["Male"]*4 + ["Female"]*4
+    for article_id, name in results:
+        for i, image_name in enumerate(name_templates):
+            file_name = image_name % name
+            image_info[file_name] = [article_id, addon_sequence[i], sex_sequence[i]]
+            titles.append(file_name)
+    generator = WikiClient.get_images_info(titles)
+    cache_count = 0
+    fetch_count = 0
+    failed = []
+    start = time.perf_counter()
+    with progress_bar(generator, f"Fetching outfit images", len(titles), item_show_func=img_show) as bar:
+        for image in bar:
+            if image is None:
+                continue
+            try:
+                with open(f"images/{table}/{image.file_name}", "rb") as f:
+                    image_bytes = f.read()
+                cache_count += 1
+            except FileNotFoundError:
+                r = requests.get(image.file_url)
+                r.raise_for_status()
+                image_bytes = r.content
+                fetch_count += 1
+                with open(f"images/{table}/{image.file_name}", "wb") as f:
+                    f.write(image_bytes)
+            except requests.HTTPError:
+                failed.append(image.file_name)
+                continue
+            article_id, addons, sex = image_info[image.file_name]
+            conn.execute(f"INSERT INTO outfit_image(outfit_id, addon, sex, image) VALUES(?, ?, ?, ?)",
+                         (article_id, addons, sex, image_bytes))
+    dt = (time.perf_counter() - start)
+    if failed:
+        print(f"\33[31m\tCould not fetch {len(failed):,} images.\033[0m")
+        print("\t-> \33[31m%s\033[0m" % '\033[0m,\33[31m'.join(failed))
+    print(f"\33[32m\tSaved outfit images in {dt:.2f} seconds."
           f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
 
 
