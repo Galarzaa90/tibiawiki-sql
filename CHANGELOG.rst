@@ -4,7 +4,7 @@ Changelog
 
 .. v4.0.0
 
-4.0.0 (Unreleased)
+4.0.0 (2019-12-13)
 ==================
 - Fixed database generation failing for images with redirects
 - Added indexes to various columns and various tables, this should increase search performance.
