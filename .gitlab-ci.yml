@@ -7,6 +7,7 @@ variables:
 stages:
   - build
   - test
+  - analyze
   - deploy
 
 before_script:
@@ -23,7 +24,7 @@ build:
       - dist/
 
 sonarcloud-check:
-  stage: build
+  stage: analyze
   image:
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
@@ -34,10 +35,12 @@ sonarcloud-check:
   before_script: []
   script:
     - sonar-scanner
+  dependencies:
+    - coverage
   only:
     - merge_requests
     - master
-    - develop
+    - dev
 
 docs:
   stage: build
@@ -57,6 +60,7 @@ coverage:
       - coverage run setup.py test
       - coverage report
       - coverage html
+      - coverage xml
   artifacts:
     name: Coverage_Report
     paths:
