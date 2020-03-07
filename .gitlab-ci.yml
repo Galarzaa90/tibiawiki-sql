@@ -65,6 +65,7 @@ coverage:
     name: Coverage_Report
     paths:
       - htmlcov/
+      - coverage.xml
 
 database:
   stage: deploy
