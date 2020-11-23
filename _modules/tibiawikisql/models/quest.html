@@ -1,12 +1,13 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.quest &#8212; TibiaWikiSQL 4.0.0 documentation</title>
-    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tibiawikisql.models.quest &#8212; TibiaWikiSQL 4.0.1 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -32,8 +33,9 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">tibiawikisql.models.quest</a></li> 
       </ul>
     </div>  
 
@@ -226,7 +228,7 @@
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
             <span class="k">return</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">(quest_id, item_id)</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">(quest_id, item_id)</span>
 <span class="s2">                      VALUES(?, (SELECT article_id FROM item WHERE title = ?))&quot;&quot;&quot;</span><span class="p">,</span>
                       <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quest_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span><span class="p">))</span>
         <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span><span class="p">:</span>
@@ -238,8 +240,8 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{cls.table.__tablename__}</span><span class="s2">.*, item.title as item_title, quest.title as quest_title</span>
-<span class="s2">                   FROM </span><span class="si">{cls.table.__tablename__}</span><span class="s2"></span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">.*, item.title as item_title, quest.title as quest_title</span>
+<span class="s2">                   FROM </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">                   LEFT JOIN item ON item.article_id = item_id</span>
 <span class="s2">                   LEFT JOIN quest ON quest.article_id = quest_id&quot;&quot;&quot;</span></div>
 
@@ -275,7 +277,7 @@
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
             <span class="k">return</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">(quest_id, creature_id)</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">(quest_id, creature_id)</span>
 <span class="s2">                      VALUES(?, (SELECT article_id FROM creature WHERE title = ?))&quot;&quot;&quot;</span><span class="p">,</span>
                       <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quest_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">creature_title</span><span class="p">))</span>
         <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span><span class="p">:</span>
@@ -287,12 +289,13 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{cls.table.__tablename__}</span><span class="s2">.*, creature.title as creature_title, quest.title as quest_title</span>
-<span class="s2">                   FROM </span><span class="si">{cls.table.__tablename__}</span><span class="s2"></span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">.*, creature.title as creature_title, quest.title as quest_title</span>
+<span class="s2">                   FROM </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">                   LEFT JOIN creature ON creature.article_id = creature_id</span>
 <span class="s2">                   LEFT JOIN quest ON quest.article_id = quest_id&quot;&quot;&quot;</span></div>
 </pre></div>
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -382,7 +385,7 @@
     </div>
   <div class="footer">
     &copy; Copyright 2019, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.
   </div>
   
   </body>

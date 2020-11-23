@@ -1,12 +1,13 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.npc &#8212; TibiaWikiSQL 4.0.0 documentation</title>
-    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tibiawikisql.models.npc &#8212; TibiaWikiSQL 4.0.1 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -32,8 +33,9 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">tibiawikisql.models.npc</a></li> 
       </ul>
     </div>  
 
@@ -64,7 +66,7 @@
 <span class="kn">from</span> <span class="nn">tibiawikisql.models</span> <span class="kn">import</span> <span class="n">abc</span>
 <span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="kn">import</span> <span class="n">clean_links</span><span class="p">,</span> <span class="n">convert_tibiawiki_position</span>
 
-<span class="n">price_to_template</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{{Price to (?:Buy|Sell)\s*([^}]+)}}&quot;</span><span class="p">)</span>
+<span class="n">price_to_template</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{{(?:NPC List\s*|Price to (?:Buy|Sell))\s*([^}]+)}}&quot;</span><span class="p">)</span>
 <span class="n">npc_offers</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\|([^|:\[]+)(?::\s?(\d+))?(?:\s?\[\[([^\]]+))?&quot;</span><span class="p">)</span>
 
 <span class="n">teaches_template</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}&quot;</span><span class="p">)</span>
@@ -285,6 +287,8 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">currency</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
                 <span class="n">currency</span> <span class="o">=</span> <span class="s2">&quot;Gold Coin&quot;</span>
             <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="s2">&quot;type=&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+                <span class="k">continue</span>
             <span class="k">if</span> <span class="n">price</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
             <span class="n">npc</span><span class="o">.</span><span class="n">buy_offers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NpcBuyOffer</span><span class="p">(</span><span class="n">item_title</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">currency_title</span><span class="o">=</span><span class="n">currency</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
@@ -390,10 +394,10 @@
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{attr}</span><span class="s2">=</span><span class="si">{v!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                 <span class="k">pass</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.__class__.__name__}</span><span class="s2">({&#39;,&#39;.join(attributes)})&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
 
 
 <div class="viewcode-block" id="NpcSellOffer"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.NpcSellOffer">[docs]</a><span class="k">class</span> <span class="nc">NpcSellOffer</span><span class="p">(</span><span class="n">NpcOffer</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">NpcSelling</span><span class="p">):</span>
@@ -429,7 +433,7 @@
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;currency_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
                 <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">)</span>
 <span class="s2">                            VALUES(</span>
 <span class="s2">                            ?,</span>
 <span class="s2">                            (SELECT article_id from item WHERE title = ?),</span>
@@ -437,7 +441,7 @@
 <span class="s2">                            (SELECT article_id from item WHERE title = ?))&quot;&quot;&quot;</span>
                 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npc_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currency_title</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">)</span>
 <span class="s2">                                        VALUES(</span>
 <span class="s2">                                        ?,</span>
 <span class="s2">                                        (SELECT article_id from item WHERE title = ?),</span>
@@ -453,9 +457,9 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{cls.table.__tablename__}</span><span class="s2">.*, item.title as item_title, npc.title as npc_title, </span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">.*, item.title as item_title, npc.title as npc_title, </span>
 <span class="s2">                  npc.city as npc_city, currency.title as currency_title </span>
-<span class="s2">                  FROM </span><span class="si">{cls.table.__tablename__}</span><span class="s2"></span>
+<span class="s2">                  FROM </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">                  LEFT JOIN npc ON npc.article_id = npc_id</span>
 <span class="s2">                  LEFT JOIN item ON item.article_id = item_id</span>
 <span class="s2">                  LEFT JOIN item currency on currency.article_id = currency_id</span>
@@ -495,7 +499,7 @@
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;currency_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
                 <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">)</span>
 <span class="s2">                            VALUES(</span>
 <span class="s2">                            ?,</span>
 <span class="s2">                            (SELECT article_id from item WHERE title = ?),</span>
@@ -503,7 +507,7 @@
 <span class="s2">                            (SELECT article_id from item WHERE title = ?))&quot;&quot;&quot;</span>
                 <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npc_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currency_title</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(col.name for col in self.table.columns)})</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">)</span>
 <span class="s2">                                        VALUES(</span>
 <span class="s2">                                        ?,</span>
 <span class="s2">                                        (SELECT article_id from item WHERE title = ?),</span>
@@ -519,8 +523,8 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{cls.table.__tablename__}</span><span class="s2">.*, item.title as item_title, npc.title as npc_title, </span>
-<span class="s2">                   npc.city as npc_city, currency.title as currency_title FROM </span><span class="si">{cls.table.__tablename__}</span><span class="s2"></span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">.*, item.title as item_title, npc.title as npc_title, </span>
+<span class="s2">                   npc.city as npc_city, currency.title as currency_title FROM </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">                   LEFT JOIN npc ON npc.article_id = npc_id</span>
 <span class="s2">                   LEFT JOIN item ON item.article_id = item_id</span>
 <span class="s2">                   LEFT JOIN item currency on currency.article_id = currency_id</span>
@@ -573,7 +577,7 @@
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{attr}</span><span class="s2">=</span><span class="si">{v!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                 <span class="k">pass</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0.__class__.__name__}</span><span class="s2">(</span><span class="si">{1}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">))</span>
@@ -582,7 +586,7 @@
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;spell_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">({&#39;,&#39;.join(c.name for c in self.table.columns)})</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">)</span>
 <span class="s2">                        VALUES(?, (SELECT article_id from spell WHERE title = ?), ?, ?, ?, ?)&quot;&quot;&quot;</span>
             <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npc_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spell_title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">knight</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sorcerer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">paladin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">druid</span><span class="p">))</span></div>
 
@@ -592,9 +596,9 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{cls.table.__tablename__}</span><span class="s2">.*, spell.title as spell_title, npc.title as npc_title,</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">.*, spell.title as spell_title, npc.title as npc_title,</span>
 <span class="s2">                  spell.price as price, npc.city as npc_city </span>
-<span class="s2">                  FROM </span><span class="si">{cls.table.__tablename__}</span><span class="s2"></span>
+<span class="s2">                  FROM </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">                  LEFT JOIN npc ON npc.article_id = npc_id</span>
 <span class="s2">                  LEFT JOIN spell ON spell.article_id = spell_id&quot;&quot;&quot;</span></div>
 
@@ -667,6 +671,7 @@
 <span class="p">]</span>
 </pre></div>
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -756,7 +761,7 @@
     </div>
   <div class="footer">
     &copy; Copyright 2019, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.
   </div>
   
   </body>

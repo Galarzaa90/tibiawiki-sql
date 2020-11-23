@@ -1,12 +1,13 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>tibiawikisql.models.item &#8212; TibiaWikiSQL 4.0.0 documentation</title>
-    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tibiawikisql.models.item &#8212; TibiaWikiSQL 4.0.1 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -32,8 +33,9 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">tibiawikisql.models.item</a></li> 
       </ul>
     </div>  
 
@@ -214,17 +216,17 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">look_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;:class:`str`: The item&#39;s look text.&quot;&quot;&quot;</span>
-        <span class="n">look_text</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;You see &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">article</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;u&quot;</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{self.name}</span><span class="s2">&quot;</span><span class="p">]</span>
+        <span class="n">look_text</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;You see &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">article</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;u&quot;</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_attributes_look_text</span><span class="p">(</span><span class="n">look_text</span><span class="p">)</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes_dict</span>
         <span class="k">if</span> <span class="s2">&quot;charges&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-            <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; that has </span><span class="si">{attributes[&#39;charges&#39;]}</span><span class="s2"> charges left&quot;</span><span class="p">)</span>
+            <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; that has </span><span class="si">{</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;charges&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> charges left&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">&quot;duration&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
             <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; that is brand-new&quot;</span><span class="p">)</span>
         <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_requirements</span><span class="p">(</span><span class="n">look_text</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">:</span>
-            <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">It weights </span><span class="si">{self.weight:.2f}</span><span class="s2"> oz.&quot;</span><span class="p">)</span>
+            <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">It weights </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> oz.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flavor_text</span><span class="p">:</span>
             <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flavor_text</span><span class="p">)</span>
@@ -240,11 +242,11 @@
         <span class="k">if</span> <span class="s2">&quot;without&quot;</span> <span class="ow">in</span> <span class="n">vocation</span><span class="p">:</span>
             <span class="n">vocation</span> <span class="o">=</span> <span class="s2">&quot;players without vocations&quot;</span>
         <span class="k">if</span> <span class="s2">&quot;level&quot;</span> <span class="ow">in</span> <span class="n">attributes</span> <span class="ow">or</span> <span class="n">vocation</span> <span class="o">!=</span> <span class="s2">&quot;players&quot;</span><span class="p">:</span>
-            <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; It can only be </span><span class="si">{verb}</span><span class="s2"> by </span><span class="si">{vocation}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; It can only be </span><span class="si">{</span><span class="n">verb</span><span class="si">}</span><span class="s2"> by </span><span class="si">{</span><span class="n">vocation</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="s2">&quot;level&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-                <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; of level </span><span class="si">{attributes[&#39;level&#39;]}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; of level </span><span class="si">{</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;level&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="s2">&quot;magic_level&quot;</span> <span class="ow">in</span> <span class="n">attributes</span> <span class="ow">and</span> <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;magic_level&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;0&quot;</span><span class="p">:</span>
-                    <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; and magic level </span><span class="si">{attributes[&#39;magic_level&#39;]}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; and magic level </span><span class="si">{</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;magic_level&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; or higher&quot;</span><span class="p">)</span>
             <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
 
@@ -258,21 +260,21 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resistances</span><span class="p">:</span>
             <span class="n">resistances</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">element</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resistances</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">resistances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{element}</span><span class="s2"> </span><span class="si">{value:+d}</span><span class="s2">%&quot;</span><span class="p">)</span>
-            <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;protection {&#39;, &#39;.join(resistances)}&quot;</span><span class="p">)</span>
+                <span class="n">resistances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">element</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">+d</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+            <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;protection </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resistances</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">&quot;volume&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-            <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vol:</span><span class="si">{attributes[&#39;volume&#39;]}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Vol:</span><span class="si">{</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">attributes_rep</span><span class="p">:</span>
-            <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; ({&#39;, &#39;.join(attributes_rep)})&quot;</span><span class="p">)</span>
+            <span class="n">look_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; (</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes_rep</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_combat_attributes</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">attributes_rep</span><span class="p">):</span>
         <span class="k">if</span> <span class="s2">&quot;range&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-            <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Range: </span><span class="si">{attributes[&#39;range&#39;]}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Range: </span><span class="si">{</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;range&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">&quot;attack+&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-            <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Atk+</span><span class="si">{attributes[&#39;attack+&#39;]}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Atk+</span><span class="si">{</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;attack+&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">&quot;hit%+&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-            <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hit%+</span><span class="si">{attributes[&#39;hit%+&#39;]}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hit%+</span><span class="si">{</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;hit%+&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="s2">&quot;attack&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
             <span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;fire_attack&#39;</span><span class="p">,</span> <span class="s1">&#39;earth_attack&#39;</span><span class="p">,</span> <span class="s1">&#39;ice_attack&#39;</span><span class="p">,</span> <span class="s1">&#39;energy_attack&#39;</span><span class="p">]</span>
@@ -282,18 +284,18 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
                     <span class="n">attacks</span><span class="p">[</span><span class="n">element</span><span class="p">[:</span><span class="o">-</span><span class="mi">7</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-            <span class="n">attack</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Atk:</span><span class="si">{physical_attack}</span><span class="s2">&quot;</span>
+            <span class="n">attack</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Atk:</span><span class="si">{</span><span class="n">physical_attack</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">if</span> <span class="n">attacks</span><span class="p">:</span>
                 <span class="n">attack</span> <span class="o">+=</span> <span class="s2">&quot; physical + &quot;</span>
-                <span class="n">attack</span> <span class="o">+=</span> <span class="s2">&quot;+ &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{v}</span><span class="s2"> </span><span class="si">{e}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attacks</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+                <span class="n">attack</span> <span class="o">+=</span> <span class="s2">&quot;+ &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attacks</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
             <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attack</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">&quot;defense&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-            <span class="n">defense</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Def:</span><span class="si">{attributes[&#39;defense&#39;]}</span><span class="s2">&quot;</span>
+            <span class="n">defense</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Def:</span><span class="si">{</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;defense&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">if</span> <span class="s2">&quot;defense_modifier&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-                <span class="n">defense</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{attributes[&#39;defense_modifier&#39;]}</span><span class="s2">&quot;</span>
+                <span class="n">defense</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;defense_modifier&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">defense</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">&quot;armor&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-            <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Arm:</span><span class="si">{attributes[&#39;armor&#39;]}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">attributes_rep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Arm:</span><span class="si">{</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;armor&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_skill_attributes</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">attributes_rep</span><span class="p">):</span>
@@ -427,7 +429,7 @@
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
             <span class="k">return</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{self.table.__tablename__}</span><span class="s2">(article_id, title, number, item_id, name, material, </span>
+            <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">(article_id, title, number, item_id, name, material, </span>
 <span class="s2">                        location, origin, notes, version, timestamp)</span>
 <span class="s2">                        VALUES(?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?)&quot;&quot;&quot;</span>
             <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">+</span> <span class="s2">&quot; Key&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
@@ -524,16 +526,17 @@
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{attr}</span><span class="s2">=</span><span class="si">{v!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                 <span class="k">pass</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.__class__.__name__}</span><span class="s2">({&#39;,&#39;.join(attributes)})&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
 
     <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">item_id</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span>
 </pre></div>
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -623,7 +626,7 @@
     </div>
   <div class="footer">
     &copy; Copyright 2019, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.
   </div>
   
   </body>
