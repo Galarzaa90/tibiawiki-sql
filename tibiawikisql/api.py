@@ -175,7 +175,7 @@ class WikiClient:
                 member = WikiEntry(member["pageid"], member["title"], timestamp=member["timestamp"])
                 yield member
             try:
-                cmcontinue = data["query-continue"]["categorymembers"]["cmcontinue"]
+                cmcontinue = data["continue"]["cmcontinue"]
             except KeyError:
                 # If there's no "cmcontinue", means we reached the end of the list.
                 break

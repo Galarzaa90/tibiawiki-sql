@@ -2,6 +2,13 @@
 Changelog
 =========
 
+.. v4.0.1
+
+4.0.1 (2020-11-23)
+==================
+
+- Updated API to consider the changes on Fandom's API for pagination.
+
 .. v4.0.0
 
 4.0.0 (2019-12-13)

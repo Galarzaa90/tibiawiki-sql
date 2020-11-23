@@ -19,7 +19,7 @@ from tibiawikisql import schema
 from tibiawikisql.models import abc
 from tibiawikisql.utils import clean_links, convert_tibiawiki_position
 
-price_to_template = re.compile(r"{{Price to (?:Buy|Sell)\s*([^}]+)}}")
+price_to_template = re.compile(r"{{(?:NPC List\s*|Price to (?:Buy|Sell))\s*([^}]+)}}")
 npc_offers = re.compile(r"\|([^|:\[]+)(?::\s?(\d+))?(?:\s?\[\[([^\]]+))?")
 
 teaches_template = re.compile(r"{{Teaches\s*(?:\|name=([^|]+))?([^}]+)}}")
@@ -240,6 +240,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             if not currency.strip():
                 currency = "Gold Coin"
             value = None
+            if "type=" in item:
+                continue
             if price.strip():
                 value = int(price)
             npc.buy_offers.append(NpcBuyOffer(item_title=item.strip(), currency_title=currency, value=value,
