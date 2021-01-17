@@ -70,7 +70,7 @@ categories = {
     "house": Category("Player-Ownable Buildings", models.House, no_images=True),
     "charm": Category("Charms", models.Charm, extension=".png"),
     "outfits": Category("Outfits", models.Outfit, no_images=True),
-    "worlds": Category("Gameworlds", models.World, no_images=True, include_deprecated=True),
+    "worlds": Category("Game Worlds", models.World, no_images=True, include_deprecated=True),
     "mounts": Category("Mounts", models.Mount),
 }
 
