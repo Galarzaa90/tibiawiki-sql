@@ -173,6 +173,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         The z coordinates of the NPC.
     version: :class:`str`
         The client version where the NPC was implemented.
+    status: :class:`str`
+        The status of this NPC in the game.
     image: :class:`bytes`
         The NPC's image in bytes.
     sell_offers: list of :class:`NpcSellOffer`
@@ -184,8 +186,27 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
     teaches: list of :class:`NpcSpell`
         Spells this NPC can teach.
     """
-    __slots__ = ("article_id", "title", "timestamp", "name", "gender", "race", "job", "location",
-                 "city", "x", "y", "z", "version", "image", "sell_offers", "buy_offers", "destinations", "teaches")
+    __slots__ = (
+        "article_id",
+        "title",
+        "timestamp",
+        "name",
+        "gender",
+        "race",
+        "job",
+        "location",
+        "city",
+        "x",
+        "y",
+        "z",
+        "version",
+        "image",
+        "sell_offers",
+        "buy_offers",
+        "destinations",
+        "teaches",
+        "status",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -201,7 +222,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         "posx": ("x", convert_tibiawiki_position),
         "posy": ("y", convert_tibiawiki_position),
         "posz": ("z", int),
-        "implemented": ("version", str.strip)
+        "implemented": ("version", str.strip),
+        "status": ("status", str.lower),
     }
     _pattern = re.compile(r"Infobox[\s_]NPC")
 

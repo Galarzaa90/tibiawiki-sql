@@ -194,6 +194,8 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The field types the creature will walk around, separated by commas.
     version: :class:`str`
         The client version where this creature was first implemented.
+    status: :class:`str`
+        The status of this creature in the game.
     image: :class:`bytes`
         The creature's image in bytes.
     loot: list of :class:`CreatureDrop`
@@ -235,7 +237,8 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "abilities": ("abilities", clean_links),
         "walksthrough": ("walks_through", parse_monster_walks),
         "walksaround": ("walks_around", parse_monster_walks),
-        "implemented": ("version", str.strip)
+        "implemented": ("version", str.strip),
+        "status": ("status", str.lower),
     }
 
     _pattern = re.compile(r"Infobox[\s_]Creature")
@@ -282,6 +285,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "image",
         "loot",
         "sounds",
+        "status",
     )
 
     def __init__(self, **kwargs):

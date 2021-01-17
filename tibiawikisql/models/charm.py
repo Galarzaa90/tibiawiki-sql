@@ -39,6 +39,8 @@ class Charm(abc.Row, abc.Parseable, table=schema.Charm):
         The number of charm points needed to unlock.
     version: :class:`str`
         The client version where this creature was first implemented.
+    status: :class:`str`
+        The status of this charm in the game.
     image: :class:`bytes`
         The charm's icon."""
 
@@ -48,7 +50,8 @@ class Charm(abc.Row, abc.Parseable, table=schema.Charm):
         "type": ("type", str.strip),
         "effect": ("effect", clean_links),
         "cost": ("cost", parse_integer),
-        "implemented": ("version", str.strip)
+        "implemented": ("version", str.strip),
+        "status": ("status", str.lower),
     }
     _pattern = re.compile(r"Infobox[\s_]Charm")
 
@@ -62,6 +65,7 @@ class Charm(abc.Row, abc.Parseable, table=schema.Charm):
         "cost",
         "image",
         "version",
+        "status",
     )
 
     def __init__(self, **kwargs):

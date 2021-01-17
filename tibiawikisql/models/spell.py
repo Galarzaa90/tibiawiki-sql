@@ -63,7 +63,9 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
     sorcerer: :class:`bool`
         Whether the spell can be used by sorcerers or not.
     taught_by: list of :class:`NpcSpell`
-        Npcs that teach this spell.
+        NPCs that teach this spell.
+    status: :class:`str`
+        The status of this spell in the game.
     version: :class:`str`
         The client version where the spell was implemented.
     image: :class:`bytes`
@@ -91,6 +93,7 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         "image",
         "version",
         "effect",
+        "status",
     )
     _map = {
         "name": ("name", str.strip),
@@ -105,6 +108,7 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         "cooldown": ("cooldown", parse_integer),
         "levelrequired": ("level", parse_integer),
         "premium": ("premium", parse_boolean),
+        "status": ("status", str.lower),
     }
     _pattern = re.compile(r"Infobox[\s_]Spell")
 

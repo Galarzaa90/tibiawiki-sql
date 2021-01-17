@@ -26,6 +26,7 @@ class Achievement(Table):
     secret = Column(Boolean)
     premium = Column(Boolean)
     version = Column(Text, index=True)
+    status = Column(Text, default="active")
     timestamp = Column(Integer)
 
 
@@ -38,6 +39,7 @@ class Charm(Table):
     cost = Column(Integer)
     image = Column(Blob)
     version = Column(Text, index=True)
+    status = Column(Text, default="active")
     timestamp = Column(Integer)
 
 
@@ -80,6 +82,7 @@ class Creature(Table):
     walks_around = Column(Text)
     version = Column(Text, index=True)
     image = Column(Blob)
+    status = Column(Text, default="active")
     timestamp = Column(Integer)
 
 
@@ -109,6 +112,7 @@ class Item(Table):
     version = Column(Text, index=True)
     client_id = Column(Integer)
     image = Column(Blob)
+    status = Column(Text, default="active")
     timestamp = Column(Integer)
 
 
@@ -154,6 +158,7 @@ class House(Table):
     z = Column(Integer)
     guildhall = Column(Integer, index=True)
     version = Column(Text, index=True)
+    status = Column(Text, default="active")
     timestamp = Column(Integer)
 
 
@@ -166,6 +171,7 @@ class Imbuement(Table):
     effect = Column(Text)
     version = Column(Text, index=True)
     image = Column(Blob)
+    status = Column(Text, default="active")
     timestamp = Column(Integer)
 
 
@@ -186,6 +192,7 @@ class ItemKey(Table, table_name="item_key"):
     origin = Column(Text)
     notes = Column(Text)
     version = Column(Text, index=True)
+    status = Column(Text, default="active")
     timestamp = Column(Integer)
 
 
@@ -214,6 +221,7 @@ class Spell(Table):
     druid = Column(Boolean, default=False)
     paladin = Column(Boolean, default=False)
     image = Column(Blob)
+    status = Column(Text, default="active")
     timestamp = Column(Integer)
 
 
@@ -231,6 +239,7 @@ class Npc(Table):
     y = Column(Integer)
     z = Column(Integer)
     image = Column(Blob)
+    status = Column(Text, default="active")
     timestamp = Column(Integer)
 
 
@@ -275,6 +284,7 @@ class Outfit(Table):
     full_price = Column(Integer)
     achievement = Column(Text)
     version = Column(Text)
+    status = Column(Text, default="active")
     timestamp = Column(Integer)
 
 
@@ -300,6 +310,7 @@ class Quest(Table):
     estimated_time = Column(Text)
     premium = Column(Boolean)
     version = Column(Text, index=True)
+    status = Column(Text, default="active")
     timestamp = Column(Integer)
 
 
@@ -359,6 +370,7 @@ class Mount(Table):
     light_radius = Column(Integer)
     version = Column(Text, index=True)
     image = Column(Blob)
+    status = Column(Text, default="active")
     timestamp = Column(Integer)
 
 

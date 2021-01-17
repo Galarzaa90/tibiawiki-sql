@@ -34,7 +34,7 @@ colorama.init()
 
 
 def progress_bar(iterable, label, length, **kwargs):
-    return click.progressbar(iterable=iterable, length=length, label=label, fill_char="█", empty_char="░",
+    return click.progressbar(iterable=iterable, length=length, label=label, fill_char="█", empty_char="░", width=0,
                              show_pos=True, bar_template='%(label)s [\33[33m%(bar)s\33[0m] %(info)s', **kwargs)
 
 

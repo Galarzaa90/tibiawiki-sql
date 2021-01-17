@@ -46,6 +46,8 @@ class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
         The full price of this outfit in the Tibia Store.
     achievement: :class:`str`
         The achievement obtained for acquiring this full outfit.
+    status: :class:`str`
+        The status of this outfit in the game.
     version: :class:`str`
         The client version where this outfit was first implemented.
     images: list of :class:`OutfitImage`
@@ -67,6 +69,7 @@ class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
         "version",
         "quests",
         "images",
+        "status",
     )
 
     _map = {
@@ -78,6 +81,7 @@ class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
         "bought": ("bought", parse_boolean),
         "premium": ("premium", parse_boolean),
         "implemented": ("version", str.strip),
+        "status": ("status", str.lower),
     }
 
     _pattern = re.compile(r"Infobox[\s_]Outfit")

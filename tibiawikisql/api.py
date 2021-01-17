@@ -254,9 +254,12 @@ class WikiClient:
             if i >= len(names):
                 break
             params["titles"] = "|".join(f"File:{n}" for n in names[i:min(i + 50, len(names))])
-            i += 50
+
             r = s.get(cls.ENDPOINT, params=params)
+            if r.status_code >= 400:
+                continue
             data = json.loads(r.text)
+            i += 50
             for _, image in data["query"]["pages"].items():
                 if "missing" in image:
                     yield None

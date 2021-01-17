@@ -109,6 +109,8 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         The effect given by the imbuement.
     version: :class:`str`
         The client version where this imbuement was first implemented.
+    status: :class:`str`
+        The status of this imbuement the game.
     image: :class:`str`
         The bytes of the imbuement's image.
     materials: list of :class:`ImbuementMaterial`
@@ -119,7 +121,8 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         "prefix": ("tier", str.strip),
         "type": ("type", str.strip),
         "effect": ("effect", parse_effect),
-        "implemented": ("version", str.strip)
+        "implemented": ("version", str.strip),
+        "status": ("status", str.lower),
     }
     _pattern = re.compile(r"Infobox[\s_]Imbuement")
 
@@ -134,6 +137,7 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         "version",
         "image",
         "materials",
+        "status",
     )
 
     def __init__(self, **kwargs):

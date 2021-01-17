@@ -51,6 +51,8 @@ class Mount(abc.Row, abc.Parseable, table=schema.Mount):
         The color of the light emitted by this mount in RGB, if any.
     light_radius: :class:`int`
         The radius of the light emitted by this mount, if any.
+    status: :class:`str`
+        The status of this mount in the game.
     version: :class:`str`
         The client version where this mount was introduced to the game.
     image: :class:`bytes`
@@ -66,6 +68,7 @@ class Mount(abc.Row, abc.Parseable, table=schema.Mount):
         "lightcolor": ("light_color", lambda x: client_color_to_rgb(parse_integer(x))),
         "lightradius": ("light_radius", int),
         "implemented": ("version", str.strip),
+        "status": ("status", str.lower),
 
     }
     _pattern = re.compile(r"Infobox[\s_]Mount")
@@ -83,6 +86,7 @@ class Mount(abc.Row, abc.Parseable, table=schema.Mount):
         "light_radius",
         "version",
         "image",
+        "status",
     )
 
     def __init__(self, **kwargs):

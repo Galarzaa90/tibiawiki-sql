@@ -72,6 +72,8 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
         Times of the year when this quest is active.
     estimated_time: :class:`str`:
         Estimated time to finish this quest.
+    status: :class:`str`
+        The status of this quest in the game.
     version: :class:`str`
         The client version where this outfit was first implemented.
     dangers: list of :class:`QuestDanger`
@@ -96,6 +98,7 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
         "version",
         "dangers",
         "rewards",
+        "status",
     )
     _map = {
         "name": ("name", html.unescape),
@@ -110,6 +113,7 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
         "timealloc": ("estimated_time", str.strip),
         "premium": ("premium", parse_boolean),
         "implemented": ("version", str.strip),
+        "status": ("status", str.lower),
     }
     _pattern = re.compile(r"Infobox[\s_]Quest")
 

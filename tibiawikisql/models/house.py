@@ -57,6 +57,8 @@ class House(abc.Row, abc.Parseable, table=schema.House):
         The y coordinate of the house.
     z: :class:`int`
         The z coordinate of the house.
+    status: :class:`str`
+        The status of this house in the game.
     version: :class:`str`
         The client version where this creature was first implemented.
     """
@@ -79,6 +81,7 @@ class House(abc.Row, abc.Parseable, table=schema.House):
         "y",
         "z",
         "version",
+        "status",
     )
 
     _map = {
@@ -97,6 +100,7 @@ class House(abc.Row, abc.Parseable, table=schema.House):
         "posy": ("y", convert_tibiawiki_position),
         "posz": ("z", int),
         "implemented": ("version", str.strip),
+        "status": ("status", str.lower),
     }
 
     def __init__(self, **kwargs):

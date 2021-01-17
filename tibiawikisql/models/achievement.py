@@ -43,6 +43,8 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         Instructions or information on how to obtain the achievement.
     secret: :class:`bool`
         Whether the achievement is secret or not.
+    status: :class:`str`
+        The status of this achievement in the game.
     version: :class:`str`
         The client version where this was first implemented.
     """
@@ -56,6 +58,7 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         "spoiler": ("spoiler", clean_links),
         "secret": ("secret", parse_boolean),
         "implemented": ("version", str.strip),
+        "status": ("status", str.lower),
     }
     _pattern = re.compile(r"Infobox[\s_]Achievement")
     __slots__ = (
@@ -69,6 +72,7 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         "spoiler",
         "secret",
         "version",
+        "status",
     )
 
     def __init__(self, **kwargs):

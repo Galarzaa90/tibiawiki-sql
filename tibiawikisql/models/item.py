@@ -34,6 +34,7 @@ SKILL_ATTRIBUTES_MAPPING = {
     "fist": "fist fighting {0}",
 }
 
+
 class Item(abc.Row, abc.Parseable, table=schema.Item):
     """Represents an Item.
 
@@ -79,6 +80,8 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         The internal id of the item in the client.
     version: :class:`str`
         The client version where this item was first implemented.
+    status: :class:`str`
+        The status of this item in the game.
     image: :class:`bytes`
         The item's image in bytes.
     attributes: list of :class:`ItemAttribute`
@@ -111,7 +114,8 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "lightcolor": ("light_color", lambda x: client_color_to_rgb(parse_integer(x))),
         "lightradius": ("light_radius", parse_integer),
         "implemented": ("version", str.strip),
-        "itemid": ("client_id", parse_integer)
+        "itemid": ("client_id", parse_integer),
+        "status": ("status", str.lower),
     }
     _pattern = re.compile(r"Infobox[\s_]Item")
 
@@ -143,6 +147,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "bought_by",
         "awarded_in",
         "sounds",
+        "status",
     )
 
     def __init__(self, **kwargs):
@@ -347,6 +352,8 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
         Notes about the key.
     origin: :class:`str`
         Notes about the origin of the key.
+    status: :class:`str`
+        The status of this key in the game.
     version: :class:`str`
         The client version where this creature was first implemented.
     """
@@ -362,6 +369,7 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
         "origin",
         "version",
         "location",
+        "status",
     )
     _map = {
         "aka": ("name", clean_links),
@@ -371,6 +379,7 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
         "origin": ("origin", clean_links),
         "shortnotes": ("notes", clean_links),
         "implemented": ("version", str.strip),
+        "status": ("status", str.lower),
     }
     _pattern = re.compile(r"Infobox[\s_]Key")
 
