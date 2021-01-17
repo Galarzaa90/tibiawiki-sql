@@ -3,6 +3,7 @@ python:
   - "3.6"
   - "3.7"
   - "3.8"
+  - "3.9"
 
 cache: pip
 
@@ -30,8 +31,8 @@ script:
 after_script:
   - coverage report
   - coverage xml
-  - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
-  - if [[ "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then codecov; fi
+  - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_PYTHON_VERSION" == "3.8" ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
+  - if [[ "$TRAVIS_PYTHON_VERSION" == "3.8" ]]; then codecov; fi
 
 deploy:
   provider: pages
@@ -42,4 +43,4 @@ deploy:
   verbose: true
   on:
     branch: master
-    python: 3.6
+    python: 3.8

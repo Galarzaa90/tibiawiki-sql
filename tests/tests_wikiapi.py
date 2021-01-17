@@ -40,6 +40,7 @@ class TestWikiApi(unittest.TestCase):
         json_response = load_resource("response_image_info.json")
         api.requests.Session.get = MagicMock()
         api.requests.Session.get.return_value.text = json_response
+        api.requests.Session.get.return_value.status_code = 200
         # Response is mocked, so this doesn't affect the output, but this matches the order in the mocked response.
         titles = ["Golden Armor.gif", "Golden Shield.gif"]
         images = list(WikiClient.get_images_info(titles))

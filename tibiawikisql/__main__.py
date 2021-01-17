@@ -204,7 +204,7 @@ def article_show(item):
     return item.title
 
 
-def save_images(conn, key, value):
+def save_images(conn: sqlite3.Connection, key: str, value: Category):
     extension = value.extension
     table = value.model.table.__tablename__
     column = "name" if value.no_title else "title"
