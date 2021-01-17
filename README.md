@@ -48,6 +48,18 @@ subsequent runs, images will be read from disk instead of being fetched from Tib
 
 When done, a database file called `tibiawiki.db` will be found on the folder.
 
+## Docker
+
+The database can also be generated without installing the project, it's dependencies, or Python, by using Docker.
+Make sure to have Docker installed, then simply run:
+
+```sh
+generateWithDocker.sh
+```
+
+The script will build a Docker image and run the script inside a container. The `tibiawiki.db` file will end up in
+the project's root directory as normal.
+
 ## Database contents
 * Achievements
 * Charms
