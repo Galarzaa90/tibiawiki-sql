@@ -69,6 +69,11 @@ coverage:
 
 database:
   stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual
   script:
     - python setup.py install
     - tibiawikisql generate

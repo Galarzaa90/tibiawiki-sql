@@ -78,7 +78,8 @@ categories = {
 @cli.command(name="generate")
 @click.option('-s', '--skip-images', help="Skip fetching and loading images to the database.", is_flag=True)
 @click.option('-db', '--db-name', help="Name for the database file.", default=DATABASE_FILE)
-def generate(skip_images, db_name):
+@click.option('-sd', '--skip-deprecated', help="Skips fetching deprecated articles and their images.", is_flag=True)
+def generate(skip_images, db_name, skip_deprecated):
     """Generates a database file."""
     command_start = time.perf_counter()
     print("Connecting to database...")
@@ -87,7 +88,10 @@ def generate(skip_images, db_name):
     schema.create_tables(conn)
     conn.execute("PRAGMA synchronous = OFF")
     data_store = {}
-    get_articles("Deprecated", data_store)
+    if skip_deprecated:
+        get_articles("Deprecated", data_store)
+    else:
+        data_store['deprecated'] = []
 
     for key, value in categories.items():
         try:
