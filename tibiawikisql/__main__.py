@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 import datetime
+import json
 import os
 import platform
 import sqlite3
@@ -23,7 +24,7 @@ import click
 import colorama
 import requests
 
-from tibiawikisql import WikiClient, __version__, models, schema
+from tibiawikisql import WikiClient, __version__, models, schema, Image
 from tibiawikisql.models import abc
 from tibiawikisql.models.npc import rashid_positions
 from tibiawikisql.utils import parse_loot_statistics, parse_min_max
@@ -34,7 +35,7 @@ colorama.init()
 
 
 def progress_bar(iterable, label, length, **kwargs):
-    return click.progressbar(iterable=iterable, length=length, label=label, fill_char="█", empty_char="░", width=0,
+    return click.progressbar(iterable=iterable, length=length, label=label, fill_char="█", empty_char="░", width=10,
                              show_pos=True, bar_template='%(label)s [\33[33m%(bar)s\33[0m] %(info)s', **kwargs)
 
 
@@ -204,6 +205,29 @@ def article_show(item):
     return item.title
 
 
+def get_cache_info(table):
+    try:
+        with open(f"images/{table}/cache_info.json", 'r') as f:
+            cache_info = json.load(f)
+            return cache_info
+    except (FileNotFoundError, json.JSONDecodeError)    :
+        return {}
+
+
+def save_cache_info(table, cache_info):
+    with open(f"images/{table}/cache_info.json", 'w') as f:
+        json.dump(cache_info, f)
+
+
+def fetch_image(session: requests.Session, table, image):
+    r = session.get(image.file_url)
+    r.raise_for_status()
+    image_bytes = r.content
+    with open(f"images/{table}/{image.file_name}", "wb") as f:
+        f.write(image_bytes)
+    return image_bytes
+
+
 def save_images(conn: sqlite3.Connection, key: str, value: Category):
     extension = value.extension
     table = value.model.table.__tablename__
@@ -211,30 +235,36 @@ def save_images(conn: sqlite3.Connection, key: str, value: Category):
     results = conn.execute(f"SELECT {column} FROM {table}")
     titles = [f"{r[0]}{extension}" for r in results]
     os.makedirs(f"images/{table}", exist_ok=True)
+    cache_info = get_cache_info(table)
     cache_count = 0
     fetch_count = 0
     failed = []
     start = time.perf_counter()
     generator = WikiClient.get_images_info(titles)
+    session = requests.Session()
     with progress_bar(generator, f"Fetching {key} images", len(titles), item_show_func=img_show) as bar:
-        for image in bar:
+        for image in bar:  # type: Image
             if image is None:
                 continue
             try:
-                with open(f"images/{table}/{image.file_name}", "rb") as f:
-                    image_bytes = f.read()
-                cache_count += 1
+                last_update = cache_info.get(image.file_name, 0)
+                if image.timestamp > last_update:
+                    image_bytes = fetch_image(session, table, image)
+                    fetch_count += 1
+                    cache_info[image.file_name] = image.timestamp
+                else:
+                    with open(f"images/{table}/{image.file_name}", "rb") as f:
+                        image_bytes = f.read()
+                    cache_count += 1
             except FileNotFoundError:
-                r = requests.get(image.file_url)
-                r.raise_for_status()
-                image_bytes = r.content
+                image_bytes = fetch_image(session, table, image)
                 fetch_count += 1
-                with open(f"images/{table}/{image.file_name}", "wb") as f:
-                    f.write(image_bytes)
+                cache_info[image.file_name] = image.timestamp
             except requests.HTTPError:
                 failed.append(image.file_name)
                 continue
             conn.execute(f"UPDATE {table} SET image = ? WHERE {column} = ?", (image_bytes, image.clean_name))
+        save_cache_info(table, cache_info)
     dt = (time.perf_counter() - start)
     if failed:
         print(f"\33[31m\tCould not fetch {len(failed):,} images.\033[0m")
@@ -251,6 +281,7 @@ def save_outfit_images(conn):
     os.makedirs(f"images/{table}", exist_ok=True)
     results = conn.execute(f"SELECT article_id, name FROM {table}")
     image_info = {}
+    cache_info = get_cache_info(table)
     titles = []
     name_templates = [
         "Outfit %s Male.gif",
@@ -262,13 +293,14 @@ def save_outfit_images(conn):
         "Outfit %s Female Addon 2.gif",
         "Outfit %s Female Addon 3.gif",
     ]
-    addon_sequence = (0, 1, 2, 3, 0, 1, 2, 3)
+    addon_sequence = (0, 1, 2, 3) * 2
     sex_sequence = ["Male"]*4 + ["Female"]*4
     for article_id, name in results:
         for i, image_name in enumerate(name_templates):
             file_name = image_name % name
             image_info[file_name] = [article_id, addon_sequence[i], sex_sequence[i]]
             titles.append(file_name)
+    session = requests.Session()
     generator = WikiClient.get_images_info(titles)
     cache_count = 0
     fetch_count = 0
@@ -279,22 +311,26 @@ def save_outfit_images(conn):
             if image is None:
                 continue
             try:
-                with open(f"images/{table}/{image.file_name}", "rb") as f:
-                    image_bytes = f.read()
-                cache_count += 1
+                last_update = cache_info.get(image.file_name, 0)
+                if image.timestamp > last_update:
+                    image_bytes = fetch_image(session, table, image)
+                    fetch_count += 1
+                    cache_info[image.file_name] = image.timestamp
+                else:
+                    with open(f"images/{table}/{image.file_name}", "rb") as f:
+                        image_bytes = f.read()
+                    cache_count += 1
             except FileNotFoundError:
-                r = requests.get(image.file_url)
-                r.raise_for_status()
-                image_bytes = r.content
+                image_bytes = fetch_image(session, table, image)
                 fetch_count += 1
-                with open(f"images/{table}/{image.file_name}", "wb") as f:
-                    f.write(image_bytes)
+                cache_info[image.file_name] = image.timestamp
             except requests.HTTPError:
                 failed.append(image.file_name)
                 continue
             article_id, addons, sex = image_info[image.file_name]
             conn.execute(f"INSERT INTO outfit_image(outfit_id, addon, sex, image) VALUES(?, ?, ?, ?)",
                          (article_id, addons, sex, image_bytes))
+        save_cache_info(table, cache_info)
     dt = (time.perf_counter() - start)
     if failed:
         print(f"\33[31m\tCould not fetch {len(failed):,} images.\033[0m")
