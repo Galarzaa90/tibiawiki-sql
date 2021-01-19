@@ -37,6 +37,7 @@ It accepts the following parameters:
 
 - ``-s``/``--skip-images`` Option to skip fetching and saving images.
 - ``-db``/ ``--db-name`` The name of the generated database file. ``tibiawiki.db`` by default.
+- ``-sd``/ ``--skip-deprecated`` Option to skip deprecated articles when parsing.
 
 The generated database is saved in the current directory, as well as a folder called `images` with all the fetched images.
 

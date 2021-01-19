@@ -1,4 +1,4 @@
-#  Copyright 2019 Allan Galarza
+#  Copyright 2021 Allan Galarza
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -13,10 +13,10 @@
 #  limitations under the License.
 
 __author__ = "Allan Galarza"
-__copyright__ = "Copyright 2019 Allan Galarza"
+__copyright__ = "Copyright 2021 Allan Galarza"
 
 __license__ = "Apache 2.0"
-__version__ = "4.0.1"
+__version__ = "4.1.0"
 
 from tibiawikisql import models
 from tibiawikisql.api import Article, Image, WikiClient, WikiEntry

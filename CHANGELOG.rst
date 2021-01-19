@@ -4,6 +4,14 @@ Changelog
 
 .. v4.0.1
 
+4.1.0 (2021-01-18)
+==================
+
+- Improved image cache, the timestamp of images are now saved and checked on subsequent calls.
+- By default, all articles are parsed, including deprecated, they can be skipped using ``--skip-deprecated``.
+- Added ``status`` column and field to main tables and models. Indicates the status of the entity (active, deprecated, event, ts-only).
+- Fixed Worlds not being parsed due to the corresponding category being renamed on TibiaWiki.
+
 4.0.1 (2020-11-23)
 ==================
 
