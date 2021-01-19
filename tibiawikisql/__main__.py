@@ -44,6 +44,7 @@ def progress_bar(iterable, label, length, **kwargs):
 @click.group(context_settings={'help_option_names': ['-h', '--help']})
 @click.version_option(__version__, '-V', '--version')
 def cli():
+    # Empty command group to disable default command.
     pass
 
 
@@ -128,6 +129,30 @@ def generate(skip_images, db_name, skip_deprecated):
     for position in rashid_positions:
         position.insert(conn)
 
+    generate_loot_statistics(conn)
+
+    if not skip_images:
+        with conn:
+            for key, value in categories.items():
+                if value.no_images:
+                    continue
+                save_images(conn, key, value)
+            save_outfit_images(conn)
+            save_maps(conn)
+    with conn:
+        gen_time = datetime.datetime.utcnow()
+        schema.DatabaseInfo.insert(conn, **{"key": "timestamp", "value": str(gen_time.timestamp())})
+        schema.DatabaseInfo.insert(conn, **{"key": "generate_time", "value": str(gen_time)})
+        schema.DatabaseInfo.insert(conn, **{"key": "version", "value": __version__})
+        schema.DatabaseInfo.insert(conn, **{"key": "python_version", "value": platform.python_version()})
+        schema.DatabaseInfo.insert(conn, **{"key": "platform", "value": platform.platform()})
+
+    conn.close()
+    dt = (time.perf_counter() - command_start)
+    print(f"Command finished in {dt:.2f} seconds.")
+
+
+def generate_loot_statistics(conn: sqlite3.Connection):
     c = conn.cursor()
     try:
         results = conn.execute("SELECT title FROM creature")
@@ -173,26 +198,6 @@ def generate(skip_images, db_name, skip_deprecated):
         print(f"{Fore.GREEN}\tParsed loot statistics in {dt:.2f} seconds.{Style.RESET_ALL}")
     finally:
         conn.commit()
-        c.close()
-
-    if not skip_images:
-        with conn:
-            for key, value in categories.items():
-                if value.no_images:
-                    continue
-                save_images(conn, key, value)
-            save_outfit_images(conn)
-            save_maps(conn)
-    with conn:
-        gen_time = datetime.datetime.utcnow()
-        schema.DatabaseInfo.insert(conn, **{"key": "timestamp", "value": str(gen_time.timestamp())})
-        schema.DatabaseInfo.insert(conn, **{"key": "generate_time", "value": str(gen_time)})
-        schema.DatabaseInfo.insert(conn, **{"key": "version", "value": __version__})
-        schema.DatabaseInfo.insert(conn, **{"key": "python_version", "value": platform.python_version()})
-        schema.DatabaseInfo.insert(conn, **{"key": "platform", "value": platform.platform()})
-
-    dt = (time.perf_counter() - command_start)
-    print(f"Command finished in {dt:.2f} seconds.")
 
 
 def img_show(item):
@@ -212,7 +217,7 @@ def get_cache_info(table):
         with open(f"images/{table}/cache_info.json", 'r') as f:
             cache_info = json.load(f)
             return cache_info
-    except (FileNotFoundError, json.JSONDecodeError)    :
+    except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
 
