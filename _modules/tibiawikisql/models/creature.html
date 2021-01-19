@@ -240,6 +240,8 @@
 <span class="sd">        The field types the creature will walk around, separated by commas.</span>
 <span class="sd">    version: :class:`str`</span>
 <span class="sd">        The client version where this creature was first implemented.</span>
+<span class="sd">    status: :class:`str`</span>
+<span class="sd">        The status of this creature in the game.</span>
 <span class="sd">    image: :class:`bytes`</span>
 <span class="sd">        The creature&#39;s image in bytes.</span>
 <span class="sd">    loot: list of :class:`CreatureDrop`</span>
@@ -281,7 +283,8 @@
         <span class="s2">&quot;abilities&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;abilities&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
         <span class="s2">&quot;walksthrough&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;walks_through&quot;</span><span class="p">,</span> <span class="n">parse_monster_walks</span><span class="p">),</span>
         <span class="s2">&quot;walksaround&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;walks_around&quot;</span><span class="p">,</span> <span class="n">parse_monster_walks</span><span class="p">),</span>
-        <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">)</span>
+        <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>
     <span class="p">}</span>
 
     <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Creature&quot;</span><span class="p">)</span>
@@ -328,6 +331,7 @@
         <span class="s2">&quot;image&quot;</span><span class="p">,</span>
         <span class="s2">&quot;loot&quot;</span><span class="p">,</span>
         <span class="s2">&quot;sounds&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

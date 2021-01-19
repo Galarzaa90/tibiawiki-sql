@@ -118,6 +118,8 @@
 <span class="sd">        Times of the year when this quest is active.</span>
 <span class="sd">    estimated_time: :class:`str`:</span>
 <span class="sd">        Estimated time to finish this quest.</span>
+<span class="sd">    status: :class:`str`</span>
+<span class="sd">        The status of this quest in the game.</span>
 <span class="sd">    version: :class:`str`</span>
 <span class="sd">        The client version where this outfit was first implemented.</span>
 <span class="sd">    dangers: list of :class:`QuestDanger`</span>
@@ -142,6 +144,7 @@
         <span class="s2">&quot;version&quot;</span><span class="p">,</span>
         <span class="s2">&quot;dangers&quot;</span><span class="p">,</span>
         <span class="s2">&quot;rewards&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">unescape</span><span class="p">),</span>
@@ -156,6 +159,7 @@
         <span class="s2">&quot;timealloc&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;estimated_time&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;premium&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
         <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>
     <span class="p">}</span>
     <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Quest&quot;</span><span class="p">)</span>
 

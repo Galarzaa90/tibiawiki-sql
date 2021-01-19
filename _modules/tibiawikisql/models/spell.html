@@ -109,7 +109,9 @@
 <span class="sd">    sorcerer: :class:`bool`</span>
 <span class="sd">        Whether the spell can be used by sorcerers or not.</span>
 <span class="sd">    taught_by: list of :class:`NpcSpell`</span>
-<span class="sd">        Npcs that teach this spell.</span>
+<span class="sd">        NPCs that teach this spell.</span>
+<span class="sd">    status: :class:`str`</span>
+<span class="sd">        The status of this spell in the game.</span>
 <span class="sd">    version: :class:`str`</span>
 <span class="sd">        The client version where the spell was implemented.</span>
 <span class="sd">    image: :class:`bytes`</span>
@@ -137,6 +139,7 @@
         <span class="s2">&quot;image&quot;</span><span class="p">,</span>
         <span class="s2">&quot;version&quot;</span><span class="p">,</span>
         <span class="s2">&quot;effect&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
@@ -151,6 +154,7 @@
         <span class="s2">&quot;cooldown&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;cooldown&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;levelrequired&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;premium&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>
     <span class="p">}</span>
     <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Spell&quot;</span><span class="p">)</span>
 

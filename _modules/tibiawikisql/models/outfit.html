@@ -92,6 +92,8 @@
 <span class="sd">        The full price of this outfit in the Tibia Store.</span>
 <span class="sd">    achievement: :class:`str`</span>
 <span class="sd">        The achievement obtained for acquiring this full outfit.</span>
+<span class="sd">    status: :class:`str`</span>
+<span class="sd">        The status of this outfit in the game.</span>
 <span class="sd">    version: :class:`str`</span>
 <span class="sd">        The client version where this outfit was first implemented.</span>
 <span class="sd">    images: list of :class:`OutfitImage`</span>
@@ -113,6 +115,7 @@
         <span class="s2">&quot;version&quot;</span><span class="p">,</span>
         <span class="s2">&quot;quests&quot;</span><span class="p">,</span>
         <span class="s2">&quot;images&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
@@ -124,6 +127,7 @@
         <span class="s2">&quot;bought&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bought&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
         <span class="s2">&quot;premium&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
         <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>
     <span class="p">}</span>
 
     <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Outfit&quot;</span><span class="p">)</span>

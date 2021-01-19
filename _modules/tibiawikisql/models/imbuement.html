@@ -155,6 +155,8 @@
 <span class="sd">        The effect given by the imbuement.</span>
 <span class="sd">    version: :class:`str`</span>
 <span class="sd">        The client version where this imbuement was first implemented.</span>
+<span class="sd">    status: :class:`str`</span>
+<span class="sd">        The status of this imbuement the game.</span>
 <span class="sd">    image: :class:`str`</span>
 <span class="sd">        The bytes of the imbuement&#39;s image.</span>
 <span class="sd">    materials: list of :class:`ImbuementMaterial`</span>
@@ -165,7 +167,8 @@
         <span class="s2">&quot;prefix&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;tier&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;effect&quot;</span><span class="p">,</span> <span class="n">parse_effect</span><span class="p">),</span>
-        <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">)</span>
+        <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>
     <span class="p">}</span>
     <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Imbuement&quot;</span><span class="p">)</span>
 
@@ -180,6 +183,7 @@
         <span class="s2">&quot;version&quot;</span><span class="p">,</span>
         <span class="s2">&quot;image&quot;</span><span class="p">,</span>
         <span class="s2">&quot;materials&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

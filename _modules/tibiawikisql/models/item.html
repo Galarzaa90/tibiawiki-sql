@@ -80,6 +80,7 @@
     <span class="s2">&quot;fist&quot;</span><span class="p">:</span> <span class="s2">&quot;fist fighting </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
+
 <div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Item">[docs]</a><span class="k">class</span> <span class="nc">Item</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">Item</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents an Item.</span>
 
@@ -125,6 +126,8 @@
 <span class="sd">        The internal id of the item in the client.</span>
 <span class="sd">    version: :class:`str`</span>
 <span class="sd">        The client version where this item was first implemented.</span>
+<span class="sd">    status: :class:`str`</span>
+<span class="sd">        The status of this item in the game.</span>
 <span class="sd">    image: :class:`bytes`</span>
 <span class="sd">        The item&#39;s image in bytes.</span>
 <span class="sd">    attributes: list of :class:`ItemAttribute`</span>
@@ -157,7 +160,8 @@
         <span class="s2">&quot;lightcolor&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;light_color&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">client_color_to_rgb</span><span class="p">(</span><span class="n">parse_integer</span><span class="p">(</span><span class="n">x</span><span class="p">))),</span>
         <span class="s2">&quot;lightradius&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;light_radius&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
-        <span class="s2">&quot;itemid&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;client_id&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">)</span>
+        <span class="s2">&quot;itemid&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;client_id&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>
     <span class="p">}</span>
     <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Item&quot;</span><span class="p">)</span>
 
@@ -189,6 +193,7 @@
         <span class="s2">&quot;bought_by&quot;</span><span class="p">,</span>
         <span class="s2">&quot;awarded_in&quot;</span><span class="p">,</span>
         <span class="s2">&quot;sounds&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -393,6 +398,8 @@
 <span class="sd">        Notes about the key.</span>
 <span class="sd">    origin: :class:`str`</span>
 <span class="sd">        Notes about the origin of the key.</span>
+<span class="sd">    status: :class:`str`</span>
+<span class="sd">        The status of this key in the game.</span>
 <span class="sd">    version: :class:`str`</span>
 <span class="sd">        The client version where this creature was first implemented.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -408,6 +415,7 @@
         <span class="s2">&quot;origin&quot;</span><span class="p">,</span>
         <span class="s2">&quot;version&quot;</span><span class="p">,</span>
         <span class="s2">&quot;location&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;aka&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
@@ -417,6 +425,7 @@
         <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;origin&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
         <span class="s2">&quot;shortnotes&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;notes&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
         <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>
     <span class="p">}</span>
     <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Key&quot;</span><span class="p">)</span>
 

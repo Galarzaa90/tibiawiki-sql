@@ -103,6 +103,8 @@
 <span class="sd">        The y coordinate of the house.</span>
 <span class="sd">    z: :class:`int`</span>
 <span class="sd">        The z coordinate of the house.</span>
+<span class="sd">    status: :class:`str`</span>
+<span class="sd">        The status of this house in the game.</span>
 <span class="sd">    version: :class:`str`</span>
 <span class="sd">        The client version where this creature was first implemented.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -125,6 +127,7 @@
         <span class="s2">&quot;y&quot;</span><span class="p">,</span>
         <span class="s2">&quot;z&quot;</span><span class="p">,</span>
         <span class="s2">&quot;version&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
@@ -143,6 +146,7 @@
         <span class="s2">&quot;posy&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">convert_tibiawiki_position</span><span class="p">),</span>
         <span class="s2">&quot;posz&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
         <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>
     <span class="p">}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
