@@ -23,6 +23,7 @@ from typing import Optional, Type
 import click
 import colorama
 import requests
+from colorama import Style, Fore
 
 from tibiawikisql import WikiClient, __version__, models, schema, Image
 from tibiawikisql.models import abc
@@ -36,7 +37,8 @@ colorama.init()
 
 def progress_bar(iterable, label, length, **kwargs):
     return click.progressbar(iterable=iterable, length=length, label=label, fill_char="█", empty_char="░", width=10,
-                             show_pos=True, bar_template='%(label)s [\33[33m%(bar)s\33[0m] %(info)s', **kwargs)
+                             show_pos=True, bar_template=f'%(label)s {Fore.YELLOW}%(bar)s{Style.RESET_ALL} %(info)s',
+                             **kwargs)
 
 
 @click.group(context_settings={'help_option_names': ['-h', '--help']})
@@ -118,10 +120,10 @@ def generate(skip_images, db_name, skip_deprecated):
                     else:
                         unparsed.append(titles[i])
             if unparsed:
-                print(f"\33[31m\tCould not parse {len(unparsed):,} articles.\033[0m")
-                print("\t-> \33[31m%s\033[0m" % '\033[0m,\33[31m'.join(unparsed))
+                click.echo(f"{Fore.RED}Could not parse {len(unparsed):,} articles.{Style.RESET_ALL}")
+                print(f"\t-> {Fore.RED}%s{Style.RESET_ALL}]" % f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed))
             dt = (time.perf_counter() - exec_time)
-            print(f"\33[32m\tParsed articles in {dt:.2f} seconds.\033[0m")
+            print(f"\t{Fore.GREEN}Parsed articles in {dt:.2f} seconds.{Style.RESET_ALL}")
 
     for position in rashid_positions:
         position.insert(conn)
@@ -168,7 +170,7 @@ def generate(skip_images, db_name, skip_deprecated):
                 c.executemany(f"INSERT INTO creature_drop(creature_id, item_id, chance, min, max) VALUES(?,?,?,?,?)",
                               loot_items)
         dt = (time.perf_counter() - start_time)
-        print(f"\33[32m\tParsed loot statistics in {dt:.2f} seconds.\033[0m")
+        print(f"{Fore.GREEN}\tParsed loot statistics in {dt:.2f} seconds.{Style.RESET_ALL}")
     finally:
         conn.commit()
         c.close()
@@ -267,10 +269,10 @@ def save_images(conn: sqlite3.Connection, key: str, value: Category):
         save_cache_info(table, cache_info)
     dt = (time.perf_counter() - start)
     if failed:
-        print(f"\33[31m\tCould not fetch {len(failed):,} images.\033[0m")
-        print("\t-> \33[31m%s\033[0m" % '\033[0m,\33[31m'.join(failed))
-    print(f"\33[32m\tSaved {key} images in {dt:.2f} seconds."
-          f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
+        print(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
+        print(f"\t-> {Style.RESET_ALL}%s{Style.RESET_ALL}" % f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed))
+    print(f"{Fore.GREEN}\tSaved {key} images in {dt:.2f} seconds."
+          f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.{Style.RESET_ALL}")
 
 
 def save_outfit_images(conn):
@@ -333,23 +335,23 @@ def save_outfit_images(conn):
         save_cache_info(table, cache_info)
     dt = (time.perf_counter() - start)
     if failed:
-        print(f"\33[31m\tCould not fetch {len(failed):,} images.\033[0m")
-        print("\t-> \33[31m%s\033[0m" % '\033[0m,\33[31m'.join(failed))
-    print(f"\33[32m\tSaved outfit images in {dt:.2f} seconds."
-          f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.\033[0m")
+        print(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
+        print(f"\t-> {Style.RESET_ALL}%s{Style.RESET_ALL}" % f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed))
+    print(f"{Fore.GREEN}\tSaved outfit images in {dt:.2f} seconds."
+          f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.{Style.RESET_ALL}")
 
 
 def get_articles(category, data_store, key=None, include_deprecated=False):
     if key is None:
         key = category.lower()
-    print(f"Fetching articles in \33[94mCategory:{category}\033[0m...")
+    print(f"Fetching articles in {Fore.BLUE}Category:{category}{Style.RESET_ALL}...")
     data_store[key] = []
     start = time.perf_counter()
     for article in WikiClient.get_category_members(category):
         if article not in data_store.get("deprecated", []) or include_deprecated:
             data_store[key].append(article)
     dt = (time.perf_counter() - start)
-    print(f"\33[32m\tFound {len(data_store[key]):,} articles in {dt:.2f} seconds.\033[0m")
+    print(f"{Fore.GREEN}\tFound {len(data_store[key]):,} articles in {dt:.2f} seconds.{Style.RESET_ALL}")
 
 
 def save_maps(con):
