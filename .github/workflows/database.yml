@@ -1,7 +1,8 @@
 name: Build Database
 on:
   push:
-    - master
+    branches:
+      - master
 
 jobs:
   build:
