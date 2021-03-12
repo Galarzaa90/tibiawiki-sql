@@ -2,9 +2,9 @@
 Changelog
 =========
 
-.. v4.0.1
+.. v4.1.1
 
-4.0.1 (2021-03-11)
+4.1.1 (2021-03-11)
 ==================
 
 - Added missing ``version`` attribute to ``Spell``.
