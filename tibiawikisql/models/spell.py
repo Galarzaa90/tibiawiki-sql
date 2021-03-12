@@ -108,6 +108,7 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         "cooldown": ("cooldown", parse_integer),
         "levelrequired": ("level", parse_integer),
         "premium": ("premium", parse_boolean),
+        "implemented": ("version", str.strip),
         "status": ("status", str.lower),
     }
     _pattern = re.compile(r"Infobox[\s_]Spell")

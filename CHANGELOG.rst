@@ -4,6 +4,13 @@ Changelog
 
 .. v4.0.1
 
+4.0.1 (2021-03-11)
+==================
+
+- Added missing ``version`` attribute to ``Spell``.
+
+.. v4.1.0
+
 4.1.0 (2021-01-18)
 ==================
 
@@ -11,6 +18,8 @@ Changelog
 - By default, all articles are parsed, including deprecated, they can be skipped using ``--skip-deprecated``.
 - Added ``status`` column and field to main tables and models. Indicates the status of the entity (active, deprecated, event, ts-only).
 - Fixed Worlds not being parsed due to the corresponding category being renamed on TibiaWiki.
+
+.. v4.0.1
 
 4.0.1 (2020-11-23)
 ==================
