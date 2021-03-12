@@ -23,14 +23,20 @@ externally.
     * **click** module
     * **colorama** module
     
-## Installation
-This module can be installed from PyPi using:
+## Installing
+To install the latest version on PyPi:
 
 ```sh
 pip install tibiawikisql
 ```
 
-Once installed, you can run the command anywhere using: 
+or
+
+Install the latest version from GitHub
+
+pip install git+https://github.com/Galarzaa90/tibiawiki-sql.git
+
+## Running
 
 ```sh
 python -m tibiawikisql generate
@@ -42,9 +48,9 @@ OR
 tibiawikisql
 ```
 
-
-The process can be long, taking up to 20 minutes the first time. All images are saved to the `images` folder. On 
+The process can be long, taking up to 10 minutes the first time. All images are saved to the `images` folder. On 
 subsequent runs, images will be read from disk instead of being fetched from TibiaWiki again.
+If a newer version of the image has been uploaded, it will be updated.
 
 When done, a database file called `tibiawiki.db` will be found on the folder.
 
