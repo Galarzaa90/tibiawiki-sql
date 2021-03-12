@@ -138,6 +138,7 @@ def parse_boolean(value: str, default=False, invert=False):
 def parse_float(value, default=0.0):
     """
     From a string, parses a floating value.
+
     Parameters
     ----------
     value: :class:`str`

@@ -221,6 +221,7 @@ class Spell(Table):
     druid = Column(Boolean, default=False)
     paladin = Column(Boolean, default=False)
     image = Column(Blob)
+    version = Column(Text, index=True)
     status = Column(Text, default="active")
     timestamp = Column(Integer)
 

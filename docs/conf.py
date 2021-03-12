@@ -6,11 +6,13 @@
 # full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
 import re
+import os
+import sys
 
 
 def setup(app):
-    app.add_stylesheet('custom.css')
-    app.add_javascript('custom.js')
+    app.add_css_file('custom.css')
+    app.add_js_file('custom.js')
 
 # -- Path setup --------------------------------------------------------------
 
@@ -18,8 +20,8 @@ def setup(app):
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
+
+
 sys.path.insert(0, os.path.abspath('..'))
 
 autodoc_member_order = 'bysource'
