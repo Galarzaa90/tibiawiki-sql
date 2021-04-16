@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tibiawikisql.models.creature &#8212; TibiaWikiSQL 4.1.1 documentation</title>
+    <title>tibiawikisql.models.creature &#8212; TibiaWikiSQL 4.1.2 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -32,7 +32,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.1.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.1.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tibiawikisql.models.creature</a></li> 
       </ul>
@@ -74,7 +74,8 @@
     <span class="s2">&quot;Trivial&quot;</span><span class="p">:</span> <span class="mi">250</span><span class="p">,</span>
     <span class="s2">&quot;Easy&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
     <span class="s2">&quot;Medium&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
-    <span class="s2">&quot;Hard&quot;</span><span class="p">:</span> <span class="mi">2500</span>
+    <span class="s2">&quot;Hard&quot;</span><span class="p">:</span> <span class="mi">2500</span><span class="p">,</span>
+    <span class="s2">&quot;Challenging&quot;</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">CHARM_POINTS</span> <span class="o">=</span> <span class="p">{</span>
@@ -82,7 +83,8 @@
     <span class="s2">&quot;Trivial&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
     <span class="s2">&quot;Easy&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
     <span class="s2">&quot;Medium&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
-    <span class="s2">&quot;Hard&quot;</span><span class="p">:</span> <span class="mi">50</span>
+    <span class="s2">&quot;Hard&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="s2">&quot;Challenging&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">ELEMENTAL_MODIFIERS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;physical&quot;</span><span class="p">,</span> <span class="s2">&quot;earth&quot;</span><span class="p">,</span> <span class="s2">&quot;fire&quot;</span><span class="p">,</span> <span class="s2">&quot;ice&quot;</span><span class="p">,</span> <span class="s2">&quot;energy&quot;</span><span class="p">,</span> <span class="s2">&quot;death&quot;</span><span class="p">,</span> <span class="s2">&quot;holy&quot;</span><span class="p">,</span> <span class="s2">&quot;drown&quot;</span><span class="p">,</span> <span class="s2">&quot;hpdrain&quot;</span><span class="p">]</span>
@@ -349,7 +351,13 @@
     <span class="k">def</span> <span class="nf">charm_points</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;:class:`int`, optional: Charm points awarded for completing the creature&#39;s bestiary entry, if applicable.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">CHARM_POINTS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bestiary_level</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestiary_occurrence</span> <span class="o">!=</span> <span class="s1">&#39;Very Rare&#39;</span> <span class="k">else</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">multiplier</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestiary_occurrence</span> <span class="o">==</span> <span class="s1">&#39;Very Rare&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestiary_level</span> <span class="o">==</span> <span class="s1">&#39;Harmless&#39;</span><span class="p">:</span>
+                    <span class="n">multiplier</span> <span class="o">=</span> <span class="mi">5</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">multiplier</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="k">return</span> <span class="n">CHARM_POINTS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bestiary_level</span><span class="p">]</span> <span class="o">*</span> <span class="n">multiplier</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
@@ -638,7 +646,7 @@
     </div>
   <div class="footer">
     &copy; Copyright 2021, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.2.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.
   </div>
   
   </body>
