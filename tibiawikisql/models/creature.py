@@ -28,7 +28,8 @@ KILLS = {
     "Trivial": 250,
     "Easy": 500,
     "Medium": 1000,
-    "Hard": 2500
+    "Hard": 2500,
+    "Challenging": 5000,
 }
 
 CHARM_POINTS = {
@@ -36,7 +37,8 @@ CHARM_POINTS = {
     "Trivial": 5,
     "Easy": 15,
     "Medium": 25,
-    "Hard": 50
+    "Hard": 50,
+    "Challenging": 100,
 }
 
 ELEMENTAL_MODIFIERS = ["physical", "earth", "fire", "ice", "energy", "death", "holy", "drown", "hpdrain"]
@@ -303,7 +305,13 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
     def charm_points(self) -> Optional[int]:
         """:class:`int`, optional: Charm points awarded for completing the creature's bestiary entry, if applicable."""
         try:
-            return CHARM_POINTS[self.bestiary_level] * (1 if self.bestiary_occurrence != 'Very Rare' else 2)
+            multiplier = 1
+            if self.bestiary_occurrence == 'Very Rare':
+                if self.bestiary_level == 'Harmless':
+                    multiplier = 5
+                else:
+                    multiplier = 2
+            return CHARM_POINTS[self.bestiary_level] * multiplier
         except KeyError:
             return None
 

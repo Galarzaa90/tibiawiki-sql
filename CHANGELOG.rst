@@ -2,6 +2,13 @@
 Changelog
 =========
 
+.. v4.1.2
+
+4.1.2 (2021-04-16)
+==================
+
+- Added missing ``bestiary_kills`` and ``charm_points`` values for creatures in the **Challenging** class.
+
 .. v4.1.1
 
 4.1.1 (2021-03-11)
