@@ -34,12 +34,18 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         The name of the spell.
     words: :class:`str`
         The spell's invocation words.
+    spell_id: :class:`int`
+        The spell's internal ID.
     effect: :class:`str`
         The effects of casting the spell.
     type: :class:`str`
         The spell's type.
-    class: :class:`str`
-        The spell's class.
+    group_spell: :class:`str`
+        The spell's group.
+    group_secondary: :class:`str`
+        The spell's secondary group.
+    group_rune: :class:`str`
+        The group of the rune created by this spell.
     element: :class:`str`
         The element of the damage made by the spell.
     mana: :class:`int`
@@ -49,11 +55,17 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
     price: :class:`int`
         The gold cost of the spell.
     cooldown: :class:`int`
-        The spell's cooldown in seconds.
+        The spell's individual cooldown in seconds.
+    cooldown_group: :class:`int`
+        The spell's group cooldown in seconds. The time you have to wait before casting another spell in the same group.
+    cooldown_group_secondary: :class:`int`
+        The spell's secondary group cooldown.
     level: :class:`int`
         The level required to use the spell.
     premium: :class:`bool`
         Whether the spell is premium only or not.
+    promotion: :class:`bool`
+        Whether you need to be promoted to buy or cast this spell.
     knight: :class:`bool`
         Whether the spell can be used by knights or not.
     paladin: :class:`bool`
@@ -77,14 +89,21 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         "timestamp",
         "name",
         "words",
+        "spell_id",
         "type",
+        "group_spell",
+        "group_secondary",
+        "group_rune",
         "element",
         "mana",
         "soul",
         "price",
         "cooldown",
+        "cooldown_group",
+        "cooldown_secondary_group",
         "level",
         "premium",
+        "promotion",
         "taught_by",
         "knight",
         "sorcerer",
@@ -99,15 +118,21 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         "name": ("name", str.strip),
         "effect": ("effect", clean_links),
         "words": ("words", str.strip),
+        "spellid": ("spell_id", parse_integer),
         "type": ("type", str.strip),
-        "subclass": ("class", str.strip),
+        "subclass": ("group_spell", str.strip),
+        "secondarygroup": ("group_secondary", str.strip),
+        "runegroup": ("group_rune", str.strip),
         "damagetype": ("element", str.strip),
         "mana": ("mana", parse_integer),
         "soul": ("soul", parse_integer),
         "spellcost": ("price", parse_integer),
         "cooldown": ("cooldown", parse_integer),
+        "cooldowngroup": ("cooldown_group", parse_integer),
+        "cooldowngroup2": ("cooldown_group_secondary", parse_integer),
         "levelrequired": ("level", parse_integer),
         "premium": ("premium", parse_boolean),
+        "promotion": ("promotion", lambda x: parse_boolean(x, False)),
         "implemented": ("version", str.strip),
         "status": ("status", str.lower),
     }
