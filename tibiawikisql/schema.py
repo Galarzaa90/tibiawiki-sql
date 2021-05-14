@@ -245,6 +245,7 @@ class Npc(Table):
     city = Column(Text, index=True)
     location = Column(Text)
     job = Column(Text)
+    job_additionals = Column(Text)
     version = Column(Text, index=True)
     x = Column(Integer)
     y = Column(Integer)

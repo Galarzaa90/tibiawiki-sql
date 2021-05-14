@@ -161,10 +161,12 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         The race of the NPC.
     job: :class:`str`
         The NPC's job.
+    job_additionals: :class:`str`
+        Other additional jobs the NPC might have, separated by commas.
     location: :class:`str`
         The location of the NPC.
     city: :class:`str`
-        The city where the NPC is located.
+        The nearest city to where the NPC is located.
     x: :class:`int`
         The x coordinates of the NPC.
     y: :class:`int`
@@ -194,6 +196,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         "gender",
         "race",
         "job",
+        "job_additionals",
         "location",
         "city",
         "x",
@@ -227,9 +230,22 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
     }
     _pattern = re.compile(r"Infobox[\s_]NPC")
 
+    @property
+    def job_list(self):
+        if not self.job_additionals:
+            return [self.job] if self.job else []
+        return [self.job] + self.job_additionals.split(",")
+
     @classmethod
     def from_article(cls, article):
         npc = super().from_article(article)
+        additional_jobs = []
+        for i in range(2, 7):
+            key = f"job{i}"
+            if key in npc._raw_attributes:
+                additional_jobs.append(clean_links(npc._raw_attributes[key]))
+        if additional_jobs:
+            npc.job_additionals = ",".join(additional_jobs)
         if npc is None:
             return None
         if "buys" in npc._raw_attributes and article.title != "Minzy":
