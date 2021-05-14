@@ -57,6 +57,8 @@ class World(abc.Row, abc.Parseable, table=schema.World):
         The name of the world this world got merged into, if applicable.
     battleye: :class:`bool`
         Whether the world is BattlEye protected or not.
+    battleye_type: :class:`bool`
+        The type of BattlEye protection the world has. Can be either green or yellow.
     protected_since: :class:`str`
         Date when the world started being protected by BattlEye, in ISO 8601 format.
     world_board: :class:`int`
@@ -74,6 +76,7 @@ class World(abc.Row, abc.Parseable, table=schema.World):
         "offline": ("offline_since", parse_date),
         "mergedinto": ("merged_into", str.strip),
         "battleye": ("battleye", parse_boolean),
+        "battleyetype": ("battleye_type", str.strip),
         "protectedsince": ("protected_since", parse_date),
         "worldboardid": ("world_board", parse_integer),
         "tradeboardid": ("trade_board", parse_integer),
@@ -93,6 +96,7 @@ class World(abc.Row, abc.Parseable, table=schema.World):
         "offline_since",
         "merged_into",
         "battleye",
+        "battleye_type",
         "protected_since",
         "world_board",
         "trade_board"

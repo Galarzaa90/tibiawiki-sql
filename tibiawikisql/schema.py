@@ -363,6 +363,7 @@ class World(Table):
     offline_since = Column(Text)
     merged_into = Column(Text)
     battleye = Column(Boolean, default=False)
+    battleye_type = Column(Text, index=True)
     protected_since = Column(Text)
     world_board = Column(Integer)
     trade_board = Column(Integer)
