@@ -43,6 +43,8 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         Instructions or information on how to obtain the achievement.
     secret: :class:`bool`
         Whether the achievement is secret or not.
+    premium: :class:`bool`
+        Whether a premium account is required to get this achievement.
     status: :class:`str`
         The status of this achievement in the game.
     version: :class:`str`
@@ -68,6 +70,7 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         "name",
         "grade",
         "points",
+        "premium",
         "description",
         "spoiler",
         "secret",
