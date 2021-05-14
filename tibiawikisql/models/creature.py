@@ -132,6 +132,8 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The name of the creature, as displayed in-game.
     plural: :class:`str`
         The plural of the name.
+    library_race: :class:`str`
+        The race name of the creature in Tibia.com's library.
     creature_class: :class:`str`
         The creature's classification.
     type: :class:`str`
@@ -154,6 +156,8 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The creature's speed value.
     max_damage: :class:`int`
         The maximum amount of damage the creature can do in a single turn.
+    runs_at: :class:`int`
+        The amount of hitpoints when the creature starts to run away. 0 means it won't run away.
     summon_cost: :class:`int`
         The mana needed to summon this creature. 0 if not summonable.
     convince_cost: :class:`int`
@@ -188,12 +192,16 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The percentage of damage received of drown damage. ``None`` if unknown.
     modifier_lifedrain: :class:`int`
         The percentage of damage received of life drain damage. ``None`` if unknown.
+    modifier_healing: :class:`int`
+        The percentage of damage received from healing. ``None`` if unknown.
     abilities: :class:`str`
         A brief description of the creature's abilities.
     walks_through: :class:`str`
         The field types the creature will walk through, separated by commas.
     walks_around: :class:`str`
         The field types the creature will walk around, separated by commas.
+    location: :class:`str`
+        The locations where the creature can be found.
     version: :class:`str`
         The client version where this creature was first implemented.
     status: :class:`str`
@@ -208,6 +216,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "name": ("name", str.strip),
         "plural": ("plural", clean_question_mark),
         "actualname": ("name", str.strip),
+        "bestiaryname": ("library_race", str.strip),
         "creatureclass": ("creature_class", str.strip),
         "bestiaryclass": ("bestiary_class", str.strip),
         "bestiarylevel": ("bestiary_level", str.strip),
@@ -219,6 +228,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "armor": ("armor", lambda x: parse_integer(x, None)),
         "speed": ("speed", lambda x: parse_integer(x, None)),
         "maxdmg": ("max_damage", parse_maximum_integer),
+        "runsat": ("runs_at", parse_integer),
         "summon": ("summon_cost", parse_integer),
         "convince": ("convince_cost", parse_integer),
         "illusionable": ("illusionable", lambda x: parse_boolean(x, None)),
@@ -236,9 +246,11 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "holyDmgMod": ("modifier_holy", parse_integer),
         "drownDmgMod": ("modifier_drown", parse_integer),
         "hpDrainDmgMod": ("modifier_hpdrain", parse_integer),
+        "healMod": ("modifier_healing", parse_integer),
         "abilities": ("abilities", clean_links),
         "walksthrough": ("walks_through", parse_monster_walks),
         "walksaround": ("walks_around", parse_monster_walks),
+        "location": ("location", clean_links),
         "implemented": ("version", str.strip),
         "status": ("status", str.lower),
     }
@@ -252,6 +264,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "article",
         "name",
         "plural",
+        "library_race",
         "creature_class",
         "type",
         "type_secondary",
@@ -263,6 +276,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "armor",
         "speed",
         "max_damage",
+        "runs_at",
         "summon_cost",
         "convince_cost",
         "illusionable",
@@ -280,9 +294,11 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "modifier_holy",
         "modifier_hpdrain",
         "modifier_drown",
+        "modifier_healing",
         "abilities",
         "walks_through",
         "walks_around",
+        "location",
         "version",
         "image",
         "loot",

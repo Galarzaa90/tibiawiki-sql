@@ -19,6 +19,7 @@ import urllib.parse
 import requests
 
 from tibiawikisql import __version__
+from tibiawikisql.utils import parse_attributes
 
 BASE_URL = "https://tibia.fandom.com"
 
@@ -86,6 +87,11 @@ class Article(WikiEntry):
     def __init__(self, article_id, title, *, timestamp=None, content=None):
         super().__init__(article_id, title, timestamp)
         self.content = content
+
+    @property
+    def infobox_attributes(self):
+        """:class:`dict`: Returns a mapping of the template attributes."""
+        return parse_attributes(self.content)
 
 
 class Image(WikiEntry):
