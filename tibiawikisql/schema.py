@@ -173,6 +173,7 @@ class Imbuement(Table):
     tier = Column(Text)
     type = Column(Text)
     effect = Column(Text)
+    slots = Column(Text)
     version = Column(Text, index=True)
     image = Column(Blob)
     status = Column(Text, default="active")

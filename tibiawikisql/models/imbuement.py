@@ -87,6 +87,25 @@ def parse_effect(effect):
         return f"{category} {amount}"
 
 
+def parse_slots(content):
+    """Parses the list of slots.
+
+    Cleans up spaces between items.
+
+    Parameters
+    ----------
+    content: :class:`str`
+        A string containing comma separated values.
+
+    Returns
+    -------
+    :class:`str`:
+        The slots string.
+    """
+    slots = content.split(",")
+    return ",".join(s.strip() for s in slots)
+
+
 class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
     """
     Represents an imbuement type.
@@ -107,6 +126,8 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         The imbuement's type.
     effect: :class:`str`
         The effect given by the imbuement.
+    slots: :class:`str`
+        The type of items this imbuement may be applied on.
     version: :class:`str`
         The client version where this imbuement was first implemented.
     status: :class:`str`
@@ -122,6 +143,7 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         "type": ("type", str.strip),
         "effect": ("effect", parse_effect),
         "implemented": ("version", str.strip),
+        "slots": ("slots", parse_slots),
         "status": ("status", str.lower),
     }
     _pattern = re.compile(r"Infobox[\s_]Imbuement")
@@ -134,6 +156,7 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         "tier",
         "type",
         "effect",
+        "slots",
         "version",
         "image",
         "materials",
