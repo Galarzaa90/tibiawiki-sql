@@ -25,6 +25,8 @@ Tables
 +-----------------------+-------------------------------------------------+
 | `database_info`_      | Contains information about the database itself. |
 +-----------------------+-------------------------------------------------+
+| `game_update`_        | Contains information about game updates.        |
++-----------------------+-------------------------------------------------+
 | `house`_              | Contains all houses and guildhalls.             |
 +-----------------------+-------------------------------------------------+
 | `imbuement`_          | Contains information for all imbuements.        |
@@ -150,155 +152,164 @@ charm
 
 creature
 ~~~~~~~~~
-+---------------------+-------------+-----------------------------------------------------+
-|       Column        |    Type     |                     Description                     |
-+=====================+=============+=====================================================+
-| article_id          | ``INTEGER`` | The id of the article containing this creature.     |
-|                     | ``PRIMARY`` |                                                     |
-+---------------------+-------------+-----------------------------------------------------+
-| title               | ``TEXT``    | The title of the article containing this creature.  |
-+---------------------+-------------+-----------------------------------------------------+
-| name                | ``TEXT``    | The name of the creature in-game.                   |
-+---------------------+-------------+-----------------------------------------------------+
-| plural              | ``TEXT``    | The plural of the name.                             |
-+---------------------+-------------+-----------------------------------------------------+
-| article             | ``TEXT``    | The grammatical article before the creature’s name. |
-|                     |             | This is shown when looking at creatures.            |
-|                     |             | Bosses have no article.                             |
-+---------------------+-------------+-----------------------------------------------------+
-| hitpoints           | ``INTEGER`` | The number of hitpoints the creature has.           |
-|                     |             | May be ``NULL`` if unknown.                         |
-+---------------------+-------------+-----------------------------------------------------+
-| experience          | ``INTEGER`` | The number of experience the creature yields .      |
-|                     |             | May be ``NULL`` if unknown.                         |
-+---------------------+-------------+-----------------------------------------------------+
-| armor               | ``INTEGER`` | The armor value of the creature.                    |
-|                     |             | May be ``NULL`` if unknown.                         |
-+---------------------+-------------+-----------------------------------------------------+
-| speed               | ``INTEGER`` | The speed value of the creature.                    |
-|                     |             | May be ``NULL`` if unknown.                         |
-+---------------------+-------------+-----------------------------------------------------+
-| creature_class      | ``TEXT``    | The class this creature belongs to                  |
-|                     |             | (e.g. ``Demons``, ``Humanoids``,                    |
-|                     |             | ``Mammals``).                                       |
-+---------------------+-------------+-----------------------------------------------------+
-| type                | ``TEXT``    | The type this creature belongs to                   |
-|                     |             | (e.g. ``Archdemons``, ``Dwarves``,                  |
-|                     |             | ``Apes``).                                          |
-+---------------------+-------------+-----------------------------------------------------+
-| type_secondary      | ``TEXT``    | A secondary type this creature belongs to, if any.  |
-+---------------------+-------------+-----------------------------------------------------+
-| bestiary_class      | ``TEXT``    | The bestiary category of this                       |
-|                     |             | creature. ``NULL`` for creatures                    |
-|                     |             | not in the bestiary.                                |
-+---------------------+-------------+-----------------------------------------------------+
-| bestiary_level      | ``TEXT``    | The bestiary level of this                          |
-|                     |             | creature. ``NULL`` for creatures                    |
-|                     |             | not in the bestiary.                                |
-+---------------------+-------------+-----------------------------------------------------+
-| bestiary_occurrence | ``TEXT``    | The bestiary’s rarity value of                      |
-|                     |             | this creature. ``NULL`` for                         |
-|                     |             | creatures not in the bestiary.                      |
-+---------------------+-------------+-----------------------------------------------------+
-| max_damage          | ``INTEGER`` | The maximum damage a creature may                   |
-|                     |             | deal if it were to use all it’s                     |
-|                     |             | abilities at once. May be ``NULL`` if unknown.      |
-+---------------------+-------------+-----------------------------------------------------+
-| summon_cost         | ``INTEGER`` | The mana cost to summon this                        |
-|                     |             | creature. ``0`` means it is not summonable.         |
-+---------------------+-------------+-----------------------------------------------------+
-| convince_cost       | ``INTEGER`` | The mana cost to convince this                      |
-|                     |             | creature. ``0`` means it is not convincible.        |
-+---------------------+-------------+-----------------------------------------------------+
-| illusionable        | ``BOOLEAN`` | Whether the player can turn into                    |
-|                     |             | this creature with Creature Illusion.               |
-+---------------------+-------------+-----------------------------------------------------+
-| pushable            | ``BOOLEAN`` | Whether this creature can be pushed or not.         |
-+---------------------+-------------+-----------------------------------------------------+
-| push_objects        | ``BOOLEAN`` | Whether this creature can push objects or not.      |
-+---------------------+-------------+-----------------------------------------------------+
-| paralysable         | ``BOOLEAN`` | Whether this creature can be paralyzed or not.      |
-+---------------------+-------------+-----------------------------------------------------+
-| sees_invisible      | ``BOOLEAN`` | Whether this creature can see                       |
-|                     |             | invisible players or not.                           |
-+---------------------+-------------+-----------------------------------------------------+
-| boss                | ``BOOLEAN`` | Whether this creature is a boss or                  |
-|                     |             | not.                                                |
-+---------------------+-------------+-----------------------------------------------------+
-| modifier_physical   | ``INTEGER`` | Percentage of damage the creature                   |
-|                     |             | receives from this damage type.                     |
-|                     |             | ``0`` being completely immune,                      |
-|                     |             | ``100`` neutral. May be ``NULL``                    |
-|                     |             | if unknown.                                         |
-+---------------------+-------------+-----------------------------------------------------+
-| modifier_earth      | ``INTEGER`` | Percentage of damage the creature                   |
-|                     |             | receives from this damage type.                     |
-|                     |             | ``0`` being completely immune,                      |
-|                     |             | ``100`` neutral. May be ``NULL``                    |
-|                     |             | if unknown.                                         |
-+---------------------+-------------+-----------------------------------------------------+
-| modifier_fire       | ``INTEGER`` | Percentage of damage the creature                   |
-|                     |             | receives from this damage type.                     |
-|                     |             | ``0`` being completely immune,                      |
-|                     |             | ``100`` neutral. May be ``NULL``                    |
-|                     |             | if unknown.                                         |
-+---------------------+-------------+-----------------------------------------------------+
-| modifier_ice        | ``INTEGER`` | Percentage of damage the creature                   |
-|                     |             | receives from this damage type.                     |
-|                     |             | ``0`` being completely immune,                      |
-|                     |             | ``100`` neutral. May be ``NULL``                    |
-|                     |             | if unknown.                                         |
-+---------------------+-------------+-----------------------------------------------------+
-| modifier_energy     | ``INTEGER`` | Percentage of damage the creature                   |
-|                     |             | receives from this damage type.                     |
-|                     |             | ``0`` being completely immune,                      |
-|                     |             | ``100`` neutral. May be ``NULL``                    |
-|                     |             | if unknown.                                         |
-+---------------------+-------------+-----------------------------------------------------+
-| modifier_death      | ``INTEGER`` | Percentage of damage the creature                   |
-|                     |             | receives from this damage type.                     |
-|                     |             | ``0`` being completely immune,                      |
-|                     |             | ``100`` neutral. May be ``NULL``                    |
-|                     |             | if unknown.                                         |
-+---------------------+-------------+-----------------------------------------------------+
-| modifier_holy       | ``INTEGER`` | Percentage of damage the creature                   |
-|                     |             | receives from this damage type.                     |
-|                     |             | ``0`` being completely immune,                      |
-|                     |             | ``100`` neutral. May be ``NULL``                    |
-|                     |             | if unknown.                                         |
-+---------------------+-------------+-----------------------------------------------------+
-| modifier_drown      | ``INTEGER`` | Percentage of damage the creature                   |
-|                     |             | receives from this damage type.                     |
-|                     |             | ``0`` being completely immune,                      |
-|                     |             | ``100`` neutral. May be ``NULL``                    |
-|                     |             | if unknown.                                         |
-+---------------------+-------------+-----------------------------------------------------+
-| modifier_hpdrain    | ``INTEGER`` | Percentage of damage the creature                   |
-|                     |             | receives from this damage type.                     |
-|                     |             | ``0`` being completely immune,                      |
-|                     |             | ``100`` neutral. May be ``NULL``                    |
-|                     |             | if unknown.                                         |
-+---------------------+-------------+-----------------------------------------------------+
-| abilities           | ``TEXT``    | A summary of a creature’s                           |
-|                     |             | abilities (attacks, spells,                         |
-|                     |             | healing).                                           |
-+---------------------+-------------+-----------------------------------------------------+
-| walks_through       | ``TEXT``    | The type of fields the creature                     |
-|                     |             | will walk through.                                  |
-+---------------------+-------------+-----------------------------------------------------+
-| walks_around        | ``TEXT``    | The type of fields the creature                     |
-|                     |             | will walk around to avoid when                      |
-|                     |             | possible.                                           |
-+---------------------+-------------+-----------------------------------------------------+
-| version             | ``TEXT``    | The client version this creature                    |
-|                     |             | was introduced to the game.                         |
-+---------------------+-------------+-----------------------------------------------------+
-| image               | ``BLOB``    | The creature’s image bytes.                         |
-+---------------------+-------------+-----------------------------------------------------+
-| status              | ``TEXT``    | The status of the creature in game.                 |
-+---------------------+-------------+-----------------------------------------------------+
-| timestamp           | ``INTEGER`` | Unix timestamp of the article's last edit.          |
-+---------------------+-------------+-----------------------------------------------------+
++---------------------+-------------+---------------------------------------------------------------+
+|       Column        |    Type     |                          Description                          |
++=====================+=============+===============================================================+
+| article_id          | ``INTEGER`` | The id of the article containing this creature.               |
+|                     | ``PRIMARY`` |                                                               |
++---------------------+-------------+---------------------------------------------------------------+
+| title               | ``TEXT``    | The title of the article containing this creature.            |
++---------------------+-------------+---------------------------------------------------------------+
+| name                | ``TEXT``    | The name of the creature in-game.                             |
++---------------------+-------------+---------------------------------------------------------------+
+| plural              | ``TEXT``    | The plural of the name.                                       |
++---------------------+-------------+---------------------------------------------------------------+
+| library_race        | ``TEXT``    | The race name of the creature in Tibia.com's library.         |
++---------------------+-------------+---------------------------------------------------------------+
+| article             | ``TEXT``    | The grammatical article before the creature’s name.           |
+|                     |             | This is shown when looking at creatures.                      |
+|                     |             | Bosses have no article.                                       |
++---------------------+-------------+---------------------------------------------------------------+
+| hitpoints           | ``INTEGER`` | The number of hitpoints the creature has.                     |
+|                     |             | May be ``NULL`` if unknown.                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| experience          | ``INTEGER`` | The number of experience the creature yields .                |
+|                     |             | May be ``NULL`` if unknown.                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| armor               | ``INTEGER`` | The armor value of the creature.                              |
+|                     |             | May be ``NULL`` if unknown.                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| speed               | ``INTEGER`` | The speed value of the creature.                              |
+|                     |             | May be ``NULL`` if unknown.                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| creature_class      | ``TEXT``    | The class this creature belongs to                            |
+|                     |             | (e.g. ``Demons``, ``Humanoids``,                              |
+|                     |             | ``Mammals``).                                                 |
++---------------------+-------------+---------------------------------------------------------------+
+| type                | ``TEXT``    | The type this creature belongs to                             |
+|                     |             | (e.g. ``Archdemons``, ``Dwarves``,                            |
+|                     |             | ``Apes``).                                                    |
++---------------------+-------------+---------------------------------------------------------------+
+| type_secondary      | ``TEXT``    | A secondary type this creature belongs to, if any.            |
++---------------------+-------------+---------------------------------------------------------------+
+| bestiary_class      | ``TEXT``    | The bestiary category of this                                 |
+|                     |             | creature. ``NULL`` for creatures                              |
+|                     |             | not in the bestiary.                                          |
++---------------------+-------------+---------------------------------------------------------------+
+| bestiary_level      | ``TEXT``    | The bestiary level of this                                    |
+|                     |             | creature. ``NULL`` for creatures                              |
+|                     |             | not in the bestiary.                                          |
++---------------------+-------------+---------------------------------------------------------------+
+| bestiary_occurrence | ``TEXT``    | The bestiary’s rarity value of                                |
+|                     |             | this creature. ``NULL`` for                                   |
+|                     |             | creatures not in the bestiary.                                |
++---------------------+-------------+---------------------------------------------------------------+
+| max_damage          | ``INTEGER`` | The maximum damage a creature may                             |
+|                     |             | deal if it were to use all it’s                               |
+|                     |             | abilities at once. May be ``NULL`` if unknown.                |
++---------------------+-------------+---------------------------------------------------------------+
+| runs_at             | ``INTEGER`` | The amount of hitpoints when the creature starts to run away. |
+|                     |             | 0 means it won't run away.                                    |
++---------------------+-------------+---------------------------------------------------------------+
+| summon_cost         | ``INTEGER`` | The mana cost to summon this                                  |
+|                     |             | creature. ``0`` means it is not summonable.                   |
++---------------------+-------------+---------------------------------------------------------------+
+| convince_cost       | ``INTEGER`` | The mana cost to convince this                                |
+|                     |             | creature. ``0`` means it is not convincible.                  |
++---------------------+-------------+---------------------------------------------------------------+
+| illusionable        | ``BOOLEAN`` | Whether the player can turn into                              |
+|                     |             | this creature with Creature Illusion.                         |
++---------------------+-------------+---------------------------------------------------------------+
+| pushable            | ``BOOLEAN`` | Whether this creature can be pushed or not.                   |
++---------------------+-------------+---------------------------------------------------------------+
+| push_objects        | ``BOOLEAN`` | Whether this creature can push objects or not.                |
++---------------------+-------------+---------------------------------------------------------------+
+| paralysable         | ``BOOLEAN`` | Whether this creature can be paralyzed or not.                |
++---------------------+-------------+---------------------------------------------------------------+
+| sees_invisible      | ``BOOLEAN`` | Whether this creature can see                                 |
+|                     |             | invisible players or not.                                     |
++---------------------+-------------+---------------------------------------------------------------+
+| boss                | ``BOOLEAN`` | Whether this creature is a boss or                            |
+|                     |             | not.                                                          |
++---------------------+-------------+---------------------------------------------------------------+
+| modifier_physical   | ``INTEGER`` | Percentage of damage the creature                             |
+|                     |             | receives from this damage type.                               |
+|                     |             | ``0`` being completely immune,                                |
+|                     |             | ``100`` neutral. May be ``NULL``                              |
+|                     |             | if unknown.                                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| modifier_earth      | ``INTEGER`` | Percentage of damage the creature                             |
+|                     |             | receives from this damage type.                               |
+|                     |             | ``0`` being completely immune,                                |
+|                     |             | ``100`` neutral. May be ``NULL``                              |
+|                     |             | if unknown.                                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| modifier_fire       | ``INTEGER`` | Percentage of damage the creature                             |
+|                     |             | receives from this damage type.                               |
+|                     |             | ``0`` being completely immune,                                |
+|                     |             | ``100`` neutral. May be ``NULL``                              |
+|                     |             | if unknown.                                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| modifier_ice        | ``INTEGER`` | Percentage of damage the creature                             |
+|                     |             | receives from this damage type.                               |
+|                     |             | ``0`` being completely immune,                                |
+|                     |             | ``100`` neutral. May be ``NULL``                              |
+|                     |             | if unknown.                                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| modifier_energy     | ``INTEGER`` | Percentage of damage the creature                             |
+|                     |             | receives from this damage type.                               |
+|                     |             | ``0`` being completely immune,                                |
+|                     |             | ``100`` neutral. May be ``NULL``                              |
+|                     |             | if unknown.                                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| modifier_death      | ``INTEGER`` | Percentage of damage the creature                             |
+|                     |             | receives from this damage type.                               |
+|                     |             | ``0`` being completely immune,                                |
+|                     |             | ``100`` neutral. May be ``NULL``                              |
+|                     |             | if unknown.                                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| modifier_holy       | ``INTEGER`` | Percentage of damage the creature                             |
+|                     |             | receives from this damage type.                               |
+|                     |             | ``0`` being completely immune,                                |
+|                     |             | ``100`` neutral. May be ``NULL``                              |
+|                     |             | if unknown.                                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| modifier_drown      | ``INTEGER`` | Percentage of damage the creature                             |
+|                     |             | receives from this damage type.                               |
+|                     |             | ``0`` being completely immune,                                |
+|                     |             | ``100`` neutral. May be ``NULL``                              |
+|                     |             | if unknown.                                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| modifier_hpdrain    | ``INTEGER`` | Percentage of damage the creature                             |
+|                     |             | receives from this damage type.                               |
+|                     |             | ``0`` being completely immune,                                |
+|                     |             | ``100`` neutral. May be ``NULL``                              |
+|                     |             | if unknown.                                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| modifier_hpdrain    | ``INTEGER`` | The healing modifier. ``NULL`` if unknown.                    |
++---------------------+-------------+---------------------------------------------------------------+
+| abilities           | ``TEXT``    | A summary of a creature’s                                     |
+|                     |             | abilities (attacks, spells,                                   |
+|                     |             | healing).                                                     |
++---------------------+-------------+---------------------------------------------------------------+
+| walks_through       | ``TEXT``    | The type of fields the creature                               |
+|                     |             | will walk through.                                            |
++---------------------+-------------+---------------------------------------------------------------+
+| walks_around        | ``TEXT``    | The type of fields the creature                               |
+|                     |             | will walk around to avoid when                                |
+|                     |             | possible.                                                     |
++---------------------+-------------+---------------------------------------------------------------+
+| location            | ``TEXT``    | The locations where the creature can be found.                |
++---------------------+-------------+---------------------------------------------------------------+
+| version             | ``TEXT``    | The client version this creature                              |
+|                     |             | was introduced to the game.                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| image               | ``BLOB``    | The creature’s image bytes.                                   |
++---------------------+-------------+---------------------------------------------------------------+
+| status              | ``TEXT``    | The status of the creature in game.                           |
++---------------------+-------------+---------------------------------------------------------------+
+| timestamp           | ``INTEGER`` | Unix timestamp of the article's last edit.                    |
++---------------------+-------------+---------------------------------------------------------------+
 
 creature_drop
 ~~~~~~~~~~~~~
@@ -335,6 +346,37 @@ database_info
 +--------+-------------+----------------------------------+
 | value  | ``INTEGER`` | The value of the property.       |
 +--------+-------------+----------------------------------+
+
+game_update
+~~~~~~~~~~~
++----------------+-------------+-------------------------------------------------------------+
+|     Column     |    Type     |                         Description                         |
++================+=============+=============================================================+
+| article_id     | ``INTEGER`` | The id of the article containing this update.               |
+|                | ``PRIMARY`` |                                                             |
++----------------+-------------+-------------------------------------------------------------+
+| title          | ``TEXT``    | The title of the article containing the update.             |
++----------------+-------------+-------------------------------------------------------------+
+| name           | ``TEXT``    | The name of the update, if any.                             |
++----------------+-------------+-------------------------------------------------------------+
+| date           | ``TEXT``    | The date when this update was released, in ISO 8601 format. |
++----------------+-------------+-------------------------------------------------------------+
+| news_id        | ``INTEGER`` | The world's PvP type.                                       |
++----------------+-------------+-------------------------------------------------------------+
+| type_primary   | ``TEXT``    | The primary type of the update.                             |
++----------------+-------------+-------------------------------------------------------------+
+| type_secondary | ``TEXT``    | The secondary type of the update.                           |
++----------------+-------------+-------------------------------------------------------------+
+| previous       | ``TEXT``    | The version before this update                              |
++----------------+-------------+-------------------------------------------------------------+
+| next           | ``TEXT``    | The version after this update                               |
++----------------+-------------+-------------------------------------------------------------+
+| version        | ``TEXT``    | The client version this update set.                         |
++----------------+-------------+-------------------------------------------------------------+
+| summary        | ``TEXT``    | A brief summary of the update.                              |
++----------------+-------------+-------------------------------------------------------------+
+| changelist     | ``TEXT``    | A brief list of the changes introduced.                     |
++----------------+-------------+-------------------------------------------------------------+
 
 house
 ~~~~~
@@ -398,6 +440,8 @@ imbuement
 | type       | ``TEXT``    | The imbuement’s type, e.g.  ``Void``, ``Frost``, etc.          |
 +------------+-------------+----------------------------------------------------------------+
 | effect     | ``TEXT``    | The effect given by this imbuement.                            |
++------------+-------------+----------------------------------------------------------------+
+| slots      | ``TEXT``    | The item types this imbuement can be applied to.               |
 +------------+-------------+----------------------------------------------------------------+
 | version    | ``TEXT``    | The client version this imbuement                              |
 |            |             | was introduced to the game.                                    |
@@ -582,41 +626,43 @@ mount
 
 npc
 ~~~
-+------------+-------------+--------------------------------------------------+
-|   Column   |    Type     |                   Description                    |
-+============+=============+==================================================+
-| article_id | ``INTEGER`` | The id of the article containing this NPC.       |
-|            | ``PRIMARY`` |                                                  |
-+------------+-------------+--------------------------------------------------+
-| title      | ``TEXT``    | The title of the article containing the NPC.     |
-+------------+-------------+--------------------------------------------------+
-| name       | ``TEXT``    | The actual name of the NPC in-game.              |
-+------------+-------------+--------------------------------------------------+
-| gender     | ``TEXT``    | The gender of the NPC in-game.                   |
-+------------+-------------+--------------------------------------------------+
-| race       | ``TEXT``    | The race of the NPC in-game.                     |
-+------------+-------------+--------------------------------------------------+
-| job        | ``TEXT``    | The NPC job                                      |
-+------------+-------------+--------------------------------------------------+
-| city       | ``TEXT``    | City where the npc is found.                     |
-+------------+-------------+--------------------------------------------------+
-| location   | ``TEXT``    | The location where the NPC is found.             |
-+------------+-------------+--------------------------------------------------+
-| x          | ``INTEGER`` | The x position where the NPC is usually located. |
-+------------+-------------+--------------------------------------------------+
-| y          | ``INTEGER`` | The y position where the NPC is usually located. |
-+------------+-------------+--------------------------------------------------+
-| z          | ``INTEGER`` | The z position where the NPC is usually located. |
-+------------+-------------+--------------------------------------------------+
-| version    | ``TEXT``    | The client version this NPC was introduced to    |
-|            |             | to the game.                                     |
-+------------+-------------+--------------------------------------------------+
-| image      | ``BLOB``    | The NPC's image bytes.                           |
-+------------+-------------+--------------------------------------------------+
-| status     | ``TEXT``    | The status of the NPC in game.                   |
-+------------+-------------+--------------------------------------------------+
-| timestamp  | ``INTEGER`` | Unix timestamp of the article's last edit.       |
-+------------+-------------+--------------------------------------------------+
++-----------------+-------------+------------------------------------------------------+
+|     Column      |    Type     |                     Description                      |
++=================+=============+======================================================+
+| article_id      | ``INTEGER`` | The id of the article containing this NPC.           |
+|                 | ``PRIMARY`` |                                                      |
++-----------------+-------------+------------------------------------------------------+
+| title           | ``TEXT``    | The title of the article containing the NPC.         |
++-----------------+-------------+------------------------------------------------------+
+| name            | ``TEXT``    | The actual name of the NPC in-game.                  |
++-----------------+-------------+------------------------------------------------------+
+| gender          | ``TEXT``    | The gender of the NPC in-game.                       |
++-----------------+-------------+------------------------------------------------------+
+| race            | ``TEXT``    | The race of the NPC in-game.                         |
++-----------------+-------------+------------------------------------------------------+
+| job             | ``TEXT``    | The NPC job.                                         |
++-----------------+-------------+------------------------------------------------------+
+| job_additionals | ``TEXT``    | Additional jobs the NPC has. A comma separated list. |
++-----------------+-------------+------------------------------------------------------+
+| city            | ``TEXT``    | City where the npc is found.                         |
++-----------------+-------------+------------------------------------------------------+
+| location        | ``TEXT``    | The location where the NPC is found.                 |
++-----------------+-------------+------------------------------------------------------+
+| x               | ``INTEGER`` | The x position where the NPC is usually located.     |
++-----------------+-------------+------------------------------------------------------+
+| y               | ``INTEGER`` | The y position where the NPC is usually located.     |
++-----------------+-------------+------------------------------------------------------+
+| z               | ``INTEGER`` | The z position where the NPC is usually located.     |
++-----------------+-------------+------------------------------------------------------+
+| version         | ``TEXT``    | The client version this NPC was introduced to        |
+|                 |             | to the game.                                         |
++-----------------+-------------+------------------------------------------------------+
+| image           | ``BLOB``    | The NPC's image bytes.                               |
++-----------------+-------------+------------------------------------------------------+
+| status          | ``TEXT``    | The status of the NPC in game.                       |
++-----------------+-------------+------------------------------------------------------+
+| timestamp       | ``INTEGER`` | Unix timestamp of the article's last edit.           |
++-----------------+-------------+------------------------------------------------------+
 
 npc_destination
 ~~~~~~~~~~~~~~~
@@ -845,64 +891,80 @@ rashid_position
 
 spell
 ~~~~~
-+------------+-------------+-------------------------------------------------------+
-|   Column   |    Type     |                      Description                      |
-+============+=============+=======================================================+
-| article_id | ``INTEGER`` | The id of the article containing this achievement.    |
-|            | ``PRIMARY`` |                                                       |
-+------------+-------------+-------------------------------------------------------+
-| title      | ``TEXT``    | The title of the article containing the achievement.  |
-+------------+-------------+-------------------------------------------------------+
-| name       | ``TEXT``    | The name of the spell.                                |
-+------------+-------------+-------------------------------------------------------+
-| words      | ``TEXT``    | The words used to cast the spell.                     |
-+------------+-------------+-------------------------------------------------------+
-| effect     | ``TEXT``    | The effect of this spell.                             |
-+------------+-------------+-------------------------------------------------------+
-| type       | ``TEXT``    | Whether the spell is ``Instant`` or a ``Rune`` spell. |
-+------------+-------------+-------------------------------------------------------+
-| class      | ``TEXT``    | The spell’s class (e.g. ``Attack``, ``Support``)      |
-+------------+-------------+-------------------------------------------------------+
-| element    | ``TEXT``    | The type of damage this spell deals, if applicable.   |
-+------------+-------------+-------------------------------------------------------+
-| level      | ``INTEGER`` | Level required to cast this spell                     |
-|            |             |                                                       |
-+------------+-------------+-------------------------------------------------------+
-| mana       | ``INTEGER`` | Mana required to cast this spell.                     |
-|            |             | ``0`` means special conditions apply.                 |
-+------------+-------------+-------------------------------------------------------+
-| soul       | ``INTEGER`` | Soul points required to cast this spell.              |
-+------------+-------------+-------------------------------------------------------+
-| premium    | ``BOOLEAN`` | Whether this spell requires                           |
-|            |             | premium account or not. ``0`` or                      |
-|            |             | ``1``.                                                |
-+------------+-------------+-------------------------------------------------------+
-| price      | ``INTEGER`` | Price in gold coins of this spell                     |
-|            |             |                                                       |
-+------------+-------------+-------------------------------------------------------+
-| cooldown   | ``INTEGER`` | Cooldown in seconds of this spell                     |
-|            |             |                                                       |
-+------------+-------------+-------------------------------------------------------+
-| knight     | ``BOOLEAN`` | Whether this spell can be used by                     |
-|            |             | knights or not.                                       |
-+------------+-------------+-------------------------------------------------------+
-| sorcerer   | ``BOOLEAN`` | Whether this spell can be used by                     |
-|            |             | sorcerers or not.                                     |
-+------------+-------------+-------------------------------------------------------+
-| druid      | ``BOOLEAN`` | Whether this spell can be used by                     |
-|            |             | druids or not.                                        |
-+------------+-------------+-------------------------------------------------------+
-| paladin    | ``BOOLEAN`` | Whether this spell can be used by                     |
-|            |             | paladins or not.                                      |
-+------------+-------------+-------------------------------------------------------+
-| image      | ``BLOB``    | The spell’s image bytes.                              |
-+------------+-------------+-------------------------------------------------------+
-| status     | ``TEXT``    | The status of the spell in game.                      |
-+------------+-------------+-------------------------------------------------------+
-| version    | ``TEXT``    |Client version where this quest was implemented.       |
-+------------+-------------+-------------------------------------------------------+
-| timestamp  | ``INTEGER`` | Unix timestamp of the article's last edit.            |
-+------------+-------------+-------------------------------------------------------+
++--------------------------+-------------+-------------------------------------------------------+
+|          Column          |    Type     |                      Description                      |
++==========================+=============+=======================================================+
+| article_id               | ``INTEGER`` | The id of the article containing this achievement.    |
+|                          | ``PRIMARY`` |                                                       |
++--------------------------+-------------+-------------------------------------------------------+
+| title                    | ``TEXT``    | The title of the article containing the achievement.  |
++--------------------------+-------------+-------------------------------------------------------+
+| name                     | ``TEXT``    | The name of the spell.                                |
++--------------------------+-------------+-------------------------------------------------------+
+| words                    | ``TEXT``    | The words used to cast the spell.                     |
++--------------------------+-------------+-------------------------------------------------------+
+| effect                   | ``TEXT``    | The effect of this spell.                             |
++--------------------------+-------------+-------------------------------------------------------+
+| type                     | ``TEXT``    | Whether the spell is ``Instant`` or a ``Rune`` spell. |
++--------------------------+-------------+-------------------------------------------------------+
+| group_spell              | ``TEXT``    | The cooldown group of this spell.                     |
++--------------------------+-------------+-------------------------------------------------------+
+| group_rune               | ``TEXT``    | The cooldown group of the rune created by this spell. |
++--------------------------+-------------+-------------------------------------------------------+
+| group_secondary          | ``TEXT``    | The secondary cooldown group of this spell.           |
++--------------------------+-------------+-------------------------------------------------------+
+| element                  | ``TEXT``    | The type of damage this spell deals, if applicable.   |
++--------------------------+-------------+-------------------------------------------------------+
+| level                    | ``INTEGER`` | Level required to cast this spell                     |
+|                          |             |                                                       |
++--------------------------+-------------+-------------------------------------------------------+
+| mana                     | ``INTEGER`` | Mana required to cast this spell.                     |
+|                          |             | ``0`` means special conditions apply.                 |
++--------------------------+-------------+-------------------------------------------------------+
+| soul                     | ``INTEGER`` | Soul points required to cast this spell.              |
++--------------------------+-------------+-------------------------------------------------------+
+| premium                  | ``BOOLEAN`` | Whether this spell requires                           |
+|                          |             | premium account or not. ``0`` or                      |
+|                          |             | ``1``.                                                |
++--------------------------+-------------+-------------------------------------------------------+
+| promotion                | ``BOOLEAN`` | Whether this spell requires                           |
+|                          |             | a promotion or not. ``0`` or                          |
+|                          |             | ``1``.                                                |
++--------------------------+-------------+-------------------------------------------------------+
+| price                    | ``INTEGER`` | Price in gold coins of this spell                     |
+|                          |             |                                                       |
++--------------------------+-------------+-------------------------------------------------------+
+| cooldown                 | ``INTEGER`` | The individual cooldown in seconds of this spell      |
+|                          |             |                                                       |
++--------------------------+-------------+-------------------------------------------------------+
+| cooldown_group           | ``INTEGER`` | The group cooldown of this spell.                     |
+|                          |             |                                                       |
++--------------------------+-------------+-------------------------------------------------------+
+| cooldown_group_secondary | ``INTEGER`` | The secondary group cooldown of this spell.           |
+|                          |             |                                                       |
++--------------------------+-------------+-------------------------------------------------------+
+| knight                   | ``BOOLEAN`` | Whether this spell can be used by                     |
+|                          |             | knights or not.                                       |
++--------------------------+-------------+-------------------------------------------------------+
+| sorcerer                 | ``BOOLEAN`` | Whether this spell can be used by                     |
+|                          |             | sorcerers or not.                                     |
++--------------------------+-------------+-------------------------------------------------------+
+| druid                    | ``BOOLEAN`` | Whether this spell can be used by                     |
+|                          |             | druids or not.                                        |
++--------------------------+-------------+-------------------------------------------------------+
+| paladin                  | ``BOOLEAN`` | Whether this spell can be used by                     |
+|                          |             | paladins or not.                                      |
++--------------------------+-------------+-------------------------------------------------------+
+| image                    | ``BLOB``    | The spell’s image bytes.                              |
++--------------------------+-------------+-------------------------------------------------------+
+| status                   | ``TEXT``    | The status of the spell in game.                      |
++--------------------------+-------------+-------------------------------------------------------+
+| version                  | ``TEXT``    | Client version where this quest was implemented.      |
++--------------------------+-------------+-------------------------------------------------------+
+| timestamp                | ``INTEGER`` | Unix timestamp of the article's last edit.            |
++--------------------------+-------------+-------------------------------------------------------+
+
+
 
 world
 ~~~~~
@@ -931,6 +993,8 @@ world
 | merged_into     | ``TEXT``    | The name of the world this world got merged into, if applicable.             |
 +-----------------+-------------+------------------------------------------------------------------------------+
 | battleye        | ``BOOLEAN`` | Whether the world is BattlEye protected or not.                              |
++-----------------+-------------+------------------------------------------------------------------------------+
+| battleye_type   | ``TEXT``    | The type of battleye protection the world has (yellow or green).             |
 +-----------------+-------------+------------------------------------------------------------------------------+
 | protected_since | ``TEXT``    | Date when the world started being protected by BattlEye, in ISO 8601 format. |
 +-----------------+-------------+------------------------------------------------------------------------------+
