@@ -388,6 +388,22 @@ class Mount(Table):
     timestamp = Column(Integer)
 
 
+class Update(Table, table_name="game_update"):
+    article_id = Column(Integer, primary_key=True)
+    title = Column(Text, unique=True, no_case=True)
+    name = Column(Text, no_case=True, index=True)
+    date = Column(Text, index=True)
+    news_id = Column(Integer, index=True)
+    type_primary = Column(Text, index=True)
+    type_secondary = Column(Text, index=True)
+    previous = Column(Text, index=True)
+    next = Column(Text, index=True)
+    version = Column(Text, index=True)
+    summary = Column(Text, index=True)
+    changes = Column(Text, index=True)
+    timestamp = Column(Integer)
+
+
 def create_tables(conn):
     """
     Creates all the tables in the database.

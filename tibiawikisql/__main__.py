@@ -76,6 +76,7 @@ categories = {
     "outfits": Category("Outfits", models.Outfit, no_images=True),
     "worlds": Category("Game Worlds", models.World, no_images=True, include_deprecated=True),
     "mounts": Category("Mounts", models.Mount),
+    "updates": Category("Updates", models.Update, no_images=True),
 }
 
 

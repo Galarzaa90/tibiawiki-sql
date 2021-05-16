@@ -24,4 +24,5 @@ from tibiawikisql.models.npc import Npc, NpcBuyOffer, NpcDestination, NpcOffer, 
 from tibiawikisql.models.outfit import Outfit, OutfitImage, OutfitQuest
 from tibiawikisql.models.quest import Quest, QuestDanger, QuestReward
 from tibiawikisql.models.spell import Spell
+from tibiawikisql.models.update import Update
 from tibiawikisql.models.world import World
