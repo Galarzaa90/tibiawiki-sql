@@ -48,7 +48,7 @@ class Update(abc.Row, abc.Parseable, table=schema.Update):
     type_secondary: :class:`str`
         The secondary type of the update.
     previous: :class:`str`
-        The version before this update..
+        The version before this update.
     next: :class:`str`
         The version after this update.
     version: :class:`str`
@@ -56,7 +56,7 @@ class Update(abc.Row, abc.Parseable, table=schema.Update):
     summary: :class:`str`
         A brief summary of the update.
     changelist: :class:`str`
-        A brief list of the changes introduced..
+        A brief list of the changes introduced.
     """
     _map = {
         "name": ("name", str.strip),

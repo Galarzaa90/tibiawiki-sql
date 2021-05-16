@@ -110,6 +110,7 @@ class Column:
         'nullable',
         'unique',
         'name',
+        'default',
         'index_name',
         'auto_increment',
         'no_case',

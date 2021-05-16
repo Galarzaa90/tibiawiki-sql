@@ -193,7 +193,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
     modifier_lifedrain: :class:`int`
         The percentage of damage received of life drain damage. ``None`` if unknown.
     modifier_healing: :class:`int`
-        The percentage of damage received from healing. ``None`` if unknown.
+        The healing modifier. ``None`` if unknown.
     abilities: :class:`str`
         A brief description of the creature's abilities.
     walks_through: :class:`str`

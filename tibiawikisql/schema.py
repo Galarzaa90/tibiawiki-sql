@@ -211,7 +211,6 @@ class Spell(Table):
     title = Column(Text, unique=True)
     name = Column(Text, no_case=True, index=True)
     words = Column(Text, index=True)
-    spellid = Column(Integer, index=True)
     effect = Column(Text)
     type = Column(Text, index=True)
     group_spell = Column(Text, index=True)

@@ -149,7 +149,7 @@ Outfit
 
 
 OutfitImage
-~~~~~
+~~~~~~~~~~~
 .. autoclass:: tibiawikisql.models.OutfitImage()
    :members:
    :inherited-members:
@@ -188,6 +188,12 @@ RashidPosition
 Spell
 ~~~~~
 .. autoclass:: tibiawikisql.models.Spell()
+   :members:
+   :inherited-members:
+
+Update
+~~~~~~
+.. autoclass:: tibiawikisql.models.Update   ()
    :members:
    :inherited-members:
 

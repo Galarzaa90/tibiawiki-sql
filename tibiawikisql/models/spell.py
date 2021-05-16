@@ -34,8 +34,6 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         The name of the spell.
     words: :class:`str`
         The spell's invocation words.
-    spellid: :class:`int`
-        The spell's internal ID.
     effect: :class:`str`
         The effects of casting the spell.
     type: :class:`str`
@@ -89,7 +87,6 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         "timestamp",
         "name",
         "words",
-        "spellid",
         "type",
         "group_spell",
         "group_secondary",
@@ -118,7 +115,6 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         "name": ("name", str.strip),
         "effect": ("effect", clean_links),
         "words": ("words", str.strip),
-        "spellid": ("spellid", parse_integer),
         "type": ("type", str.strip),
         "subclass": ("group_spell", str.strip),
         "secondarygroup": ("group_secondary", str.strip),
