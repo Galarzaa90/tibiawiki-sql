@@ -448,8 +448,8 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
 
     @classmethod
     def _get_base_query(cls):
-        return f"""SELECT {cls.table.__tablename__}.*, item.title as item_title, npc.title as npc_title, 
-                  npc.city as npc_city, currency.title as currency_title 
+        return f"""SELECT {cls.table.__tablename__}.*, item.title as item_title, npc.title as npc_title,
+                  npc.city as npc_city, currency.title as currency_title
                   FROM {cls.table.__tablename__}
                   LEFT JOIN npc ON npc.article_id = npc_id
                   LEFT JOIN item ON item.article_id = item_id
@@ -588,7 +588,7 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
     @classmethod
     def _get_base_query(cls):
         return f"""SELECT {cls.table.__tablename__}.*, spell.title as spell_title, npc.title as npc_title,
-                  spell.price as price, npc.city as npc_city 
+                  spell.price as price, npc.city as npc_city
                   FROM {cls.table.__tablename__}
                   LEFT JOIN npc ON npc.article_id = npc_id
                   LEFT JOIN spell ON spell.article_id = spell_id"""

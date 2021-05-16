@@ -229,5 +229,5 @@ class OutfitImage(abc.Row, table=schema.OutfitImage):
     @classmethod
     def _get_base_query(cls):
         return f"""SELECT {cls.table.__tablename__}.*, outfit.name as outfit_name
-                   FROM {cls.table.__tablename__} 
+                   FROM {cls.table.__tablename__}
                    LEFT JOIN outfit on outfit.article_id = outfit_id"""
