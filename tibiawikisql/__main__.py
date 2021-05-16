@@ -193,7 +193,7 @@ def generate_loot_statistics(conn: sqlite3.Connection):
                     # We delete any duplicate record that was added from the creature's article's loot if it exists
                     c.execute("DELETE FROM creature_drop WHERE creature_id = ? AND item_id = ?",
                               (creature_id, item_id))
-                c.executemany(f"INSERT INTO creature_drop(creature_id, item_id, chance, min, max) VALUES(?,?,?,?,?)",
+                c.executemany("INSERT INTO creature_drop(creature_id, item_id, chance, min, max) VALUES(?,?,?,?,?)",
                               loot_items)
         dt = (time.perf_counter() - start_time)
         print(f"{Fore.GREEN}\tParsed loot statistics in {dt:.2f} seconds.{Style.RESET_ALL}")
@@ -302,7 +302,7 @@ def save_outfit_images(conn):
         "Outfit %s Female Addon 3.gif",
     ]
     addon_sequence = (0, 1, 2, 3) * 2
-    sex_sequence = ["Male"]*4 + ["Female"]*4
+    sex_sequence = ["Male"] * 4 + ["Female"] * 4
     for article_id, name in results:
         for i, image_name in enumerate(name_templates):
             file_name = image_name % name
@@ -314,7 +314,7 @@ def save_outfit_images(conn):
     fetch_count = 0
     failed = []
     start = time.perf_counter()
-    with progress_bar(generator, f"Fetching outfit images", len(titles), item_show_func=img_show) as bar:
+    with progress_bar(generator, "Fetching outfit images", len(titles), item_show_func=img_show) as bar:
         for image in bar:
             if image is None:
                 continue
@@ -336,7 +336,7 @@ def save_outfit_images(conn):
                 failed.append(image.file_name)
                 continue
             article_id, addons, sex = image_info[image.file_name]
-            conn.execute(f"INSERT INTO outfit_image(outfit_id, addon, sex, image) VALUES(?, ?, ?, ?)",
+            conn.execute("INSERT INTO outfit_image(outfit_id, addon, sex, image) VALUES(?, ?, ?, ?)",
                          (article_id, addons, sex, image_bytes))
         save_cache_info(table, cache_info)
     dt = (time.perf_counter() - start)
@@ -362,7 +362,7 @@ def get_articles(category, data_store, key=None, include_deprecated=False):
 
 def save_maps(con):
     url = "https://tibiamaps.github.io/tibia-map-data/floor-{0:02d}-map.png"
-    os.makedirs(f"images/map", exist_ok=True)
+    os.makedirs("images/map", exist_ok=True)
     for z in range(16):
         try:
             with open(f"images/map/{z}.png", "rb") as f:
@@ -375,7 +375,7 @@ def save_maps(con):
                 f.write(image)
         except requests.HTTPError:
             continue
-        con.execute(f"INSERT INTO map(z, image) VALUES(?,?)", (z, image))
+        con.execute("INSERT INTO map(z, image) VALUES(?,?)", (z, image))
 
 
 if __name__ == "__main__":

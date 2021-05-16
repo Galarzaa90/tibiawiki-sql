@@ -308,7 +308,7 @@ class WikiClient:
         while True:
             if i >= len(names):
                 break
-            params["titles"] = "|".join(names[i:min(i+50, len(names))])
+            params["titles"] = "|".join(names[i:min(i + 50, len(names))])
             i += 50
             r = s.get(cls.ENDPOINT, params=params)
             data = json.loads(r.text)

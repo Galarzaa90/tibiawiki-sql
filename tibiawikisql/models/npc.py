@@ -324,8 +324,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                 sorcerer = "sorcerer" in group.lower() or npc.name == "Eliza"
                 if not(knight or paladin or druid or sorcerer):
                     def in_jobs(vocation, _npc):
-                        return vocation in (_npc.job+_npc._raw_attributes.get("job2", "") +
-                                            _npc._raw_attributes.get("job3", "")).lower()
+                        return vocation in (_npc.job + _npc._raw_attributes.get("job2", "")
+                                            + _npc._raw_attributes.get("job3", "")).lower()
 
                     knight = in_jobs("knight", npc)
                     paladin = in_jobs("paladin", npc)
@@ -514,7 +514,7 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
 
     @classmethod
     def _get_base_query(cls):
-        return f"""SELECT {cls.table.__tablename__}.*, item.title as item_title, npc.title as npc_title, 
+        return f"""SELECT {cls.table.__tablename__}.*, item.title as item_title, npc.title as npc_title,
                    npc.city as npc_city, currency.title as currency_title FROM {cls.table.__tablename__}
                    LEFT JOIN npc ON npc.article_id = npc_id
                    LEFT JOIN item ON item.article_id = item_id

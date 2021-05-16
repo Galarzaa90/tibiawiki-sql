@@ -73,5 +73,3 @@ class Charm(abc.Row, abc.Parseable, table=schema.Charm):
 
     def __repr__(self):
         return f"{self.__class__.__name__}(name={self.name!r},type={self.type!r},cost={self.cost!r})"
-
-

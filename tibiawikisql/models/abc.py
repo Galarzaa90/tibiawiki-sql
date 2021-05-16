@@ -248,7 +248,3 @@ class Row(metaclass=abc.ABCMeta):
             if row is not None:
                 results.append(row)
         return results
-
-
-
-

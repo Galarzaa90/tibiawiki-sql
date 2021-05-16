@@ -103,8 +103,17 @@ class ForeignKey(SQLType):
 
 
 class Column:
-    __slots__ = ('column_type', 'index', 'primary_key', 'nullable',
-                  'default', 'unique', 'name', 'index_name', 'auto_increment', 'no_case')
+    __slots__ = (
+        'column_type',
+        'index',
+        'primary_key',
+        'nullable',
+        'unique',
+        'name',
+        'index_name',
+        'auto_increment',
+        'no_case',
+    )
 
     def __init__(self, column_type, name=None, *, unique=False, primary_key=False, nullable=True, default=None,
                  auto_increment=None, index=False, no_case=False):

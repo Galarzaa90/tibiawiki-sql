@@ -105,4 +105,3 @@ class House(abc.Row, abc.Parseable, table=schema.House):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
