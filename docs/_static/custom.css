@@ -1,3 +1,4 @@
+
 body {
     font-family: 'Georgia', 'Yu Gothic', 'Noto Sans CJK JP Regular', serif;
     font-size: 16px;
@@ -148,6 +149,14 @@ dl.exception > dt {
     padding: 1px 10px;
 }
 
+.sig {
+    font-size: 90%;
+}
+
+.viewcode-link {
+    font-size: 90%;
+}
+
 /* Code Blocks */
 pre {
     background-color: #f5f5f5;
@@ -182,7 +191,19 @@ span.pre {
 
 /* Tables */
 table.docutils {
-  width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 0;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.docutils td, table.docutils th {
+    padding: 1px 8px 1px 5px;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #aaa;
 }
 
 table.docutils.footnote {
