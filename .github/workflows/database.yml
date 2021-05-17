@@ -22,9 +22,10 @@ jobs:
       - name: Cache Images
         uses: actions/cache@v2
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
           path: ~/images
-          key: images-cache
+          key: images-${{GITHUB_SHA}}
+          restore-keys: |
+            images-
 
       - name: Generate Database
         run: tibiawikisql generate
