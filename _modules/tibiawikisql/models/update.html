@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tibiawikisql.models.world &#8212; TibiaWikiSQL 4.1.2 documentation</title>
+    <title>tibiawikisql.models.update &#8212; TibiaWikiSQL 4.1.2 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -34,7 +34,7 @@
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.1.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">tibiawikisql.models.world</a></li> 
+        <li class="nav-item nav-item-this"><a href="">tibiawikisql.models.update</a></li> 
       </ul>
     </div>  
 
@@ -43,7 +43,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for tibiawikisql.models.world</h1><div class="highlight"><pre>
+  <h1>Source code for tibiawikisql.models.update</h1><div class="highlight"><pre>
 <span></span><span class="c1">#</span>
 <span class="c1">#  Copyright 2021 Allan Galarza</span>
 <span class="c1">#</span>
@@ -63,7 +63,7 @@
 
 <span class="kn">from</span> <span class="nn">tibiawikisql</span> <span class="kn">import</span> <span class="n">schema</span>
 <span class="kn">from</span> <span class="nn">tibiawikisql.models</span> <span class="kn">import</span> <span class="n">abc</span>
-<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="kn">import</span> <span class="n">parse_boolean</span><span class="p">,</span> <span class="n">parse_integer</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="kn">import</span> <span class="n">parse_integer</span><span class="p">,</span> <span class="n">clean_links</span>
 
 
 <span class="k">def</span> <span class="nf">parse_date</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -73,9 +73,9 @@
         <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;%b </span><span class="si">%d</span><span class="s2">, %Y&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="World"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.World">[docs]</a><span class="k">class</span> <span class="nc">World</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">World</span><span class="p">):</span>
+<div class="viewcode-block" id="Update"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Update">[docs]</a><span class="k">class</span> <span class="nc">Update</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">Update</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents a Game World.</span>
+<span class="sd">    Represents a game update.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -86,66 +86,51 @@
 <span class="sd">    timestamp: :class:`int`</span>
 <span class="sd">        The last time the containing article was edited.</span>
 <span class="sd">    name: :class:`str`</span>
-<span class="sd">        The name of the world.</span>
-<span class="sd">    pvp_type: :class:`str`</span>
-<span class="sd">        The world&#39;s PvP type.</span>
-<span class="sd">    location: :class:`str`</span>
-<span class="sd">        The world&#39;s server&#39;s physical location.</span>
-<span class="sd">    preview: :class:`bool`</span>
-<span class="sd">        Whether the world is a preview world or not.</span>
-<span class="sd">    experimental: :class:`bool`</span>
-<span class="sd">        Whether the world is a experimental world or not.</span>
-<span class="sd">    online_since: :class:`str`</span>
-<span class="sd">        Date when the world became online for the first time, in ISO 8601 format.</span>
-<span class="sd">    offline_since: :class:`str`, optional</span>
-<span class="sd">        Date when the world went offline, in ISO 8601 format.</span>
-<span class="sd">    merged_into: :class:`str`, optional.</span>
-<span class="sd">        The name of the world this world got merged into, if applicable.</span>
-<span class="sd">    battleye: :class:`bool`</span>
-<span class="sd">        Whether the world is BattlEye protected or not.</span>
-<span class="sd">    battleye_type: :class:`bool`</span>
-<span class="sd">        The type of BattlEye protection the world has. Can be either green or yellow.</span>
-<span class="sd">    protected_since: :class:`str`</span>
-<span class="sd">        Date when the world started being protected by BattlEye, in ISO 8601 format.</span>
-<span class="sd">    world_board: :class:`int`</span>
-<span class="sd">        The board ID for the world&#39;s board.</span>
-<span class="sd">    trade_board: :class:`int`</span>
-<span class="sd">        The board ID for the world&#39;s trade board.</span>
+<span class="sd">        The name of the update, if any.</span>
+<span class="sd">    news_id: :class:`str`</span>
+<span class="sd">        The id of the news article that announced the release.</span>
+<span class="sd">    type_primary: :class:`str`</span>
+<span class="sd">        The primary type of the update.</span>
+<span class="sd">    type_secondary: :class:`str`</span>
+<span class="sd">        The secondary type of the update.</span>
+<span class="sd">    previous: :class:`str`</span>
+<span class="sd">        The version before this update.</span>
+<span class="sd">    next: :class:`str`</span>
+<span class="sd">        The version after this update.</span>
+<span class="sd">    version: :class:`str`</span>
+<span class="sd">        The version set by this update.</span>
+<span class="sd">    summary: :class:`str`</span>
+<span class="sd">        A brief summary of the update.</span>
+<span class="sd">    changelist: :class:`str`</span>
+<span class="sd">        A brief list of the changes introduced.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
-        <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;pvp_type&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
-        <span class="s2">&quot;preview&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;preview&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
-        <span class="s2">&quot;experimental&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;experimental&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
-        <span class="s2">&quot;online&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;online_since&quot;</span><span class="p">,</span> <span class="n">parse_date</span><span class="p">),</span>
-        <span class="s2">&quot;offline&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;offline_since&quot;</span><span class="p">,</span> <span class="n">parse_date</span><span class="p">),</span>
-        <span class="s2">&quot;mergedinto&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;merged_into&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
-        <span class="s2">&quot;battleye&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;battleye&quot;</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">),</span>
-        <span class="s2">&quot;battleyetype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;battleye_type&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
-        <span class="s2">&quot;protectedsince&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;protected_since&quot;</span><span class="p">,</span> <span class="n">parse_date</span><span class="p">),</span>
-        <span class="s2">&quot;worldboardid&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;world_board&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
-        <span class="s2">&quot;tradeboardid&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;trade_board&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
-    <span class="p">}</span>
-    <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]World&quot;</span><span class="p">)</span>
+        <span class="s2">&quot;primarytype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type_primary&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;secondarytype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type_secondary&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="n">parse_date</span><span class="p">),</span>
+        <span class="s2">&quot;newsid&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;news_id&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;previous&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;previous&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;next&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
+        <span class="s2">&quot;changelist&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;changes&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
+        <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
 
+    <span class="p">}</span>
+    <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Update&quot;</span><span class="p">)</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;article_id&quot;</span><span class="p">,</span>
         <span class="s2">&quot;title&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
         <span class="s2">&quot;name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;location&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;pvp_type&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;preview&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;experimental&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;online_since&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;offline_since&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;merged_into&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;battleye&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;battleye_type&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;protected_since&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;world_board&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;trade_board&quot;</span>
+        <span class="s2">&quot;news_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type_primary&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;type_secondary&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;previous&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;next&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;version&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;summary&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;changes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

@@ -6,10 +6,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Index &#8212; TibiaWikiSQL 4.1.2 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -126,6 +126,8 @@
 </li>
         <li><a href="api.html#tibiawikisql.models.Spell.article_id">(tibiawikisql.models.Spell attribute)</a>
 </li>
+        <li><a href="api.html#tibiawikisql.models.Update.article_id">(tibiawikisql.models.Update attribute)</a>
+</li>
         <li><a href="api.html#tibiawikisql.models.World.article_id">(tibiawikisql.models.World attribute)</a>
 </li>
         <li><a href="api.html#tibiawikisql.WikiEntry.article_id">(tibiawikisql.WikiEntry attribute)</a>
@@ -135,7 +137,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#tibiawikisql.models.Item.attributes">attributes (tibiawikisql.models.Item attribute)</a>
 </li>
-      <li><a href="api.html#tibiawikisql.models.Item.attributes_dict">attributes_dict() (tibiawikisql.models.Item property)</a>
+      <li><a href="api.html#tibiawikisql.models.Item.attributes_dict">attributes_dict (tibiawikisql.models.Item property)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Item.awarded_in">awarded_in (tibiawikisql.models.Item attribute)</a>
 </li>
@@ -147,16 +149,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#tibiawikisql.models.World.battleye">battleye (tibiawikisql.models.World attribute)</a>
 </li>
+      <li><a href="api.html#tibiawikisql.models.World.battleye_type">battleye_type (tibiawikisql.models.World attribute)</a>
+</li>
       <li><a href="api.html#tibiawikisql.models.House.beds">beds (tibiawikisql.models.House attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Creature.bestiary_class">bestiary_class (tibiawikisql.models.Creature attribute)</a>
 </li>
-      <li><a href="api.html#tibiawikisql.models.Creature.bestiary_kills">bestiary_kills() (tibiawikisql.models.Creature property)</a>
-</li>
-      <li><a href="api.html#tibiawikisql.models.Creature.bestiary_level">bestiary_level (tibiawikisql.models.Creature attribute)</a>
+      <li><a href="api.html#tibiawikisql.models.Creature.bestiary_kills">bestiary_kills (tibiawikisql.models.Creature property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#tibiawikisql.models.Creature.bestiary_level">bestiary_level (tibiawikisql.models.Creature attribute)</a>
+</li>
       <li><a href="api.html#tibiawikisql.models.Creature.bestiary_occurrence">bestiary_occurrence (tibiawikisql.models.Creature attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Creature.boss">boss (tibiawikisql.models.Creature attribute)</a>
@@ -175,9 +179,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#tibiawikisql.models.CreatureDrop.chance">chance (tibiawikisql.models.CreatureDrop attribute)</a>
 </li>
+      <li><a href="api.html#tibiawikisql.models.Update.changelist">changelist (tibiawikisql.models.Update attribute)</a>
+</li>
       <li><a href="api.html#tibiawikisql.models.Charm">Charm (class in tibiawikisql.models)</a>
 </li>
-      <li><a href="api.html#tibiawikisql.models.Creature.charm_points">charm_points() (tibiawikisql.models.Creature property)</a>
+      <li><a href="api.html#tibiawikisql.models.Creature.charm_points">charm_points (tibiawikisql.models.Creature property)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.House.city">city (tibiawikisql.models.House attribute)</a>
 
@@ -187,11 +193,9 @@
         <li><a href="api.html#tibiawikisql.models.RashidPosition.city">(tibiawikisql.models.RashidPosition attribute)</a>
 </li>
       </ul></li>
-      <li><a href="api.html#tibiawikisql.models.Spell.class">class (tibiawikisql.models.Spell attribute)</a>
-</li>
       <li><a href="api.html#tibiawikisql.utils.clean_links">clean_links() (in module tibiawikisql.utils)</a>
 </li>
-      <li><a href="api.html#tibiawikisql.Image.clean_name">clean_name() (tibiawikisql.Image property)</a>
+      <li><a href="api.html#tibiawikisql.Image.clean_name">clean_name (tibiawikisql.Image property)</a>
 </li>
       <li><a href="api.html#tibiawikisql.utils.clean_question_mark">clean_question_mark() (in module tibiawikisql.utils)</a>
 </li>
@@ -203,11 +207,15 @@
 </li>
       <li><a href="api.html#tibiawikisql.utils.convert_tibiawiki_position">convert_tibiawiki_position() (in module tibiawikisql.utils)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#tibiawikisql.models.Creature.convince_cost">convince_cost (tibiawikisql.models.Creature attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#tibiawikisql.models.Spell.cooldown">cooldown (tibiawikisql.models.Spell attribute)</a>
+</li>
+      <li><a href="api.html#tibiawikisql.models.Spell.cooldown_group">cooldown_group (tibiawikisql.models.Spell attribute)</a>
+</li>
+      <li><a href="api.html#tibiawikisql.models.Spell.cooldown_group_secondary">cooldown_group_secondary (tibiawikisql.models.Spell attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Charm.cost">cost (tibiawikisql.models.Charm attribute)</a>
 </li>
@@ -283,7 +291,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#tibiawikisql.models.Creature.elemental_modifiers">elemental_modifiers() (tibiawikisql.models.Creature property)</a>
+      <li><a href="api.html#tibiawikisql.models.Creature.elemental_modifiers">elemental_modifiers (tibiawikisql.models.Creature property)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Quest.estimated_time">estimated_time (tibiawikisql.models.Quest attribute)</a>
 </li>
@@ -291,7 +299,7 @@
 </li>
       <li><a href="api.html#tibiawikisql.models.World.experimental">experimental (tibiawikisql.models.World attribute)</a>
 </li>
-      <li><a href="api.html#tibiawikisql.Image.extension">extension() (tibiawikisql.Image property)</a>
+      <li><a href="api.html#tibiawikisql.Image.extension">extension (tibiawikisql.Image property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -299,7 +307,7 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#tibiawikisql.Image.file_name">file_name() (tibiawikisql.Image property)</a>
+      <li><a href="api.html#tibiawikisql.Image.file_name">file_name (tibiawikisql.Image property)</a>
 </li>
       <li><a href="api.html#tibiawikisql.Image.file_url">file_url (tibiawikisql.Image attribute)</a>
 </li>
@@ -331,6 +339,8 @@
         <li><a href="api.html#tibiawikisql.models.Quest.from_article">(tibiawikisql.models.Quest class method)</a>
 </li>
         <li><a href="api.html#tibiawikisql.models.Spell.from_article">(tibiawikisql.models.Spell class method)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Update.from_article">(tibiawikisql.models.Update class method)</a>
 </li>
         <li><a href="api.html#tibiawikisql.models.World.from_article">(tibiawikisql.models.World class method)</a>
 </li>
@@ -383,6 +393,8 @@
         <li><a href="api.html#tibiawikisql.models.Row.from_row">(tibiawikisql.models.Row class method)</a>
 </li>
         <li><a href="api.html#tibiawikisql.models.Spell.from_row">(tibiawikisql.models.Spell class method)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Update.from_row">(tibiawikisql.models.Update class method)</a>
 </li>
         <li><a href="api.html#tibiawikisql.models.World.from_row">(tibiawikisql.models.World class method)</a>
 </li>
@@ -452,6 +464,8 @@
 </li>
         <li><a href="api.html#tibiawikisql.models.Spell.get_by_field">(tibiawikisql.models.Spell class method)</a>
 </li>
+        <li><a href="api.html#tibiawikisql.models.Update.get_by_field">(tibiawikisql.models.Update class method)</a>
+</li>
         <li><a href="api.html#tibiawikisql.models.World.get_by_field">(tibiawikisql.models.World class method)</a>
 </li>
       </ul></li>
@@ -466,6 +480,12 @@
       <li><a href="api.html#tibiawikisql.WikiClient.get_images_info">get_images_info() (tibiawikisql.WikiClient class method)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Achievement.grade">grade (tibiawikisql.models.Achievement attribute)</a>
+</li>
+      <li><a href="api.html#tibiawikisql.models.Spell.group_rune">group_rune (tibiawikisql.models.Spell attribute)</a>
+</li>
+      <li><a href="api.html#tibiawikisql.models.Spell.group_secondary">group_secondary (tibiawikisql.models.Spell attribute)</a>
+</li>
+      <li><a href="api.html#tibiawikisql.models.Spell.group_spell">group_spell (tibiawikisql.models.Spell attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.House.guildhall">guildhall (tibiawikisql.models.House attribute)</a>
 </li>
@@ -521,8 +541,40 @@
 </li>
       <li><a href="api.html#tibiawikisql.models.ImbuementMaterial">ImbuementMaterial (class in tibiawikisql.models)</a>
 </li>
-      <li><a href="api.html#tibiawikisql.models.Creature.immune_to">immune_to() (tibiawikisql.models.Creature property)</a>
+      <li><a href="api.html#tibiawikisql.models.Creature.immune_to">immune_to (tibiawikisql.models.Creature property)</a>
 </li>
+      <li><a href="api.html#tibiawikisql.Article.infobox_attributes">infobox_attributes (tibiawikisql.Article property)</a>
+
+      <ul>
+        <li><a href="api.html#tibiawikisql.models.Achievement.infobox_attributes">(tibiawikisql.models.Achievement property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Charm.infobox_attributes">(tibiawikisql.models.Charm property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Creature.infobox_attributes">(tibiawikisql.models.Creature property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.House.infobox_attributes">(tibiawikisql.models.House property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Imbuement.infobox_attributes">(tibiawikisql.models.Imbuement property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Item.infobox_attributes">(tibiawikisql.models.Item property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Key.infobox_attributes">(tibiawikisql.models.Key property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Npc.infobox_attributes">(tibiawikisql.models.Npc property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Outfit.infobox_attributes">(tibiawikisql.models.Outfit property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Parseable.infobox_attributes">(tibiawikisql.models.Parseable property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Quest.infobox_attributes">(tibiawikisql.models.Quest property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Spell.infobox_attributes">(tibiawikisql.models.Spell property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Update.infobox_attributes">(tibiawikisql.models.Update property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.World.infobox_attributes">(tibiawikisql.models.World property)</a>
+</li>
+      </ul></li>
       <li><a href="api.html#tibiawikisql.models.Achievement.insert">insert() (tibiawikisql.models.Achievement method)</a>
 
       <ul>
@@ -572,6 +624,8 @@
 </li>
         <li><a href="api.html#tibiawikisql.models.Spell.insert">(tibiawikisql.models.Spell method)</a>
 </li>
+        <li><a href="api.html#tibiawikisql.models.Update.insert">(tibiawikisql.models.Update method)</a>
+</li>
         <li><a href="api.html#tibiawikisql.models.World.insert">(tibiawikisql.models.World method)</a>
 </li>
       </ul></li>
@@ -620,6 +674,10 @@
       <li><a href="api.html#tibiawikisql.models.Npc.job">job (tibiawikisql.models.Npc attribute)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#tibiawikisql.models.Npc.job_additionals">job_additionals (tibiawikisql.models.Npc attribute)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="K">K</h2>
@@ -649,13 +707,17 @@
 </li>
       <li><a href="api.html#tibiawikisql.models.Quest.level_required">level_required (tibiawikisql.models.Quest attribute)</a>
 </li>
+      <li><a href="api.html#tibiawikisql.models.Creature.library_race">library_race (tibiawikisql.models.Creature attribute)</a>
+</li>
       <li><a href="api.html#tibiawikisql.models.Item.light_color">light_color (tibiawikisql.models.Item attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Item.light_radius">light_radius (tibiawikisql.models.Item attribute)</a>
 </li>
-      <li><a href="api.html#tibiawikisql.models.House.location">location (tibiawikisql.models.House attribute)</a>
+      <li><a href="api.html#tibiawikisql.models.Creature.location">location (tibiawikisql.models.Creature attribute)</a>
 
       <ul>
+        <li><a href="api.html#tibiawikisql.models.House.location">(tibiawikisql.models.House attribute)</a>
+</li>
         <li><a href="api.html#tibiawikisql.models.Key.location">(tibiawikisql.models.Key attribute)</a>
 </li>
         <li><a href="api.html#tibiawikisql.models.Npc.location">(tibiawikisql.models.Npc attribute)</a>
@@ -669,7 +731,7 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#tibiawikisql.models.Item.look_text">look_text() (tibiawikisql.models.Item property)</a>
+      <li><a href="api.html#tibiawikisql.models.Item.look_text">look_text (tibiawikisql.models.Item property)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Creature.loot">loot (tibiawikisql.models.Creature attribute)</a>
 </li>
@@ -697,15 +759,17 @@
 </li>
       <li><a href="api.html#tibiawikisql.models.Creature.modifier_death">modifier_death (tibiawikisql.models.Creature attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#tibiawikisql.models.Creature.modifier_drown">modifier_drown (tibiawikisql.models.Creature attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#tibiawikisql.models.Creature.modifier_earth">modifier_earth (tibiawikisql.models.Creature attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Creature.modifier_energy">modifier_energy (tibiawikisql.models.Creature attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Creature.modifier_fire">modifier_fire (tibiawikisql.models.Creature attribute)</a>
+</li>
+      <li><a href="api.html#tibiawikisql.models.Creature.modifier_healing">modifier_healing (tibiawikisql.models.Creature attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Creature.modifier_holy">modifier_holy (tibiawikisql.models.Creature attribute)</a>
 </li>
@@ -755,17 +819,23 @@
 </li>
         <li><a href="api.html#tibiawikisql.models.Spell.name">(tibiawikisql.models.Spell attribute)</a>
 </li>
+        <li><a href="api.html#tibiawikisql.models.Update.name">(tibiawikisql.models.Update attribute)</a>
+</li>
         <li><a href="api.html#tibiawikisql.models.World.name">(tibiawikisql.models.World attribute)</a>
 </li>
       </ul></li>
+      <li><a href="api.html#tibiawikisql.models.Update.news_id">news_id (tibiawikisql.models.Update attribute)</a>
+</li>
+      <li><a href="api.html#tibiawikisql.models.Update.next">next (tibiawikisql.models.Update attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#tibiawikisql.models.Key.notes">notes (tibiawikisql.models.Key attribute)</a>
 
       <ul>
         <li><a href="api.html#tibiawikisql.models.NpcDestination.notes">(tibiawikisql.models.NpcDestination attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#tibiawikisql.models.Npc">Npc (class in tibiawikisql.models)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.NpcBuyOffer.npc_city">npc_city (tibiawikisql.models.NpcBuyOffer attribute)</a>
@@ -848,6 +918,8 @@
       </ul></li>
       <li><a href="api.html#tibiawikisql.models.Creature.paralysable">paralysable (tibiawikisql.models.Creature attribute)</a>
 </li>
+      <li><a href="api.html#tibiawikisql.utils.parse_attributes">parse_attributes() (in module tibiawikisql.utils)</a>
+</li>
       <li><a href="api.html#tibiawikisql.utils.parse_boolean">parse_boolean() (in module tibiawikisql.utils)</a>
 </li>
       <li><a href="api.html#tibiawikisql.utils.parse_float">parse_float() (in module tibiawikisql.utils)</a>
@@ -874,13 +946,17 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#tibiawikisql.models.Achievement.points">points (tibiawikisql.models.Achievement attribute)</a>
 </li>
-      <li><a href="api.html#tibiawikisql.models.Outfit.premium">premium (tibiawikisql.models.Outfit attribute)</a>
+      <li><a href="api.html#tibiawikisql.models.Achievement.premium">premium (tibiawikisql.models.Achievement attribute)</a>
 
       <ul>
+        <li><a href="api.html#tibiawikisql.models.Outfit.premium">(tibiawikisql.models.Outfit attribute)</a>
+</li>
         <li><a href="api.html#tibiawikisql.models.Spell.premium">(tibiawikisql.models.Spell attribute)</a>
 </li>
       </ul></li>
       <li><a href="api.html#tibiawikisql.models.World.preview">preview (tibiawikisql.models.World attribute)</a>
+</li>
+      <li><a href="api.html#tibiawikisql.models.Update.previous">previous (tibiawikisql.models.Update attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.NpcDestination.price">price (tibiawikisql.models.NpcDestination attribute)</a>
 
@@ -890,6 +966,8 @@
         <li><a href="api.html#tibiawikisql.models.Spell.price">(tibiawikisql.models.Spell attribute)</a>
 </li>
       </ul></li>
+      <li><a href="api.html#tibiawikisql.models.Spell.promotion">promotion (tibiawikisql.models.Spell attribute)</a>
+</li>
       <li><a href="api.html#tibiawikisql.models.World.protected_since">protected_since (tibiawikisql.models.World attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Creature.push_objects">push_objects (tibiawikisql.models.Creature attribute)</a>
@@ -944,12 +1022,12 @@
 </li>
       <li><a href="api.html#tibiawikisql.models.House.rent">rent (tibiawikisql.models.House attribute)</a>
 </li>
-      <li><a href="api.html#tibiawikisql.models.Item.resistances">resistances() (tibiawikisql.models.Item property)</a>
+      <li><a href="api.html#tibiawikisql.models.Item.resistances">resistances (tibiawikisql.models.Item property)</a>
+</li>
+      <li><a href="api.html#tibiawikisql.models.Creature.resistant_to">resistant_to (tibiawikisql.models.Creature property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#tibiawikisql.models.Creature.resistant_to">resistant_to() (tibiawikisql.models.Creature property)</a>
-</li>
       <li><a href="api.html#tibiawikisql.models.Quest.rewards">rewards (tibiawikisql.models.Quest attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Quest.rookgaard">rookgaard (tibiawikisql.models.Quest attribute)</a>
@@ -957,6 +1035,8 @@
       <li><a href="api.html#tibiawikisql.models.House.rooms">rooms (tibiawikisql.models.House attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Row">Row (class in tibiawikisql.models)</a>
+</li>
+      <li><a href="api.html#tibiawikisql.models.Creature.runs_at">runs_at (tibiawikisql.models.Creature attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1013,6 +1093,8 @@
 </li>
         <li><a href="api.html#tibiawikisql.models.Spell.search">(tibiawikisql.models.Spell class method)</a>
 </li>
+        <li><a href="api.html#tibiawikisql.models.Update.search">(tibiawikisql.models.Update class method)</a>
+</li>
         <li><a href="api.html#tibiawikisql.models.World.search">(tibiawikisql.models.World class method)</a>
 </li>
       </ul></li>
@@ -1027,6 +1109,8 @@
       <li><a href="api.html#tibiawikisql.models.OutfitImage.sex">sex (tibiawikisql.models.OutfitImage attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.House.size">size (tibiawikisql.models.House attribute)</a>
+</li>
+      <li><a href="api.html#tibiawikisql.models.Imbuement.slots">slots (tibiawikisql.models.Imbuement attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Item.sold_by">sold_by (tibiawikisql.models.Item attribute)</a>
 </li>
@@ -1077,6 +1161,8 @@
 </li>
       </ul></li>
       <li><a href="api.html#tibiawikisql.models.House.street">street (tibiawikisql.models.House attribute)</a>
+</li>
+      <li><a href="api.html#tibiawikisql.models.Update.summary">summary (tibiawikisql.models.Update attribute)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Creature.summon_cost">summon_cost (tibiawikisql.models.Creature attribute)</a>
 </li>
@@ -1130,6 +1216,8 @@
 </li>
         <li><a href="api.html#tibiawikisql.models.Spell.timestamp">(tibiawikisql.models.Spell attribute)</a>
 </li>
+        <li><a href="api.html#tibiawikisql.models.Update.timestamp">(tibiawikisql.models.Update attribute)</a>
+</li>
         <li><a href="api.html#tibiawikisql.models.World.timestamp">(tibiawikisql.models.World attribute)</a>
 </li>
         <li><a href="api.html#tibiawikisql.WikiEntry.timestamp">(tibiawikisql.WikiEntry attribute)</a>
@@ -1164,6 +1252,8 @@
 </li>
         <li><a href="api.html#tibiawikisql.models.Spell.title">(tibiawikisql.models.Spell attribute)</a>
 </li>
+        <li><a href="api.html#tibiawikisql.models.Update.title">(tibiawikisql.models.Update attribute)</a>
+</li>
         <li><a href="api.html#tibiawikisql.models.World.title">(tibiawikisql.models.World attribute)</a>
 </li>
         <li><a href="api.html#tibiawikisql.WikiEntry.title">(tibiawikisql.WikiEntry attribute)</a>
@@ -1193,10 +1283,14 @@
         <li><a href="api.html#tibiawikisql.models.Spell.type">(tibiawikisql.models.Spell attribute)</a>
 </li>
       </ul></li>
+      <li><a href="api.html#tibiawikisql.models.Update.type_primary">type_primary (tibiawikisql.models.Update attribute)</a>
+</li>
       <li><a href="api.html#tibiawikisql.models.Creature.type_secondary">type_secondary (tibiawikisql.models.Creature attribute)</a>
 
       <ul>
         <li><a href="api.html#tibiawikisql.models.Item.type_secondary">(tibiawikisql.models.Item attribute)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Update.type_secondary">(tibiawikisql.models.Update attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1205,7 +1299,9 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#tibiawikisql.Article.url">url() (tibiawikisql.Article property)</a>
+      <li><a href="api.html#tibiawikisql.models.Update">Update (class in tibiawikisql.models)</a>
+</li>
+      <li><a href="api.html#tibiawikisql.Article.url">url (tibiawikisql.Article property)</a>
 
       <ul>
         <li><a href="api.html#tibiawikisql.Image.url">(tibiawikisql.Image property)</a>
@@ -1233,6 +1329,8 @@
         <li><a href="api.html#tibiawikisql.models.Quest.url">(tibiawikisql.models.Quest property)</a>
 </li>
         <li><a href="api.html#tibiawikisql.models.Spell.url">(tibiawikisql.models.Spell property)</a>
+</li>
+        <li><a href="api.html#tibiawikisql.models.Update.url">(tibiawikisql.models.Update property)</a>
 </li>
         <li><a href="api.html#tibiawikisql.models.World.url">(tibiawikisql.models.World property)</a>
 </li>
@@ -1280,6 +1378,8 @@
 </li>
         <li><a href="api.html#tibiawikisql.models.Spell.version">(tibiawikisql.models.Spell attribute)</a>
 </li>
+        <li><a href="api.html#tibiawikisql.models.Update.version">(tibiawikisql.models.Update attribute)</a>
+</li>
       </ul></li>
   </ul></td>
 </tr></table>
@@ -1291,7 +1391,7 @@
 </li>
       <li><a href="api.html#tibiawikisql.models.Creature.walks_through">walks_through (tibiawikisql.models.Creature attribute)</a>
 </li>
-      <li><a href="api.html#tibiawikisql.models.Creature.weak_to">weak_to() (tibiawikisql.models.Creature property)</a>
+      <li><a href="api.html#tibiawikisql.models.Creature.weak_to">weak_to (tibiawikisql.models.Creature property)</a>
 </li>
       <li><a href="api.html#tibiawikisql.models.Item.weight">weight (tibiawikisql.models.Item attribute)</a>
 </li>
@@ -1442,7 +1542,7 @@
     </div>
   <div class="footer">
     &copy; Copyright 2021, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.
   </div>
   
   </body>

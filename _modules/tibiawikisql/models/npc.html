@@ -6,10 +6,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tibiawikisql.models.npc &#8212; TibiaWikiSQL 4.1.2 documentation</title>
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
@@ -207,10 +207,12 @@
 <span class="sd">        The race of the NPC.</span>
 <span class="sd">    job: :class:`str`</span>
 <span class="sd">        The NPC&#39;s job.</span>
+<span class="sd">    job_additionals: :class:`str`</span>
+<span class="sd">        Other additional jobs the NPC might have, separated by commas.</span>
 <span class="sd">    location: :class:`str`</span>
 <span class="sd">        The location of the NPC.</span>
 <span class="sd">    city: :class:`str`</span>
-<span class="sd">        The city where the NPC is located.</span>
+<span class="sd">        The nearest city to where the NPC is located.</span>
 <span class="sd">    x: :class:`int`</span>
 <span class="sd">        The x coordinates of the NPC.</span>
 <span class="sd">    y: :class:`int`</span>
@@ -240,6 +242,7 @@
         <span class="s2">&quot;gender&quot;</span><span class="p">,</span>
         <span class="s2">&quot;race&quot;</span><span class="p">,</span>
         <span class="s2">&quot;job&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;job_additionals&quot;</span><span class="p">,</span>
         <span class="s2">&quot;location&quot;</span><span class="p">,</span>
         <span class="s2">&quot;city&quot;</span><span class="p">,</span>
         <span class="s2">&quot;x&quot;</span><span class="p">,</span>
@@ -273,9 +276,22 @@
     <span class="p">}</span>
     <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]NPC&quot;</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">job_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additionals</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_additionals</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+
 <div class="viewcode-block" id="Npc.from_article"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Npc.from_article">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_article</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">article</span><span class="p">):</span>
         <span class="n">npc</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_article</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+        <span class="n">additional_jobs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;job</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+                <span class="n">additional_jobs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clean_links</span><span class="p">(</span><span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">additional_jobs</span><span class="p">:</span>
+            <span class="n">npc</span><span class="o">.</span><span class="n">job_additionals</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">additional_jobs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">npc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="s2">&quot;buys&quot;</span> <span class="ow">in</span> <span class="n">npc</span><span class="o">.</span><span class="n">_raw_attributes</span> <span class="ow">and</span> <span class="n">article</span><span class="o">.</span><span class="n">title</span> <span class="o">!=</span> <span class="s2">&quot;Minzy&quot;</span><span class="p">:</span>
@@ -354,8 +370,8 @@
                 <span class="n">sorcerer</span> <span class="o">=</span> <span class="s2">&quot;sorcerer&quot;</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="n">npc</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Eliza&quot;</span>
                 <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">knight</span> <span class="ow">or</span> <span class="n">paladin</span> <span class="ow">or</span> <span class="n">druid</span> <span class="ow">or</span> <span class="n">sorcerer</span><span class="p">):</span>
                     <span class="k">def</span> <span class="nf">in_jobs</span><span class="p">(</span><span class="n">vocation</span><span class="p">,</span> <span class="n">_npc</span><span class="p">):</span>
-                        <span class="k">return</span> <span class="n">vocation</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_npc</span><span class="o">.</span><span class="n">job</span><span class="o">+</span><span class="n">_npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;job2&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span>
-                                            <span class="n">_npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;job3&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                        <span class="k">return</span> <span class="n">vocation</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_npc</span><span class="o">.</span><span class="n">job</span> <span class="o">+</span> <span class="n">_npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;job2&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                                            <span class="o">+</span> <span class="n">_npc</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;job3&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
                     <span class="n">knight</span> <span class="o">=</span> <span class="n">in_jobs</span><span class="p">(</span><span class="s2">&quot;knight&quot;</span><span class="p">,</span> <span class="n">npc</span><span class="p">)</span>
                     <span class="n">paladin</span> <span class="o">=</span> <span class="n">in_jobs</span><span class="p">(</span><span class="s2">&quot;paladin&quot;</span><span class="p">,</span> <span class="n">npc</span><span class="p">)</span>
@@ -478,8 +494,8 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">.*, item.title as item_title, npc.title as npc_title, </span>
-<span class="s2">                  npc.city as npc_city, currency.title as currency_title </span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">.*, item.title as item_title, npc.title as npc_title,</span>
+<span class="s2">                  npc.city as npc_city, currency.title as currency_title</span>
 <span class="s2">                  FROM </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">                  LEFT JOIN npc ON npc.article_id = npc_id</span>
 <span class="s2">                  LEFT JOIN item ON item.article_id = item_id</span>
@@ -544,7 +560,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">.*, item.title as item_title, npc.title as npc_title, </span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">.*, item.title as item_title, npc.title as npc_title,</span>
 <span class="s2">                   npc.city as npc_city, currency.title as currency_title FROM </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">                   LEFT JOIN npc ON npc.article_id = npc_id</span>
 <span class="s2">                   LEFT JOIN item ON item.article_id = item_id</span>
@@ -618,7 +634,7 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">.*, spell.title as spell_title, npc.title as npc_title,</span>
-<span class="s2">                  spell.price as price, npc.city as npc_city </span>
+<span class="s2">                  spell.price as price, npc.city as npc_city</span>
 <span class="s2">                  FROM </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2"></span>
 <span class="s2">                  LEFT JOIN npc ON npc.article_id = npc_id</span>
 <span class="s2">                  LEFT JOIN spell ON spell.article_id = spell_id&quot;&quot;&quot;</span></div>
@@ -782,7 +798,7 @@
     </div>
   <div class="footer">
     &copy; Copyright 2021, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.
   </div>
   
   </body>

@@ -6,10 +6,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tibiawikisql.models.creature &#8212; TibiaWikiSQL 4.1.2 documentation</title>
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
@@ -178,6 +178,8 @@
 <span class="sd">        The name of the creature, as displayed in-game.</span>
 <span class="sd">    plural: :class:`str`</span>
 <span class="sd">        The plural of the name.</span>
+<span class="sd">    library_race: :class:`str`</span>
+<span class="sd">        The race name of the creature in Tibia.com&#39;s library.</span>
 <span class="sd">    creature_class: :class:`str`</span>
 <span class="sd">        The creature&#39;s classification.</span>
 <span class="sd">    type: :class:`str`</span>
@@ -200,6 +202,8 @@
 <span class="sd">        The creature&#39;s speed value.</span>
 <span class="sd">    max_damage: :class:`int`</span>
 <span class="sd">        The maximum amount of damage the creature can do in a single turn.</span>
+<span class="sd">    runs_at: :class:`int`</span>
+<span class="sd">        The amount of hitpoints when the creature starts to run away. 0 means it won&#39;t run away.</span>
 <span class="sd">    summon_cost: :class:`int`</span>
 <span class="sd">        The mana needed to summon this creature. 0 if not summonable.</span>
 <span class="sd">    convince_cost: :class:`int`</span>
@@ -234,12 +238,16 @@
 <span class="sd">        The percentage of damage received of drown damage. ``None`` if unknown.</span>
 <span class="sd">    modifier_lifedrain: :class:`int`</span>
 <span class="sd">        The percentage of damage received of life drain damage. ``None`` if unknown.</span>
+<span class="sd">    modifier_healing: :class:`int`</span>
+<span class="sd">        The healing modifier. ``None`` if unknown.</span>
 <span class="sd">    abilities: :class:`str`</span>
 <span class="sd">        A brief description of the creature&#39;s abilities.</span>
 <span class="sd">    walks_through: :class:`str`</span>
 <span class="sd">        The field types the creature will walk through, separated by commas.</span>
 <span class="sd">    walks_around: :class:`str`</span>
 <span class="sd">        The field types the creature will walk around, separated by commas.</span>
+<span class="sd">    location: :class:`str`</span>
+<span class="sd">        The locations where the creature can be found.</span>
 <span class="sd">    version: :class:`str`</span>
 <span class="sd">        The client version where this creature was first implemented.</span>
 <span class="sd">    status: :class:`str`</span>
@@ -254,6 +262,7 @@
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;plural&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;plural&quot;</span><span class="p">,</span> <span class="n">clean_question_mark</span><span class="p">),</span>
         <span class="s2">&quot;actualname&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;bestiaryname&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;library_race&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;creatureclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;creature_class&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;bestiaryclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_class&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;bestiarylevel&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_level&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
@@ -265,6 +274,7 @@
         <span class="s2">&quot;armor&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;armor&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
         <span class="s2">&quot;speed&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;speed&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
         <span class="s2">&quot;maxdmg&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;max_damage&quot;</span><span class="p">,</span> <span class="n">parse_maximum_integer</span><span class="p">),</span>
+        <span class="s2">&quot;runsat&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;runs_at&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;summon&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;summon_cost&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;convince&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;convince_cost&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;illusionable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;illusionable&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">parse_boolean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
@@ -282,9 +292,11 @@
         <span class="s2">&quot;holyDmgMod&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;modifier_holy&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;drownDmgMod&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;modifier_drown&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;hpDrainDmgMod&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;modifier_hpdrain&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
+        <span class="s2">&quot;healMod&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;modifier_healing&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;abilities&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;abilities&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
         <span class="s2">&quot;walksthrough&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;walks_through&quot;</span><span class="p">,</span> <span class="n">parse_monster_walks</span><span class="p">),</span>
         <span class="s2">&quot;walksaround&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;walks_around&quot;</span><span class="p">,</span> <span class="n">parse_monster_walks</span><span class="p">),</span>
+        <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
         <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>
     <span class="p">}</span>
@@ -298,6 +310,7 @@
         <span class="s2">&quot;article&quot;</span><span class="p">,</span>
         <span class="s2">&quot;name&quot;</span><span class="p">,</span>
         <span class="s2">&quot;plural&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;library_race&quot;</span><span class="p">,</span>
         <span class="s2">&quot;creature_class&quot;</span><span class="p">,</span>
         <span class="s2">&quot;type&quot;</span><span class="p">,</span>
         <span class="s2">&quot;type_secondary&quot;</span><span class="p">,</span>
@@ -309,6 +322,7 @@
         <span class="s2">&quot;armor&quot;</span><span class="p">,</span>
         <span class="s2">&quot;speed&quot;</span><span class="p">,</span>
         <span class="s2">&quot;max_damage&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;runs_at&quot;</span><span class="p">,</span>
         <span class="s2">&quot;summon_cost&quot;</span><span class="p">,</span>
         <span class="s2">&quot;convince_cost&quot;</span><span class="p">,</span>
         <span class="s2">&quot;illusionable&quot;</span><span class="p">,</span>
@@ -326,9 +340,11 @@
         <span class="s2">&quot;modifier_holy&quot;</span><span class="p">,</span>
         <span class="s2">&quot;modifier_hpdrain&quot;</span><span class="p">,</span>
         <span class="s2">&quot;modifier_drown&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;modifier_healing&quot;</span><span class="p">,</span>
         <span class="s2">&quot;abilities&quot;</span><span class="p">,</span>
         <span class="s2">&quot;walks_through&quot;</span><span class="p">,</span>
         <span class="s2">&quot;walks_around&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;location&quot;</span><span class="p">,</span>
         <span class="s2">&quot;version&quot;</span><span class="p">,</span>
         <span class="s2">&quot;image&quot;</span><span class="p">,</span>
         <span class="s2">&quot;loot&quot;</span><span class="p">,</span>
@@ -646,7 +662,7 @@
     </div>
   <div class="footer">
     &copy; Copyright 2021, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.
   </div>
   
   </body>
