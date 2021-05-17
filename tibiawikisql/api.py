@@ -235,11 +235,11 @@ class WikiClient:
 
         .. warning ::
 
-            The order of the returned articles might not match the order of the provided names due to an API limitation.
+            The order of the returned images might not match the order of the provided names due to an API limitation.
 
         Parameters
         ----------
-        names: list[:class:`str`]
+        names: :class:`list` of :class:`str`
             A list of names of images to get the info of.
 
         Yields
@@ -288,7 +288,7 @@ class WikiClient:
 
         Parameters
         ----------
-        names: list[:class:`str`]
+        names: :class:`list` of :class:`str`
             A list of names of articles to get the info of.
 
         Yields

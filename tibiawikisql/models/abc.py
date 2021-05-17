@@ -54,7 +54,7 @@ class Parseable(Article, metaclass=abc.ABCMeta):
 
         Returns
         -------
-        :class:`Type[abc.Parseable]`
+        :class:`abc.Parseable`
             An inherited model object for the current article.
         """
         if cls._map is None:

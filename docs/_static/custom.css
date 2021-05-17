@@ -146,6 +146,7 @@ a.reference > code > span {
 
 dl.describe > dt,
 dl.function > dt,
+dl.property > dt,
 dl.attribute > dt,
 dl.classmethod > dt,
 dl.method > dt,

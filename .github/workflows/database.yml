@@ -23,7 +23,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/images
-          key: images-${{GITHUB_SHA}}
+          key: images-${{env.GITHUB_SHA}}
           restore-keys: |
             images-
 

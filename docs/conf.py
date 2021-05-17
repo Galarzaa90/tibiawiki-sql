@@ -107,8 +107,8 @@ html_theme_options = {
     'extra_nav_links': {
         'Contribute to TibiaWiki': 'https://tibia.fandom.com'
     },
+    'codecov_button': True,
     'fixed_sidebar': True,
-    'travis_button': True,
     'donate_url': 'https://beerpay.io/Galarzaa90/tibiawiki-sql'
 }
 
