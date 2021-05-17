@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tibiawikisql.models.item &#8212; TibiaWikiSQL 4.1.2 documentation</title>
+    <title>tibiawikisql.models.item &#8212; TibiaWikiSQL 5.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -32,7 +32,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 5.0.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tibiawikisql.models.item</a></li> 
       </ul>
@@ -65,8 +65,8 @@
 <span class="kn">from</span> <span class="nn">tibiawikisql.models.creature</span> <span class="kn">import</span> <span class="n">CreatureDrop</span>
 <span class="kn">from</span> <span class="nn">tibiawikisql.models.npc</span> <span class="kn">import</span> <span class="n">NpcBuyOffer</span><span class="p">,</span> <span class="n">NpcSellOffer</span>
 <span class="kn">from</span> <span class="nn">tibiawikisql.models.quest</span> <span class="kn">import</span> <span class="n">QuestReward</span>
-<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="kn">import</span> <span class="n">clean_links</span><span class="p">,</span> <span class="n">clean_question_mark</span><span class="p">,</span> <span class="n">client_color_to_rgb</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">,</span> <span class="n">parse_float</span><span class="p">,</span> \
-    <span class="n">parse_integer</span><span class="p">,</span> <span class="n">parse_sounds</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">clean_links</span><span class="p">,</span> <span class="n">clean_question_mark</span><span class="p">,</span> <span class="n">client_color_to_rgb</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">,</span> <span class="n">parse_float</span><span class="p">,</span>
+                                <span class="n">parse_integer</span><span class="p">,</span> <span class="n">parse_sounds</span><span class="p">)</span>
 
 <span class="n">ELEMENTAL_RESISTANCES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;physical%&#39;</span><span class="p">,</span> <span class="s1">&#39;earth%&#39;</span><span class="p">,</span> <span class="s1">&#39;fire%&#39;</span><span class="p">,</span> <span class="s1">&#39;energy%&#39;</span><span class="p">,</span> <span class="s1">&#39;ice%&#39;</span><span class="p">,</span> <span class="s1">&#39;holy%&#39;</span><span class="p">,</span> <span class="s1">&#39;death%&#39;</span><span class="p">,</span> <span class="s1">&#39;drowning%&#39;</span><span class="p">]</span>
 
@@ -143,6 +143,7 @@
 <span class="sd">    sounds: list of :class:`ItemSound`.</span>
 <span class="sd">        List of sounds made when using the item.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;article&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;article&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;actualname&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
@@ -204,12 +205,12 @@
         <span class="sd">&quot;&quot;&quot;:class:`dict`: A mapping of the attributes this item has.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{</span><span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">}</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">()</span>
-    
+        <span class="k">return</span> <span class="p">{}</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">resistances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;:class:`collections.OrderedDict`: A mapping of the elemental resistances of this item.&quot;&quot;&quot;</span>
-        <span class="n">resistances</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">resistances</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes_dict</span>
         <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">ELEMENTAL_RESISTANCES</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
@@ -282,7 +283,7 @@
 
         <span class="k">if</span> <span class="s2">&quot;attack&quot;</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
             <span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;fire_attack&#39;</span><span class="p">,</span> <span class="s1">&#39;earth_attack&#39;</span><span class="p">,</span> <span class="s1">&#39;ice_attack&#39;</span><span class="p">,</span> <span class="s1">&#39;energy_attack&#39;</span><span class="p">]</span>
-            <span class="n">attacks</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="n">attacks</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="n">physical_attack</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;attack&quot;</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -373,8 +374,7 @@
 
 
 <div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">ItemKey</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents a key item.</span>
+    <span class="sd">&quot;&quot;&quot;Represents a key item.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -435,18 +435,18 @@
 <div class="viewcode-block" id="Key.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Key.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-            <span class="k">return</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;INSERT INTO </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">(article_id, title, number, item_id, name, material, </span>
-<span class="s2">                        location, origin, notes, version, timestamp)</span>
-<span class="s2">                        VALUES(?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?)&quot;&quot;&quot;</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                INSERT INTO </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">(article_id, title, number, item_id, name, material, location,</span>
+<span class="s2">                    origin, notes, version, timestamp)</span>
+<span class="s2">                VALUES(?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?)</span>
+<span class="s2">            &quot;&quot;&quot;</span>
             <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">+</span> <span class="s2">&quot; Key&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                               <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="ItemAttribute"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.ItemAttribute">[docs]</a><span class="k">class</span> <span class="nc">ItemAttribute</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">ItemAttribute</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents an Item&#39;s attribute</span>
+    <span class="sd">&quot;&quot;&quot;Represents an Item&#39;s attribute</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -457,6 +457,7 @@
 <span class="sd">    value: :class:`str`</span>
 <span class="sd">        The value of the attribute.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;levelrequired&quot;</span><span class="p">,</span>
         <span class="s2">&quot;attack&quot;</span><span class="p">:</span> <span class="s2">&quot;attack&quot;</span><span class="p">,</span>
@@ -504,13 +505,12 @@
     <span class="p">)</span>
 
 <div class="viewcode-block" id="ItemAttribute.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.ItemAttribute.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">item_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">clean_links</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)))</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;item_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_id</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">clean_links</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">))}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">ItemSound</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">ItemSound</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents a sound made by an item.</span>
+    <span class="sd">&quot;&quot;&quot;Represents a sound made by an item.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -519,6 +519,7 @@
 <span class="sd">    content: :class:`str`</span>
 <span class="sd">        The content of the sound.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;item_id&quot;</span><span class="p">,</span>
         <span class="s2">&quot;content&quot;</span><span class="p">,</span>
@@ -540,7 +541,7 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
 
     <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">item_id</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;item_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_id</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span>
 </pre></div>
 

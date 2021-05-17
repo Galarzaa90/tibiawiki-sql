@@ -136,6 +136,12 @@ a:hover {
     text-decoration: underline;
 }
 
+/* External reference links */
+a.reference > code > span {
+    color: #2591c4;
+    text-decoration: none;
+}
+
 /* Python Definitions */
 
 dl.describe > dt,

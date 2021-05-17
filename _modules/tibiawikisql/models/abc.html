@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tibiawikisql.models.abc &#8212; TibiaWikiSQL 4.1.2 documentation</title>
+    <title>tibiawikisql.models.abc &#8212; TibiaWikiSQL 5.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -32,7 +32,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 4.1.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 5.0.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tibiawikisql.models.abc</a></li> 
       </ul>
@@ -57,6 +57,7 @@
 <span class="c1">#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c1">#  See the License for the specific language governing permissions and</span>
 <span class="c1">#  limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;Module with base classes used by models.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
@@ -82,6 +83,7 @@
 <span class="sd">    timestamp: :class:`int`</span>
 <span class="sd">        The last time the containing article was edited.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_map</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="sd">&quot;&quot;&quot;map: :class:`dict`: A dictionary mapping the article&#39;s attributes to object attributes.&quot;&quot;&quot;</span>
     <span class="n">_pattern</span> <span class="o">=</span> <span class="kc">None</span>
@@ -89,8 +91,7 @@
 
 <div class="viewcode-block" id="Parseable.from_article"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Parseable.from_article">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_article</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">article</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parses an article into a TibiaWiki model.</span>
+        <span class="sd">&quot;&quot;&quot;Parse an article into a TibiaWiki model.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -111,7 +112,7 @@
             <span class="s2">&quot;article_id&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span>
             <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">timestamp</span><span class="p">,</span>
             <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">article</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
-            <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(),</span>
+            <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="p">}</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="n">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
         <span class="n">row</span><span class="p">[</span><span class="s2">&quot;_raw_attributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -125,14 +126,14 @@
 
 
 <div class="viewcode-block" id="Row"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Row">[docs]</a><span class="k">class</span> <span class="nc">Row</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    An abstract base class implemented to indicate that the Model represents a SQL row.</span>
+    <span class="sd">&quot;&quot;&quot;An abstract base class implemented to indicate that the Model represents a SQL row.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    table: :class:`database.Table`</span>
 <span class="sd">        The SQL table where this model is stored.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">table</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -165,8 +166,7 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="Row.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Row.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Inserts the current model into its respective database table.</span>
+        <span class="sd">&quot;&quot;&quot;Insert the current model into its respective database table.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -186,8 +186,7 @@
 
 <div class="viewcode-block" id="Row.from_row"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Row.from_row">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_row</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns an instance of the model from a row or dictionary.</span>
+        <span class="sd">&quot;&quot;&quot;Return an instance of the model from a row or dictionary.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -205,8 +204,7 @@
 
 <div class="viewcode-block" id="Row.get_by_field"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Row.get_by_field">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_by_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">use_like</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets an element by a specific field&#39;s value.</span>
+        <span class="sd">&quot;&quot;&quot;Get an element by a specific field&#39;s value.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -242,8 +240,7 @@
 
 <div class="viewcode-block" id="Row.search"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Row.search">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_like</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Finds elements matching the provided values.</span>
+        <span class="sd">&quot;&quot;&quot;Find elements matching the provided values.</span>
 
 <span class="sd">        If no values are provided, it will return all elements.</span>
 
@@ -280,7 +277,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Field &#39;</span><span class="si">{</span><span class="n">sort_by</span><span class="si">}</span><span class="s2">&#39; doesn&#39;t exist.&quot;</span><span class="p">)</span>
         <span class="n">operator</span> <span class="o">=</span> <span class="s2">&quot;LIKE&quot;</span> <span class="k">if</span> <span class="n">use_like</span> <span class="k">else</span> <span class="s2">&quot;=&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_base_query</span><span class="p">()</span>
-        <span class="n">tup</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+        <span class="n">tup</span> <span class="o">=</span> <span class="p">()</span>
         <span class="k">if</span> <span class="n">field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">query</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">WHERE </span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">operator</span><span class="si">}</span><span class="s2"> ?&quot;</span>
             <span class="n">tup</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="p">,)</span>
