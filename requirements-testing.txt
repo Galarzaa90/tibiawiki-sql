@@ -1,3 +1,2 @@
-requests
-click
-colorama
+coverage
+flake8
