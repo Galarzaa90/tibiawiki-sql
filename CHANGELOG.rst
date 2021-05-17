@@ -2,6 +2,13 @@
 Changelog
 =========
 
+.. v5.0.1
+
+5.0.1 (2021-05-17)
+==================
+
+- Fixed wrong attribute definition for ``Spell`` model.
+
 .. v5.0.0
 
 5.0.0 (2021-05-17)

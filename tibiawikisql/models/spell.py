@@ -97,7 +97,7 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         "price",
         "cooldown",
         "cooldown_group",
-        "cooldown_secondary_group",
+        "cooldown_group_secondary",
         "level",
         "premium",
         "promotion",
