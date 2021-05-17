@@ -1,8 +1,8 @@
 import unittest
 
 from tests import load_resource
-from tibiawikisql.utils import clean_links, client_color_to_rgb, parse_boolean, parse_float, parse_integer, \
-    parse_loot_statistics, parse_min_max, parse_sounds
+from tibiawikisql.utils import (clean_links, client_color_to_rgb, parse_boolean, parse_float, parse_integer,
+                                parse_loot_statistics, parse_min_max, parse_sounds)
 
 
 class TestWikiApi(unittest.TestCase):
@@ -15,16 +15,16 @@ class TestWikiApi(unittest.TestCase):
         self.assertEqual(clean_links("Hello <!-- world -->"), "Hello")
 
     def test_parse_boolean(self):
-        self.assertEqual(parse_boolean("yes"), True)
-        self.assertEqual(parse_boolean("no"), False)
-        self.assertEqual(parse_boolean("--"), False)
-        self.assertEqual(parse_boolean("--", True), True)
-        self.assertEqual(parse_boolean("no", invert=True), True)
+        self.assertTrue(parse_boolean("yes"))
+        self.assertFalse(parse_boolean("no"))
+        self.assertFalse(parse_boolean("--"))
+        self.assertTrue(parse_boolean("--", True))
+        self.assertTrue(parse_boolean("no", invert=True))
 
     def test_parse_float(self):
         self.assertEqual(parse_float("1.45"), 1.45)
         self.assertEqual(parse_float("?"), 0.0)
-        self.assertEqual(parse_float("?", None), None)
+        self.assertIsNone(parse_float("?", None))
         self.assertEqual(parse_float("2.55%"), 2.55)
 
     def test_parse_integer(self):

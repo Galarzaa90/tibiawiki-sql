@@ -12,24 +12,15 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import datetime
 import re
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
-from tibiawikisql.utils import parse_integer, clean_links
-
-
-def parse_date(value):
-    try:
-        return datetime.datetime.strptime(value, "%B %d, %Y").date().isoformat()
-    except ValueError:
-        return datetime.datetime.strptime(value, "%b %d, %Y").date().isoformat()
+from tibiawikisql.utils import parse_integer, clean_links, parse_date
 
 
 class Update(abc.Row, abc.Parseable, table=schema.Update):
-    """
-    Represents a game update.
+    """Represents a game update.
 
     Attributes
     ----------

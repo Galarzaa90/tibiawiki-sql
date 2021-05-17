@@ -18,8 +18,8 @@ from typing import List, Optional
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
-from tibiawikisql.utils import clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max, parse_sounds, \
-    clean_question_mark
+from tibiawikisql.utils import (clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max, parse_sounds,
+                                clean_question_mark)
 
 creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
 
@@ -519,8 +519,8 @@ class CreatureSound(abc.Row, table=schema.CreatureSound):
                 attributes.append(f"{attr}={v!r}")
             except AttributeError:
                 pass
-        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
+        return f"{self.__class__.__name__}({','.join(attributes)})"
 
     def insert(self, c):
-        columns = dict(creature_id=self.creature_id, content=self.content)
+        columns = {'creature_id': self.creature_id, 'content': self.content}
         self.table.insert(c, **columns)

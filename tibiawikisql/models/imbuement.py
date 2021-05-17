@@ -37,6 +37,7 @@ def parse_astral_sources(content: str):
     materials = astral_pattern.findall(content)
     if materials:
         return {item: int(amount) for (item, amount) in materials}
+    return None
 
 
 effect_map = {

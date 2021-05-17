@@ -123,7 +123,7 @@ def generate(skip_images, db_name, skip_deprecated):
                         unparsed.append(titles[i])
             if unparsed:
                 click.echo(f"{Fore.RED}Could not parse {len(unparsed):,} articles.{Style.RESET_ALL}")
-                print(f"\t-> {Fore.RED}%s{Style.RESET_ALL}]" % f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed))
+                print(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed)}{Style.RESET_ALL}]")
             dt = (time.perf_counter() - exec_time)
             print(f"\t{Fore.GREEN}Parsed articles in {dt:.2f} seconds.{Style.RESET_ALL}")
 
@@ -141,7 +141,7 @@ def generate(skip_images, db_name, skip_deprecated):
             save_outfit_images(conn)
             save_maps(conn)
     with conn:
-        gen_time = datetime.datetime.utcnow()
+        gen_time = datetime.datetime.now(tz=datetime.timezone.utc)
         schema.DatabaseInfo.insert(conn, **{"key": "timestamp", "value": str(gen_time.timestamp())})
         schema.DatabaseInfo.insert(conn, **{"key": "generate_time", "value": str(gen_time)})
         schema.DatabaseInfo.insert(conn, **{"key": "version", "value": __version__})
@@ -216,8 +216,7 @@ def article_show(item):
 def get_cache_info(table):
     try:
         with open(f"images/{table}/cache_info.json", 'r') as f:
-            cache_info = json.load(f)
-            return cache_info
+            return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
@@ -276,7 +275,7 @@ def save_images(conn: sqlite3.Connection, key: str, value: Category):
     dt = (time.perf_counter() - start)
     if failed:
         print(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
-        print(f"\t-> {Style.RESET_ALL}%s{Style.RESET_ALL}" % f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed))
+        print(f"\t-> {Style.RESET_ALL}{f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed)}{Style.RESET_ALL}")
     print(f"{Fore.GREEN}\tSaved {key} images in {dt:.2f} seconds."
           f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.{Style.RESET_ALL}")
 
@@ -342,7 +341,7 @@ def save_outfit_images(conn):
     dt = (time.perf_counter() - start)
     if failed:
         print(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
-        print(f"\t-> {Style.RESET_ALL}%s{Style.RESET_ALL}" % f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed))
+        print(f"\t-> {Style.RESET_ALL}{f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed)}{Style.RESET_ALL}")
     print(f"{Fore.GREEN}\tSaved outfit images in {dt:.2f} seconds."
           f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.{Style.RESET_ALL}")
 

@@ -136,6 +136,7 @@ class OutfitQuest(abc.Row, table=schema.OutfitQuest):
     type: :class:`str`
         Whether the quest is for the outfit or addons.
     """
+
     __slots__ = (
         "outfit_id",
         "outfit_title",
@@ -223,8 +224,8 @@ class OutfitImage(abc.Row, table=schema.OutfitImage):
         self.image = kwargs.get("image")
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} outfit_id={self.outfit_id!r} outfit_name={self.outfit_name!r} " \
-               f"sex={self.sex!r} addon={self.addon!r}>"
+        return (f"<{self.__class__.__name__} outfit_id={self.outfit_id!r} outfit_name={self.outfit_name!r} "
+                f"sex={self.sex!r} addon={self.addon!r}>")
 
     @classmethod
     def _get_base_query(cls):

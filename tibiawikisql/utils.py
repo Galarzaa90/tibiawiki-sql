@@ -11,7 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
+import datetime
 import re
 
 min_max_pattern = re.compile(r"(\d+)-(\d+)")
@@ -134,6 +134,29 @@ def parse_boolean(value: str, default=False, invert=False):
     else:
         return default
 
+def parse_date(value):
+    """Parse a date from the formats used in TibiaWiki
+
+    - June 28, 2019
+    - Aug 21, 2014
+
+    Parameters
+    ----------
+    value: :class:`str`
+        The string containing the date.
+
+    Returns
+    -------
+    :class:`datetime.date`
+        The date represented by the string.
+    """
+    value = value.strip()
+    try:
+        dt = datetime.datetime.strptime(value, "%B %d, %Y")
+    except ValueError:
+        dt = datetime.datetime.strptime(value, "%b %d, %Y")
+    return dt.date().isoformat()
+
 
 def parse_float(value, default=0.0):
     """
@@ -237,8 +260,7 @@ def parse_sounds(value):
         A list of sounds."""
     m = sounds_template.search(value)
     if m:
-        sounds = sound_pattern.findall(m.group(1))
-        return sounds
+        return sound_pattern.findall(m.group(1))
     return []
 
 
@@ -273,7 +295,7 @@ def parse_attributes(content):
     :class:`dict[str, str]`:
         A dictionary with every attribute as key.
     """
-    attributes = dict()
+    attributes = {}
     depth = 0
     parse_value = False
     attribute = ""
@@ -309,4 +331,4 @@ def parse_attributes(content):
             value = value + content[i]
         else:
             attribute = attribute + content[i]
-    return dict((k, v.strip()) for k, v in attributes.items() if v.strip())
+    return {k: v.strip() for k, v in attributes.items() if v.strip()}

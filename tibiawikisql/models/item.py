@@ -19,8 +19,8 @@ from tibiawikisql.models import abc
 from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
 from tibiawikisql.models.quest import QuestReward
-from tibiawikisql.utils import clean_links, clean_question_mark, client_color_to_rgb, parse_boolean, parse_float, \
-    parse_integer, parse_sounds
+from tibiawikisql.utils import (clean_links, clean_question_mark, client_color_to_rgb, parse_boolean, parse_float,
+                                parse_integer, parse_sounds)
 
 ELEMENTAL_RESISTANCES = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
 
@@ -97,6 +97,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     sounds: list of :class:`ItemSound`.
         List of sounds made when using the item.
     """
+
     _map = {
         "article": ("article", str.strip),
         "actualname": ("name", str.strip),
@@ -158,12 +159,12 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         """:class:`dict`: A mapping of the attributes this item has."""
         if self.attributes:
             return {a.name: a.value for a in self.attributes}
-        return dict()
-    
+        return {}
+
     @property
     def resistances(self):
         """:class:`collections.OrderedDict`: A mapping of the elemental resistances of this item."""
-        resistances = dict()
+        resistances = {}
         attributes = self.attributes_dict
         for element in ELEMENTAL_RESISTANCES:
             value = attributes.get(element)
@@ -236,7 +237,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
 
         if "attack" in attributes:
             elements = ['fire_attack', 'earth_attack', 'ice_attack', 'energy_attack']
-            attacks = dict()
+            attacks = {}
             physical_attack = int(attributes["attack"])
             for element in elements:
                 value = attributes.pop(element, None)
@@ -327,8 +328,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
 
 
 class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
-    """
-    Represents a key item.
+    """Represents a key item.
 
     Attributes
     ----------
@@ -389,18 +389,18 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
     def insert(self, c):
         if getattr(self, "item_id", None):
             super().insert(c)
-            return
         else:
-            query = f"""INSERT INTO {self.table.__tablename__}(article_id, title, number, item_id, name, material, 
-                        location, origin, notes, version, timestamp)
-                        VALUES(?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?)"""
+            query = f"""
+                INSERT INTO {self.table.__tablename__}(article_id, title, number, item_id, name, material, location,
+                    origin, notes, version, timestamp)
+                VALUES(?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?)
+            """
             c.execute(query, (self.article_id, self.title, self.number, self.material + " Key", self.name,
                               self.material, self.location, self.origin, self.notes, self.version, self.timestamp))
 
 
 class ItemAttribute(abc.Row, table=schema.ItemAttribute):
-    """
-    Represents an Item's attribute
+    """Represents an Item's attribute
 
     Attributes
     ----------
@@ -411,6 +411,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
     value: :class:`str`
         The value of the attribute.
     """
+
     _map = {
         "level": "levelrequired",
         "attack": "attack",
@@ -458,13 +459,12 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
     )
 
     def insert(self, c):
-        columns = dict(item_id=self.item_id, name=self.name, value=clean_links(str(self.value)))
+        columns = {'item_id': self.item_id, 'name': self.name, 'value': clean_links(str(self.value))}
         self.table.insert(c, **columns)
 
 
 class ItemSound(abc.Row, table=schema.ItemSound):
-    """
-    Represents a sound made by an item.
+    """Represents a sound made by an item.
 
     Attributes
     ----------
@@ -473,6 +473,7 @@ class ItemSound(abc.Row, table=schema.ItemSound):
     content: :class:`str`
         The content of the sound.
     """
+
     __slots__ = (
         "item_id",
         "content",
@@ -494,5 +495,5 @@ class ItemSound(abc.Row, table=schema.ItemSound):
         return f"{self.__class__.__name__}({','.join(attributes)})"
 
     def insert(self, c):
-        columns = dict(item_id=self.item_id, content=self.content)
+        columns = {'item_id': self.item_id, 'content': self.content}
         self.table.insert(c, **columns)

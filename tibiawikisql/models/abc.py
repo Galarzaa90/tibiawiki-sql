@@ -11,6 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+"""Module with base classes used by models."""
 
 import abc
 import sqlite3
@@ -36,6 +37,7 @@ class Parseable(Article, metaclass=abc.ABCMeta):
     timestamp: :class:`int`
         The last time the containing article was edited.
     """
+
     _map = None
     """map: :class:`dict`: A dictionary mapping the article's attributes to object attributes."""
     _pattern = None
@@ -43,8 +45,7 @@ class Parseable(Article, metaclass=abc.ABCMeta):
 
     @classmethod
     def from_article(cls, article):
-        """
-        Parses an article into a TibiaWiki model.
+        """Parse an article into a TibiaWiki model.
 
         Parameters
         ----------
@@ -65,7 +66,7 @@ class Parseable(Article, metaclass=abc.ABCMeta):
             "article_id": article.article_id,
             "timestamp": article.timestamp,
             "title": article.title,
-            "attributes": dict(),
+            "attributes": {},
         }
         attributes = parse_attributes(article.content)
         row["_raw_attributes"] = {}
@@ -79,14 +80,14 @@ class Parseable(Article, metaclass=abc.ABCMeta):
 
 
 class Row(metaclass=abc.ABCMeta):
-    """
-    An abstract base class implemented to indicate that the Model represents a SQL row.
+    """An abstract base class implemented to indicate that the Model represents a SQL row.
 
     Attributes
     ----------
     table: :class:`database.Table`
         The SQL table where this model is stored.
     """
+
     table = None
 
     def __init__(self, **kwargs):
@@ -119,8 +120,7 @@ class Row(metaclass=abc.ABCMeta):
         return f"SELECT * FROM {cls.table.__tablename__}"
 
     def insert(self, c):
-        """
-        Inserts the current model into its respective database table.
+        """Insert the current model into its respective database table.
 
         Parameters
         ----------
@@ -140,8 +140,7 @@ class Row(metaclass=abc.ABCMeta):
 
     @classmethod
     def from_row(cls, row):
-        """
-        Returns an instance of the model from a row or dictionary.
+        """Return an instance of the model from a row or dictionary.
 
         Parameters
         ----------
@@ -159,8 +158,7 @@ class Row(metaclass=abc.ABCMeta):
 
     @classmethod
     def get_by_field(cls, c, field, value, use_like=False):
-        """
-        Gets an element by a specific field's value.
+        """Get an element by a specific field's value.
 
         Parameters
         ----------
@@ -196,8 +194,7 @@ class Row(metaclass=abc.ABCMeta):
 
     @classmethod
     def search(cls, c, field=None, value=None, use_like=False, sort_by=None, ascending=True):
-        """
-        Finds elements matching the provided values.
+        """Find elements matching the provided values.
 
         If no values are provided, it will return all elements.
 
@@ -234,7 +231,7 @@ class Row(metaclass=abc.ABCMeta):
             raise ValueError(f"Field '{sort_by}' doesn't exist.")
         operator = "LIKE" if use_like else "="
         query = cls._get_base_query()
-        tup = tuple()
+        tup = ()
         if field is not None:
             query += f"\nWHERE {field} {operator} ?"
             tup = (value,)

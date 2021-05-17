@@ -12,24 +12,15 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import datetime
 import re
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
-from tibiawikisql.utils import parse_boolean, parse_integer
-
-
-def parse_date(value):
-    try:
-        return datetime.datetime.strptime(value, "%B %d, %Y").date().isoformat()
-    except ValueError:
-        return datetime.datetime.strptime(value, "%b %d, %Y").date().isoformat()
+from tibiawikisql.utils import parse_boolean, parse_integer, parse_date
 
 
 class World(abc.Row, abc.Parseable, table=schema.World):
-    """
-    Represents a Game World.
+    """Represents a Game World.
 
     Attributes
     ----------

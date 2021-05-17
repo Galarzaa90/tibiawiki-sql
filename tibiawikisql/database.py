@@ -17,10 +17,13 @@ from collections import OrderedDict
 
 
 class SchemaError(Exception):
+    """Error raised for invalid schema definitions."""
     pass
 
 
 class SQLType:
+    """An SQL type definition."""
+
     python = None
 
     def __eq__(self, other):
@@ -37,6 +40,7 @@ class SQLType:
 
 
 class Integer(SQLType):
+    """Integer type."""
     python = int
 
     def to_sql(self):
@@ -44,6 +48,8 @@ class Integer(SQLType):
 
 
 class Real(SQLType):
+    """Real type."""
+
     python = float
 
     def to_sql(self):
@@ -51,6 +57,8 @@ class Real(SQLType):
 
 
 class Text(SQLType):
+    """Text type."""
+
     python = str
 
     def to_sql(self):
@@ -58,6 +66,8 @@ class Text(SQLType):
 
 
 class Blob(SQLType):
+    """Blob type."""
+
     python = bytes
 
     def to_sql(self):
@@ -65,6 +75,8 @@ class Blob(SQLType):
 
 
 class Boolean(SQLType):
+    """Boolean type."""
+
     python = bool
 
     def to_sql(self):
@@ -72,6 +84,20 @@ class Boolean(SQLType):
 
 
 class ForeignKey(SQLType):
+    """Defines a foreign key.
+
+    Attributes
+    ----------
+    table: :class:`str`
+        The table that this key references.
+    column: :class:`str`
+        The column from the other table that is referenced.
+    python: :class:`type`
+        The python type of the column.
+    sql_type: :class:`SQLType`
+        The SQL type of the column.
+    """
+
     def __init__(self, sql_type, table, column):
         if not table or not isinstance(table, str):
             raise SchemaError('missing table to reference (must be string)')
@@ -103,6 +129,28 @@ class ForeignKey(SQLType):
 
 
 class Column:
+    """Represents a column in a SQL table.
+
+    Attributes
+    ----------
+    column_type: :class:`SQLType`
+        The SQL type of the column
+    index: :class:`bool`
+        Whether the column is indexed or not.
+    primary_key: :class:`bool`
+        Whether the column is a primary key or not.
+    nullable: :class:`bool`
+        Whether the class can be null or not.
+    default:
+        The default value of the column if undefined.
+    auto_increment: :class:`bool`
+        Whether the value should auto increment or not.
+    index: :class:`bool`
+        Whether the column should be indexed or not.
+    no_case: :class:`bool`
+        Whether the column should be case insensitive or not.
+    """
+
     __slots__ = (
         'column_type',
         'index',
@@ -230,7 +278,7 @@ class Table(metaclass=TableMeta):
 
         for column in cls.columns:
             if column.index:
-                fmt = 'CREATE INDEX IF NOT EXISTS {1.index_name} ON {0} ({1.name});'.format(cls.__tablename__, column)
+                fmt = f'CREATE INDEX IF NOT EXISTS {column.index_name} ON {cls.__tablename__} ({column.name});'
                 statements.append(fmt)
 
         return '\n'.join(statements)
@@ -260,8 +308,7 @@ class Table(metaclass=TableMeta):
 
             verified[column.name] = value
 
-        sql = 'INSERT INTO {0} ({1}) VALUES ({2});'.format(cls.__tablename__, ', '.join(verified),
-                                                           ', '.join('?' for _ in verified))
+        sql = f'INSERT INTO {cls.__tablename__} ({", ".join(verified)}) VALUES ({", ".join("?" for _ in verified)});'
         c.execute(sql, tuple(verified.values()))
 
     @classmethod

@@ -15,7 +15,7 @@
     <option name="SCRIPT_NAME" value="tibiawikisql" />
     <option name="PARAMETERS" value="generate" />
     <option name="SHOW_COMMAND_LINE" value="false" />
-    <option name="EMULATE_TERMINAL" value="false" />
+    <option name="EMULATE_TERMINAL" value="true" />
     <option name="MODULE_MODE" value="true" />
     <option name="REDIRECT_INPUT" value="false" />
     <option name="INPUT_FILE" value="" />

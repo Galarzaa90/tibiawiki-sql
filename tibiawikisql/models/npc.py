@@ -571,7 +571,7 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
                 attributes.append(f"{attr}={v!r}")
             except AttributeError:
                 pass
-        return "{0.__class__.__name__}({1})".format(self, ",".join(attributes))
+        return f"{self.__class__.__name__}({','.join(attributes)})"
 
     def insert(self, c):
         if getattr(self, "spell_id", None):

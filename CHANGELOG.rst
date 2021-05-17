@@ -2,6 +2,22 @@
 Changelog
 =========
 
+.. v5.0.0
+
+5.0.0 (Unreleased)
+==================
+
+- Added ``Updates`` model and ``game_update`` table.
+- Added ``infobox_attributes`` to ``WikiEntry`` class to easily extract any infobox attribute.
+- Added missing ``premium`` attribute to ``Achievement`` model. Column was already saved.
+- Added ``battleye_type`` class and column to ``World`` model and ``world`` table.
+- Added ``library_race``, ``runs_at``, ``modifier_healing``, and ``location`` to ``Creature`` model and ``creature`` table.
+- Added ``slots`` class and column to ``Imbuement`` model and ``imbuement`` table.
+- Added ``group_secondary``, ``group_rune``, ``premium``, ``promotion``, ``cooldown_group``, and
+``cooldown_group_secondary`` attributes and columns to ``Spell`` class and ``spell`` table.
+- Added ``job_additionals`` to ``Npc`` model and ``npc`` table.
+- **Breaking change**: Renamed ``classz`` column to ``group_spell`` in ``spell`` table.
+
 .. v4.1.2
 
 4.1.2 (2021-04-16)
