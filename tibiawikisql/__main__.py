@@ -115,12 +115,12 @@ def generate(skip_images, db_name, skip_deprecated):
         generator = WikiClient.get_articles(titles)
         with conn:
             with progress_bar(generator, f"Parsing {key}", len(titles), item_show_func=article_show) as bar:
-                for i, article in enumerate(bar):
+                for article in bar:
                     entry = model.from_article(article)
                     if entry is not None:
                         entry.insert(conn)
                     else:
-                        unparsed.append(titles[i])
+                        unparsed.append(article.title)
             if unparsed:
                 click.echo(f"{Fore.RED}Could not parse {len(unparsed):,} articles.{Style.RESET_ALL}")
                 print(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed)}{Style.RESET_ALL}]")
@@ -353,7 +353,8 @@ def get_articles(category, data_store, key=None, include_deprecated=False):
     data_store[key] = []
     start = time.perf_counter()
     for article in WikiClient.get_category_members(category):
-        if article not in data_store.get("deprecated", []) or include_deprecated:
+        if ((article not in data_store.get("deprecated", []) or include_deprecated)
+                and not article.title.startswith("User:")):
             data_store[key].append(article)
     dt = (time.perf_counter() - start)
     print(f"{Fore.GREEN}\tFound {len(data_store[key]):,} articles in {dt:.2f} seconds.{Style.RESET_ALL}")
