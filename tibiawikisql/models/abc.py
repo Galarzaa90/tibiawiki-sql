@@ -18,7 +18,7 @@ import sqlite3
 
 from tibiawikisql import database
 from tibiawikisql.api import Article
-from tibiawikisql.utils import parse_attributes
+from tibiawikisql.utils import parse_templatates_data
 
 
 class Parseable(Article, metaclass=abc.ABCMeta):
@@ -40,8 +40,8 @@ class Parseable(Article, metaclass=abc.ABCMeta):
 
     _map = None
     """map: :class:`dict`: A dictionary mapping the article's attributes to object attributes."""
-    _pattern = None
-    """:class:`re.Pattern`: A compiled pattern to filter out articles by their content."""
+    _template = None
+    """The name of the infobox template containing the data"""
 
     @classmethod
     def from_article(cls, article):
@@ -60,7 +60,10 @@ class Parseable(Article, metaclass=abc.ABCMeta):
         if cls._map is None:
             raise NotImplementedError("Inherited class must override map")
 
-        if article is None or (cls._pattern and not cls._pattern.search(article.content)):
+        if article is None:
+            return None
+        templates = parse_templatates_data(article.content)
+        if cls._template not in templates:
             return None
         row = {
             "article_id": article.article_id,
@@ -68,7 +71,7 @@ class Parseable(Article, metaclass=abc.ABCMeta):
             "title": article.title,
             "attributes": {},
         }
-        attributes = parse_attributes(article.content)
+        attributes = templates[cls._template]
         row["_raw_attributes"] = {}
         for attribute, value in attributes.items():
             if attribute not in cls._map:
@@ -77,6 +80,10 @@ class Parseable(Article, metaclass=abc.ABCMeta):
             column, func = cls._map[attribute]
             row[column] = func(value)
         return cls(**row)
+
+    @property
+    def infobox_attributes(self):
+        raise AttributeError
 
 
 class Row(metaclass=abc.ABCMeta):

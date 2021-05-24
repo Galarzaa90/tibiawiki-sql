@@ -12,7 +12,6 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import re
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
@@ -62,7 +61,7 @@ class Update(abc.Row, abc.Parseable, table=schema.Update):
         "implemented": ("version", str.strip),
 
     }
-    _pattern = re.compile(r"Infobox[\s_]Update")
+    _template = "Infobox_Update"
     __slots__ = (
         "article_id",
         "title",

@@ -12,7 +12,6 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import re
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
@@ -72,8 +71,7 @@ class World(abc.Row, abc.Parseable, table=schema.World):
         "worldboardid": ("world_board", parse_integer),
         "tradeboardid": ("trade_board", parse_integer),
     }
-    _pattern = re.compile(r"Infobox[\s_]World")
-
+    _template = "Infobox_World"
     __slots__ = (
         "article_id",
         "title",

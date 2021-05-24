@@ -102,6 +102,7 @@ class House(abc.Row, abc.Parseable, table=schema.House):
         "implemented": ("version", str.strip),
         "status": ("status", str.lower),
     }
+    _template = "Infobox_Building"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

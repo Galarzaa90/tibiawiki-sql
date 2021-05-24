@@ -228,7 +228,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         "implemented": ("version", str.strip),
         "status": ("status", str.lower),
     }
-    _pattern = re.compile(r"Infobox[\s_]NPC")
+    _template = "Infobox_NPC"
 
     @property
     def job_list(self):

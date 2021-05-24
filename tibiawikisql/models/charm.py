@@ -11,7 +11,6 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import re
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
@@ -53,7 +52,7 @@ class Charm(abc.Row, abc.Parseable, table=schema.Charm):
         "implemented": ("version", str.strip),
         "status": ("status", str.lower),
     }
-    _pattern = re.compile(r"Infobox[\s_]Charm")
+    _template = "Infobox_Charm"
 
     __slots__ = (
         "article_id",

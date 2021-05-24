@@ -254,8 +254,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "implemented": ("version", str.strip),
         "status": ("status", str.lower),
     }
-
-    _pattern = re.compile(r"Infobox[\s_]Creature")
+    _template = "Infobox_Creature"
 
     __slots__ = (
         "article_id",

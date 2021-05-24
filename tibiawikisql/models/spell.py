@@ -12,8 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import re
-
 from tibiawikisql import schema
 from tibiawikisql.models import NpcSpell, abc
 from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
@@ -132,7 +130,7 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
         "implemented": ("version", str.strip),
         "status": ("status", str.lower),
     }
-    _pattern = re.compile(r"Infobox[\s_]Spell")
+    _template = "Infobox_Spell"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

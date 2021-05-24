@@ -12,7 +12,6 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import re
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
@@ -71,7 +70,7 @@ class Mount(abc.Row, abc.Parseable, table=schema.Mount):
         "status": ("status", str.lower),
 
     }
-    _pattern = re.compile(r"Infobox[\s_]Mount")
+    _template = "Infobox_Mount"
     __slots__ = (
         "article_id",
         "title",

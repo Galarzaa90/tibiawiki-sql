@@ -118,7 +118,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "itemid": ("client_id", parse_integer),
         "status": ("status", str.lower),
     }
-    _pattern = re.compile(r"Infobox[\s_]Item")
+    _template = "Infobox_Item"
 
     __slots__ = (
         "article_id",
@@ -381,7 +381,7 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
         "implemented": ("version", str.strip),
         "status": ("status", str.lower),
     }
-    _pattern = re.compile(r"Infobox[\s_]Key")
+    _template = "Infobox_Key"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

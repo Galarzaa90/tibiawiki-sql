@@ -12,8 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import re
-
 from tibiawikisql import schema
 from tibiawikisql.models import abc
 from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
@@ -62,7 +60,7 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         "implemented": ("version", str.strip),
         "status": ("status", str.lower),
     }
-    _pattern = re.compile(r"Infobox[\s_]Achievement")
+    _template = "Infobox_Achievement"
     __slots__ = (
         "article_id",
         "title",

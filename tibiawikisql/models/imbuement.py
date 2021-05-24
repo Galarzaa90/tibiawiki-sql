@@ -147,7 +147,7 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         "slots": ("slots", parse_slots),
         "status": ("status", str.lower),
     }
-    _pattern = re.compile(r"Infobox[\s_]Imbuement")
+    _template = "Infobox_Imbuement"
 
     __slots__ = (
         "article_id",

@@ -123,7 +123,7 @@ def generate(skip_images, db_name, skip_deprecated):
                         unparsed.append(article.title)
             if unparsed:
                 click.echo(f"{Fore.RED}Could not parse {len(unparsed):,} articles.{Style.RESET_ALL}")
-                print(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed)}{Style.RESET_ALL}]")
+                print(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed)}{Style.RESET_ALL}")
             dt = (time.perf_counter() - exec_time)
             print(f"\t{Fore.GREEN}Parsed articles in {dt:.2f} seconds.{Style.RESET_ALL}")
 
@@ -354,7 +354,7 @@ def get_articles(category, data_store, key=None, include_deprecated=False):
     start = time.perf_counter()
     for article in WikiClient.get_category_members(category):
         if ((article not in data_store.get("deprecated", []) or include_deprecated)
-                and not article.title.startswith("User:")):
+                and not article.title.startswith("User:") and not article.title.startswith("TibiaWiki:")):
             data_store[key].append(article)
     dt = (time.perf_counter() - start)
     print(f"{Fore.GREEN}\tFound {len(data_store[key]):,} articles in {dt:.2f} seconds.{Style.RESET_ALL}")

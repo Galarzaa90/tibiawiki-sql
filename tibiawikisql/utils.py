@@ -13,6 +13,9 @@
 #  limitations under the License.
 import datetime
 import re
+from collections import defaultdict
+
+import mwparserfromhell
 
 min_max_pattern = re.compile(r"(\d+)-(\d+)")
 loot_stats_pattern = re.compile(r"\|([\s\w]+),\s*times:(\d+)(?:,\s*amount:([\d-]+))?")
@@ -281,7 +284,7 @@ def client_color_to_rgb(value: int):
     return ((value // 36 * 0x33) << 16) + ((value // 6 % 6 * 0x33) << 8) + ((value % 6 * 0x33) & 0xFF)
 
 
-def parse_attributes(content):
+def parse_templatates_data(content):
     """
     Parses the attributes of an Infobox template.
 
@@ -295,40 +298,18 @@ def parse_attributes(content):
     :class:`dict[str, str]`:
         A dictionary with every attribute as key.
     """
-    attributes = {}
-    depth = 0
-    parse_value = False
-    attribute = ""
-    value = ""
-    for i in range(len(content)):
-        if content[i] == '{' or content[i] == '[':
-            depth += 1
-            if depth >= 3:
-                if parse_value:
-                    value = value + content[i]
-                else:
-                    attribute = attribute + content[i]
-        elif content[i] == '}' or content[i] == ']':
-            if depth >= 3:
-                if parse_value:
-                    value = value + content[i]
-                else:
-                    attribute = attribute + content[i]
-            if depth == 2:
-                attributes[attribute.strip()] = value.strip()
-                parse_value = False
-                attribute = ""
-                value = ""
-            depth -= 1
-        elif content[i] == '=' and depth == 2:
-            parse_value = True
-        elif content[i] == '|' and depth == 2:
-            attributes[attribute.strip()] = value.strip()
-            parse_value = False
-            attribute = ""
-            value = ""
-        elif parse_value:
-            value = value + content[i]
-        else:
-            attribute = attribute + content[i]
-    return {k: v.strip() for k, v in attributes.items() if v.strip()}
+    parsed = mwparserfromhell.parse(content)
+    templates = parsed.filter_templates(recursive=False)
+    if not templates:
+        return {}
+    data = defaultdict(dict)
+    for template in templates:
+        template_name = str(template.name).strip().replace(" ", "_")
+        for param in template.params:
+            key = param.name.strip()
+            if not param.showkey:
+                key = int(key)
+            value = param.value.strip()
+            if value:
+                data[template_name][key] = value
+    return data

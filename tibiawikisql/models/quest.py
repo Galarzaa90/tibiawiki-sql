@@ -115,7 +115,7 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
         "implemented": ("version", str.strip),
         "status": ("status", str.lower),
     }
-    _pattern = re.compile(r"Infobox[\s_]Quest")
+    _template = "Infobox_Quest"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

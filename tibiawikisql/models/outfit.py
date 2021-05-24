@@ -11,7 +11,6 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import re
 import sqlite3
 
 from tibiawikisql import schema
@@ -83,8 +82,7 @@ class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
         "implemented": ("version", str.strip),
         "status": ("status", str.lower),
     }
-
-    _pattern = re.compile(r"Infobox[\s_]Outfit")
+    _template = "Infobox_Outfit"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
