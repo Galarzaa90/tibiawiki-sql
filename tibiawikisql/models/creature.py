@@ -14,12 +14,18 @@
 
 import re
 from collections import OrderedDict
-from typing import List, Optional
+from typing import List, Optional, TYPE_CHECKING
+
+import mwparserfromhell
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
 from tibiawikisql.utils import (clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max, parse_sounds,
-                                clean_question_mark)
+                                clean_question_mark, strip_code)
+
+
+if TYPE_CHECKING:
+    from mwparserfromhell.nodes import Template
 
 creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
 
@@ -42,6 +48,53 @@ CHARM_POINTS = {
 }
 
 ELEMENTAL_MODIFIERS = ["physical", "earth", "fire", "ice", "energy", "death", "holy", "drown", "hpdrain"]
+
+
+def parse_abilities(value):
+    if value is None:
+        return []
+    parsed = mwparserfromhell.parse(value)
+    templates = parsed.filter_templates(recursive=False)
+    if not templates:
+        return []
+    abilities = []
+    for element in templates[0].params:
+        ability_templates = element.value.filter_templates(recursive=False)
+        if not templates:
+            continue
+        ability_template: 'Template' = ability_templates[0]
+        template_name = str(ability_template.name)
+        ability = None
+        if template_name == "Melee":
+            ability = {
+                "name": ability_template.get("name", "Melee"),
+                "effect": ability_template.get(1, ability_template.get("damage", "?")),
+                "element": ability_template.get(2, ability_template.get("element", "physical"))
+            }
+        if template_name == "Summon":
+            ability = {
+                "name": ability_template.get(1, ability_template.get("creature", None)),
+                "effect": ability_template.get(2, ability_template.get("amount", 1)),
+                "element": "summon"
+            }
+        if template_name == "Healing":
+            ability = {
+                "name": ability_template.get(1, ability_template.get("name", "Self-Healing")),
+                "effect": ability_template.get(2, ability_template.get("range", ability_template.get("damage", "?"))),
+                "element": "healing"
+            }
+        if template_name == "Ability":
+            ability = {
+                "name": ability_template.get(1, ability_template.get("name", None)),
+                "effect": ability_template.get(2, ability_template.get("damage", "?")),
+                "element": ability_template.get(3, ability_template.get("element", "physical"))
+            }
+            if ability["name"] is None:
+                ability["name"] = f'{ability_template.get(3, ability_template.get("element", "physical")).title()} Damage'
+        if ability:
+            abilities.append(strip_code(ability))
+        pass
+    return abilities
 
 
 def parse_maximum_integer(value):

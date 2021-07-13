@@ -16,6 +16,9 @@ import re
 from collections import defaultdict
 
 import mwparserfromhell
+from mwparserfromhell.nodes import Node
+from mwparserfromhell.nodes.extras import Parameter
+from mwparserfromhell.wikicode import Wikicode
 
 min_max_pattern = re.compile(r"(\d+)-(\d+)")
 loot_stats_pattern = re.compile(r"\|([\s\w]+),\s*times:(\d+)(?:,\s*amount:([\d-]+))?")
@@ -313,3 +316,18 @@ def parse_templatates_data(content):
             if value:
                 data[template_name][key] = value
     return data
+
+
+def strip_code(value):
+    if value is None:
+        return value
+    elif isinstance(value, str):
+        return value.strip()
+    elif isinstance(value, Parameter):
+        return value.value.strip_code()
+    elif isinstance(value, Wikicode):
+        return value.strip_code()
+    elif isinstance(value, dict):
+        for key, val in value.items():
+            value[key] = strip_code(val)
+        return value
