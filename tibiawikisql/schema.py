@@ -90,6 +90,20 @@ class Creature(Table):
     timestamp = Column(Integer)
 
 
+class CreatureAbility(Table, table_name="creature_ability"):
+    creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
+    name = Column(Text)
+    effect = Column(Text)
+    element = Column(Text)
+
+
+class CreatureMaxDamage(Table, table_name="creature_max_damage"):
+    creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
+    damage_type = Column(Text)
+    amount = Column(Integer)
+    symbols = Column(Text)
+
+
 class CreatureSound(Table, table_name="creature_sound"):
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
     content = Column(Text)
