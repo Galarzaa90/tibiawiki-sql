@@ -56,11 +56,20 @@ def parse_abilities(value):
     parsed = mwparserfromhell.parse(value)
     templates = parsed.filter_templates(recursive=False)
     if not templates:
-        return []
+        return [{
+            "name": strip_code(parsed),
+            "element": "no_template"
+        }]
     abilities = []
     for element in templates[0].params:
+        if not element:
+            continue
         ability_templates = element.value.filter_templates(recursive=False)
-        if not templates:
+        if not ability_templates:
+            abilities.append({
+                "name": strip_code(element),
+                "element": "plain_text"
+            })
             continue
         ability_template: 'Template' = ability_templates[0]
         template_name = str(ability_template.name)
@@ -90,11 +99,31 @@ def parse_abilities(value):
                 "element": ability_template.get(3, ability_template.get("element", "physical"))
             }
             if ability["name"] is None:
-                ability["name"] = f'{ability_template.get(3, ability_template.get("element", "physical")).title()} Damage'
+                ability["name"] = f'{ability["element"].title()} Damage'
         if ability:
             abilities.append(strip_code(ability))
         pass
     return abilities
+
+
+def parse_maximum_damage(value):
+    if value is None:
+        return None
+    parsed = mwparserfromhell.parse(value)
+    templates = parsed.filter_templates(recursive=False)
+    if not templates:
+        total = parse_maximum_integer(value)
+        if total is None:
+            return
+        return {"total": parse_maximum_integer(value)}
+    damages = {}
+    for element in templates[0].params:
+        damages[strip_code(element.name)] = parse_integer(strip_code(element.value), -1)
+    excluded = {"summons", "manadrain"}
+    if "total" not in damages:
+        damages["total"] = sum(v for k, v in damages.items() if k not in excluded)
+    return damages
+
 
 
 def parse_maximum_integer(value):
@@ -280,7 +309,6 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "exp": ("experience", lambda x: parse_integer(x, None)),
         "armor": ("armor", lambda x: parse_integer(x, None)),
         "speed": ("speed", lambda x: parse_integer(x, None)),
-        "maxdmg": ("max_damage", parse_maximum_integer),
         "runsat": ("runs_at", parse_integer),
         "summon": ("summon_cost", parse_integer),
         "convince": ("convince_cost", parse_integer),
@@ -300,7 +328,6 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "drownDmgMod": ("modifier_drown", parse_integer),
         "hpDrainDmgMod": ("modifier_hpdrain", parse_integer),
         "healMod": ("modifier_healing", parse_integer),
-        "abilities": ("abilities", clean_links),
         "walksthrough": ("walks_through", parse_monster_walks),
         "walksaround": ("walks_around", parse_monster_walks),
         "location": ("location", clean_links),
@@ -439,6 +466,14 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
             sounds = parse_sounds(creature._raw_attributes["sounds"])
             if sounds:
                 creature.sounds = [CreatureSound(creature_id=creature.article_id, content=sound) for sound in sounds]
+        if "abilities" in creature._raw_attributes:
+            abilities = parse_abilities(creature._raw_attributes["abilities"])
+            if abilities:
+                creature.abilities = [CreatureAbility(creature_id=creature.article_id, **ability)
+                                      for ability in abilities]
+        if "maxdmg" in creature._raw_attributes:
+            max_damage = parse_maximum_damage(creature._raw_attributes["maxdmg"])
+            creature.max_damage = CreatureMaxDamage(creature_id=creature.article_id, **max_damage) if max_damage else None
         return creature
 
     def insert(self, c):
@@ -457,6 +492,11 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
             attribute.insert(c)
         for attribute in getattr(self, "sounds", []):
             attribute.insert(c)
+        for attribute in getattr(self, "abilities", []):
+            attribute.insert(c)
+        max_damage = getattr(self, "max_damage", None)
+        if max_damage:
+            max_damage.insert(c)
 
     @classmethod
     def get_by_field(cls, c, field, value, use_like=False):
@@ -466,6 +506,24 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         creature.loot = CreatureDrop.search(c, "creature_id", creature.article_id, sort_by="chance", ascending=False)
         creature.sounds = CreatureSound.search(c, "creature_id", creature.article_id)
         return creature
+
+
+class CreatureAbility(abc.Row, table=schema.CreatureAbility):
+    __slots__ = (
+        'creature_id',
+        'name',
+        'effect',
+        'element',
+    )
+
+    def insert(self, c):
+        columns = {
+            'creature_id': self.creature_id,
+            'name': self.name,
+            'effect': self.effect,
+            'element': self.element,
+        }
+        self.table.insert(c, **columns)
 
 
 class CreatureDrop(abc.Row, table=schema.CreatureDrop):
@@ -543,6 +601,40 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
                    FROM {cls.table.__tablename__}
                    LEFT JOIN creature ON creature.article_id = creature_id
                    LEFT JOIN item ON item.article_id = item_id"""
+
+
+class CreatureMaxDamage(abc.Row, table=schema.CreatureMaxDamage):
+    __slots__ = (
+        'creature_id',
+        'earth',
+        'fire',
+        'ice',
+        'energy',
+        'death',
+        'holy',
+        'drown',
+        'lifedrain',
+        'manadrain',
+        'summons',
+        'total',
+    )
+
+    def insert(self, c):
+        columns = {
+            'creature_id': self.creature_id,
+            'earth': self.earth,
+            'fire': self.fire,
+            'ice': self.ice,
+            'energy': self.energy,
+            'death': self.death,
+            'holy': self.holy,
+            'drown': self.drown,
+            'lifedrain': self.lifedrain,
+            'manadrain': self.manadrain,
+            'summons': self.summons,
+            'total': self.total,
+        }
+        self.table.insert(c, **columns)
 
 
 class CreatureSound(abc.Row, table=schema.CreatureSound):

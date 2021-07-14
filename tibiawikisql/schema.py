@@ -60,7 +60,6 @@ class Creature(Table):
     bestiary_class = Column(Text, index=True)
     bestiary_level = Column(Text, index=True)
     bestiary_occurrence = Column(Text, index=True)
-    max_damage = Column(Integer)
     runs_at = Column(Integer)
     summon_cost = Column(Integer)
     convince_cost = Column(Integer)
@@ -80,7 +79,6 @@ class Creature(Table):
     modifier_drown = Column(Integer)
     modifier_hpdrain = Column(Integer)
     modifier_healing = Column(Integer)
-    abilities = Column(Text)
     walks_through = Column(Text)
     walks_around = Column(Text)
     location = Column(Text)
@@ -99,9 +97,17 @@ class CreatureAbility(Table, table_name="creature_ability"):
 
 class CreatureMaxDamage(Table, table_name="creature_max_damage"):
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
-    damage_type = Column(Text)
-    amount = Column(Integer)
-    symbols = Column(Text)
+    earth = Column(Integer)
+    fire = Column(Integer)
+    ice = Column(Integer)
+    energy = Column(Integer)
+    death = Column(Integer)
+    holy = Column(Integer)
+    drown = Column(Integer)
+    lifedrain = Column(Integer)
+    manadrain = Column(Integer)
+    summons = Column(Integer)
+    total = Column(Integer)
 
 
 class CreatureSound(Table, table_name="creature_sound"):
