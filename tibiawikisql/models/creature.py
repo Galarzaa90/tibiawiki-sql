@@ -102,7 +102,6 @@ def parse_abilities(value):
                 ability["name"] = f'{ability["element"].title()} Damage'
         if ability:
             abilities.append(strip_code(ability))
-        pass
     return abilities
 
 
@@ -118,12 +117,11 @@ def parse_maximum_damage(value):
         return {"total": parse_maximum_integer(value)}
     damages = {}
     for element in templates[0].params:
-        damages[strip_code(element.name)] = parse_integer(strip_code(element.value), -1)
+        damages[strip_code(element.name).lower()] = parse_integer(strip_code(element.value), -1)
     excluded = {"summons", "manadrain"}
     if "total" not in damages:
         damages["total"] = sum(v for k, v in damages.items() if k not in excluded)
     return damages
-
 
 
 def parse_maximum_integer(value):
@@ -276,8 +274,10 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The percentage of damage received of life drain damage. ``None`` if unknown.
     modifier_healing: :class:`int`
         The healing modifier. ``None`` if unknown.
-    abilities: :class:`str`
-        A brief description of the creature's abilities.
+    abilities: list of :class:`CreatureAbility`
+        A list of the creature abilities.
+    max_damage: :class:`CreatureMaxDamage`
+        The maximum damage the creature can make.
     walks_through: :class:`str`
         The field types the creature will walk through, separated by commas.
     walks_around: :class:`str`
@@ -505,10 +505,28 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
             return None
         creature.loot = CreatureDrop.search(c, "creature_id", creature.article_id, sort_by="chance", ascending=False)
         creature.sounds = CreatureSound.search(c, "creature_id", creature.article_id)
+        creature.abilities = CreatureAbility.search(c, "creature_id", creature.article_id)
+        creature.max_damage = CreatureAbility.get_by_field(c, "creature_id", creature.article_id)
         return creature
 
 
 class CreatureAbility(abc.Row, table=schema.CreatureAbility):
+    """Represents a creature's ability.
+
+    Attributes
+    ----------
+    creature_id: :class:`int`
+        The article ID of the creature this ability belongs to.
+    name: :class:`str`
+        The name of the ability.
+    effect: :class:`str`
+        The effect of the ability, or the damage range.
+    element: :class:`str`
+        The element of damage type of the ability. This could also be a status condition instead.
+        For abilities that are just plain text, ``plain_text`` is set.
+        For abilities that are not using the abilities templates in TibiaWiki, they are saved as a single entry
+         with element: `no_template`.
+    """
     __slots__ = (
         'creature_id',
         'name',
@@ -604,8 +622,54 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
 
 
 class CreatureMaxDamage(abc.Row, table=schema.CreatureMaxDamage):
+    """Represents a creature's max damage, broke down by damage type.
+
+    Attributes
+    ----------
+    creature_id: :class:`integer`
+        The article ID of the creature this max damage belongs to.
+    physical: :class:`integer`, optional
+        The maximum physical damage dealt by the creature.
+        If it is unknown, but the creature does deal damage, it will be -1.
+    fire: :class:`integer`, optional
+        The maximum fire damage dealt by the creature.
+        If it is unknown, but the creature does deal damage, it will be -1.
+    ice: :class:`integer`, optional
+        The maximum ice damage dealt by the creature.
+        If it is unknown, but the creature does deal damage, it will be -1.
+    earth: :class:`integer`, optional
+        The maximum earth damage dealt by the creature.
+        If it is unknown, but the creature does deal damage, it will be -1.
+    energy: :class:`integer`, optional
+        The maximum energy damage dealt by the creature.
+        If it is unknown, but the creature does deal damage, it will be -1.
+    holy: :class:`integer`, optional
+        The maximum holy damage dealt by the creature.
+        If it is unknown, but the creature does deal damage, it will be -1.
+    death: :class:`integer`, optional
+        The maximum death damage dealt by the creature.
+        If it is unknown, but the creature does deal damage, it will be -1.
+    drown: :class:`integer`, optional
+        The maximum drown damage dealt by the creature.
+        If it is unknown, but the creature does deal damage, it will be -1.
+    lifedrain: :class:`integer`, optional
+        The maximum lifedrain damage dealt by the creature.
+        If it is unknown, but the creature does deal damage, it will be -1.
+    manadrain: :class:`integer`, optional
+        The maximum manadrain damage dealt by the creature.
+        If it is unknown, but the creature does deal damage, it will be -1.
+    summons: :class:`integer`, optional
+        The maximum damage dealt by the creature's summons.
+        If it is unknown, but the creature does deal damage, it will be -1.
+    total: :class:`integer`, optional
+        The maximum damage the creature can deal in a single turn.
+        This doesn't count manadrain and summon damage.
+        In most cases, this is simply the sum of the other damages, but in some cases, the amount may be different.
+        If it is unknown, but the creature does deal damage, it will be -1.
+    """
     __slots__ = (
         'creature_id',
+        'physical',
         'earth',
         'fire',
         'ice',
@@ -622,6 +686,7 @@ class CreatureMaxDamage(abc.Row, table=schema.CreatureMaxDamage):
     def insert(self, c):
         columns = {
             'creature_id': self.creature_id,
+            'physical': self.physical,
             'earth': self.earth,
             'fire': self.fire,
             'ice': self.ice,

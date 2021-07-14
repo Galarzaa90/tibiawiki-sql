@@ -43,6 +43,8 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         Whether the achievement is secret or not.
     premium: :class:`bool`
         Whether a premium account is required to get this achievement.
+    achievement_id: :class:`int`
+        The internal ID of the achievement.
     status: :class:`str`
         The status of this achievement in the game.
     version: :class:`str`
@@ -57,6 +59,7 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         "description": ("description", str.strip),
         "spoiler": ("spoiler", clean_links),
         "secret": ("secret", parse_boolean),
+        "achievementid": ("achievement_id", lambda x: parse_integer(x, None)),
         "implemented": ("version", str.strip),
         "status": ("status", str.lower),
     }
@@ -72,6 +75,7 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
         "description",
         "spoiler",
         "secret",
+        "achievement_id",
         "version",
         "status",
     )

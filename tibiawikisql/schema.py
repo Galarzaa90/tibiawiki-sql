@@ -25,6 +25,7 @@ class Achievement(Table):
     spoiler = Column(Text)
     secret = Column(Boolean)
     premium = Column(Boolean)
+    achievement_id = Column(Integer)
     version = Column(Text, index=True)
     status = Column(Text, default="active")
     timestamp = Column(Integer)
@@ -97,6 +98,7 @@ class CreatureAbility(Table, table_name="creature_ability"):
 
 class CreatureMaxDamage(Table, table_name="creature_max_damage"):
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
+    physical = Column(Integer)
     earth = Column(Integer)
     fire = Column(Integer)
     ice = Column(Integer)
