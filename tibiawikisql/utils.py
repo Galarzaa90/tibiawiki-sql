@@ -14,28 +14,18 @@
 import datetime
 import re
 from collections import defaultdict
+from typing import TYPE_CHECKING, List
 
 import mwparserfromhell
-from mwparserfromhell.nodes import Node
 from mwparserfromhell.nodes.extras import Parameter
 from mwparserfromhell.wikicode import Wikicode
 
+if TYPE_CHECKING:
+    from mwparserfromhell.nodes import Template
+
 min_max_pattern = re.compile(r"(\d+)-(\d+)")
-loot_stats_pattern = re.compile(r"\|([\s\w]+),\s*times:(\d+)(?:,\s*amount:([\d-]+))?")
-kills_pattern = re.compile(r"kills=(\d+)")
 int_pattern = re.compile(r"[+-]?\d+")
 float_pattern = re.compile(r'[+-]?(\d*[.])?\d+')
-named_links_pattern = re.compile(r'\[\[[^]|]+\|([^]]+)\]\]')
-file_pattern = re.compile(r'\[\[(?:File|Image):[^\]]+\]\]')
-
-links_pattern = re.compile(r'\[\[([^]]+)\]\]')
-external_links_pattern = re.compile(r'\[[^]]+\]')
-no_wiki_pattern = re.compile(r'<nowiki>([^<]+)</nowiki>')
-comments_pattern = re.compile(r'<!--.*-->', re.DOTALL | re.MULTILINE)
-
-sounds_template = re.compile(r"{{Sound List([^}]+)}}")
-sound_pattern = re.compile(r"\|([^|}]+)")
-
 
 def clean_question_mark(content):
     """Removes question mark strings, turning them to nulls.
@@ -71,21 +61,8 @@ def clean_links(content):
     :class:`str`:
         The clean string, with no links.
     """
-    # Images
-    content = file_pattern.sub(' ', content)
-    # Named links
-    content = named_links_pattern.sub(r'\g<1>', content)
-    # Links
-    content = links_pattern.sub(r'\g<1>', content)
-    # External links
-    content = external_links_pattern.sub('', content)
-    # Double spaces
-    content = content.replace('  ', ' ')
-    # No wiki
-    content = no_wiki_pattern.sub(r'\g<1>', content)
-    # Comments
-    content = comments_pattern.sub('', content)
-    return content.strip()
+    parsed = mwparserfromhell.parse(content)
+    return parsed.strip_code().strip()
 
 
 def convert_tibiawiki_position(pos):
@@ -111,6 +88,16 @@ def convert_tibiawiki_position(pos):
         return coordinate
     except (ValueError, IndexError):
         return 0
+
+
+def find_template(content: str, template_name, partial=False):
+    parsed = mwparserfromhell.parse(content)
+    templates: List['Template'] = parsed.filter_templates(recursive=False)
+    if not templates:
+        return None
+    if partial:
+        return next((t for t in templates if template_name.lower() in t.name.lower()), None)
+    return next((t for t in templates if template_name.lower() == t.name.lower()), None)
 
 
 def parse_boolean(value: str, default=False, invert=False):
@@ -211,8 +198,8 @@ def parse_integer(value, default=0):
 
 
 def parse_loot_statistics(value):
-    """
-    Gets every dropped item from a creature's loot statistics.
+    """Get every dropped item from a creature's loot statistics.
+
     Parameters
     ----------
     value: :class:`str`
@@ -223,12 +210,39 @@ def parse_loot_statistics(value):
     tuple:
         A tuple containing the total kills and a list of entries.
     """
-    match = kills_pattern.search(value)
-    if match:
-        return int(match.group(1)), loot_stats_pattern.findall(value)
-    else:
+    template = find_template(value, "Loot2", True)
+    if not template:
         return 0, []
+    kills = parse_integer(strip_code(template.get("kills", 0)))
+    entries = [_parse_loot_entry(param.value.strip_code()) for param in template.params if not param.showkey]
+    return kills, entries
 
+
+def _parse_loot_entry(entry):
+    """Parses a single parameter of the loot statistics template.
+
+    Parameters
+    ----------
+    entry: :class:`str`
+        A single item entry.
+
+    Returns
+    -------
+    :class:`dict`
+        A dictionary containing the drop data: item name, times dropped, amount dropped, etcetera.
+    """
+    arguments = entry.split(",")
+    entry = {"amount": "1"}
+    for arg in arguments:
+        subarg = arg.split(":")
+        if len(subarg) == 1:
+            key = "item"
+            value = arg.strip()
+        else:
+            key = subarg[0].strip()
+            value = subarg[1].strip()
+        entry[key] = value
+    return entry
 
 def parse_min_max(value):
     """
@@ -253,7 +267,7 @@ def parse_min_max(value):
 
 
 def parse_sounds(value):
-    """Parses a list of sounds, using Template:Sound_List.
+    """Parse a list of sounds, using Template:Sound_List.
 
     Parameters
     ----------
@@ -263,10 +277,12 @@ def parse_sounds(value):
     Returns
     -------
     list:
-        A list of sounds."""
-    m = sounds_template.search(value)
-    if m:
-        return sound_pattern.findall(m.group(1))
+        A list of sounds.
+    """
+    template = find_template(value, "Sound", True)
+    if not template:
+        return []
+    return [strip_code(param) for param in template.params]
     return []
 
 

@@ -47,7 +47,7 @@ class TestWikiApi(unittest.TestCase):
         content = load_resource("content_loot_statistics.txt")
         kills, loot_statistics = parse_loot_statistics(content)
         self.assertEqual(36488, kills)
-        self.assertEqual(69, len(loot_statistics))
+        self.assertEqual(34, len(loot_statistics))
 
         kills, loot_statistics = parse_loot_statistics("Something else")
         self.assertEqual(kills, 0)

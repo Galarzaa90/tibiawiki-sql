@@ -38,7 +38,6 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(db_creature, models.Creature)
         self.assertEqual(db_creature.name, creature.name)
         self.assertEqual(db_creature.modifier_earth, creature.modifier_earth)
-        self.assertGreater(len(db_creature.loot), 0)
 
         # Dynamic properties
         self.assertEqual(50, db_creature.charm_points)

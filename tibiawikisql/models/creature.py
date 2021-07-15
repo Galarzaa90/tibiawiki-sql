@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 import re
+import sqlite3
 from collections import OrderedDict
 from typing import List, Optional, TYPE_CHECKING
 
@@ -605,9 +606,12 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
         if getattr(self, "item_id", None):
             super().insert(c)
         else:
-            query = f"""INSERT INTO {self.table.__tablename__}(creature_id, item_id, min, max)
-                        VALUES(?, (SELECT article_id from item WHERE title = ?), ?, ?)"""
-            c.execute(query, (self.creature_id, self.item_title, self.min, self.max))
+            try:
+                query = f"""INSERT INTO {self.table.__tablename__}(creature_id, item_id, min, max)
+                            VALUES(?, (SELECT article_id from item WHERE title = ?), ?, ?)"""
+                c.execute(query, (self.creature_id, self.item_title, self.min, self.max))
+            except sqlite3.IntegrityError:
+                return
 
     @classmethod
     def _is_column(cls, name):

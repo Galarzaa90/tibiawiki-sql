@@ -172,16 +172,12 @@ def generate_loot_statistics(conn: sqlite3.Connection):
                     continue
                 creature_id = result[0]
                 # Most loot statistics contain stats for older versions too, we onl care about the latest version.
-                try:
-                    exec_time = article.content.index("Loot2")
-                    end = article.content.index("}}", exec_time)
-                    content = article.content[exec_time:end]
-                except ValueError:
-                    # Article contains no loot
-                    continue
-                kills, loot_stats = parse_loot_statistics(content)
+                kills, loot_stats = parse_loot_statistics(article.content)
                 loot_items = []
-                for item, times, amount in loot_stats:
+                for entry in loot_stats:
+                    item = entry["item"]
+                    times = entry["times"]
+                    amount = entry.get("amount", 1)
                     c.execute("SELECT article_id FROM item WHERE title LIKE ?", (item,))
                     result = c.fetchone()
                     if result is None:
