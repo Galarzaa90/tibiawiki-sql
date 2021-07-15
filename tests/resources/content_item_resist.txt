@@ -2,14 +2,11 @@
 | name           = Dream Shroud
 | article        = a
 | actualname     = dream shroud
-| plural         =
 | itemid         = 29423
 | marketable     = yes
-| flavortext     =
-| implemented    = 12.00
-| itemclass      = Body Equipment
+| implemented    = 12.00.7695
+| objectclass    = Body Equipment
 | primarytype    = Armors
-| secondarytype  =
 | levelrequired  = 180
 | vocrequired    = sorcerers and druids
 | imbueslots     = 1
@@ -23,5 +20,5 @@
 | npcprice       = 0
 | buyfrom        = --
 | sellto         = --
-| notes          =
+| pickupable     = yes
 }}

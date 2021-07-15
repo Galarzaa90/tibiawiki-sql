@@ -1,16 +1,19 @@
 {{Infobox NPC|List={{{1|}}}|GetValue={{{GetValue|}}}
-| name        = Shalmar
-| job         = Spell Instructor
-| location    = South-west in the [[Darashia]] castle
-| posx        = 129.197
-| posy        = 126.154
-| posz        = 7
-| gender      = Male
-| race        = Human
-| city        = Darashia
-| buysell     = yes
-| buys        =
-| sells       = {{Teaches|name=Druid spells
+| name         = Shalmar
+| job          = Spell Instructor
+| location     = South-west in the [[Darashia]] castle
+| city         = Darashia
+| posx         = 129.196
+| posy         = 126.154
+| posz         = 7
+| gender       = Male
+| race         = Human
+| buysell      = yes
+| sells        = {{Teaches|name=Druid spells
+|Chill Out
+|Magic Patch
+|Mud Attack
+|Apprentice's Strike
 |Find Person
 |Light
 |Light Healing
@@ -36,8 +39,9 @@
 |Energy Field
 |Ice Wave
 |Heal Friend
+|Intense Healing
 |Strong Haste
-|Desintegrate
+|Disintegrate
 |Cure Electrification
 |Creature Illusion
 |Ultimate Healing Rune
@@ -65,9 +69,10 @@
 |Energy Wall
 |Cure Bleeding
 |Envenom
+|Paralyse
 |Strong Terra Strike
 |Strong Ice Strike
-|Summon Thundergiant
+|Summon Druid Familiar
 }}
 {{Teaches|name=Sorcerer spells
 |Find Person
@@ -92,7 +97,7 @@
 |Fire Wave
 |Strong Haste
 |Intense Healing
-|Desintegrate
+|Disintegrate
 |Energy Beam
 |Creature Illusion
 |Stalagmite
@@ -121,8 +126,8 @@
 |Strong Flame Strike
 |Curse
 |Strong Energy Strike
-|Summon Grovebeast
+|Summon Sorcerer Familiar
 }}
-| notes       = Shalmar teaches many kinds of instant and spells for [[Druid]]s and [[Sorcerer]]s. He is assisted by [[Asima]] who keeps track of selling other magical goods.
-| implemented = 6.61-6.97
+| implemented  = 6.61-6.97
+| notes        = Shalmar teaches many kinds of instant and spells for [[Druid]]s and [[Sorcerer]]s. He is assisted by [[Asima]] who keeps track of selling other magical goods.
 }}

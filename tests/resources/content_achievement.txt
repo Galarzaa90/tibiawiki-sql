@@ -1,12 +1,12 @@
 {{Infobox Achievement|List={{{1|}}}|GetValue={{{GetValue|}}}
-| grade       = 1
-| name        = Demonic Barkeeper
-| description = Thick, red - shaken, not stirred - and with a straw in it: that's the way you prefer your demon blood. Served with an onion ring, the subtle metallic aftertaste is almost not noticeable. Beneficial effects on health or mana are welcome.
-| spoiler     = Obtainable by shaking 250 [[Concentrated Demonic Blood]].
-| premium     = no
-| points      = 3
-| secret      = no
-| implemented  = 8.62
+| grade         = 1
+| name          = Demonic Barkeeper
+| description   = Thick, red - shaken, not stirred - and with a straw in it: that's the way you prefer your demon blood. Served with an onion ring, the subtle metallic aftertaste is almost not noticeable. Beneficial effects on health or mana are welcome.
+| spoiler       = Obtainable by shaking 250 [[Flask of Demonic Blood]].
+| premium       = no
+| points        = 3
+| secret        = no
+| implemented   = 8.62
 | achievementid = 111
-| relatedpages = [[Concentrated Demonic Blood]]
+| relatedpages  = [[Flask of Demonic Blood]]
 }}

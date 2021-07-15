@@ -1,0 +1,81 @@
+{{Infobox_Update|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name           = Summer Update 2007
+| implemented    = 8.00
+| date           = June 26, 2007
+| primarytype    = Major
+| newsid         = 536
+| secondarytype  = Summer
+| image          = Frost Dragon.gif
+| previous       = 7.92
+| next           = 8.10
+| previousmajor  = 7.9
+| nextmajor      = 8.10
+| summary        = New Ice Islands were added, [[Svargrond]], vocation balancing changes and many new weapons.
+| changelist     =
+* The new ice islands [[Grimlund]], [[Helheim]], [[Hrodmir]], [[Nibelor]], [[Okolnir]] and [[Tyrsung]] were added
+** A new hometown, the city of [[Svargrond]], in [[Hrodmir]].
+* New creatures such as the [[Chakoyas]], [[Barbarians]] and more ice themed creatures.
+* The [[Svargrond Arena]] was added.
+* Many vocation balancing changes
+** Magic damage formula changes.
+** Added over 60 new weapons and ammunition.
+** Added vocation and level requirements to weapons.
+| teasers        = *{{OfficialNewsArchive|513|Update Teaser Series About to Start Next Week}}
+*{{OfficialNewsArchive|519|Welcome to Svargrond}}
+*{{OfficialNewsArchive|521|Cool New Monsters}}
+*{{OfficialNewsArchive|525|Area Concept - Ice Islands}}
+*{{OfficialNewsArchive|526|A New Challenge}}
+*{{OfficialNewsArchive|528|Vocation Balancing}}
+*{{OfficialNewsArchive|531|Cool New Things}}
+*{{OfficialNewsArchive|534|Feel the Merciless Grip of Frost and Cold!}}
+| itemsections   = {{ItemDPLs|8.00|Axe Weapons|Club Weapons|Sword Weapons|Distance Weapons|Ammunition|Body Equipment|Quest Items}}
+| artwork        = Summer update 2007.jpg
+| notes          =
+== Vocation Balancing Changes ==
+=== Damage Formula Changes ===
+* The damage dealt with melee and distance weapons was generally raised.
+* In general, experience level has less of a influence on damage.
+* Damage dealt with weapons will be more influenced by skill level.
+* Damage dealt by spells will be more influenced by magic level.
+** This results in a reduction of the damage dealt by knights and paladins using runes.
+* To make up for the damage reduction of spells for knights and paladins, new spells were created, with damage based on their respective skills and weapons.
+
+=== Weapon Requirements ===
+This update added level and vocation requirements to wield weapons '''properly'''. When a weapon is not wielded properly, the damage dealt is reduced by half.<br/>
+Only [[knight]]s are able to use two-handed weapons, with the exception of staves and poleaxes.
+
+This change was necessary since most of the damage depends from skills now, so this would prevent a player fresh out of [[Rookgaard]] to deal great damage using a high attack weapon.
+
+=== New ammunition ===
+There was new ammunition for paladins too. They are now sold in shops or made with new spells.
+
+== New Ice Islands ==
+*[[Grimlund]] (with the Chakoya settlement [[Inukaya]])
+*[[Helheim]]
+*[[Hrodmir]] (with the settlement [[Svargrond]] and the barbarian camps [[Ragnir]], [[Bittermor]] and [[Grimhorn]])
+*[[Nibelor]]
+*[[Okolnir]]
+*[[Tyrsung]] (with the mountain [[Jotunar]] and the hidden [[Frozen Trench]])
+| galleries      =
+<gallery caption="New Area and Quests" mode="nolines">
+File:Norseman Outfits.jpg
+File:Update Teaser 8.0 ethereal spear.jpg
+File:Update Teaser 8.0 geyser.jpg
+File:Update Teaser 8.0 hut large.jpg
+File:Update Teaser 8.0 mammoth.jpg
+File:Update Teaser 8.0 seal.jpg
+File:Update Teaser 8.0 trophies.jpg
+</gallery>
+<gallery caption="New Creatures" mode="nolines">
+File:Chakoya.jpg|Don't let their cute looks decieve you. (tibia.com)
+File:Braindeath.jpg|Imagine how hard they are if they summon a nightmare! (tibia.pl)
+File:Barbarian.jpg|'Cool new monsters'. (tibiahumor.net)
+File:Mammoth small.jpg| 'We've seen this creature before' (tibiabr.com)
+File:Frost-dragon.jpg| 'Certainly not a creature to mess with' (tibiahispano.com)
+File:Ice-golem.jpg| 'Massive monster looks very tough' (tibiamx.com.mx)
+File:Frost-giants.jpg| 'Half mammoth, half troll :P' (tibiacity.org)
+File:Penguin-and-silver-rabbit.jpg| 'They're evil!' (tibianews.net)
+File:Barbarians2.jpg| (tibianews.net)
+File:Crystal-spider.jpg| (tibianews.net)
+</gallery>
+}}

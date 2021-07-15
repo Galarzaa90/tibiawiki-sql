@@ -1,10 +1,10 @@
-{{Infobox_Charm|List={{{1|}}}|GetValue={{{GetValue|}}}
+{{Infobox Charm|List={{{1|}}}|GetValue={{{GetValue|}}}
 | name          = Curse (Charm)
 | actualname    = Curse
 | type          = Offensive
 | cost          = 900
-| effect        = Curses the creature and deals 5% of its initial hit points as [[Death Damage]].
-| implemented   = 11.50
+| effect        = Triggers on a creature with a certain chance and deals 5% of its initial hit points as [[Death Damage]] once.
+| implemented   = 11.50.6055
 | notes         = The chance of this charm being triggered is 10% per attack done. Since the elemental damage charms are applied on top of the creature's elemental resistances, the Curse charm is recommended for [[Death Damage/Weak|creatures that are weak to Death Damage]]. As with the other elemental damage charms, it's most efficient when used on creatures that have a high amount of hitpoints.
 
 Elemental damage Charms are the best ones available for [[Druid]]s and [[Sorcerer]]s and should be the first one unlocked by these vocations. They are also very good for [[Paladin]]s depending on the hunt and creatures. Even though [[Knight]]s will usually give preference to Defensive Charms, at some point the Knight may wish to switch to offensive charms to maximize its damage output.

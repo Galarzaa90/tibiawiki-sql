@@ -1,18 +1,19 @@
 {{Infobox NPC|List={{{1|}}}|GetValue={{{GetValue|}}}
-| name        = Yaman
-| location    = [[Mal'ouquah]] (Green Djinn Fortress).
-| posx        = 129.21
-| posy        = 127.109
-| posz        = 2
-| city        = Ankrahmun
-| job         = Shopkeeper
-| gender      = Male
-| race        = Djinn
-| buysell     = yes
-| buys        = {{Price to Sell |Ankh |Dragon Necklace |Dwarven Ring |Energy Ring |Glacial Rod |Hailstorm Rod |Life Ring |Might Ring |Moonlight Rod |Muck Rod |Mysterious Fetish |Necrotic Rod |Northwind Rod |Protection Amulet |Ring of Healing |Silver Amulet |Snakebite Rod |Springsprout Rod |Strange Talisman |Terra Rod |Time Ring |Underworld Rod }}
-| sells       = {{Price to Buy |Dragon Necklace |Dwarven Ring |Energy Ring |Life Ring |Might Ring |Protection Amulet |Ring of Healing |Silver Amulet |Strange Talisman |Time Ring }}
+| name         = Yaman
+| job          = Shopkeeper
+| location     = [[Mal'ouquah]] (Green Djinn Fortress).
+| city         = Ankrahmun
+| posx         = 129.21
+| posy         = 127.108
+| posz         = 2
+| gender       = Male
+| race         = Djinn
+| buysell      = yes
+| buys         = {{Price to Sell |Ankh |Dragon Necklace |Dwarven Ring |Energy Ring |Glacial Rod |Hailstorm Rod |Life Ring |Might Ring |Moonlight Rod |Muck Rod |Mysterious Fetish |Necrotic Rod |Northwind Rod |Protection Amulet |Ring of Healing |Silver Amulet |Snakebite Rod |Springsprout Rod |Strange Talisman |Terra Rod |Time Ring |Underworld Rod }}
+| sells        = {{Price to Buy |Dragon Necklace |Dwarven Ring |Energy Ring |Life Ring |Might Ring |Protection Amulet |Ring of Healing |Silver Amulet |Strange Talisman |Time Ring }}
 {{Trades/Sells |note=Saying ''item name'' |Enchanted Chicken Wing, -1 [[Boots of Haste]] |Flask of Warrior's Sweat, -4 [[Warrior Helmet]]s |Magic Sulphur, -3 [[Fire Sword]]s |Fighting Spirit, -2 [[Royal Helmet]]s}}
-| implemented = 7.3
-| notes       = Yaman buys and sells magical items and some other special items. He and [[Alesar]] are dealing in different equipment for the [[Efreet]] and [[Green Djinn]] army. He can preform magical extractions.<br /> He is particularly indifferent towards humans, but will not trade with them until he has permission from [[Malor]].<br />
+| implemented  = 7.3
+| notes        = Yaman buys and sells magical items and some other special items. He and [[Alesar]] are dealing in different equipment for the [[Efreet]] and [[Green Djinn]] army. He can preform magical extractions.<br /> He is particularly indifferent towards humans, but will not trade with them until he has permission from [[Malor]].<br />
 {{JSpoiler|Part of [[What a Foolish Quest]], mission 10.}}
+| subarea         = Mal'ouquah
 }}

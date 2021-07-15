@@ -1,6 +1,8 @@
 {{Infobox_Outfit|List={{{1|}}}|GetValue={{{GetValue|}}}
 | name            = Barbarian
 | primarytype     = Premium
+| male_id	= 143
+| female_id	= 147
 | premium         = yes
 | outfit          = premium
 | addons          = premium, see [[Barbarian Outfits Quest]].

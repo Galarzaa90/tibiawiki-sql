@@ -1,21 +1,41 @@
 {{Infobox Item|List={{{1|}}}|GetValue={{{GetValue|}}}
-| name          = Goromaphone
-| marketable    = no
-| article       = a
-| actualname    = Goromaphone
-| plural        =
-| itemid        = 26085, 26086
-| flavortext    = There's a small record that seeminly has an endless aura of sweet tunes playing thought its crude speaker, however, something about it seems off. It's the official audio device of RadioGoroma.com.br.
-| implemented   = 11.40
-| itemclass     = Household Items
-| primarytype   = Contest Prizes
-| weight        = 66.60
-| sounds        = {{Sound List|It's the Eye of the Panther!|You are now listening to 66.6 RadioGoroma FM! Your Tibian Radio!|~ And Iiiiii-eeee-iii Will always Heal youuuuuu-hooooo! ~|~ I Love Loot 'N Gold! Put a Crystal Coin in my Backpack, Baby! ~|~ I'm Hungry Like the Warwolf ~|~ Keep spending most of our lives, Living in E.K's paradise ~}}
-| droppedby     = {{Dropped By}}
-| value         = Negotiable
-| npcvalue      = 0
-| npcprice      = 0
-| buyfrom       = --
-| sellto        = --
-| notes         = This is [[RadioGoroma]]'s fansite item. If you ''use'' it, it will turn into a [[Goromaphone (Activated)]] [[File:Goromaphone (Activated).gif]] for a few seconds.
+| name           = Mini NabBot
+| article        = a
+| actualname     = mini NabBot
+| itemid         = 32759, 32760
+| flavortext     = It is the first NabBot prototype of service. Awarded by NabBot.xyz.
+| implemented    = 12.30.9287
+| objectclass    = Household Items
+| primarytype    = Fansite Items
+| weight         = 60.00
+| sounds         = {{Sound List|I am the first mini NabBot prototype, at least the first one that works properly.|Too many questions, too many answers.|Congrats ''Player'' on getting that level! Maybe you can solo rats now?|That's what you get ''Player'', for messing with that monster!|''Player'' got a level? Here, have a cookie!}}
+| droppedby      = {{Dropped By|}}
+| value          = Negotiable
+| npcvalue       = 0
+| npcprice       = 0
+| buyfrom        = --
+| sellto         = --
+| notes          = It's [[NabBot]]'s fansite item.<br />If you ''use'' it, it will turn into a [[Mini NabBot (Activated)]] and play a sound: [[File:Mini NabBot (Activating).gif]] [[File:Mini NabBot (Activated).gif]]<br />
+If used again, it will deactivate again: [[File:Mini NabBot (Deactivating).gif]] [[File:Mini NabBot.gif]]
+
+The following players have '''received''' the item:
+
+For designing the item:
+* {{Character|Juh Mong}}, creator of the item, winner of the fansite's item contest.
+
+For contributing to the fansite:
+* {{Character|Galarzaa Fidera}}, fansite administrator and developer.
+* {{Character|Nezune}}, co-creator.
+* {{Character|Tschas}}, development contributor.
+* {{Character|Sayuri Nowan}}, fansite helper.
+* {{Character|Callie Aena}}, graphic designer.
+* {{Character|Trollefar}}, Administrator of [[TibiaData]], which provided services to [[NabBot]].
+* {{Character|Dev Zimm}}, collaboration with the fansite.
+
+For winning fansite contests:
+* {{Character|Hojkk}} - winner of the Draw NabBot Contest.
+* {{Character|Fire Draggon}} - winner of the Tibia Movie Awards 2020, Vocation Guide category.
+* {{Character|Griggi}} - winner of the Craft NabBot Contest.
+| fansite        = [[NabBot]]
+| pickupable     = yes
 }}

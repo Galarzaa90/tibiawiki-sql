@@ -1,9 +1,10 @@
-{{Infobox_Mount|List={{{1|}}}|GetValue={{{GetValue|}}}
-| name            = Doombringer
-| bought          = yes
-| speed           = 10
-| taming_method   = Buying it on Tibia.com or via the [[Store]].
-| implemented     = 10.56
-| price           = 780
-| notes           = It can be bought since [[Updates/10.56|Update 10.56]].
+{{Infobox Mount|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name          = Doombringer
+| speed         = 10
+| mount_id	= 644
+| taming_method = Buying it on Tibia.com or via the [[Store]].
+| bought        = yes
+| price         = 780
+| implemented   = 10.56
+| notes         = It can be bought since [[Updates/10.56|Update 10.56]].
 }}

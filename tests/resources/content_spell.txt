@@ -1,6 +1,7 @@
 {{Infobox Spell|List={{{1|}}}|GetValue={{{GetValue|}}}
 | name          = Flame Strike
-| implemented   = 6.4
+| spellid       = 89
+| implemented   = 6.6
 | type          = Instant
 | subclass      = Attack
 | damagetype    = Fire
@@ -12,10 +13,10 @@
 | cooldowngroup = 2
 | voc           = [[Sorcerer]]s and [[Druid]]s
 | spellcost     = 800
-| effect        = [[File:Burned Icon.gif]] Causes [[Fire Damage]] focused on the single square in front of the caster, or cast at a nearby target  up to 3 square meters away.
+| effect        = [[File:Burned Icon.gif]] Shoots a [[Fire Damage|fire]] missile at the selected target up to 3 square meters away. If no target is selected, the damage is focused on the single square right in front of the caster.
 | animation     = Flame Strike animation.gif‎
-| notes         = This spell may be weak at the beginning, but its damage increases with your [[Magic level]] and [[level]]. With practice, it will be very useful because it uses a low amount of [[mana]].
-| history       = The graphic of this spell was changed in the [[Updates/8.1|Winter Update 2007]].
+| notes         = One of the most often used spells when fighting creatures vulnerable to [[Fire Damage|fire damage]], as it deals relatively high damage and costs very little mana.
+| history       = The spell's animation was changed in the [[Winter Update 2007]]. Before the update it could not be cast at a target.
 {{{!}} class="wikitable"
 !Before
 !After

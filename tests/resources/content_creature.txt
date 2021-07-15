@@ -3,7 +3,6 @@
 | article        = a
 | actualname     = demon
 | plural         = demons
-| implemented    = 6.4
 | hp             = 8200
 | exp            = 6000
 | armor          = 44
@@ -15,37 +14,41 @@
 | bestiaryclass  = Demon
 | bestiarylevel  = Hard
 | occurrence     = Common
-| spawntype      = Regular, Raid
+| spawntype      = Regular, Raid, Unblockable
 | isboss         = no
-| abilities      = [[Melee]] (0-500), [[Fire Damage|Great Fireball]] on target (Area of Effect: [http://img1.wikia.nocookie.net/__cb20080107125550/tibia/en/images/c/c8/Hell%27s_core1.gif]) (150-250), [[Great Energy Beam]] ([[Life Drain]]: 300-480), [[Energy Damage|Energy Strike]] (Only from close. (210-300), [[Mana Drain]] (30-120), [[Self-Healing]] (80-250), [[Haste]], [[Fire Field]], [[Paralysis|Distance Paralyze]], [[Summon]]s up to 1 [[Fire Elemental]].
-| maxdmg         = ''120 [[Mana Drain|mana drain]]'' and 1530 (With summon, 1810)
+| abilities      = {{Ability List|{{Melee|0-500}}|{{Ability|Great Fireball|150-250|fire|scene={{Scene|spell=5sqmballtarget|effect=Fireball Effect|caster=Demon|look_direction=|effect_on_target=Fireball Effect|missile=Fire Missile|missile_direction=south-east|missile_distance=5/5|edge_size=32}}
+}}|{{Ability|[[Great Energy Beam]]|300-480|lifedrain|scene={{Scene|spell=8sqmbeam|effect=Blue Electricity Effect|caster=Demon|look_direction=east}}}}|{{Ability|Close-range Energy Strike|210-300|energy}}|{{Ability|Mana Drain|30-120|manadrain}}|{{Healing|range=80-250}}|{{Ability|Shoots [[Fire Field]]s||fire}}|{{Ability|Distance Paralyze||paralyze}}|{{Summon|Fire Elemental|1}}}}
+| maxdmg         = {{Max Damage|physical=500|fire=250|lifedrain=480|energy=300|manadrain=120|summons=250}}
 | pushable       = No
 | pushobjects    = Yes
-| walksthrough   = Fire, Energy, Poison
 | walksaround    = None
+| walksthrough   = Fire, Energy, Poison
 | paraimmune     = yes
 | senseinvis     = yes
 | physicalDmgMod = 75%
-| holyDmgMod     = 112%
-| deathDmgMod    = 80%
-| fireDmgMod     = 0%
-| energyDmgMod   = 50%
-| iceDmgMod      = 112%
 | earthDmgMod    = 60%
-| drownDmgMod    = 0%
+| fireDmgMod     = 0%
+| deathDmgMod    = 80%
+| energyDmgMod   = 50%
+| holyDmgMod     = 112%
+| iceDmgMod      = 112%
 | hpDrainDmgMod  = 0%
+| drownDmgMod    = 0%
 | healMod        = 100%
 | bestiaryname   = demon
 | bestiarytext   = The famous knight Apoc once wrote: "Demons are the most malevolent, powerful, and dangerous creatures in Tibia. In addition to their awesome physical strength, they can also use powerful spells, such as fireballs and fire fields. Especially dangerous is their gaze, which can produce beams of pure energy to annihilate their poor victims. Moreover, they drain mana off their victims, heal themselves and summon fire elementals as their vassals.<br />Fortunately, Demons usually live in the deepest dungeons near hell but sometimes they appear also on the surface. When they do, they leave a track of death and destruction behind them. Nobody has ever been able to slay even one of these entities and only very few adventurers have survived an encounter with them."
-| sounds         = {{Sound List|Your soul will be mine!|CHAMEK ATH UTHUL ARAK!|I SMELL FEEEEAAAAAR!|Your resistance is futile!|MUHAHAHA}}
+| sounds         = {{Sound List|Your soul will be mine!|CHAMEK ATH UTHUL ARAK!|I SMELL FEEEEAAAAAR!|Your resistance is futile!|MUHAHAHAHA!}}
+| implemented    = 4.0
+| race_id        = 35
 | notes          = Demons are the servants of evil. More or less devoted servants of [[Zathroth]], they cause strife and havoc wherever they appear. Their masters are known as [[Demonlord]]s, [[Demon Overlords]] and [[Archdemons]].<br>They shout "CHAMEK ATH UTHUL ARAK!", which means "SACRIFICE YOUR BLOOD!" according to [[The Spectres Were Everywhere (Book)|this book]].<br>You can use a [[Blessed Wooden Stake]] on a slain Demon for a chance to gather some [[Demon Dust]]. {{Seealso|Demon Dust/Dusting}}
 | behaviour      = Demons attack the enemy with extremely powerful attacks until death.
 | speed          = 128
-| location       = [[Hero Cave]], [[Kharos|Ferumbras' Citadel]], [[Goroma]], [[Ghostlands]] ([[Warlock]] area; unreachable), [[Liberty Bay]] (hidden underground passage; unreachable), [[Razzachai]], deep in [[Pits of Inferno]] (found in every throneroom except [[Verminor]]'s), deep [[Formorgar Mines]], [[Demon Forge]], [[Alchemist Quarter]], [[Magician Quarter]], [[Chyllfroest]], [[Oramond Dungeon]], [[Abandoned Sewers]].
 | strategy       = Do not stand in front of them. They use an attack which looks like [[Energy Beam]], but causes [[Life Drain]] damage. Kill the [[Fire Elemental]]s quickly. You can start blocking them at [[level]] 80 with good [[skills]] (blockers with [[level]] lower than 80 will probably die in most of the cases). You can hunt them with a team of [[mage]]s using [[Icicle (Rune)|Icicle Runes]]. It's better to use [[Boots of Haste]] instead of [[Steel Boots]] because Demons are fast and staying diagonal can be hard. [[Mage]]s can actually block them with full mana using [[Magic Shield]] at lvl 80 with [[Great Mana Potion]]s while someone else shoots (not profitable). <br />
-'''[[Paladin]]s''' can run them with [[Speed]] boosters like [[Speed Set]] and kill them with [[Assassin Star]]s or [[Royal Crossbow]] with [[Power Bolt|Power]] or [[Infernal Bolt]]s and [[Divine Missile]] in spacious respawns. Using [[Divine Healing]] after Demon's Huge Fireball (Radius as high as [[Ultimate Spells]]) will keep you out of danger. Just focus in your speed and in your [[mana]]. You can't stairhop them anymore. If you have more than 1700 [[Hit Points]] you can run around and use [[Light Healing]] and after combo when you have 1000 or less hp - [[Salvation]].<br/>
-'''[[Knight]]s''' can kill them but it will most likely be a huge waste as Demons are strong against [[Physical Damage]]. If you are a high leveled player and someone's healing you by [[Heal Friend]] spell you may block a few Demons and use [[Berserk]] and [[Annihilation]] spells to kill them faster.<br/>
+'''[[Paladin]]s''' can run them with [[Speed]] boosters like [[Speed Set]] and kill them with [[Assassin Star]]s or [[Royal Crossbow]] with [[Power Bolt|Power]] or [[Infernal Bolt]]s and [[Divine Missile]] in spacious respawns. Using [[Divine Healing]] or a combination of [[Intense Recovery]] and [[Intense Healing]] after Demon's Huge Fireball (Radius as high as [[Ultimate Spells]]) will keep you out of danger. Just focus on your speed and your [[mana]]. You can't stairhop them anymore. If you have more than 1700 [[Hit Points]] you can run around and use [[Light Healing]] and after combo when you have 1000 or less hp - [[Salvation]]. <br/>
+'''[[Knight]]s''' can kill them but it will most likely be a huge waste unless they are level 200+ and are able to use an elemental ice weapon such as [[Winterblade]] and [[Summon Skullfrost]] as Demons are otherwise strong against [[Physical Damage]] but weak against [[Ice Damage]]; with an  ice weapon and/or high enough level knights can nowadays solo hunt Demons with considerable profit. If you are a high leveled player and someone's healing you by [[Heal Friend]] spell you may block a few Demons and use [[Berserk]] and [[Annihilation]] spells to kill them faster.<br/>
 '''[[Mage]]s''' should put on [[Magma Set]], [[Mastermind Shield]] and [[Magic Sword]] to get more defense. [[Magic Shield]] is recommended below [[level]] 130. All vocations can use [[Garlic Necklace]] to reduce damage from the Life Drain Beam. While you are alone it's recommended to run around and use [[Icicle Rune]]s. If you have a [[knight]] in your team he can block a few demons and you may use [[Avalanche]] runes on them.
+Is recommended use "freeze charm" when bestiary is completed because can deal 459 ice damage to demon.
+| location       = [[Hero Cave]], [[Kharos|Ferumbras' Citadel]], [[Goroma]], [[Ghostlands]] ([[Warlock]] area; unreachable), [[Liberty Bay]] (hidden underground passage; unreachable), [[Razachai]], deep in [[Pits of Inferno]] (found in every throneroom except [[Verminor]]'s), deep [[Formorgar Mines]], [[Demon Forge]], [[Alchemist Quarter]], [[Magician Quarter]], [[Chyllfroest]], [[Oramond Dungeon]], [[Abandoned Sewers]], [[Hell Hub]] and [[Halls of Ascension]].
 | loot           = {{Loot Table
  |{{Loot Item|0-100|Gold Coin|common}}
  |{{Loot Item|3-6|Platinum Coin|common}}
@@ -81,24 +84,23 @@
  |{{Loot Item|Demon Trophy|very rare}}
  |{{Loot Item|Demonrage Sword|very rare}}
 }}
-| history       =
-=== Mintwallin Spawn ===
+| history        = ==== Mintwallin Spawn ====
 [[File:Daemon.gif|left]]The first Demon spawned near present day [[Mintwallin]], south of the current city, and was a lot weaker than today. It disappeared in a 1999 or 2000 [[update]]. It was named '''Daemon''' and looked a bit different.<br />
 This [[Daemon]] had 3000 hp and gave 6000 exp. Its sounds were "Your soul will be mine!"; "CHAMEK ATH UTHUL ARAK!"; "I SMELL FEEEEAAAAAR!"; "Your resistance is futile!". It was located on a level above "[[Cavern City]]", south of [[Mintwallin]]. They were originally pushable and could be trapped by items like [[Parcel]]s, and [[Flower Pot]]s. You could kill them around LVL 30. It dropped 0-350 [[gp]], [[Golden Helmet]], [[Magic Plate Armor|Enchanted Plate Armor]], [[Steel Shield]], [[Fire Sword]].
 
 Daemon was Inspired in Ultima VII Ethereal Monster.
 
-=== Demons are brought back to Tibia ===
+==== Demons are brought back to Tibia ====
 [[File:Demon (6.0).gif|left]]When [[Edron]] was introduced, the Demons could be found and killed again, this time only for people with a [[Premium Account]]. They received a new sprite, similar to the one they currently use.<br >
 They had 5500 hitpoints until [[Updates/7.0|Update 7.0]] when it was changed to 8200 hitpoints.
 
-=== Older loot ===
+==== Older loot ====
 Demons would sometimes drop [[Magic Sword]]s and [[Coconut]]s, but this is no longer the case.
 
-=== No longer strongest normal creature ===
+==== No longer strongest normal creature ====
 The [[Updates/7.9|Christmas Update 2006]] brought new demonic creatures to [[Tibia]], among them the [[Juggernaut]] which is stronger than the Demon.
 
-=== {{Update|10.37}} ===
+==== {{Update|10.37}} ====
 * Loot changes applied in this patch:
 ** More [[Assassin Star]]s are dropped and more frequently.
 ** Now drops up to 6 [[Platinum Coin]]s (previously 1).
