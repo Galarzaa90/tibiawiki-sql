@@ -91,13 +91,31 @@ def convert_tibiawiki_position(pos):
 
 
 def find_template(content: str, template_name, partial=False):
+    """Find a template in a string containing wiki code.
+
+    Parameters
+    ----------
+    content: :class:`str`
+        A string containing wiki code.
+    template_name: :class:`str`
+        The name of the template to match. Case insensitive.
+    partial: :class:`bool`
+        Whether to match the entire template name or just a substring of it.
+
+        e.g. match "Loot Table" when searching for "Loot"
+
+    Returns
+    -------
+    :class:`Template`
+        The first template found in the content, if any. Otherwise ``None`` is returned.
+    """
     parsed = mwparserfromhell.parse(content)
     templates: List['Template'] = parsed.filter_templates(recursive=False)
     if not templates:
         return None
     if partial:
-        return next((t for t in templates if template_name.lower() in t.name.lower()), None)
-    return next((t for t in templates if template_name.lower() == t.name.lower()), None)
+        return next((t for t in templates if template_name.lower() in strip_code(t.name).lower()), None)
+    return next((t for t in templates if template_name.lower() == strip_code(t.name).lower()), None)
 
 
 def parse_boolean(value: str, default=False, invert=False):
@@ -304,8 +322,7 @@ def client_color_to_rgb(value: int):
 
 
 def parse_templatates_data(content):
-    """
-    Parses the attributes of an Infobox template.
+    """Parse the attributes of an Infobox template.
 
     Parameters
     ----------
@@ -335,14 +352,26 @@ def parse_templatates_data(content):
 
 
 def strip_code(value):
+    """Strip code from Wikicode elements into plain strings.
+
+    Parameters
+    ----------
+    value:
+        A string or object containing wiki code.
+
+    Returns
+    -------
+    :class:`str`
+        A string representing the plain text content.
+    """
     if value is None:
         return value
     elif isinstance(value, str):
         return value.strip()
     elif isinstance(value, Parameter):
-        return value.value.strip_code()
+        return value.value.strip_code().strip()
     elif isinstance(value, Wikicode):
-        return value.strip_code()
+        return value.strip_code().strip()
     elif isinstance(value, dict):
         for key, val in value.items():
             value[key] = strip_code(val)

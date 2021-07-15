@@ -24,11 +24,8 @@ from tibiawikisql.models import abc
 from tibiawikisql.utils import (clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max, parse_sounds,
                                 clean_question_mark, strip_code)
 
-
 if TYPE_CHECKING:
     from mwparserfromhell.nodes import Template
-
-creature_loot_pattern = re.compile(r"\|{{Loot Item\|(?:([\d?+-]+)\|)?([^}|]+)")
 
 KILLS = {
     "Harmless": 25,
@@ -162,7 +159,17 @@ def parse_loot(value):
     tuple:
         A tuple containing the amounts and the item name.
     """
-    return creature_loot_pattern.findall(value)
+    match = lambda k: "Item" in k.name
+    loot_items_templates: List['Template'] = mwparserfromhell.parse(value).filter_templates(recursive=True,
+                                                                                            matches=match)
+    loot = []
+    for item_template in loot_items_templates:
+        param_count = len(item_template.params)
+        if param_count < 3:
+            loot.append((strip_code(item_template.get(1)), ""))
+        else:
+            loot.append((strip_code(item_template.get(2)), (strip_code(item_template.get(1)))))
+    return loot
 
 
 def parse_monster_walks(value):
@@ -235,8 +242,6 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The creature's armor value.
     speed: :class:`int`
         The creature's speed value.
-    max_damage: :class:`int`
-        The maximum amount of damage the creature can do in a single turn.
     runs_at: :class:`int`
         The amount of hitpoints when the creature starts to run away. 0 means it won't run away.
     summon_cost: :class:`int`
@@ -456,7 +461,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         if "loot" in creature._raw_attributes:
             loot = parse_loot(creature._raw_attributes["loot"])
             loot_items = []
-            for amounts, item in loot:
+            for item, amounts in loot:
                 if not amounts:
                     _min, _max = 0, 1
                 else:
@@ -507,7 +512,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         creature.loot = CreatureDrop.search(c, "creature_id", creature.article_id, sort_by="chance", ascending=False)
         creature.sounds = CreatureSound.search(c, "creature_id", creature.article_id)
         creature.abilities = CreatureAbility.search(c, "creature_id", creature.article_id)
-        creature.max_damage = CreatureAbility.get_by_field(c, "creature_id", creature.article_id)
+        creature.max_damage = CreatureMaxDamage.get_by_field(c, "creature_id", creature.article_id)
         return creature
 
 
@@ -534,6 +539,18 @@ class CreatureAbility(abc.Row, table=schema.CreatureAbility):
         'effect',
         'element',
     )
+
+    def __repr__(self):
+        attributes = []
+        for attr in self.__slots__:
+            try:
+                v = getattr(self, attr)
+                if v is None:
+                    continue
+                attributes.append(f"{attr}={v!r}")
+            except AttributeError:
+                pass
+        return f"{self.__class__.__name__}({','.join(attributes)})"
 
     def insert(self, c):
         columns = {
@@ -686,6 +703,18 @@ class CreatureMaxDamage(abc.Row, table=schema.CreatureMaxDamage):
         'summons',
         'total',
     )
+
+    def __repr__(self):
+        attributes = []
+        for attr in self.__slots__:
+            try:
+                v = getattr(self, attr)
+                if not v:
+                    continue
+                attributes.append(f"{attr}={v!r}")
+            except AttributeError:
+                pass
+        return f"{self.__class__.__name__}({','.join(attributes)})"
 
     def insert(self, c):
         columns = {

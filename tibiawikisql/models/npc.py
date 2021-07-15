@@ -17,7 +17,7 @@ import sqlite3
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
-from tibiawikisql.utils import clean_links, convert_tibiawiki_position
+from tibiawikisql.utils import clean_links, convert_tibiawiki_position, find_template, strip_code
 
 price_to_template = re.compile(r"{{(?:NPC List\s*|Price to (?:Buy|Sell))\s*([^}]+)}}")
 npc_offers = re.compile(r"\|([^|:\[]+)(?::\s?(\d+))?(?:\s?\[\[([^\]]+))?")
@@ -51,9 +51,17 @@ def parse_destinations(value):
         list(:class:`tuple`)
             A list of tuples containing the parsed destinations.
         """
+    template = find_template(value, "Transport", partial=True)
+    if not template:
+        return []
     result = []
-    for __, destinations in transport_template.findall(value):
-        result.extend(npc_destinations.findall(destinations))
+    for param in template.params:
+        if param.showkey:
+            continue
+        data, *notes = strip_code(param).split( ";", 1)
+        notes = notes[0] if notes else ''
+        destination, price = data.split(",")
+        result.append((destination, price, notes))
     return result
 
 

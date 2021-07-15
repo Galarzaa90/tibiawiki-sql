@@ -45,6 +45,8 @@ class TestModels(unittest.TestCase):
         self.assertEqual(3, len(db_creature.immune_to))
         self.assertEqual(4, len(db_creature.resistant_to))
         self.assertEqual(2, len(db_creature.weak_to))
+        self.assertEqual(9, len(db_creature.abilities))
+        self.assertIsNotNone(db_creature.max_damage)
 
         db_creature = models.Creature.get_by_field(self.conn, "name", "demon", use_like=True)
         self.assertIsInstance(db_creature, models.Creature)
