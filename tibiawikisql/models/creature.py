@@ -58,10 +58,10 @@ def parse_abilities(value):
 
     Returns
     -------
-    :class:`list` of :class:`str`
+    :class:`list` of :class:`dict`
         A list of dictionaries with the ability data.
     """
-    if value is None:
+    if not value:
         return []
     parsed = mwparserfromhell.parse(value)
     ability_list_template = find_template(value, "Ability List")
@@ -72,8 +72,6 @@ def parse_abilities(value):
         }]
     abilities = []
     for element in ability_list_template.params:
-        if not element:
-            continue
         ability_template = next(element.value.ifilter_templates(recursive=False), None)
         if not ability_template:
             abilities.append({
@@ -129,17 +127,16 @@ def parse_maximum_damage(value):
     :class:`dict`
         A dictionary containing the maximum damage by element if available.
     """
-    if value is None:
+    if not value:
         return None
-    parsed = mwparserfromhell.parse(value)
-    templates = parsed.filter_templates(recursive=False)
-    if not templates:
+    max_damage_template = find_template(value, "Max Damage")
+    if not max_damage_template:
         total = parse_maximum_integer(value)
         if total is None:
             return None
         return {"total": parse_maximum_integer(value)}
     damages = {}
-    for element in templates[0].params:
+    for element in max_damage_template.params:
         damages[strip_code(element.name).lower()] = parse_integer(strip_code(element.value), -1)
     excluded = {"summons", "manadrain"}
     if "total" not in damages:
@@ -161,8 +158,6 @@ def parse_maximum_integer(value):
     :class:`int`, optional:
         The highest number found, or None if no number is found.
     """
-    if value is None:
-        return None
     matches = int_pattern.findall(value)
     try:
         return max(list(map(int, matches)))

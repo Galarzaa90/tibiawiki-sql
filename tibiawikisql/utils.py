@@ -330,7 +330,6 @@ def parse_sounds(value):
     if not template:
         return []
     return [strip_code(param) for param in template.params]
-    return []
 
 
 def client_color_to_rgb(value: int):

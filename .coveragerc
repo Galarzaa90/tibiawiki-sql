@@ -14,3 +14,4 @@ exclude_lines =
     def __gt__
     def __ne__
     raise NotImplementedError
+    if TYPE_CHECKING:
