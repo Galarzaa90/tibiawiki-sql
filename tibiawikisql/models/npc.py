@@ -28,9 +28,6 @@ spells_pattern = re.compile(r"\|([^|]+)")
 trades_sell_template = re.compile(r"{{Trades/Sells\s*(?:\|note=([^|]+))?([^}]+)}}")
 npc_trades = re.compile(r"\|([^|,\[]+)(?:,\s?([+-]?\d+))?(?:\s?\[\[([^\]]+))?")
 
-transport_template = re.compile(r"{{Transport\s*(?:\|discount=([^|]+))?([^}]+)}}")
-npc_destinations = re.compile(r"\|([^,]+),\s?(\d+)(?:;\s?([^|]+))?")
-
 ilink_pattern = re.compile(r"{{Ilink\|([^}]+)}}")
 
 
@@ -191,7 +188,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         Items sold by the NPC.
     buy_offers: list of :class:`NpcBuyOffer`
         Items bought by the NPC.
-    destinations: list of :class:`NpcSellOffer`
+    destinations: list of :class:`NpcDestination`
         Places where the NPC can travel to.
     teaches: list of :class:`NpcSpell`
         Spells this NPC can teach.

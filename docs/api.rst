@@ -66,9 +66,23 @@ Creature
    :members:
    :inherited-members:
 
-CreatureDrop
-~~~~~~~~~~~~
-.. autoclass:: tibiawikisql.models.CreatureDrop()
+CreatureAbility
+~~~~~~~~~~~~~~~
+.. autoclass:: tibiawikisql.models.CreatureAbility()
+   :members:
+   :inherited-members:
+
+
+CreatureMaxDamage
+~~~~~~~~~~~~~~~~~
+.. autoclass:: tibiawikisql.models.CreatureMaxDamage()
+   :members:
+   :inherited-members:
+
+
+CreatureSound
+~~~~~~~~~~~~~
+.. autoclass:: tibiawikisql.models.CreatureSound()
    :members:
    :inherited-members:
 

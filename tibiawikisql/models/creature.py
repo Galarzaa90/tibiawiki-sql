@@ -531,7 +531,7 @@ class CreatureAbility(abc.Row, table=schema.CreatureAbility):
         The element of damage type of the ability. This could also be a status condition instead.
         For abilities that are just plain text, ``plain_text`` is set.
         For abilities that are not using the abilities templates in TibiaWiki, they are saved as a single entry
-         with element: `no_template`.
+        with element: ``no_template``.
     """
     __slots__ = (
         'creature_id',
@@ -647,42 +647,42 @@ class CreatureMaxDamage(abc.Row, table=schema.CreatureMaxDamage):
 
     Attributes
     ----------
-    creature_id: :class:`integer`
+    creature_id: :class:`int`
         The article ID of the creature this max damage belongs to.
-    physical: :class:`integer`, optional
+    physical: :class:`int`, optional
         The maximum physical damage dealt by the creature.
         If it is unknown, but the creature does deal damage, it will be -1.
-    fire: :class:`integer`, optional
+    fire: :class:`int`, optional
         The maximum fire damage dealt by the creature.
         If it is unknown, but the creature does deal damage, it will be -1.
-    ice: :class:`integer`, optional
+    ice: :class:`int`, optional
         The maximum ice damage dealt by the creature.
         If it is unknown, but the creature does deal damage, it will be -1.
-    earth: :class:`integer`, optional
+    earth: :class:`int`, optional
         The maximum earth damage dealt by the creature.
         If it is unknown, but the creature does deal damage, it will be -1.
-    energy: :class:`integer`, optional
+    energy: :class:`int`, optional
         The maximum energy damage dealt by the creature.
         If it is unknown, but the creature does deal damage, it will be -1.
-    holy: :class:`integer`, optional
+    holy: :class:`int`, optional
         The maximum holy damage dealt by the creature.
         If it is unknown, but the creature does deal damage, it will be -1.
-    death: :class:`integer`, optional
+    death: :class:`int`, optional
         The maximum death damage dealt by the creature.
         If it is unknown, but the creature does deal damage, it will be -1.
-    drown: :class:`integer`, optional
+    drown: :class:`int`, optional
         The maximum drown damage dealt by the creature.
         If it is unknown, but the creature does deal damage, it will be -1.
-    lifedrain: :class:`integer`, optional
-        The maximum lifedrain damage dealt by the creature.
+    lifedrain: :class:`int`, optional
+        The maximum life drain damage dealt by the creature.
         If it is unknown, but the creature does deal damage, it will be -1.
-    manadrain: :class:`integer`, optional
-        The maximum manadrain damage dealt by the creature.
+    manadrain: :class:`int`, optional
+        The maximum mana drain damage dealt by the creature. This is not counted as part of the total.
         If it is unknown, but the creature does deal damage, it will be -1.
-    summons: :class:`integer`, optional
+    summons: :class:`int`, optional
         The maximum damage dealt by the creature's summons.
         If it is unknown, but the creature does deal damage, it will be -1.
-    total: :class:`integer`, optional
+    total: :class:`int`, optional
         The maximum damage the creature can deal in a single turn.
         This doesn't count manadrain and summon damage.
         In most cases, this is simply the sum of the other damages, but in some cases, the amount may be different.

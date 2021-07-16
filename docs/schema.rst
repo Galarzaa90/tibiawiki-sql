@@ -10,72 +10,76 @@ The generated database has the following tables.
 Tables
 ------
 
-+-----------------------+-------------------------------------------------+
-|         Table         |                   Description                   |
-+=======================+=================================================+
-| `achievement`_        | Contains information for all achievements.      |
-+-----------------------+-------------------------------------------------+
-| `charm`_              | Contains information for all charms.            |
-+-----------------------+-------------------------------------------------+
-| `creature`_           | Contains information for all creatures.         |
-+-----------------------+-------------------------------------------------+
-| `creature_drop`_      | Contains all the items dropped by creatures.    |
-+-----------------------+-------------------------------------------------+
-| `creature_sound`_     | Contains all the sounds made by creatures.      |
-+-----------------------+-------------------------------------------------+
-| `database_info`_      | Contains information about the database itself. |
-+-----------------------+-------------------------------------------------+
-| `game_update`_        | Contains information about game updates.        |
-+-----------------------+-------------------------------------------------+
-| `house`_              | Contains all houses and guildhalls.             |
-+-----------------------+-------------------------------------------------+
-| `imbuement`_          | Contains information for all imbuements.        |
-+-----------------------+-------------------------------------------------+
-| `imbuement_material`_ | Contains the item materials for imbuements.     |
-+-----------------------+-------------------------------------------------+
-| `item`_               | Contains information for all items.             |
-+-----------------------+-------------------------------------------------+
-| `item_attribute`_     | Contains extra attributes and properties of     |
-|                       | items that only apply to certain types.         |
-+-----------------------+-------------------------------------------------+
-| `item_key`_           | Contains the different key variations.          |
-+-----------------------+-------------------------------------------------+
-| `item_sound`_         | Contains all the sounds made by items.          |
-+-----------------------+-------------------------------------------------+
-| `map`_                | Contains the world map’s images.                |
-+-----------------------+-------------------------------------------------+
-| `mount`_              | Contains information for all mounts.            |
-+-----------------------+-------------------------------------------------+
-| `npc`_                | Contains information for all NPCs.              |
-+-----------------------+-------------------------------------------------+
-| `npc_destination`_    | Contains all the NPCs’ travel destinations.     |
-+-----------------------+-------------------------------------------------+
-| `npc_offer_buy`_      | Contains all the NPCs’ buy offers.              |
-+-----------------------+-------------------------------------------------+
-| `npc_offer_sell`_     | Contains all the NPCs’ sell offers.             |
-+-----------------------+-------------------------------------------------+
-| `npc_spell`_          | Contains all the spells NPCs teach.             |
-+-----------------------+-------------------------------------------------+
-| `outfit`_             | Contains information for all outfits.           |
-+-----------------------+-------------------------------------------------+
-| `outfit_image`_       | Contains images for all outfits.                |
-+-----------------------+-------------------------------------------------+
-| `outfit_quest`_       | Contains outfit and addon rewards for quests.   |
-+-----------------------+-------------------------------------------------+
-| `quest`_              | Contains information for all quests.            |
-+-----------------------+-------------------------------------------------+
-| `quest_danger`_       | Contains creatures that can be found in a       |
-|                       | quest.                                          |
-+-----------------------+-------------------------------------------------+
-| `quest_reward`_       | Contains item rewards for quests.               |
-+-----------------------+-------------------------------------------------+
-| `rashid_position`_    | Contains the positions for the NPC Rashid       |
-|                       | every day of the week.                          |
-+-----------------------+-------------------------------------------------+
-| `spell`_              | Contains information for all spells.            |
-+-----------------------+-------------------------------------------------+
-| `world`_              | Contains information for all worlds.            |
-+-----------------------+-------------------------------------------------+
++------------------------+---------------------------------------------------------+
+|         Table          |                       Description                       |
++========================+=========================================================+
+| `achievement`_         | Contains information for all achievements.              |
++------------------------+---------------------------------------------------------+
+| `charm`_               | Contains information for all charms.                    |
++------------------------+---------------------------------------------------------+
+| `creature`_            | Contains information for all creatures.                 |
++------------------------+---------------------------------------------------------+
+| `creature_ability`_    | Contains all the abilities done by creatures.           |
++------------------------+---------------------------------------------------------+
+| `creature_drop`_       | Contains all the items dropped by creatures.            |
++------------------------+---------------------------------------------------------+
+| `creature_max_damage`_ | Contains the breakdown of max damage done by creatures. |
++------------------------+---------------------------------------------------------+
+| `creature_sound`_      | Contains all the sounds made by creatures.              |
++------------------------+---------------------------------------------------------+
+| `database_info`_       | Contains information about the database itself.         |
++------------------------+---------------------------------------------------------+
+| `game_update`_         | Contains information about game updates.                |
++------------------------+---------------------------------------------------------+
+| `house`_               | Contains all houses and guildhalls.                     |
++------------------------+---------------------------------------------------------+
+| `imbuement`_           | Contains information for all imbuements.                |
++------------------------+---------------------------------------------------------+
+| `imbuement_material`_  | Contains the item materials for imbuements.             |
++------------------------+---------------------------------------------------------+
+| `item`_                | Contains information for all items.                     |
++------------------------+---------------------------------------------------------+
+| `item_attribute`_      | Contains extra attributes and properties of             |
+|                        | items that only apply to certain types.                 |
++------------------------+---------------------------------------------------------+
+| `item_key`_            | Contains the different key variations.                  |
++------------------------+---------------------------------------------------------+
+| `item_sound`_          | Contains all the sounds made by items.                  |
++------------------------+---------------------------------------------------------+
+| `map`_                 | Contains the world map’s images.                        |
++------------------------+---------------------------------------------------------+
+| `mount`_               | Contains information for all mounts.                    |
++------------------------+---------------------------------------------------------+
+| `npc`_                 | Contains information for all NPCs.                      |
++------------------------+---------------------------------------------------------+
+| `npc_destination`_     | Contains all the NPCs’ travel destinations.             |
++------------------------+---------------------------------------------------------+
+| `npc_offer_buy`_       | Contains all the NPCs’ buy offers.                      |
++------------------------+---------------------------------------------------------+
+| `npc_offer_sell`_      | Contains all the NPCs’ sell offers.                     |
++------------------------+---------------------------------------------------------+
+| `npc_spell`_           | Contains all the spells NPCs teach.                     |
++------------------------+---------------------------------------------------------+
+| `outfit`_              | Contains information for all outfits.                   |
++------------------------+---------------------------------------------------------+
+| `outfit_image`_        | Contains images for all outfits.                        |
++------------------------+---------------------------------------------------------+
+| `outfit_quest`_        | Contains outfit and addon rewards for quests.           |
++------------------------+---------------------------------------------------------+
+| `quest`_               | Contains information for all quests.                    |
++------------------------+---------------------------------------------------------+
+| `quest_danger`_        | Contains creatures that can be found in a               |
+|                        | quest.                                                  |
++------------------------+---------------------------------------------------------+
+| `quest_reward`_        | Contains item rewards for quests.                       |
++------------------------+---------------------------------------------------------+
+| `rashid_position`_     | Contains the positions for the NPC Rashid               |
+|                        | every day of the week.                                  |
++------------------------+---------------------------------------------------------+
+| `spell`_               | Contains information for all spells.                    |
++------------------------+---------------------------------------------------------+
+| `world`_               | Contains information for all worlds.                    |
++------------------------+---------------------------------------------------------+
 
 
 Table schemas
@@ -88,39 +92,41 @@ Table schemas
 
 achievement
 ~~~~~~~~~~~
-+-------------+-------------+------------------------------------------------------+
-|   Column    |    Type     |                     Description                      |
-+=============+=============+======================================================+
-| article_id  | ``INTEGER`` | The id of the article containing this achievement.   |
-|             | ``PRIMARY`` |                                                      |
-+-------------+-------------+------------------------------------------------------+
-| title       | ``TEXT``    | The title of the article containing the achievement. |
-+-------------+-------------+------------------------------------------------------+
-| name        | ``TEXT``    | The name of the achievement.                         |
-+-------------+-------------+------------------------------------------------------+
-| grade       | ``INTEGER`` | The grade of the achievement. Goes from 1 to 3.      |
-+-------------+-------------+------------------------------------------------------+
-| points      | ``INTEGER`` | The number of points this achivement gives.          |
-+-------------+-------------+------------------------------------------------------+
-| description | ``TEXT``    | The official description shown for                   |
-|             |             | this achievement.                                    |
-+-------------+-------------+------------------------------------------------------+
-| spoiler     | ``TEXT``    | Brief instructions on how to                         |
-|             |             | complete the quest.                                  |
-+-------------+-------------+------------------------------------------------------+
-| secret      | ``BOOLEAN`` | Whether this is a secret                             |
-|             |             | achievement or not.                                  |
-+-------------+-------------+------------------------------------------------------+
-| premium     | ``BOOLEAN`` | Whether this achievement requires                    |
-|             |             | premium.                                             |
-+-------------+-------------+------------------------------------------------------+
-| version     | ``TEXT``    | Client version this achievement                      |
-|             |             | was implemented in.                                  |
-+-------------+-------------+------------------------------------------------------+
-| status      | ``TEXT``    | The status of the achievement in game.               |
-+-------------+-------------+------------------------------------------------------+
-| timestamp   | ``INTEGER`` | Unix timestamp of the article's last edit.           |
-+-------------+-------------+------------------------------------------------------+
++----------------+-------------+------------------------------------------------------+
+|     Column     |    Type     |                     Description                      |
++================+=============+======================================================+
+| article_id     | ``INTEGER`` | The id of the article containing this achievement.   |
+|                | ``PRIMARY`` |                                                      |
++----------------+-------------+------------------------------------------------------+
+| title          | ``TEXT``    | The title of the article containing the achievement. |
++----------------+-------------+------------------------------------------------------+
+| name           | ``TEXT``    | The name of the achievement.                         |
++----------------+-------------+------------------------------------------------------+
+| grade          | ``INTEGER`` | The grade of the achievement. Goes from 1 to 3.      |
++----------------+-------------+------------------------------------------------------+
+| points         | ``INTEGER`` | The number of points this achivement gives.          |
++----------------+-------------+------------------------------------------------------+
+| description    | ``TEXT``    | The official description shown for                   |
+|                |             | this achievement.                                    |
++----------------+-------------+------------------------------------------------------+
+| spoiler        | ``TEXT``    | Brief instructions on how to                         |
+|                |             | complete the quest.                                  |
++----------------+-------------+------------------------------------------------------+
+| secret         | ``BOOLEAN`` | Whether this is a secret                             |
+|                |             | achievement or not.                                  |
++----------------+-------------+------------------------------------------------------+
+| premium        | ``BOOLEAN`` | Whether this achievement requires                    |
+|                |             | premium.                                             |
++----------------+-------------+------------------------------------------------------+
+| version        | ``TEXT``    | Client version this achievement                      |
+|                |             | was implemented in.                                  |
++----------------+-------------+------------------------------------------------------+
+| achievement_id | ``INTEGER`` | The internal ID of the achievement.                  |
++----------------+-------------+------------------------------------------------------+
+| status         | ``TEXT``    | The status of the achievement in game.               |
++----------------+-------------+------------------------------------------------------+
+| timestamp      | ``INTEGER`` | Unix timestamp of the article's last edit.           |
++----------------+-------------+------------------------------------------------------+
 
 charm
 ~~~~~
@@ -311,6 +317,21 @@ creature
 | timestamp           | ``INTEGER`` | Unix timestamp of the article's last edit.                    |
 +---------------------+-------------+---------------------------------------------------------------+
 
+
+creature_ability
+~~~~~~~~~~~~~~~~
++-------------+-------------+-------------------------------------------------------------------------------------------+
+|   Column    |    Type     |                                        Description                                        |
++=============+=============+===========================================================================================+
+| creature_id | ``INTEGER`` | The id of the creature that does this ability.                                            |
++-------------+-------------+-------------------------------------------------------------------------------------------+
+| name        | ``TEXT``    | The name of th ability                                                                    |
++-------------+-------------+-------------------------------------------------------------------------------------------+
+| effect      | ``TEXT``    | The effect of the ability, or the damage range.                                           |
++-------------+-------------+-------------------------------------------------------------------------------------------+
+| element     | ``TEXT``    | The element of damage type of the ability. This could also be a status condition instead. |
++-------------+-------------+-------------------------------------------------------------------------------------------+
+
 creature_drop
 ~~~~~~~~~~~~~
 +-------------+-------------+----------------------------------------------------------+
@@ -326,6 +347,53 @@ creature_drop
 +-------------+-------------+----------------------------------------------------------+
 | max         | ``INTEGER`` | The maximum count of the dropped item.                   |
 +-------------+-------------+----------------------------------------------------------+
+
+
+creature_max_damage
+~~~~~~~~~~~~~~~~~~~
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
+|   Column    |    Type     |                                                 Description                                                 |
++=============+=============+=============================================================================================================+
+| creature_id | ``INTEGER`` | The id of the creature this max damage belongs to.                                                          |
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
+| physical    | ``INTEGER`` | The maximum physical damage dealt by the creature.                                                          |
+|             |             | If it is unknown, but the creature does deal damage, it will be -1.                                         |
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
+| physical    | ``INTEGER`` | The maximum physical damage dealt by the creature.                                                          |
+|             |             | If it is unknown, but the creature does deal damage, it will be -1.                                         |
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
+| fire        | ``INTEGER`` | The maximum fire damage dealt by the creature.                                                              |
+|             |             | If it is unknown, but the creature does deal damage, it will be -1.                                         |
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
+| ice         | ``INTEGER`` | The maximum ice damage dealt by the creature.                                                               |
+|             |             | If it is unknown, but the creature does deal damage, it will be -1.                                         |
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
+| energy      | ``INTEGER`` | The maximum energy damage dealt by the creature.                                                            |
+|             |             | If it is unknown, but the creature does deal damage, it will be -1.                                         |
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
+| earth       | ``INTEGER`` | The maximum earth damage dealt by the creature.                                                             |
+|             |             | If it is unknown, but the creature does deal damage, it will be -1.                                         |
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
+| holy        | ``INTEGER`` | The maximum holy damage dealt by the creature.                                                              |
+|             |             | If it is unknown, but the creature does deal damage, it will be -1.                                         |
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
+| death       | ``INTEGER`` | The maximum death damage dealt by the creature.                                                             |
+|             |             | If it is unknown, but the creature does deal damage, it will be -1.                                         |
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
+| lifedrain   | ``INTEGER`` | The maximum life drain damage dealt by the creature.                                                        |
+|             |             | If it is unknown, but the creature does deal damage, it will be -1.                                         |
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
+| manadrain   | ``INTEGER`` | The maximum mana drain damage dealt by the creature.                                                        |
+|             |             | The maximum manadrain damage dealt by the creature. This is not counted as part of the total.               |
+|             |             | If it is unknown, but the creature does deal damage, it will be -1.                                         |
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
+| summons     | ``INTEGER`` | The maximum summons damage dealt by the creature. This is not coounted as part of the total.                |
+|             |             | If it is unknown, but the creature does deal damage, it will be -1.                                         |
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
+| total       | ``INTEGER`` | The maximum damage the creature can deal in a single turn.                                                  |
+|             |             | In most cases, this is simply the sum of the other damages, but in some cases, the amount may be different. |
+|             |             | If it is unknown, but the creature does deal damage, it will be -1.                                         |
++-------------+-------------+-------------------------------------------------------------------------------------------------------------+
 
 creature_sound
 ~~~~~~~~~~~~~~
