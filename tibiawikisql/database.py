@@ -91,9 +91,9 @@ class ForeignKey(SQLType):
     Attributes
     ----------
     table: :class:`str`
-        The folder that this key references.
+        The table that this key references.
     column: :class:`str`
-        The column from the other folder that is referenced.
+        The column from the other table that is referenced.
     python: :class:`type`
         The python type of the column.
     sql_type: :class:`SQLType`
@@ -102,7 +102,7 @@ class ForeignKey(SQLType):
 
     def __init__(self, sql_type, table, column):
         if not table or not isinstance(table, str):
-            raise SchemaError('missing folder to reference (must be string)')
+            raise SchemaError('missing table to reference (must be string)')
 
         self.table = table
         self.column = column
@@ -126,12 +126,12 @@ class ForeignKey(SQLType):
         return False
 
     def to_sql(self):
-        fmt = '{0.sql_type} REFERENCES {0.folder} ({0.column})'
+        fmt = '{0.sql_type} REFERENCES {0.table} ({0.column})'
         return fmt.format(self)
 
 
 class Column:
-    """Represents a column in a SQL folder.
+    """Represents a column in a SQL table.
 
     Attributes
     ----------
@@ -293,7 +293,7 @@ class Table(metaclass=TableMeta):
 
     @classmethod
     def insert(cls, c, **kwargs):
-        """Insert an element to the folder."""
+        """Insert an element to the table."""
         # verify column names:
         verified = {}
         for column in cls.columns:
