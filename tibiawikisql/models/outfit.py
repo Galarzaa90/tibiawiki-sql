@@ -20,8 +20,7 @@ from tibiawikisql.utils import parse_integer, parse_boolean
 
 
 class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
-    """
-    Represents an outfit.
+    """Represents an outfit.
 
     Attributes
     ----------
@@ -54,6 +53,7 @@ class Outfit(abc.Row, abc.Parseable, table=schema.Outfit):
     quests: list of :class:`OutfitQuest`
         Quests that grant the outfit or its addons.
     """
+
     __slots__ = (
         "article_id",
         "title",
@@ -205,6 +205,7 @@ class OutfitImage(abc.Row, table=schema.OutfitImage):
     image: :class:`bytes`
         The outfit's image in bytes.
     """
+
     __slots__ = (
         "outfit_id",
         "sex",

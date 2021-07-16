@@ -30,7 +30,8 @@ setup(
     install_requires=requirements,
     extras_require={
         'docs': [
-            'Sphinx']
+            'Sphinx',
+        ],
     },
     description="Python script that generates a SQLite database from TibiaWiki articles",
     entry_points='''
@@ -57,6 +58,6 @@ setup(
         'Topic :: Database',
         'Topic :: Games/Entertainment :: Role-Playing',
         'Topic :: Internet',
-        'Topic :: Utilities'
-    ]
+        'Topic :: Utilities',
+    ],
 )

@@ -357,6 +357,7 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
     version: :class:`str`
         The client version where this creature was first implemented.
     """
+
     __slots__ = (
         "article_id",
         "title",
@@ -400,7 +401,7 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
 
 
 class ItemAttribute(abc.Row, table=schema.ItemAttribute):
-    """Represents an Item's attribute
+    """Represents an Item's attribute.
 
     Attributes
     ----------
@@ -450,7 +451,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "rewritable": "rewritable",
         "writable_chars": "writechars",
         "consumable": "consumable",
-        "fansite": "fansite"
+        "fansite": "fansite",
     }
     __slots__ = (
         "item_id",

@@ -18,8 +18,7 @@ from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
 
 
 class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
-    """
-    Represents an Achievement.
+    """Represents an Achievement.
 
     Attributes
     ----------
@@ -50,6 +49,7 @@ class Achievement(abc.Row, abc.Parseable, table=schema.Achievement):
     version: :class:`str`
         The client version where this was first implemented.
     """
+
     _map = {
         "name": ("name", str.strip),
         "actualname": ("name", str.strip),

@@ -18,7 +18,7 @@ from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
 
 
 class Spell(abc.Row, abc.Parseable, table=schema.Spell):
-    """Represents a Spell
+    """Represents a Spell.
 
     Attributes
     ----------
@@ -79,6 +79,7 @@ class Spell(abc.Row, abc.Parseable, table=schema.Spell):
     image: :class:`bytes`
         The spell's image in bytes.
     """
+
     __slots__ = (
         "article_id",
         "title",

@@ -16,4 +16,7 @@ class TestModelUtils(unittest.TestCase):
                            "{{Ability|Mana Drain|30-120|manadrain}}|{{Healing|range=80-250}}|{{Ability|"
                            "Shoots [[Fire Field]]s||fire}}|{{Ability|Distance Paralyze||paralyze}}|"
                            "{{Summon|Fire Elemental|1}}}}")
+
         abilities = tibiawikisql.models.creature.parse_abilities(ability_content)
+
+        self.assertEqual(9, len(abilities))

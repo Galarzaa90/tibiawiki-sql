@@ -22,7 +22,7 @@ import mwparserfromhell
 from tibiawikisql import schema
 from tibiawikisql.models import abc
 from tibiawikisql.utils import (clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max, parse_sounds,
-                                clean_question_mark, strip_code)
+                                clean_question_mark, strip_code, find_template)
 
 if TYPE_CHECKING:
     from mwparserfromhell.nodes import Template
@@ -49,52 +49,63 @@ ELEMENTAL_MODIFIERS = ["physical", "earth", "fire", "ice", "energy", "death", "h
 
 
 def parse_abilities(value):
+    """Parse the abilities of a creature.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        A string containing the creature's abilities definition.
+
+    Returns
+    -------
+    :class:`list` of :class:`str`
+        A list of dictionaries with the ability data.
+    """
     if value is None:
         return []
     parsed = mwparserfromhell.parse(value)
-    templates = parsed.filter_templates(recursive=False)
-    if not templates:
+    ability_list_template = find_template(value, "Ability List")
+    if not ability_list_template:
         return [{
             "name": strip_code(parsed),
-            "element": "no_template"
+            "element": "no_template",
         }]
     abilities = []
-    for element in templates[0].params:
+    for element in ability_list_template.params:
         if not element:
             continue
-        ability_templates = element.value.filter_templates(recursive=False)
-        if not ability_templates:
+        ability_template = next(element.value.ifilter_templates(recursive=False), None)
+        if not ability_template:
             abilities.append({
                 "name": strip_code(element),
-                "element": "plain_text"
+                "element": "plain_text",
             })
             continue
-        ability_template: 'Template' = ability_templates[0]
         template_name = str(ability_template.name)
         ability = None
         if template_name == "Melee":
             ability = {
                 "name": ability_template.get("name", "Melee"),
                 "effect": ability_template.get(1, ability_template.get("damage", "?")),
-                "element": ability_template.get(2, ability_template.get("element", "physical"))
+                "element": ability_template.get(2, ability_template.get("element", "physical")),
             }
         if template_name == "Summon":
             ability = {
                 "name": ability_template.get(1, ability_template.get("creature", None)),
                 "effect": ability_template.get(2, ability_template.get("amount", 1)),
-                "element": "summon"
+                "element": "summon",
             }
         if template_name == "Healing":
             ability = {
                 "name": ability_template.get(1, ability_template.get("name", "Self-Healing")),
                 "effect": ability_template.get(2, ability_template.get("range", ability_template.get("damage", "?"))),
-                "element": "healing"
+                "element": "healing",
             }
         if template_name == "Ability":
             ability = {
                 "name": ability_template.get(1, ability_template.get("name", None)),
                 "effect": ability_template.get(2, ability_template.get("damage", "?")),
-                "element": ability_template.get(3, ability_template.get("element", "physical"))
+                "element": ability_template.get(3, ability_template.get("element", "physical")),
             }
             if ability["name"] is None:
                 ability["name"] = f'{ability["element"].title()} Damage'
@@ -104,6 +115,20 @@ def parse_abilities(value):
 
 
 def parse_maximum_damage(value):
+    """Parse the maximum damage template from TibiaWiki.
+
+    If no template is found, the highest number found is considered the total damage.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        A string containing the creature's max damage.
+
+    Returns
+    -------
+    :class:`dict`
+        A dictionary containing the maximum damage by element if available.
+    """
     if value is None:
         return None
     parsed = mwparserfromhell.parse(value)
@@ -111,7 +136,7 @@ def parse_maximum_damage(value):
     if not templates:
         total = parse_maximum_integer(value)
         if total is None:
-            return
+            return None
         return {"total": parse_maximum_integer(value)}
     damages = {}
     for element in templates[0].params:
@@ -146,8 +171,7 @@ def parse_maximum_integer(value):
 
 
 def parse_loot(value):
-    """
-    Gets every item drop entry of a creature's drops.
+    """Get every item drop entry of a creature's drops.
 
     Parameters
     ----------
@@ -159,7 +183,8 @@ def parse_loot(value):
     tuple:
         A tuple containing the amounts and the item name.
     """
-    match = lambda k: "Item" in k.name
+    def match(k):
+        return "Item" in k.name
     loot_items_templates: List['Template'] = mwparserfromhell.parse(value).filter_templates(recursive=True,
                                                                                             matches=match)
     loot = []
@@ -173,8 +198,8 @@ def parse_loot(value):
 
 
 def parse_monster_walks(value):
-    """
-    Matches the values against a regex to filter typos or bad data on the wiki.
+    """Match the values against a regex to filter typos or bad data on the wiki.
+
     Element names followed by any character that is not a comma will be considered unknown and will not be returned.
 
     Examples:
@@ -299,6 +324,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
     loot: list of :class:`CreatureDrop`
         The items dropped by this creature.
     """
+
     _map = {
         "article": ("article", str.strip),
         "name": ("name", str.strip),
@@ -440,8 +466,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
 
     @classmethod
     def from_article(cls, article):
-        """
-        Parses an article into a TibiaWiki model.
+        """Parse an article into a TibiaWiki model.
 
         This method is overridden to parse extra attributes like loot.
 
@@ -479,12 +504,12 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
                                       for ability in abilities]
         if "maxdmg" in creature._raw_attributes:
             max_damage = parse_maximum_damage(creature._raw_attributes["maxdmg"])
-            creature.max_damage = CreatureMaxDamage(creature_id=creature.article_id, **max_damage) if max_damage else None
+            if max_damage:
+                creature.max_damage = CreatureMaxDamage(creature_id=creature.article_id, **max_damage)
         return creature
 
     def insert(self, c):
-        """
-        Inserts the current model into its respective database.
+        """Insert the current model into its respective database.
 
         This method is overridden to insert elements of child rows.
 
@@ -533,6 +558,7 @@ class CreatureAbility(abc.Row, table=schema.CreatureAbility):
         For abilities that are not using the abilities templates in TibiaWiki, they are saved as a single entry
         with element: ``no_template``.
     """
+
     __slots__ = (
         'creature_id',
         'name',
@@ -563,8 +589,7 @@ class CreatureAbility(abc.Row, table=schema.CreatureAbility):
 
 
 class CreatureDrop(abc.Row, table=schema.CreatureDrop):
-    """
-    Represents an item dropped by a creature.
+    """Represents an item dropped by a creature.
 
     Attributes
     ----------
@@ -583,6 +608,7 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
     chance: :class:`float`
         The chance percentage of getting this item dropped by this creature.
     """
+
     __slots__ = (
         "creature_id",
         "creature_title",
@@ -611,7 +637,7 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
         return f"{self.__class__.__name__}({','.join(attributes)})"
 
     def insert(self, c):
-        """Inserts the current model into its respective database.
+        """Insert the current model into its respective database.
 
         Overridden to insert using a subquery to get the item's id from the name.
 
@@ -643,7 +669,7 @@ class CreatureDrop(abc.Row, table=schema.CreatureDrop):
 
 
 class CreatureMaxDamage(abc.Row, table=schema.CreatureMaxDamage):
-    """Represents a creature's max damage, broke down by damage type.
+    """Represent a creature's max damage, broke down by damage type.
 
     Attributes
     ----------
@@ -688,6 +714,7 @@ class CreatureMaxDamage(abc.Row, table=schema.CreatureMaxDamage):
         In most cases, this is simply the sum of the other damages, but in some cases, the amount may be different.
         If it is unknown, but the creature does deal damage, it will be -1.
     """
+
     __slots__ = (
         'creature_id',
         'physical',
@@ -736,8 +763,7 @@ class CreatureMaxDamage(abc.Row, table=schema.CreatureMaxDamage):
 
 
 class CreatureSound(abc.Row, table=schema.CreatureSound):
-    """
-    Represents a sound made by a creature.
+    """Represents a sound made by a creature.
 
     Attributes
     ----------
@@ -746,6 +772,7 @@ class CreatureSound(abc.Row, table=schema.CreatureSound):
     content: :class:`str`
         The content of the sound.
     """
+
     __slots__ = ("creature_id", "content")
 
     def __init__(self, **kwargs):

@@ -18,8 +18,7 @@ from tibiawikisql.utils import convert_tibiawiki_position, parse_integer, clean_
 
 
 class House(abc.Row, abc.Parseable, table=schema.House):
-    """
-    Represents a house or guildhall.
+    """Represents a house or guildhall.
 
     Attributes
     ----------
@@ -62,6 +61,7 @@ class House(abc.Row, abc.Parseable, table=schema.House):
     version: :class:`str`
         The client version where this creature was first implemented.
     """
+
     __slots__ = (
         "article_id",
         "title",

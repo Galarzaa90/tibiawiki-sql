@@ -56,6 +56,7 @@ class World(abc.Row, abc.Parseable, table=schema.World):
     trade_board: :class:`int`
         The board ID for the world's trade board.
     """
+
     _map = {
         "name": ("name", str.strip),
         "location": ("location", str.strip),
@@ -88,7 +89,7 @@ class World(abc.Row, abc.Parseable, table=schema.World):
         "battleye_type",
         "protected_since",
         "world_board",
-        "trade_board"
+        "trade_board",
     )
 
     def __init__(self, **kwargs):

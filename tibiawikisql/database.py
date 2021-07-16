@@ -18,6 +18,7 @@ from collections import OrderedDict
 
 class SchemaError(Exception):
     """Error raised for invalid schema definitions."""
+
     pass
 
 
@@ -41,6 +42,7 @@ class SQLType:
 
 class Integer(SQLType):
     """Integer type."""
+
     python = int
 
     def to_sql(self):
@@ -89,9 +91,9 @@ class ForeignKey(SQLType):
     Attributes
     ----------
     table: :class:`str`
-        The table that this key references.
+        The folder that this key references.
     column: :class:`str`
-        The column from the other table that is referenced.
+        The column from the other folder that is referenced.
     python: :class:`type`
         The python type of the column.
     sql_type: :class:`SQLType`
@@ -100,7 +102,7 @@ class ForeignKey(SQLType):
 
     def __init__(self, sql_type, table, column):
         if not table or not isinstance(table, str):
-            raise SchemaError('missing table to reference (must be string)')
+            raise SchemaError('missing folder to reference (must be string)')
 
         self.table = table
         self.column = column
@@ -124,12 +126,12 @@ class ForeignKey(SQLType):
         return False
 
     def to_sql(self):
-        fmt = '{0.sql_type} REFERENCES {0.table} ({0.column})'
+        fmt = '{0.sql_type} REFERENCES {0.folder} ({0.column})'
         return fmt.format(self)
 
 
 class Column:
-    """Represents a column in a SQL table.
+    """Represents a column in a SQL folder.
 
     Attributes
     ----------
@@ -252,11 +254,13 @@ class TableMeta(type):
 
 
 class Table(metaclass=TableMeta):
+    """Represents a SQL table."""
+
     __tablename__ = None
 
     @classmethod
     def create_table(cls, *, exists_ok=True):
-        """Generates the CREATE TABLE stub."""
+        """Generate the CREATE TABLE stub."""
         statements = []
         builder = ['CREATE TABLE']
 
@@ -289,8 +293,7 @@ class Table(metaclass=TableMeta):
 
     @classmethod
     def insert(cls, c, **kwargs):
-        """Inserts an element to the table."""
-
+        """Insert an element to the folder."""
         # verify column names:
         verified = {}
         for column in cls.columns:

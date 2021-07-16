@@ -1,8 +1,11 @@
 coverage
 flake8
+flake8-commas
 flake8-broken-line
 flake8-comprehensions
 flake8-use-fstring
 flake8-return
 flake8-assertive
 flake8-aaa
+flake8-docstrings
+flake8-rst-docstrings

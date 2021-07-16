@@ -48,6 +48,7 @@ class Update(abc.Row, abc.Parseable, table=schema.Update):
     changelist: :class:`str`
         A brief list of the changes introduced.
     """
+
     _map = {
         "name": ("name", str.strip),
         "primarytype": ("type_primary", str.strip),

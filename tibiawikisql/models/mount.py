@@ -19,12 +19,23 @@ from tibiawikisql.utils import parse_boolean, parse_integer, clean_links, client
 
 
 def remove_mount(name):
+    """Remove "(Mount)" from the name, if found.
+
+    Parameters
+    ----------
+    name: :class:`str`
+        The name to check.
+
+    Returns
+    -------
+    :class:`str`
+        The name with "(Mount)" removed from it.
+    """
     return name.replace("(Mount)", "").strip()
 
 
 class Mount(abc.Row, abc.Parseable, table=schema.Mount):
-    """
-    Represents a Game World.
+    """Represents a Game World.
 
     Attributes
     ----------
@@ -57,6 +68,7 @@ class Mount(abc.Row, abc.Parseable, table=schema.Mount):
     image: :class:`bytes`
         The NPC's image in bytes.
     """
+
     _map = {
         "name": ("name", remove_mount),
         "speed": ("speed", int),

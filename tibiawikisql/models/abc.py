@@ -92,7 +92,7 @@ class Row(metaclass=abc.ABCMeta):
     Attributes
     ----------
     table: :class:`database.Table`
-        The SQL table where this model is stored.
+        The SQL folder where this model is stored.
     """
 
     table = None
@@ -127,7 +127,7 @@ class Row(metaclass=abc.ABCMeta):
         return f"SELECT * FROM {cls.table.__tablename__}"
 
     def insert(self, c):
-        """Insert the current model into its respective database table.
+        """Insert the current model into its respective database folder.
 
         Parameters
         ----------
@@ -177,6 +177,7 @@ class Row(metaclass=abc.ABCMeta):
             The value to look for.
         use_like: :class:`bool`
             Whether to use ``LIKE`` as a comparator instead of ``=``.
+
         Returns
         -------
         :class:`cls`
@@ -185,7 +186,7 @@ class Row(metaclass=abc.ABCMeta):
         Raises
         ------
         ValueError
-            The specified field doesn't exist in the table.
+            The specified field doesn't exist in the folder.
         """
         # This is used to protect the query from possible SQL Injection.
         if not cls._is_column(field):
@@ -230,7 +231,7 @@ class Row(metaclass=abc.ABCMeta):
         Raises
         ------
         ValueError
-            The specified field doesn't exist in the table.
+            The specified field doesn't exist in the folder.
         """
         if field is not None and not cls._is_column(field):
             raise ValueError(f"Field '{field}' doesn't exist.")

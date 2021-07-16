@@ -32,22 +32,21 @@ ilink_pattern = re.compile(r"{{Ilink\|([^}]+)}}")
 
 
 def parse_destinations(value):
+    """Parse an NPC destinations into a list of tuples.
+
+    The tuple contains the  destination's name, price and notes.
+    Price and notes may not be present.
+
+    Parameters
+    ----------
+    value: :class:`str`
+        A string containing destinations.
+
+    Returns
+    -------
+    list(:class:`tuple`)
+        A list of tuples containing the parsed destinations.
     """
-        Parses an NPC destinations into a list of tuples.
-
-        The tuple contains the  destination's name, price and notes.
-        Price and notes may not be present.
-
-        Parameters
-        ----------
-        value: :class:`str`
-            A string containing destinations.
-
-        Returns
-        -------
-        list(:class:`tuple`)
-            A list of tuples containing the parsed destinations.
-        """
     template = find_template(value, "Transport", partial=True)
     if not template:
         return []
@@ -55,7 +54,7 @@ def parse_destinations(value):
     for param in template.params:
         if param.showkey:
             continue
-        data, *notes = strip_code(param).split( ";", 1)
+        data, *notes = strip_code(param).split(";", 1)
         notes = notes[0] if notes else ''
         destination, price = data.split(",")
         result.append((destination, price, notes))
@@ -63,8 +62,7 @@ def parse_destinations(value):
 
 
 def parse_item_offers(value):
-    """
-    Parses NPC item offers into a list of tuples.
+    """Parse NPC item offers into a list of tuples.
 
     The tuple contains the item's name, price and currency.
     Price and currency may not be present.
@@ -87,8 +85,7 @@ def parse_item_offers(value):
 
 
 def parse_item_trades(value):
-    """
-    Parses an NPC item trades into a list of tuples.
+    """Parse an NPC item trades into a list of tuples.
 
     The tuple contains the item's name, price and currency.
     Price and currency may not be present.
@@ -111,7 +108,7 @@ def parse_item_trades(value):
 
 
 def parse_spells(value):
-    """Parses an NPC's teacheable spells.
+    """Parse an NPC's teacheable spells.
 
     Parameters
     ----------
@@ -131,7 +128,7 @@ def parse_spells(value):
 
 
 def replace_ilinks(value):
-    """Replaces the ILink template with a regular link.
+    """Replace the ILink template with a regular link.
 
     Parameters
     ----------
@@ -147,8 +144,7 @@ def replace_ilinks(value):
 
 
 class Npc(abc.Row, abc.Parseable, table=schema.Npc):
-    """
-    Represents a non-playable character.
+    """Represents a non-playable character.
 
     Attributes
     ----------
@@ -193,6 +189,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
     teaches: list of :class:`NpcSpell`
         Spells this NPC can teach.
     """
+
     __slots__ = (
         "article_id",
         "title",
@@ -373,6 +370,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
 
 
 class NpcOffer:
+    """Represents an NPC buy or sell offer."""
+
     def __init__(self, **kwargs):
         self.npc_id = kwargs.get("npc_id")
         self.npc_title = kwargs.get("npc_title")
@@ -397,8 +396,7 @@ class NpcOffer:
 
 
 class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
-    """
-    Represents an item sellable by an NPC.
+    """Represents an item sellable by an NPC.
 
     Attributes
     ----------
@@ -419,6 +417,7 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
     value: :class:`str`
         The value of the item in the specified currency.
     """
+
     __slots__ = ("npc_id", "npc_title", "npc_city", "item_id", "item_title", "value", "currency_id", "currency_title")
 
     def __init__(self, **kwargs):
@@ -463,28 +462,28 @@ class NpcSellOffer(NpcOffer, abc.Row, table=schema.NpcSelling):
 
 
 class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
-    """
-        Represents an item buyable by an NPC.
+    """Represents an item buyable by an NPC.
 
-        Attributes
-        ----------
-        npc_id: :class:`int`
-            The article id of the npc that buys the item.
-        npc_title: :class:`str`
-            The title of the npc that buys the item.
-        npc_city: :class:`str`
-            The city where the NPC is located.
-        item_id: :class:`int`
-            The id of the item bought by the npc.
-        item_title: :class:`str`
-            The title of the item bought by the npc.
-        currency_id: :class:`int`
-            The item id of the currency used to sell the item.
-        currency_title: :class:`str`
-            The title of the currency used to sell the item
-        value: :class:`str`
-            The value of the item in the specified currency.
-        """
+    Attributes
+    ----------
+    npc_id: :class:`int`
+        The article id of the npc that buys the item.
+    npc_title: :class:`str`
+        The title of the npc that buys the item.
+    npc_city: :class:`str`
+        The city where the NPC is located.
+    item_id: :class:`int`
+        The id of the item bought by the npc.
+    item_title: :class:`str`
+        The title of the item bought by the npc.
+    currency_id: :class:`int`
+        The item id of the currency used to sell the item.
+    currency_title: :class:`str`
+        The title of the currency used to sell the item
+    value: :class:`str`
+        The value of the item in the specified currency.
+    """
+
     __slots__ = ("npc_id", "npc_title", "npc_city", "item_id", "item_title", "value", "currency_id", "currency_title")
 
     def __init__(self, **kwargs):
@@ -528,8 +527,7 @@ class NpcBuyOffer(NpcOffer, abc.Row, table=schema.NpcBuying):
 
 
 class NpcSpell(abc.Row, table=schema.NpcSpell):
-    """
-    Represents a spell that a NPC can teach.
+    """Represents a spell that a NPC can teach.
 
     Attributes
     ----------
@@ -554,6 +552,7 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
     sorcerer: :class:`bool`
         If the spell is taught to sorcerers.
     """
+
     __slots__ = ("npc_id", "npc_title", "npc_city", "spell_id", "spell_title", "price", "knight", "sorcerer",
                  "paladin", "druid")
 
@@ -600,8 +599,7 @@ class NpcSpell(abc.Row, table=schema.NpcSpell):
 
 
 class NpcDestination(abc.Row, table=schema.NpcDestination):
-    """
-    Represents a NPC's travel destination
+    """Represents a NPC's travel destination.
 
     Attributes
     ----------
@@ -614,6 +612,7 @@ class NpcDestination(abc.Row, table=schema.NpcDestination):
     notes: :class:`str`
         Notes about the destination, such as requirements.
     """
+
     __slots__ = (
         "npc_id",
         "name",
@@ -643,6 +642,7 @@ class RashidPosition(abc.Row, table=schema.RashidPosition):
     location: :class:`str`
         The location where Rashid is that day.
     """
+
     __slots__ = (
         "day",
         "x",
@@ -663,5 +663,5 @@ rashid_positions = [
     RashidPosition(day=3, x=33068, y=32879, z=6, city="Ankrahmun", location="Arito's tavern, above the post office."),
     RashidPosition(day=4, x=33239, y=32480, z=7, city="Darashia", location="Miraia's tavern, south of the guildhalls."),
     RashidPosition(day=5, x=33172, y=31813, z=6, city="Edron", location="Mirabell's tavern, above the depot."),
-    RashidPosition(day=6, x=32326, y=31784, z=6, city="Carlin", location="Carlin depot, one floor above.")
+    RashidPosition(day=6, x=32326, y=31784, z=6, city="Carlin", location="Carlin depot, one floor above."),
 ]

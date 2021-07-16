@@ -426,12 +426,12 @@ class Update(Table, table_name="game_update"):
 
 
 def create_tables(conn):
-    """
-    Creates all the tables in the database.
+    """Create all the tables in the database.
+
     Parameters
     ----------
     conn: sqlite3.Connection, sqlite3.Cursor
-
+        A connection to the database.
     """
     for table in Table.all_tables():
         conn.execute(table.drop())

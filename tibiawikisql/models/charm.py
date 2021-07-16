@@ -41,7 +41,8 @@ class Charm(abc.Row, abc.Parseable, table=schema.Charm):
     status: :class:`str`
         The status of this charm in the game.
     image: :class:`bytes`
-        The charm's icon."""
+        The charm's icon.
+    """
 
     _map = {
         "name": ("name", str.strip),

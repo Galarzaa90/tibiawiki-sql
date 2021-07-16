@@ -222,16 +222,43 @@ def save_cache_info(table, cache_info):
         json.dump(cache_info, f)
 
 
-def fetch_image(session: requests.Session, table, image):
+def fetch_image(session: requests.Session, folder, image):
+    """Fetch an image from TibiaWiki and saves it the disk.
+
+    Parameters
+    ----------
+    session: :class:`request.Session`
+        The request session to use to fetch the image.
+    folder: :class:`str`
+        The folder where the images will be stored locally.
+    image: :class:`WikiImage`
+        The image data.
+
+    Returns
+    -------
+    :class:`bytes`
+        The bytes of the image.
+    """
     r = session.get(image.file_url)
     r.raise_for_status()
     image_bytes = r.content
-    with open(f"images/{table}/{image.file_name}", "wb") as f:
+    with open(f"images/{folder}/{image.file_name}", "wb") as f:
         f.write(image_bytes)
     return image_bytes
 
 
 def save_images(conn: sqlite3.Connection, key: str, value: Category):
+    """Fetch and save the images of articles of a certain category.
+
+    Parameters
+    ----------
+    conn: sqlite3.Connection, sqlite3.Cursor
+        Connection to the database.
+    key: :class:`str`
+        The name of the data store key to use.
+    value: :class:`.Category`
+        The category of the images.
+    """
     extension = value.extension
     table = value.model.table.__tablename__
     column = "name" if value.no_title else "title"
@@ -277,6 +304,13 @@ def save_images(conn: sqlite3.Connection, key: str, value: Category):
 
 
 def save_outfit_images(conn):
+    """Save outfit images into the database.
+
+    Parameters
+    ----------
+    conn: sqlite3.Connection, sqlite3.Cursor
+        A connection to the database.
+    """
     if "outfits" not in categories:
         return
     category = categories["outfits"]
@@ -343,6 +377,19 @@ def save_outfit_images(conn):
 
 
 def get_articles(category, data_store, key=None, include_deprecated=False):
+    """Get the list of articles from a certain category.
+
+    Parameters
+    ----------
+    category: :class:`str`
+        The name of the TibiaWiki category.
+    data_store: :class:`dict`
+        A dictionary where articles will be stored.
+    key: :class:`str`
+        The key where articles will be saved in the data store.
+    include_deprecated: :class:`bool`
+        Whether to include deprecated articles or not.
+    """
     if key is None:
         key = category.lower()
     print(f"Fetching articles in {Fore.BLUE}Category:{category}{Style.RESET_ALL}...")
@@ -357,6 +404,12 @@ def get_articles(category, data_store, key=None, include_deprecated=False):
 
 
 def save_maps(con):
+    """Save the map files from tibiamaps GitHub repository.
+
+    Parameters
+    ----------
+    con: sqlite3.Cursor, sqlite3.Connection
+    """
     url = "https://tibiamaps.github.io/tibia-map-data/floor-{0:02d}-map.png"
     os.makedirs("images/map", exist_ok=True)
     for z in range(16):

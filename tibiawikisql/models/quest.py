@@ -24,8 +24,7 @@ link_pattern = re.compile(r'\[\[([^|\]]+)')
 
 
 def parse_links(value):
-    """
-    Finds all the links in a string and returns a list of them.
+    """Find all the links in a string and returns a list of them.
 
     Parameters
     ----------
@@ -41,8 +40,7 @@ def parse_links(value):
 
 
 class Quest(abc.Row, abc.Parseable, table=schema.Quest):
-    """
-    Represents a quest
+    """Represents a quest.
 
     Attributes
     ----------
@@ -81,6 +79,7 @@ class Quest(abc.Row, abc.Parseable, table=schema.Quest):
     rewards: list of :class:`QuestReward`
         Items rewarded in the quest.
     """
+
     __slots__ = (
         "article_id",
         "title",
@@ -168,6 +167,7 @@ class QuestReward(abc.Row, table=schema.QuestReward):
     item_title: :class:`str`
         The title of the rewarded item.
     """
+
     __slots__ = (
         "quest_id",
         "quest_title",
@@ -206,22 +206,23 @@ class QuestReward(abc.Row, table=schema.QuestReward):
 class QuestDanger(abc.Row, table=schema.QuestDanger):
     """Represents a creature found in the quest.
 
-        Attributes
-        ----------
-        quest_id: :class:`int`
-            The article id of the quest.
-        quest_title: :class:`str`
-            The title of the quest.
-        creature_id: :class:`int`
-            The article id of the found creature.
-        creature_title: :class:`str`
-            The title of the found creature.
-        """
+    Attributes
+    ----------
+    quest_id: :class:`int`
+        The article id of the quest.
+    quest_title: :class:`str`
+        The title of the quest.
+    creature_id: :class:`int`
+        The article id of the found creature.
+    creature_title: :class:`str`
+        The title of the found creature.
+    """
+
     __slots__ = (
         "quest_id",
         "quest_title",
         "creature_id",
-        "creature_title"
+        "creature_title",
     )
 
     def __init__(self, **kwargs):

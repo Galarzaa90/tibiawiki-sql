@@ -62,9 +62,7 @@ class WikiEntry:
 
     @property
     def url(self):
-        """
-        :class:`str`: The URL to the article's display page.
-        """
+        """:class:`str`: The URL to the article's display page."""
         return f"{BASE_URL}/wiki/{urllib.parse.quote(self.title)}"
 
 
@@ -95,8 +93,7 @@ class Article(WikiEntry):
 
 
 class Image(WikiEntry):
-    """
-    Represents an image info
+    """Represents an image info.
 
     Attributes
     ----------
@@ -109,6 +106,7 @@ class Image(WikiEntry):
     file_url: str
         The image's url.
     """
+
     def __init__(self, article_id, title, *, timestamp=None, file_url=None):
         super().__init__(article_id, title, timestamp)
         self.file_url = file_url
@@ -133,19 +131,17 @@ class Image(WikiEntry):
 
 
 class WikiClient:
-    """
-    Contains methods to communicate with TibiaWiki's API.
-    """
+    """Contains methods to communicate with TibiaWiki's API."""
+
     ENDPOINT = f"{BASE_URL}/api.php"
 
     headers = {
-        'User-Agent': f'tibiawikisql {__version__}'
+        'User-Agent': f'tibiawikisql {__version__}',
     }
 
     @classmethod
     def get_category_members(cls, name, skip_index=True):
-        """
-        Generator that obtains entries in a certain category.
+        """Create a generator that obtains entries in a certain category.
 
         Parameters
         ----------
@@ -188,8 +184,7 @@ class WikiClient:
 
     @classmethod
     def get_category_members_titles(cls, name, skip_index=True):
-        """
-        Generator that obtains a list of article titles in a category.
+        """Create a generator that obtains a list of article titles in a category.
 
         Parameters
         ----------
@@ -208,8 +203,7 @@ class WikiClient:
 
     @classmethod
     def get_image_info(cls, name):
-        """
-        Gets an image's info.
+        """Get an image's info.
 
         It is not required to prefix the name with ``File:``, but the extension is required.
 
@@ -228,8 +222,7 @@ class WikiClient:
 
     @classmethod
     def get_images_info(cls, names):
-        """
-        Gets the information of a list of image names.
+        """Get the information of a list of image names.
 
         It is not required to prefix the name with ``File:``, but the extension is required.
 
@@ -254,7 +247,7 @@ class WikiClient:
             "action": "query",
             "prop": "imageinfo",
             "iiprop": "url|timestamp",
-            "format": "json"
+            "format": "json",
         }
         while True:
             if i >= len(names):
@@ -279,8 +272,7 @@ class WikiClient:
 
     @classmethod
     def get_articles(cls, names):
-        """
-        Generator that obtains a list of articles given their titles.
+        """Create a generator that obtains a list of articles given their titles.
 
         .. warning ::
 
@@ -303,7 +295,7 @@ class WikiClient:
             "action": "query",
             "prop": "revisions",
             "rvprop": "content|timestamp",
-            "format": "json"
+            "format": "json",
         }
         while True:
             if i >= len(names):
@@ -322,8 +314,7 @@ class WikiClient:
 
     @classmethod
     def get_article(cls, name):
-        """
-        Gets an article's info.
+        """Get an article's info.
 
         Parameters
         ----------

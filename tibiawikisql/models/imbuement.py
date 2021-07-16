@@ -22,8 +22,7 @@ effect_pattern = re.compile(r"Effect/([^|]+)\|([^}|]+)")
 
 
 def parse_astral_sources(content: str):
-    """
-    Parses the astral sources of an imbuement.
+    """Parse the astral sources of an imbuement.
 
     Parameters
     ----------
@@ -68,7 +67,7 @@ effect_map = {
 
 
 def parse_effect(effect):
-    """Parses TibiaWiki's effect template into a string effect.
+    """Parse TibiaWiki's effect template into a string effect.
 
     Parameters
     ----------
@@ -89,7 +88,7 @@ def parse_effect(effect):
 
 
 def parse_slots(content):
-    """Parses the list of slots.
+    """Parse the list of slots.
 
     Cleans up spaces between items.
 
@@ -108,8 +107,7 @@ def parse_slots(content):
 
 
 class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
-    """
-    Represents an imbuement type.
+    """Represents an imbuement type.
 
     Attributes
     ----------
@@ -138,6 +136,7 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
     materials: list of :class:`ImbuementMaterial`
         The materials needed for the imbuement.
     """
+
     _map = {
         "name": ("name", str.strip),
         "prefix": ("tier", str.strip),
@@ -196,8 +195,7 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
 
 
 class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
-    """
-    Representes a item material for an imbuement.
+    """Represents a item material for an imbuement.
 
     Attributes
     ----------
@@ -212,6 +210,7 @@ class ImbuementMaterial(abc.Row, table=schema.ImbuementMaterial):
     amount: :class:`int`
         The amount of items required.
     """
+
     __slots__ = (
         "imbuement_id",
         "imbuement_title",
