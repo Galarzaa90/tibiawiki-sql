@@ -402,7 +402,7 @@ creature_sound
 +=============+=============+==============================================+
 | creature_id | ``INTEGER`` | The id of the creature that does this sound. |
 +-------------+-------------+----------------------------------------------+
-| content     | ``TET``     | The content of the sound.                    |
+| content     | ``TEXT``    | The content of the sound.                    |
 +-------------+-------------+----------------------------------------------+
 
 database_info
