@@ -170,6 +170,11 @@ class TestModels(unittest.TestCase):
         article = Article(1, "Yaman", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_npc.txt"))
         npc = models.Npc.from_article(article)
+
+        self.assertEqual(1, len(npc.jobs))
+        self.assertEqual("Shopkeeper", npc.job)
+        self.assertEqual(1, len(npc.races))
+        self.assertEqual("Djinn", npc.race)
         self.assertIsInstance(npc, models.Npc)
 
         npc.insert(self.conn)

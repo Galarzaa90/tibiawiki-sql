@@ -262,12 +262,9 @@ class Npc(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True)
     name = Column(Text, no_case=True, index=True)
-    race = Column(Text)
     gender = Column(Text, index=True)
     city = Column(Text, index=True)
     location = Column(Text)
-    job = Column(Text)
-    job_additionals = Column(Text)
     version = Column(Text, index=True)
     x = Column(Integer)
     y = Column(Integer)
@@ -275,6 +272,16 @@ class Npc(Table):
     image = Column(Blob)
     status = Column(Text, default="active")
     timestamp = Column(Integer)
+
+
+class NpcJob(Table, table_name="npc_job"):
+    npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
+    name = Column(Text, nullable=False)
+
+
+class NpcRace(Table, table_name="npc_race"):
+    npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
+    name = Column(Text, nullable=False)
 
 
 class NpcBuying(Table, table_name="npc_offer_buy"):

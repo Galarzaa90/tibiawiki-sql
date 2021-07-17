@@ -158,12 +158,10 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         The in-game name of the NPC.
     gender: :class:`str`
         The gender of the NPC.
-    race: :class:`str`
-        The race of the NPC.
-    job: :class:`str`
-        The NPC's job.
-    job_additionals: :class:`str`
-        Other additional jobs the NPC might have, separated by commas.
+    races: list of :class:`str`
+        The races of the NPC
+    jobs: list of :class:`str`
+        The jobs of the NPC.
     location: :class:`str`
         The location of the NPC.
     city: :class:`str`
@@ -196,9 +194,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         "timestamp",
         "name",
         "gender",
-        "race",
-        "job",
-        "job_additionals",
+        "races",
+        "jobs",
         "location",
         "city",
         "x",
@@ -221,8 +218,6 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         "actualname": ("name", str.strip),
         "location": ("location", clean_links),
         "gender": ("gender", str.strip),
-        "race": ("race", str.strip),
-        "job": ("job", str.strip),
         "city": ("city", str.strip),
         "posx": ("x", convert_tibiawiki_position),
         "posy": ("y", convert_tibiawiki_position),
@@ -233,23 +228,22 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
     _template = "Infobox_NPC"
 
     @property
-    def job_list(self):
-        if not self.job_additionals:
-            return [self.job] if self.job else []
-        return [self.job] + self.job_additionals.split(",")
+    def job(self):
+        """:class:`str`: Get the first listed job of the NPC, if any."""
+        return self.jobs[0] if self.jobs else None
+
+    @property
+    def race(self):
+        """:class:`str`: Get the first listed race of the NPC, if any."""
+        return self.races[0] if self.races else None
 
     @classmethod
     def from_article(cls, article):
-        npc = super().from_article(article)
-        additional_jobs = []
-        for i in range(2, 7):
-            key = f"job{i}"
-            if key in npc._raw_attributes:
-                additional_jobs.append(clean_links(npc._raw_attributes[key]))
-        if additional_jobs:
-            npc.job_additionals = ",".join(additional_jobs)
+        npc: cls = super().from_article(article)
         if npc is None:
             return None
+        npc._parse_jobs()
+        npc._parse_races()
         if "buys" in npc._raw_attributes and article.title != "Minzy":
             cls._parse_buy_offers(npc)
         if "sells" in npc._raw_attributes and article.title != "Minzy":
@@ -269,6 +263,24 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                 notes = None
             npc.destinations.append(NpcDestination(npc_id=npc.article_id, name=destination, price=price, notes=notes))
         return npc
+
+    def _parse_jobs(self, ):
+        self.jobs = []
+        if "job" in self._raw_attributes:
+            self.jobs.append(self._raw_attributes["job"])
+        for i in range(2, 7):
+            key = f"job{i}"
+            if key in self._raw_attributes:
+                self.jobs.append(clean_links(self._raw_attributes[key]))
+
+    def _parse_races(self, ):
+        self.races = []
+        if "race" in self._raw_attributes:
+            self.races.append(self._raw_attributes["race"])
+        for i in range(2, 7):
+            key = f"race{i}"
+            if key in self._raw_attributes:
+                self.races.append(clean_links(self._raw_attributes[key]))
 
     @classmethod
     def _parse_buy_offers(cls, npc):
@@ -326,8 +338,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
                 sorcerer = "sorcerer" in group.lower() or npc.name == "Eliza"
                 if not(knight or paladin or druid or sorcerer):
                     def in_jobs(vocation, _npc):
-                        return vocation in (_npc.job + _npc._raw_attributes.get("job2", "")
-                                            + _npc._raw_attributes.get("job3", "")).lower()
+                        return vocation in ''.join(npc.jobs).lower()
 
                     knight = in_jobs("knight", npc)
                     paladin = in_jobs("paladin", npc)
@@ -356,6 +367,11 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             spell.insert(c)
         for destination in getattr(self, "destinations", []):
             destination.insert(c)
+        for job in getattr(self, "jobs", []):
+            NpcJob(npc_id=self.article_id, name=job).insert(c)
+        for race in getattr(self, "races", []):
+            NpcRace(npc_id=self.article_id, name=race).insert(c)
+
 
     @classmethod
     def get_by_field(cls, c, field, value, use_like=False):
@@ -366,7 +382,37 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         npc.buy_offers = NpcBuyOffer.search(c, "npc_id", npc.article_id, sort_by="value", ascending=False)
         npc.teaches = NpcSpell.search(c, "npc_id", npc.article_id)
         npc.destinations = NpcDestination.search(c, "npc_id", npc.article_id)
+        npc.jobs = [j.name for j in NpcJob.search(c, "npc_id", npc.article_id)]
+        npc.races = [r.name for r in NpcRace.search(c, "npc_id", npc.article_id)]
         return npc
+
+
+class NpcJob(abc.Row, table=schema.NpcJob):
+    __slots__ = (
+        'npc_id',
+        'name',
+    )
+
+    def insert(self, c):
+        columns = {
+            'npc_id': self.npc_id,
+            'name': self.name,
+        }
+        self.table.insert(c, **columns)
+
+
+class NpcRace(abc.Row, table=schema.NpcRace):
+    __slots__ = (
+        'npc_id',
+        'name',
+    )
+
+    def insert(self, c):
+        columns = {
+            'npc_id': self.npc_id,
+            'name': self.name,
+        }
+        self.table.insert(c, **columns)
 
 
 class NpcOffer:
