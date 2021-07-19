@@ -26,8 +26,8 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ghcr.io/Galarzaa90/tibiawiki-sql
-            Galarzaa90/tibiawiki-sql
+            ghcr.io/galarzaa90/tibiawiki-sql
+            galarzaa90/tibiawiki-sql
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
