@@ -26,8 +26,8 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ghcr.io/${{ github.repository }}
-            ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO }}
+            ghcr.io/Galarzaa90/tibiawiki-sql
+            Galarzaa90/tibiawiki-sql
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
@@ -44,7 +44,6 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Login to GHCR 🐙
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
