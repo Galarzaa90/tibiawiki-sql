@@ -63,20 +63,20 @@ class Category:
 
 
 categories = {
-    # "achievements": Category("Achievements", models.Achievement, no_images=True),
-    # "spells": Category("Spells", models.Spell),
-    # "items": Category("Items", models.Item),
-    # "creatures": Category("Creatures", models.Creature),
-    # "keys": Category("Keys", models.Key, no_images=True),
+    "achievements": Category("Achievements", models.Achievement, no_images=True),
+    "spells": Category("Spells", models.Spell),
+    "items": Category("Items", models.Item),
+    "creatures": Category("Creatures", models.Creature),
+    "keys": Category("Keys", models.Key, no_images=True),
     "npcs": Category("NPCs", models.Npc),
-    # "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
-    # "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
-    # "house": Category("Player-Ownable Buildings", models.House, no_images=True),
-    # "charm": Category("Charms", models.Charm, extension=".png"),
-    # "outfits": Category("Outfits", models.Outfit, no_images=True),
-    # "worlds": Category("Game Worlds", models.World, no_images=True, include_deprecated=True),
-    # "mounts": Category("Mounts", models.Mount),
-    # "updates": Category("Updates", models.Update, no_images=True),
+    "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
+    "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
+    "house": Category("Player-Ownable Buildings", models.House, no_images=True),
+    "charm": Category("Charms", models.Charm, extension=".png"),
+    "outfits": Category("Outfits", models.Outfit, no_images=True),
+    "worlds": Category("Game Worlds", models.World, no_images=True, include_deprecated=True),
+    "mounts": Category("Mounts", models.Mount),
+    "updates": Category("Updates", models.Update, no_images=True),
 }
 
 

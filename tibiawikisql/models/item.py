@@ -20,7 +20,7 @@ from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
 from tibiawikisql.models.quest import QuestReward
 from tibiawikisql.utils import (clean_links, clean_question_mark, client_color_to_rgb, parse_boolean, parse_float,
-                                parse_integer, parse_sounds)
+                                parse_integer, parse_sounds, find_templates, strip_code)
 
 ELEMENTAL_RESISTANCES = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
 
@@ -149,6 +149,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "awarded_in",
         "sounds",
         "status",
+        "store_offers",
     )
 
     def __init__(self, **kwargs):
@@ -304,13 +305,29 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
             sounds = parse_sounds(item._raw_attributes["sounds"])
             if sounds:
                 item.sounds = [ItemSound(item_id=item.article_id, content=sound) for sound in sounds]
+        item._parse_store_value()
         return item
+
+    def _parse_store_value(self):
+        if "storevalue" not in self._raw_attributes:
+            return
+        templates = find_templates(self._raw_attributes["storevalue"], "Store Product", recursive=True)
+        self.store_offers = []
+        for template in templates:
+            price = int(strip_code(template.get(1, 0)))
+            currency = strip_code(template.get(2, "Tibia Coin"))
+            amount = int(strip_code(template.get("amount", 1)))
+            self.store_offers.append(
+                ItemStoreOffer(item_id=self.article_id, price=price, currency=currency, amount=amount)
+            )
 
     def insert(self, c):
         super().insert(c)
         for attribute in getattr(self, "attributes", []):
             attribute.insert(c)
         for attribute in getattr(self, "sounds", []):
+            attribute.insert(c)
+        for attribute in getattr(self, "store_offers", []):
             attribute.insert(c)
 
     @classmethod
@@ -324,6 +341,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         item.bought_by = NpcBuyOffer.search(c, "item_id", item.article_id, sort_by="value", ascending=False)
         item.awarded_in = QuestReward.search(c, "item_id", item.article_id)
         item.sounds = ItemSound.search(c, "item_id", item.article_id)
+        item.store_offers = ItemStoreOffer.search(c, "item_id", item.article_id)
         return item
 
 
@@ -497,4 +515,50 @@ class ItemSound(abc.Row, table=schema.ItemSound):
 
     def insert(self, c):
         columns = {'item_id': self.item_id, 'content': self.content}
+        self.table.insert(c, **columns)
+
+
+class ItemStoreOffer(abc.Row, table=schema.ItemStoreOffer):
+    """Represents an offer for an item on the Tibia Store.
+
+    Attributes
+    ----------
+    item_id: :class:`int`
+        The ID of the item this offer is for.
+    price: :class:`int`
+        The price of the item.
+    amount: :class:`int`
+        The amount of the item.
+    currency: :class:`str`
+        The currency used. In most of the times it is Tibia Coins.
+    """
+    __slots__ = (
+        "item_id",
+        "price",
+        "amount",
+        "currency",
+    )
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def __repr__(self):
+        attributes = []
+        for attr in self.__slots__:
+            try:
+                v = getattr(self, attr)
+                if v is None:
+                    continue
+                attributes.append(f"{attr}={v!r}")
+            except AttributeError:
+                pass
+        return f"{self.__class__.__name__}({','.join(attributes)})"
+
+    def insert(self, c):
+        columns = {
+            'item_id': self.item_id,
+            'price': self.price,
+            'amount': self.amount or 1,
+            'currency': self.currency or 'Tibia Coin',
+        }
         self.table.insert(c, **columns)

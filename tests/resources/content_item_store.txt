@@ -1,0 +1,25 @@
+{{Infobox Item|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name           = Health Potion
+| article        = a
+| actualname     = health potion
+| plural         = health potions
+| itemid         = 266
+| marketable     = yes
+| usable         = yes
+| implemented    = 8.10
+| objectclass    = Plants, Animal Products, Food and Drink
+| primarytype    = Liquids
+| weight         = 2.70
+| stackable      = yes
+| consumable     = yes
+| droppedby      = {{Dropped By|Barbarian Bloodwalker|Barbarian Headsplitter|Barbarian Skullhunter|Bibby Bloodbath|Bonebeast|Cyclops|Dark Apprentice|Dark Magician|Dawnfly|Death Priest|Demon Skeleton|Dragon Hatchling|Dreadbeast|Dwarf Guard|Dworc Voodoomaster|Elf Arcanist|Elf Overseer|Emerald Damselfly|Frost Dragon Hatchling|Frost Giant|Ghoulish Hyaena|Golden Servant|Golden Servant Replica|Grave Guard|Haunted Treeling|Insectoid Scout|Insectoid Worker|Iron Servant|Iron Servant Replica|Juvenile Cyclops|Kongra|Lizard Sentinel|Lizard Templar|Mad Scientist|Minotaur Guard|Mutated Rat|Oodok Witchmaster|Orc Leader|Orc Warlord|Renegade Orc|Salamander|Terror Bird|The Snapper|Thornback Tortoise|Troll-Trained Salamander|Undead Cavebear|Undead Gladiator|Valkyrie|Wailing Widow}}
+| value          = < 50
+| storevalue     = {{Store Trades|{{Store Product|6|amount=125}}|{{Store Product|11|amount=300}}}}
+| npcvalue       = 0
+| npcprice       = 50
+| buyfrom        = Agostina: 75, Alaistar, Alberto: 75, Asima, Asnarus, Brom: 75, Brutus: 75, Chartan, Chuckles, Digger, Dino: 75, Emilio: 75, Fabiana: 75, Faloriel, Frederik, Ghorza, Gnomegica, Hamish, Lorenzo: 75, Maun, Mehkesh, Nelly, Onfroi, Rabaz, Rachel, Raffael, Rock In A Hard Place, Romir, Roughington: 75, Sandra, Shadowpunch: 75, Shiriel, Siflind, Sigurd, Talila, Tandros, Tarun, Topsy, Valindara, Victor: 75, Xodet
+| sellto         = --
+| notes          = Heals the target for 125 to 175 [[hitpoint]]s, an average of 150. The leftover [[Empty Potion Flask (Small)|empty potion flask]] can be sold back to the potion vendor for 5 gp. For comparisons of healing efficiency, see the [[Money Spent per Hit Point|GP/HP]] and the [[Capacity Taken per Hit Point|Cap/HP efficiency tables]]. Notice that you can only use this potion on yourself or another player, it doesn't work for summoned or wild creatures.
+{{JSpoiler|4 of them can be obtained from [[Gnomish Supply Package]]s.}}
+| pickupable     = yes
+}}

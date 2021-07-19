@@ -151,6 +151,13 @@ class TestModels(unittest.TestCase):
         self.assertEqual(len(item.sounds), len(db_item.sounds))
         self.assertIsInstance(db_item, models.Item)
 
+    def test_item_store(self):
+        article = Article(1, "Health Potion", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_item_store.txt"))
+        item = models.Item.from_article(article)
+        self.assertIsInstance(item, models.Item)
+        self.assertEqual(2, len(item.store_offers))
+
     def test_key(self):
         article = Article(1, "Key 3940", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_key.txt"))

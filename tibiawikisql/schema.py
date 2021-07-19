@@ -147,6 +147,13 @@ class ItemSound(Table, table_name="item_sound"):
     content = Column(Text)
 
 
+class ItemStoreOffer(Table, table_name="item_store_offer"):
+    item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True)
+    price = Column(Integer)
+    amount = Column(Integer)
+    currency = Column(Text)
+
+
 class CreatureDrop(Table, table_name="creature_drop"):
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
     item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True)

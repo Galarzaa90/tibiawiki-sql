@@ -117,6 +117,11 @@ ItemAttribute
    :members:
    :inherited-members:
 
+ItemStoreOffer
+~~~~~~~~~~~~~~
+.. autoclass:: tibiawikisql.models.ItemStoreOffer()
+   :members:
+   :inherited-members:
 
 Key
 ~~~

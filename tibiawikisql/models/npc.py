@@ -159,7 +159,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
     gender: :class:`str`
         The gender of the NPC.
     races: list of :class:`str`
-        The races of the NPC
+        The races of the NPC.
     jobs: list of :class:`str`
         The jobs of the NPC.
     location: :class:`str`
@@ -388,6 +388,11 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
 
 
 class NpcJob(abc.Row, table=schema.NpcJob):
+    """Represents a NPC job.
+
+    This class is only defined internally for parsing purposes. On runtime, this data is attached to the model as a
+    plain string list.
+    """
     __slots__ = (
         'npc_id',
         'name',
@@ -402,6 +407,11 @@ class NpcJob(abc.Row, table=schema.NpcJob):
 
 
 class NpcRace(abc.Row, table=schema.NpcRace):
+    """Represents an NPC's race.
+
+    This class is only defined internally for parsing purposes. On runtime, this data is attached to the model as a
+    plain string list.
+    """
     __slots__ = (
         'npc_id',
         'name',

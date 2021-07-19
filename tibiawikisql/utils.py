@@ -138,7 +138,7 @@ def find_templates(content: str, template_name, partial=False, recursive=False):
         Templates matching provided string.
     """
     parsed = mwparserfromhell.parse(content)
-    templates: List['Template'] = parsed.ifilter_templates(recursive=False)
+    templates: List['Template'] = parsed.ifilter_templates(recursive=recursive)
     template_name = template_name.strip().lower().replace("_", " ")
     for template in templates:
         name = strip_code(template.name).lower().replace("_", " ")
@@ -393,7 +393,7 @@ def strip_code(value):
     :class:`str`
         A string representing the plain text content.
     """
-    if value is None:
+    if value is None or isinstance(value, int):
         return value
     elif isinstance(value, str):
         return value.strip()

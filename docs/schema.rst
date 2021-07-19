@@ -46,6 +46,8 @@ Tables
 +------------------------+---------------------------------------------------------+
 | `item_sound`_          | Contains all the sounds made by items.                  |
 +------------------------+---------------------------------------------------------+
+| `item_store_offer`_    | Contains all offers for items in the Tibia store.       |
++------------------------+---------------------------------------------------------+
 | `map`_                 | Contains the world map’s images.                        |
 +------------------------+---------------------------------------------------------+
 | `mount`_               | Contains information for all mounts.                    |
@@ -54,9 +56,13 @@ Tables
 +------------------------+---------------------------------------------------------+
 | `npc_destination`_     | Contains all the NPCs’ travel destinations.             |
 +------------------------+---------------------------------------------------------+
+| `npc_job`_             | Contains all the NPCs’ jobs.                            |
++------------------------+---------------------------------------------------------+
 | `npc_offer_buy`_       | Contains all the NPCs’ buy offers.                      |
 +------------------------+---------------------------------------------------------+
 | `npc_offer_sell`_      | Contains all the NPCs’ sell offers.                     |
++------------------------+---------------------------------------------------------+
+| `npc_race`_            | Contains all the NPCs’ races.                           |
 +------------------------+---------------------------------------------------------+
 | `npc_spell`_           | Contains all the spells NPCs teach.                     |
 +------------------------+---------------------------------------------------------+
@@ -644,6 +650,20 @@ item_sound
 | content | ``TEXT``    | The content of the sound.                |
 +---------+-------------+------------------------------------------+
 
+item_store_offer
+~~~~~~~~~~~~~~~~
++----------+-------------+--------------------------------------------------+
+|  Column  |    Type     |                   Description                    |
++==========+=============+==================================================+
+| item_id  | ``INTEGER`` | The id of the item the offer is for              |
++----------+-------------+--------------------------------------------------+
+| price    | ``INTEGER`` | The price of the item.                           |
++----------+-------------+--------------------------------------------------+
+| amount   | ``INTEGER`` | The amount of the item offered.                  |
++----------+-------------+--------------------------------------------------+
+| currency | ``TEXT``    | The currency used. Most of the time Tibia Coins. |
++----------+-------------+--------------------------------------------------+
+
 map
 ~~~
 +--------+-------------+-----------------------------------------------------+
@@ -691,7 +711,6 @@ mount
 | timestamp     | ``INTEGER`` | Unix timestamp of the article's last edit.                      |
 +---------------+-------------+-----------------------------------------------------------------+
 
-
 npc
 ~~~
 +-----------------+-------------+------------------------------------------------------+
@@ -712,7 +731,7 @@ npc
 +-----------------+-------------+------------------------------------------------------+
 | job_additionals | ``TEXT``    | Additional jobs the NPC has. A comma separated list. |
 +-----------------+-------------+------------------------------------------------------+
-| city            | ``TEXT``    | City where the npc is found.                         |
+| city            | ``TEXT``    | City where the NPC is found.                         |
 +-----------------+-------------+------------------------------------------------------+
 | location        | ``TEXT``    | The location where the NPC is found.                 |
 +-----------------+-------------+------------------------------------------------------+
@@ -737,18 +756,28 @@ npc_destination
 +--------+-------------+------------------------------------+
 | Column |    Type     |            Description             |
 +========+=============+====================================+
-| npc_id | ``INTEGER`` | The id of the npc this destination |
+| npc_id | ``INTEGER`` | The id of the NPC this destination |
 |        |             | belongs to.                        |
 +--------+-------------+------------------------------------+
-| name   | ``TEXT``    | The name of the place this npc can |
+| name   | ``TEXT``    | The name of the place this NPC can |
 |        |             | take you to.                       |
 +--------+-------------+------------------------------------+
 | price  | ``TEXT``    | The price to travel to the         |
-|        |             | destination with this npc.         |
+|        |             | destination with this NPC.         |
 +--------+-------------+------------------------------------+
 | notes  | ``INTEGER`` | Extra notes for this destination,  |
 |        |             | like extra requirements or         |
 |        |             | exceptions.                        |
++--------+-------------+------------------------------------+
+
+npc_job
+~~~~~~~
++--------+-------------+------------------------------------+
+| Column |    Type     |            Description             |
++========+=============+====================================+
+| npc_id | ``INTEGER`` | The id of the NPC this job is for. |
++--------+-------------+------------------------------------+
+| name   | ``TEXT``    | The name of the job.               |
 +--------+-------------+------------------------------------+
 
 npc_offer_buy
@@ -756,7 +785,7 @@ npc_offer_buy
 +----------+-------------+---------------------------------+
 |  Column  |    Type     |           Description           |
 +==========+=============+=================================+
-| npc_id   | ``INTEGER`` | The id of the npc this offer    |
+| npc_id   | ``INTEGER`` | The id of the NPC this offer    |
 |          |             | belongs to                      |
 +----------+-------------+---------------------------------+
 | item_id  | ``INTEGER`` | The id of the item this offer   |
@@ -775,7 +804,7 @@ npc_offer_sell
 +----------+-------------+---------------------------------+
 |  Column  |    Type     |           Description           |
 +==========+=============+=================================+
-| npc_id   | ``INTEGER`` | The id of the npc this offer    |
+| npc_id   | ``INTEGER`` | The id of the NPC this offer    |
 |          |             | belongs to                      |
 +----------+-------------+---------------------------------+
 | item_id  | ``INTEGER`` | The id of the item this offer   |
@@ -789,14 +818,25 @@ npc_offer_sell
 |          |             | coins.                          |
 +----------+-------------+---------------------------------+
 
+
+npc_race
+~~~~~~~~
++--------+-------------+-------------------------------------+
+| Column |    Type     |             Description             |
++========+=============+=====================================+
+| npc_id | ``INTEGER`` | The id of the NPC this race is for. |
++--------+-------------+-------------------------------------+
+| name   | ``TEXT``    | The name of the race.               |
++--------+-------------+-------------------------------------+
+
 npc_spell
 ~~~~~~~~~
 +----------+-------------+--------------------------------------------+
 |  Column  |    Type     |                Description                 |
 +==========+=============+============================================+
-| npc_id   | ``INTEGER`` | The id of the npc that teaches this spell. |
+| npc_id   | ``INTEGER`` | The id of the NPC that teaches this spell. |
 +----------+-------------+--------------------------------------------+
-| spell_id | ``INTEGER`` | The id of the spell this npc teaches.      |
+| spell_id | ``INTEGER`` | The id of the spell this NPC teaches.      |
 +----------+-------------+--------------------------------------------+
 | knight   | ``BOOLEAN`` | Whether this NPC teaches this spell to     |
 |          |             | knights.                                   |

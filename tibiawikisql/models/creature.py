@@ -90,7 +90,7 @@ def parse_abilities(value):
         if template_name == "Summon":
             ability = {
                 "name": ability_template.get(1, ability_template.get("creature", None)),
-                "effect": ability_template.get(2, ability_template.get("amount", 1)),
+                "effect": ability_template.get(2, ability_template.get("amount", '1')),
                 "element": "summon",
             }
         if template_name == "Healing":
