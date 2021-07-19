@@ -55,6 +55,8 @@ If a newer version of the image has been uploaded, it will be updated.
 When done, a database file called `tibiawiki.db` will be found on the folder.
 
 ## Docker
+![Docker Pulls](https://img.shields.io/docker/pulls/galarzaa90/tibiawiki-sql)
+![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/galarzaa90/tibiawiki-sql?sort=semver)
 
 The database can also be generated without installing the project, it's dependencies, or Python, by using Docker.
 Make sure to have Docker installed, then simply run:
@@ -77,8 +79,10 @@ the project's root directory as normal.
 * Mounts
 * NPCs
 * NPC offers
+* Outfits
 * Quests
 * Spells
+* Updates
 * Worlds
 
 ## Documentation
