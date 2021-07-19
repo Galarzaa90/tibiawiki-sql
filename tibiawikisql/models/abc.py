@@ -111,12 +111,18 @@ class Row(metaclass=abc.ABCMeta):
         cls.table = table
 
     def __repr__(self):
-        key = "title"
-        value = getattr(self, key, "")
-        if not value:
-            key = "name"
-            value = getattr(self, key, "")
-        return f"{self.__class__.__name__}(article_id={getattr(self, 'article_id', 0):d},{key}={value!r})"
+        attributes = []
+        for attr in self.__slots__:
+            try:
+                v = getattr(self, attr)
+                if isinstance(v, bytes):
+                    continue
+                if v is None:
+                    continue
+                attributes.append(f"{attr}={v!r}")
+            except AttributeError:
+                pass
+        return f"<{self.__class__.__name__} {' '.join(attributes)}>"
 
     @classmethod
     def _is_column(cls, name):

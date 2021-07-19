@@ -153,6 +153,13 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
     )
 
     def __init__(self, **kwargs):
+        self.store_offers = []
+        self.dropped_by = []
+        self.bought_by = []
+        self.sold_by = []
+        self.sounds = []
+        self.awarded_in = []
+        self.attributes = []
         super().__init__(**kwargs)
 
     @property
@@ -265,7 +272,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
 
     @classmethod
     def from_article(cls, article):
-        item = super().from_article(article)
+        item: cls = super().from_article(article)
         if item is None:
             return None
         item.attributes = []
@@ -273,40 +280,60 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
             if attribute in item._raw_attributes and item._raw_attributes[attribute]:
                 item.attributes.append(ItemAttribute(item_id=item.article_id, name=name,
                                                      value=item._raw_attributes[attribute]))
-        if "attrib" in item._raw_attributes:
-            attribs = item._raw_attributes["attrib"].split(",")
-            for attr in attribs:
-                attr = attr.strip()
-                m = re.search(r'([\s\w]+)\s([+\-\d]+)', attr)
-                if m:
-                    attribute = m.group(1).replace("fighting", "").replace("level", "").strip()
-                    value = m.group(2)
-                    item.attributes.append(ItemAttribute(item_id=item.article_id, name=attribute, value=value))
-                if "regeneration" in attr:
-                    item.attributes.append(ItemAttribute(item_id=item.article_id, name="regeneration",
-                                                         value="faster regeneration"))
-        if "resist" in item._raw_attributes:
-            resistances = item._raw_attributes["resist"].split(",")
-            for element in resistances:
-                element = element.strip()
-                m = re.search(r'([a-zA-Z0-9_ ]+) +(-?\+?\d+)%', element)
-                if m:
-                    attribute = m.group(1) + "%"
-                    try:
-                        value = int(m.group(2))
-                    except ValueError:
-                        value = 0
-                    item.attributes.append(ItemAttribute(item_id=item.article_id, name=attribute, value=value))
+        item._parse_attributes()
+        item._parse_resists()
         vocations = item._raw_attributes.get('vocrequired')
         if vocations and "none" not in vocations.lower():
             vocation = vocations.replace('and', '+').replace(',', '+').replace(' ', '')
             item.attributes.append(ItemAttribute(item_id=item.article_id, name="vocation", value=vocation))
-        if "sounds" in item._raw_attributes:
-            sounds = parse_sounds(item._raw_attributes["sounds"])
-            if sounds:
-                item.sounds = [ItemSound(item_id=item.article_id, content=sound) for sound in sounds]
+        item._parse_sounds()
         item._parse_store_value()
         return item
+
+    def _parse_attributes(self):
+        if "attrib" not in self._raw_attributes:
+            return
+        attribs = self._raw_attributes["attrib"].split(",")
+        for attr in attribs:
+            attr = attr.strip()
+            m = re.search(r'([\s\w]+)\s([+\-\d]+)', attr)
+            if "perfect shot" in attr.lower():
+                numbers = re.findall(r"(\d+)", attr)
+                if len(numbers) == 2:
+                    self.attributes.extend([
+                        ItemAttribute(item_id=self.article_id, name="perfect_shot", value=f"+{numbers[0]}"),
+                        ItemAttribute(item_id=self.article_id, name="perfect_shot_range", value=numbers[1])
+                    ])
+                    continue
+            if m:
+                attribute = m.group(1).replace("fighting", "").replace("level", "").strip()
+                value = m.group(2)
+                self.attributes.append(ItemAttribute(item_id=self.article_id, name=attribute, value=value))
+            if "regeneration" in attr:
+                self.attributes.append(ItemAttribute(item_id=self.article_id, name="regeneration",
+                                                     value="faster regeneration"))
+
+    def _parse_resists(self):
+        if "resist" not in self._raw_attributes:
+            return
+        resistances = self._raw_attributes["resist"].split(",")
+        for element in resistances:
+            element = element.strip()
+            m = re.search(r'([a-zA-Z0-9_ ]+) +(-?\+?\d+)%', element)
+            if not m:
+                continue
+            attribute = m.group(1) + "%"
+            try:
+                value = int(m.group(2))
+            except ValueError:
+                value = 0
+            self.attributes.append(ItemAttribute(item_id=self.article_id, name=attribute, value=value))
+
+    def _parse_sounds(self):
+        if "sounds" not in self._raw_attributes:
+            return
+        sounds = parse_sounds(self._raw_attributes["sounds"])
+        self.sounds = [ItemSound(item_id=self.article_id, content=sound) for sound in sounds] if sounds else []
 
     def _parse_store_value(self):
         if "storevalue" not in self._raw_attributes:

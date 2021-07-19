@@ -158,6 +158,13 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(item, models.Item)
         self.assertEqual(2, len(item.store_offers))
 
+    def test_item_perfect_shot(self):
+        article = Article(1, "Gilded Eldritch Wand", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_item_perfect_shot.txt"))
+        item = models.Item.from_article(article)
+        self.assertIsInstance(item, models.Item)
+        self.assertEqual(10, len(item.attributes))
+
     def test_key(self):
         article = Article(1, "Key 3940", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_key.txt"))

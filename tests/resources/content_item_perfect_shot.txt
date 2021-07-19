@@ -1,0 +1,34 @@
+{{Infobox Item|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name           = Gilded Eldritch Wand
+| article        = a
+| actualname     = gilded eldritch wand
+| flavortext     = Refined by the legendary goldsmith Gnomaurum.
+| plural         =
+| itemid         = 36669
+| marketable     = yes
+| implemented    = 12.70.10953
+| objectclass    = Weapons
+| primarytype    = Wands
+| lightcolor     = 210
+| lightradius    = 3
+| levelrequired  = 250
+| vocrequired    = sorcerers
+| imbueslots     = 2
+| range          = 4
+| resist         = energy +4%
+| attrib         = magic level +2, fire magic level +1, Perfect Shot +65 at range 4
+| crithit_ch     =
+| critextra_dmg  =
+| weight         = 37.00
+| manacost       = 22
+| damagetype     = Fire
+| damagerange    = 85-105
+| droppedby      = {{Dropped By|}}
+| value          = Negotiable
+| npcvalue       = 0
+| npcprice       = 0
+| buyfrom        = --
+| sellto         = --
+| notes          = It works just like a standard [[Eldritch Wand]].
+| pickupable     = yes
+}}
