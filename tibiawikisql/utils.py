@@ -48,7 +48,7 @@ def clean_question_mark(content):
     return content.strip()
 
 
-def clean_links(content):
+def clean_links(content, strip_question_mark=False):
     """Remove any links from the string, changing them for their plan version.
 
     Parameters
@@ -61,8 +61,12 @@ def clean_links(content):
     :class:`str`:
         The clean string, with no links.
     """
+    content = re.sub(r"</?[bB][rR] ?/?>", "\n", content)
     parsed = mwparserfromhell.parse(content)
-    return parsed.strip_code().strip()
+    content = parsed.strip_code().strip()
+    if strip_question_mark and content == "?":
+        return None
+    return content
 
 
 def convert_tibiawiki_position(pos):

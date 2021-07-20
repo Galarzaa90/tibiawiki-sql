@@ -168,6 +168,23 @@ class ItemAttribute(Table, table_name="item_attribute"):
     value = Column(Text)
 
 
+class Book(Table):
+    article_id = Column(Integer, primary_key=True)
+    title = Column(Text, unique=True)
+    name = Column(Text)
+    book_type = Column(Text)
+    item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True)
+    location = Column(Text)
+    blurb = Column(Text)
+    author = Column(Text)
+    prev_book = Column(Text)
+    next_book = Column(Text)
+    text = Column(Text)
+    version = Column(Text, index=True)
+    status = Column(Text, default="active")
+    timestamp = Column(Integer)
+
+
 class DatabaseInfo(Table, table_name="database_info"):
     key = Column(Text, primary_key=True)
     value = Column(Text)

@@ -67,6 +67,7 @@ categories = {
     "spells": Category("Spells", models.Spell),
     "items": Category("Items", models.Item),
     "creatures": Category("Creatures", models.Creature),
+    "books": Category("Book Texts", models.Book, no_images=True),
     "keys": Category("Keys", models.Key, no_images=True),
     "npcs": Category("NPCs", models.Npc),
     "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),

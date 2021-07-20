@@ -180,6 +180,19 @@ class TestModels(unittest.TestCase):
         db_key = models.Key.get_by_field(self.conn, "number", 3940)
         self.assertIsInstance(db_key, models.Key)
 
+
+    def test_book(self):
+        article = Article(1, "Imperial Scripts (Book)", timestamp="2018-08-20T04:33:15Z",
+                          content=load_resource("content_book.txt"))
+        book = models.Book.from_article(article)
+        self.assertIsInstance(book, models.Book)
+
+        book.insert(self.conn)
+        db_book = models.Book.get_by_field(self.conn, "article_id", 1)
+
+        self.assertIsInstance(db_book, models.Book)
+        self.assertEqual(db_book.name, book.name)
+
     def test_npc(self):
         article = Article(1, "Yaman", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_npc.txt"))

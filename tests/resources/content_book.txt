@@ -1,0 +1,12 @@
+{{Infobox Book|List={{{1|}}}|GetValue={{{GetValue|}}}
+| booktype     = Book (Black)
+| title        = Imperial Scripts
+| pagename     = Imperial Scripts (Book)
+| location     = [[Isle of the Kings]]
+| blurb        = A committee report about creating a new committee to report to this committee.
+| author       = [[Sir Acrothet Simfus]]
+| returnpage   = Isle of the Kings Library
+| relatedpages = [[Thais]]
+| text         = Imperial Scripts<br><br>Transcribed by the Royal<br>scrivener, Sir Acrothet Simfus<br><Br>Committee Meeting XVII<br><br>Insofar as we have yet to <br>ascertain the needs of our<br>citizenry in comparison to those<br>of our benevolent leader and <br>other high ranking officials,<br><br>It has been deemed forthwith<br>that a committee should be <br>formed to handle such concerns,<br>and will hereafter report its<br>findings to this committee once<br>every cycle.<br><br>Of matter pertaining to politics,<br>it has thusly been found that<br>despite egregious wrongs <br>committed by here-to-for<br>unknown assailants, both afield<br>and afoot, we should, in due<br>time, attempt to develop a plan<br>which results in less of our<br>deaths, and more of theirs.<br><br>A committee will be formed<br>and henceforth be titled<br>"The diplomatic committee"<br>and will report to us twice <br>every cycle,  and include their<br>findings,  which shall hope-<br>fully include less corpses on our<br>behalf<br><br>etc. etc.<br>~
+| implemented  =
+}}
