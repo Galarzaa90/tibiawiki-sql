@@ -244,7 +244,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The race name of the creature in Tibia.com's library.
     creature_class: :class:`str`
         The creature's classification.
-    type: :class:`str`
+    creature_type: :class:`str`
         The creature's type.
     type_secondary: :class:`str`
         The creature's secondary type, if any.
@@ -330,7 +330,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "bestiaryclass": ("bestiary_class", str.strip),
         "bestiarylevel": ("bestiary_level", str.strip),
         "occurrence": ("bestiary_occurrence", str.strip),
-        "primarytype": ("type", str.strip),
+        "primarytype": ("creature_type", str.strip),
         "secondarytype": ("type_secondary", str.strip),
         "hp": ("hitpoints", lambda x: parse_integer(x, None)),
         "exp": ("experience", lambda x: parse_integer(x, None)),
@@ -372,7 +372,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "plural",
         "library_race",
         "creature_class",
-        "type",
+        "creature_type",
         "type_secondary",
         "bestiary_level",
         "bestiary_class",

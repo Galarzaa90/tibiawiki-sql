@@ -237,7 +237,7 @@ creature
 |                     |             | (e.g. ``Demons``, ``Humanoids``,                              |
 |                     |             | ``Mammals``).                                                 |
 +---------------------+-------------+---------------------------------------------------------------+
-| type                | ``TEXT``    | The type this creature belongs to                             |
+| creature_type       | ``TEXT``    | The type this creature belongs to                             |
 |                     |             | (e.g. ``Archdemons``, ``Dwarves``,                            |
 |                     |             | ``Apes``).                                                    |
 +---------------------+-------------+---------------------------------------------------------------+
@@ -609,7 +609,7 @@ item
 | item_class     | ``TEXT``    | The class this item belongs to                        |
 |                |             | (e.g. ``Body Equipment`` , ``Weapons``).              |
 +----------------+-------------+-------------------------------------------------------+
-| type           | ``TEXT``    | The category this item belongs to                     |
+| item_type      | ``TEXT``    | The category this item belongs to                     |
 |                |             | (e.g. ``Helmets``, ``Club Weapons``).                 |
 +----------------+-------------+-------------------------------------------------------+
 | type_secondary | ``TEXT``    | A secondary type this item belongs to, if any.        |

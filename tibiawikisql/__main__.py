@@ -88,9 +88,9 @@ categories = {
 def generate(skip_images, db_name, skip_deprecated):
     """Generates a database file."""
     command_start = time.perf_counter()
-    print("Connecting to database...")
+    click.echo("Connecting to database...")
     conn = sqlite3.connect(db_name)
-    print("Creating schema...")
+    click.echo("Creating schema...")
     schema.create_tables(conn)
     conn.execute("PRAGMA synchronous = OFF")
     data_store = {}
@@ -105,7 +105,7 @@ def generate(skip_images, db_name, skip_deprecated):
         except KeyError:
             pass
 
-    print("Parsing articles...")
+    click.echo("Parsing articles...")
     for key, value in categories.items():
         model = value.model
         if not issubclass(model, abc.Parseable):
@@ -124,9 +124,9 @@ def generate(skip_images, db_name, skip_deprecated):
                         unparsed.append(article.title)
             if unparsed:
                 click.echo(f"{Fore.RED}Could not parse {len(unparsed):,} articles.{Style.RESET_ALL}")
-                print(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed)}{Style.RESET_ALL}")
+                click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed)}{Style.RESET_ALL}")
             dt = (time.perf_counter() - exec_time)
-            print(f"\t{Fore.GREEN}Parsed articles in {dt:.2f} seconds.{Style.RESET_ALL}")
+            click.echo(f"\t{Fore.GREEN}Parsed articles in {dt:.2f} seconds.{Style.RESET_ALL}")
 
     for position in rashid_positions:
         position.insert(conn)
@@ -151,7 +151,7 @@ def generate(skip_images, db_name, skip_deprecated):
 
     conn.close()
     dt = (time.perf_counter() - command_start)
-    print(f"Command finished in {dt:.2f} seconds.")
+    click.echo(f"Command finished in {dt:.2f} seconds.")
 
 
 def generate_loot_statistics(conn: sqlite3.Connection):
@@ -193,7 +193,7 @@ def generate_loot_statistics(conn: sqlite3.Connection):
                 c.executemany("INSERT INTO creature_drop(creature_id, item_id, chance, min, max) VALUES(?,?,?,?,?)",
                               loot_items)
         dt = (time.perf_counter() - start_time)
-        print(f"{Fore.GREEN}\tParsed loot statistics in {dt:.2f} seconds.{Style.RESET_ALL}")
+        click.echo(f"{Fore.GREEN}\tParsed loot statistics in {dt:.2f} seconds.{Style.RESET_ALL}")
     finally:
         conn.commit()
 
@@ -298,9 +298,9 @@ def save_images(conn: sqlite3.Connection, key: str, value: Category):
         save_cache_info(table, cache_info)
     dt = (time.perf_counter() - start)
     if failed:
-        print(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
-        print(f"\t-> {Style.RESET_ALL}{f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed)}{Style.RESET_ALL}")
-    print(f"{Fore.GREEN}\tSaved {key} images in {dt:.2f} seconds."
+        click.echo(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
+        click.echo(f"\t-> {Style.RESET_ALL}{f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed)}{Style.RESET_ALL}")
+    click.echo(f"{Fore.GREEN}\tSaved {key} images in {dt:.2f} seconds."
           f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.{Style.RESET_ALL}")
 
 
@@ -371,9 +371,9 @@ def save_outfit_images(conn):
         save_cache_info(table, cache_info)
     dt = (time.perf_counter() - start)
     if failed:
-        print(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
-        print(f"\t-> {Style.RESET_ALL}{f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed)}{Style.RESET_ALL}")
-    print(f"{Fore.GREEN}\tSaved outfit images in {dt:.2f} seconds."
+        click.echo(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
+        click.echo(f"\t-> {Style.RESET_ALL}{f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed)}{Style.RESET_ALL}")
+    click.echo(f"{Fore.GREEN}\tSaved outfit images in {dt:.2f} seconds."
           f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.{Style.RESET_ALL}")
 
 
@@ -393,7 +393,7 @@ def get_articles(category, data_store, key=None, include_deprecated=False):
     """
     if key is None:
         key = category.lower()
-    print(f"Fetching articles in {Fore.BLUE}Category:{category}{Style.RESET_ALL}...")
+    click.echo(f"Fetching articles in {Fore.BLUE}Category:{category}{Style.RESET_ALL}...")
     data_store[key] = []
     start = time.perf_counter()
     for article in WikiClient.get_category_members(category):
@@ -401,7 +401,7 @@ def get_articles(category, data_store, key=None, include_deprecated=False):
                 and not article.title.startswith("User:") and not article.title.startswith("TibiaWiki:")):
             data_store[key].append(article)
     dt = (time.perf_counter() - start)
-    print(f"{Fore.GREEN}\tFound {len(data_store[key]):,} articles in {dt:.2f} seconds.{Style.RESET_ALL}")
+    click.echo(f"{Fore.GREEN}\tFound {len(data_store[key]):,} articles in {dt:.2f} seconds.{Style.RESET_ALL}")
 
 
 def save_maps(con):

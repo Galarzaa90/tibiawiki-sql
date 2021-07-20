@@ -19,8 +19,8 @@ from tibiawikisql.models import abc
 from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
 from tibiawikisql.models.quest import QuestReward
-from tibiawikisql.utils import (clean_links, clean_question_mark, client_color_to_rgb, parse_boolean, parse_float,
-                                parse_integer, parse_sounds, find_templates, strip_code)
+from tibiawikisql.utils import (clean_links, clean_question_mark, client_color_to_rgb, find_templates, parse_boolean,
+                                parse_float, parse_integer, parse_sounds, strip_code)
 
 ELEMENTAL_RESISTANCES = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
 
@@ -66,7 +66,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         The item's weight in ounces.
     item_class: :class:`str`
         The item class the item belongs to.
-    type: :class:`str`
+    item_type: :class:`str`
         The item's type.
     type_secondary: :class:`str`
         The item's secondary type, if any.
@@ -110,7 +110,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "npcprice": ("value_buy", parse_integer),
         "flavortext": ("flavor_text", str.strip),
         "itemclass": ("item_class", str.strip),
-        "primarytype": ("type", str.strip),
+        "primarytype": ("item_type", str.strip),
         "secondarytype": ("type_secondary", str.strip),
         "lightcolor": ("light_color", lambda x: client_color_to_rgb(parse_integer(x))),
         "lightradius": ("light_radius", parse_integer),
@@ -134,7 +134,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "value_buy",
         "weight",
         "item_class",
-        "type",
+        "item_type",
         "type_secondary",
         "flavor_text",
         "light_color",
