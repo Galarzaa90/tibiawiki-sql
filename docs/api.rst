@@ -123,6 +123,12 @@ ItemStoreOffer
    :members:
    :inherited-members:
 
+Book
+~~~~
+.. autoclass:: tibiawikisql.models.Book()
+   :members:
+   :inherited-members:
+
 Key
 ~~~
 .. autoclass:: tibiawikisql.models.Key()

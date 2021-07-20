@@ -426,9 +426,9 @@ class Book(abc.Row, abc.Parseable, table=schema.Book):
     _map = {
         "title": ("name", str),
         "booktype": ("book_type", clean_links),
-        "location": ("location", clean_links),
-        "blurb": ("blurb", clean_links),
-        "author": ("author", clean_question_mark),
+        "location": ("location", lambda x: clean_links(x, True)),
+        "blurb": ("blurb", lambda x: clean_links(x, True)),
+        "author": ("author", lambda x: clean_links(x, True)),
         "prevbook": ("prev_book", str),
         "nextbook": ("next_book", str),
         "text": ("text", clean_links),

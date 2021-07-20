@@ -15,6 +15,8 @@ Tables
 +========================+=========================================================+
 | `achievement`_         | Contains information for all achievements.              |
 +------------------------+---------------------------------------------------------+
+| `book`_                | Contains information about books.                       |
++------------------------+---------------------------------------------------------+
 | `charm`_               | Contains information for all charms.                    |
 +------------------------+---------------------------------------------------------+
 | `creature`_            | Contains information for all creatures.                 |
@@ -93,8 +95,9 @@ Table schemas
 
 .. note::
 
-    | SQLite does not have an actual Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true). |
-    | This is not much of an issue in Python, but it might be an issue on more strict typed langauges.                             |
+    SQLite does not have an actual Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true).
+
+    This is not much of an issue in Python, but it might be an issue on more strict typed languages.
 
 achievement
 ~~~~~~~~~~~
@@ -133,6 +136,42 @@ achievement
 +----------------+-------------+------------------------------------------------------+
 | timestamp      | ``INTEGER`` | Unix timestamp of the article's last edit.           |
 +----------------+-------------+------------------------------------------------------+
+
+book
+~~~~
++------------+-------------+-------------------------------------------------------------------+
+|   Column   |    Type     |                            Description                            |
++============+=============+===================================================================+
+| article_id | ``INTEGER`` | The id of the article containing this book.                       |
+|            | ``PRIMARY`` |                                                                   |
++------------+-------------+-------------------------------------------------------------------+
+| title      | ``TEXT``    | The title of the article containing this book.                    |
++------------+-------------+-------------------------------------------------------------------+
+| book_type  | ``TEXT``    | The type of item this book can be found in.                       |
++------------+-------------+-------------------------------------------------------------------+
+| item_id    | ``INTEGER`` | The item id of the book.                                          |
++------------+-------------+-------------------------------------------------------------------+
+| name       | ``TEXT``    | The name of the book.                                             |
++------------+-------------+-------------------------------------------------------------------+
+| location   | ``TEXT``    | Where the book can be found.                                      |
++------------+-------------+-------------------------------------------------------------------+
+| blurb      | ``TEXT``    | A short introduction text of the book.                            |
++------------+-------------+-------------------------------------------------------------------+
+| author     | ``TEXT``    | The person that wrote the book, if known.                         |
++------------+-------------+-------------------------------------------------------------------+
+| prev_book  | ``TEXT``    | If the book is part of a series, the book that precedes this one. |
++------------+-------------+-------------------------------------------------------------------+
+| next_book  | ``TEXT``    | If the book is part of a series, the book that follows this one.  |
++------------+-------------+-------------------------------------------------------------------+
+| text       | ``TEXT``    | The content of the book.                                          |
++------------+-------------+-------------------------------------------------------------------+
+| version    | ``TEXT``    | The client version this key was                                   |
+|            |             | introduced to the game.                                           |
++------------+-------------+-------------------------------------------------------------------+
+| status     | ``TEXT``    | The status of the key in game.                                    |
++------------+-------------+-------------------------------------------------------------------+
+| timestamp  | ``INTEGER`` | Unix timestamp of the article's last edit.                        |
++------------+-------------+-------------------------------------------------------------------+
 
 charm
 ~~~~~

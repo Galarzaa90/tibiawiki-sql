@@ -23,9 +23,9 @@ from typing import Optional, Type
 import click
 import colorama
 import requests
-from colorama import Style, Fore
+from colorama import Fore, Style
 
-from tibiawikisql import WikiClient, __version__, models, schema, Image
+from tibiawikisql import Image, WikiClient, __version__, models, schema
 from tibiawikisql.models import abc
 from tibiawikisql.models.npc import rashid_positions
 from tibiawikisql.utils import parse_loot_statistics, parse_min_max
