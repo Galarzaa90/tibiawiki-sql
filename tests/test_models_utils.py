@@ -63,7 +63,6 @@ class TestModelUtils(unittest.TestCase):
         self.assertEqual(250, result["summons"])
         self.assertEqual(1530, result["total"])
 
-
     def test_creature_max_damage_no_template(self):
         max_damage_content = "1500 (2000 with UE)"
 
@@ -72,14 +71,12 @@ class TestModelUtils(unittest.TestCase):
         self.assertIsInstance(result, dict)
         self.assertEqual(2000, result["total"])
 
-
     def test_creature_max_damage_no_template_no_number(self):
         max_damage_content = "Unknown."
 
         result = tibiawikisql.models.creature.parse_maximum_damage(max_damage_content)
 
         self.assertIsNone(result)
-
 
     def test_creature_max_damage_empty(self):
         max_damage_content = ""

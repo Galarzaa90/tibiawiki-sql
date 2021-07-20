@@ -302,7 +302,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
                 if len(numbers) == 2:
                     self.attributes.extend([
                         ItemAttribute(item_id=self.article_id, name="perfect_shot", value=f"+{numbers[0]}"),
-                        ItemAttribute(item_id=self.article_id, name="perfect_shot_range", value=numbers[1])
+                        ItemAttribute(item_id=self.article_id, name="perfect_shot_range", value=numbers[1]),
                     ])
                     continue
             if m:
@@ -345,7 +345,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
             currency = strip_code(template.get(2, "Tibia Coin"))
             amount = int(strip_code(template.get("amount", 1)))
             self.store_offers.append(
-                ItemStoreOffer(item_id=self.article_id, price=price, currency=currency, amount=amount)
+                ItemStoreOffer(item_id=self.article_id, price=price, currency=currency, amount=amount),
             )
 
     def insert(self, c):
@@ -406,6 +406,7 @@ class Book(abc.Row, abc.Parseable, table=schema.Book):
     timestamp: :class:`int`
         The last time the containing article was edited.
     """
+
     __slots__ = (
         "article_id",
         "title",
@@ -440,13 +441,12 @@ class Book(abc.Row, abc.Parseable, table=schema.Book):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-
     def insert(self, c):
         if getattr(self, "item_id", None):
             super().insert(c)
         else:
             query = f"""
-                INSERT INTO {self.table.__tablename__}(article_id, title, name, book_type, item_id, location, blurb, 
+                INSERT INTO {self.table.__tablename__}(article_id, title, name, book_type, item_id, location, blurb,
                 author, prev_book, next_book, text, version, status, timestamp)
                 VALUES(?, ?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """
@@ -642,6 +642,7 @@ class ItemStoreOffer(abc.Row, table=schema.ItemStoreOffer):
     currency: :class:`str`
         The currency used. In most of the times it is Tibia Coins.
     """
+
     __slots__ = (
         "item_id",
         "price",

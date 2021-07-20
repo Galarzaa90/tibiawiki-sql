@@ -8,18 +8,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout 🚚
         uses: actions/checkout@v2
 
-      - name: Set up Python runtime
+      - name: Set up Python runtime 🐍
         uses: actions/setup-python@v1
         with:
           python-version: 3.8
 
-      - name: Install module
+      - name: Install module ⚙️
         run: python setup.py install
 
-      - name: Cache Images
+      - name: Cache Images 📦
         uses: actions/cache@v2
         with:
           path: ~/images
@@ -27,10 +27,10 @@ jobs:
           restore-keys: |
             images-
 
-      - name: Generate Database
+      - name: Generate Database 🗄
         run: tibiawikisql generate
 
-      - name: Upload database
+      - name: Upload database 🚀
         uses: actions/upload-artifact@v2
         with:
           name: tibiawiki-db

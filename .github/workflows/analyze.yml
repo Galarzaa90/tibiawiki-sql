@@ -8,7 +8,7 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  build:
+  test:
     name: Test & Analyze
     runs-on: ubuntu-latest
     steps:

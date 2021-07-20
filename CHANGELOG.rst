@@ -26,9 +26,7 @@ Changelog
 - Renamed ``type`` attributes and columns to more specific names to avoid conflict with Python's builtin ``type`` function.
     - Renamed to ``item_type`` in ``item`` table and ``Item`` class.
     - Renamed to ``creature_type`` in ``creature`` table and ``Creature`` class.
-- Parsing relies more on mwparserfromhell_ and less on regular expressions.
-
-.. _mwparserfromhell https://mwparserfromhell.readthedocs.io/
+- Parsing relies more on `mwparserfromhell <https://mwparserfromhell.readthedocs.io/>`_ and less on regular expressions.
 
 .. v5.0.1
 

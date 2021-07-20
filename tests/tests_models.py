@@ -180,7 +180,6 @@ class TestModels(unittest.TestCase):
         db_key = models.Key.get_by_field(self.conn, "number", 3940)
         self.assertIsInstance(db_key, models.Key)
 
-
     def test_book(self):
         article = Article(1, "Imperial Scripts (Book)", timestamp="2018-08-20T04:33:15Z",
                           content=load_resource("content_book.txt"))

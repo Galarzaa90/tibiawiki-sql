@@ -264,7 +264,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             npc.destinations.append(NpcDestination(npc_id=npc.article_id, name=destination, price=price, notes=notes))
         return npc
 
-    def _parse_jobs(self, ):
+    def _parse_jobs(self):
         self.jobs = []
         if "job" in self._raw_attributes:
             self.jobs.append(self._raw_attributes["job"])
@@ -273,7 +273,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
             if key in self._raw_attributes:
                 self.jobs.append(clean_links(self._raw_attributes[key]))
 
-    def _parse_races(self, ):
+    def _parse_races(self):
         self.races = []
         if "race" in self._raw_attributes:
             self.races.append(self._raw_attributes["race"])
@@ -372,7 +372,6 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         for race in getattr(self, "races", []):
             NpcRace(npc_id=self.article_id, name=race).insert(c)
 
-
     @classmethod
     def get_by_field(cls, c, field, value, use_like=False):
         npc: cls = super().get_by_field(c, field, value, use_like)
@@ -393,6 +392,7 @@ class NpcJob(abc.Row, table=schema.NpcJob):
     This class is only defined internally for parsing purposes. On runtime, this data is attached to the model as a
     plain string list.
     """
+
     __slots__ = (
         'npc_id',
         'name',
@@ -412,6 +412,7 @@ class NpcRace(abc.Row, table=schema.NpcRace):
     This class is only defined internally for parsing purposes. On runtime, this data is attached to the model as a
     plain string list.
     """
+
     __slots__ = (
         'npc_id',
         'name',
