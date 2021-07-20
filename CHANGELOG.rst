@@ -2,6 +2,34 @@
 Changelog
 =========
 
+.. v6.0.0
+
+6.0.0 (Unreleased)
+==================
+- Books are now parsed
+- Changes to creature's max damage and abilities parsing:
+    - Added ``creature_max_damage`` and ``creature_ability`` tables to parse more detailed information about creature's max damage and abilities.
+    - Added the respective classes ``CreatureMaxDamage`` and ``CreatureAbility``.
+    - Removed ``max_damage`` and ``abilities`` columns from ``creature`` table.
+    - ``Creature`` class attributes `max_damage` and ``abilities`` were updated to new types.
+- Added ``achievement_id`` column and attribute to ``achievement`` table and ``Achievement`` class respectively.
+- Changes to NPC jobs and races.
+    - Jobs and races are now stored on a separate table as there are usually multiple entries per NPC.
+    - Removed ``job`` and ``job_additionals`` columns and attributes from ``npc`` table and ``Npc`` class respectively.
+    - Replaced ``jobs`` property on ``Npc`` model with an attribute.
+    - Removed ``race`` column and attribute from ``npc`` table and ``Npc`` class respectively.
+    - Added ``races`` attribute with the list of races of the NPC.
+    - Added ``job``
+- Item's store information is now parsed.
+    - Added ``item_store_offer`` table and ``ItemStoreOffer`` class.
+    - Added ``store_offers`` attribute to ``Item`` class.
+- Renamed ``type`` attributes and columns to more specific names to avoid conflict with Python's builtin ``type`` function.
+    - Renamed to ``item_type`` in ``item`` table and ``Item`` class.
+    - Renamed to ``creature_type`` in ``creature`` table and ``Creature`` class.
+- Parsing relies more on mwparserfromhell_ and less on regular expressions.
+
+.. _mwparserfromhell https://mwparserfromhell.readthedocs.io/
+
 .. v5.0.1
 
 5.0.1 (2021-05-17)
