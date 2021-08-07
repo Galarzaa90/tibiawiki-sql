@@ -1,4 +1,4 @@
-{{Infobox Item|List={{{1|}}}|GetValue={{{GetValue|}}}
+{{Infobox Object|List={{{1|}}}|GetValue={{{GetValue|}}}
 | name           = Gilded Eldritch Wand
 | article        = a
 | actualname     = gilded eldritch wand

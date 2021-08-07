@@ -1,4 +1,4 @@
-{{Infobox Item|List={{{1|}}}|GetValue={{{GetValue|}}}
+{{Infobox Object|List={{{1|}}}|GetValue={{{GetValue|}}}
 | name           = Health Potion
 | article        = a
 | actualname     = health potion
