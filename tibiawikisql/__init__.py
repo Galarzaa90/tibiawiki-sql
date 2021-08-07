@@ -16,7 +16,7 @@ __author__ = "Allan Galarza"
 __copyright__ = "Copyright 2021 Allan Galarza"
 
 __license__ = "Apache 2.0"
-__version__ = "6.0.0a1"
+__version__ = "6.0.0a2"
 
 from tibiawikisql import models
 from tibiawikisql.api import Article, Image, WikiClient, WikiEntry

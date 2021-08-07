@@ -27,6 +27,7 @@ Changelog
     - Renamed to ``item_type`` in ``item`` table and ``Item`` class.
     - Renamed to ``creature_type`` in ``creature`` table and ``Creature`` class.
 - Parsing relies more on `mwparserfromhell <https://mwparserfromhell.readthedocs.io/>`_ and less on regular expressions.
+- TibiaWiki merged items into "objects" (non pickupable). So now the ``item`` table will contain a lot more records.
 
 .. v5.0.1
 
