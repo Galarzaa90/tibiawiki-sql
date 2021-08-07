@@ -109,7 +109,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "npcvalue": ("value_sell", parse_integer),
         "npcprice": ("value_buy", parse_integer),
         "flavortext": ("flavor_text", str.strip),
-        "itemclass": ("item_class", str.strip),
+        "objectclass": ("item_class", str.strip),
         "primarytype": ("item_type", str.strip),
         "secondarytype": ("type_secondary", str.strip),
         "lightcolor": ("light_color", lambda x: client_color_to_rgb(parse_integer(x))),
@@ -118,7 +118,7 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         "itemid": ("client_id", parse_integer),
         "status": ("status", str.lower),
     }
-    _template = "Infobox_Item"
+    _template = "Infobox_Object"
 
     __slots__ = (
         "article_id",
@@ -275,6 +275,8 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         item: cls = super().from_article(article)
         if item is None:
             return None
+        if item.name is None:
+            item.name = item.title.lower()
         item.attributes = []
         for name, attribute in ItemAttribute._map.items():
             if attribute in item._raw_attributes and item._raw_attributes[attribute]:

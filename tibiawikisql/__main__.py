@@ -65,7 +65,7 @@ class Category:
 categories = {
     "achievements": Category("Achievements", models.Achievement, no_images=True),
     "spells": Category("Spells", models.Spell),
-    "items": Category("Items", models.Item),
+    "items": Category("Objects", models.Item),
     "creatures": Category("Creatures", models.Creature),
     "books": Category("Book Texts", models.Book, no_images=True),
     "keys": Category("Keys", models.Key, no_images=True),
