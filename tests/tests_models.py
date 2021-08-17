@@ -163,7 +163,7 @@ class TestModels(unittest.TestCase):
                           content=load_resource("content_item_perfect_shot.txt"))
         item = models.Item.from_article(article)
         self.assertIsInstance(item, models.Item)
-        self.assertEqual(10, len(item.attributes))
+        self.assertEqual(11, len(item.attributes))
 
     def test_key(self):
         article = Article(1, "Key 3940", timestamp="2018-08-20T04:33:15Z",

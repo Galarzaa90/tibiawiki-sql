@@ -12,6 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+"""Contains all the models representing TibiaWiki articles."""
+
 from tibiawikisql.models.abc import Parseable, Row
 from tibiawikisql.models.achievement import Achievement
 from tibiawikisql.models.charm import Charm

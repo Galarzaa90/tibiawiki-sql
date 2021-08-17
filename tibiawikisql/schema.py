@@ -12,6 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+"""Defines the SQL schemas to use."""
+
 from tibiawikisql.database import Blob, Boolean, Column, ForeignKey, Integer, Real, Table, Text
 
 

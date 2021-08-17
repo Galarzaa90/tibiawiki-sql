@@ -12,6 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+"""API that reads and parses information from `TibiaWiki <https://tibiawiki.fandom.com>`_."""
+
 __author__ = "Allan Galarza"
 __copyright__ = "Copyright 2021 Allan Galarza"
 

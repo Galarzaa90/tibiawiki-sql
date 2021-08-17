@@ -12,6 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+"""API to fetch information from `TibiaWiki <https://tibiawiki.fandom.com>`_ through MediaWiki's API."""
+
 import datetime
 import json
 import urllib.parse

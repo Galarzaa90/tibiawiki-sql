@@ -6,7 +6,7 @@ Changelog
 
 6.0.0 (Unreleased)
 ==================
-- Books are now parsed
+- Books are now parsed.
 - Changes to creature's max damage and abilities parsing:
     - Added ``creature_max_damage`` and ``creature_ability`` tables to parse more detailed information about creature's max damage and abilities.
     - Added the respective classes ``CreatureMaxDamage`` and ``CreatureAbility``.
@@ -28,6 +28,8 @@ Changelog
     - Renamed to ``creature_type`` in ``creature`` table and ``Creature`` class.
 - Parsing relies more on `mwparserfromhell <https://mwparserfromhell.readthedocs.io/>`_ and less on regular expressions.
 - TibiaWiki merged items into "objects" (non pickupable). So now the ``item`` table will contain a lot more records.
+    - More attributes related to "objects" are now added to the ``item_attribute`` table.
+- Added support for attributes added in the Summer Update 2020 and some other missing attributes.
 
 .. v5.0.1
 
