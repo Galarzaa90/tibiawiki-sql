@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tibiawikisql.models.item &#8212; TibiaWikiSQL 5.0.1 documentation</title>
+    <title>tibiawikisql.models.item &#8212; TibiaWikiSQL 6.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -32,7 +32,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 5.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 6.0.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tibiawikisql.models.item</a></li> 
       </ul>
@@ -65,8 +65,8 @@
 <span class="kn">from</span> <span class="nn">tibiawikisql.models.creature</span> <span class="kn">import</span> <span class="n">CreatureDrop</span>
 <span class="kn">from</span> <span class="nn">tibiawikisql.models.npc</span> <span class="kn">import</span> <span class="n">NpcBuyOffer</span><span class="p">,</span> <span class="n">NpcSellOffer</span>
 <span class="kn">from</span> <span class="nn">tibiawikisql.models.quest</span> <span class="kn">import</span> <span class="n">QuestReward</span>
-<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">clean_links</span><span class="p">,</span> <span class="n">clean_question_mark</span><span class="p">,</span> <span class="n">client_color_to_rgb</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">,</span> <span class="n">parse_float</span><span class="p">,</span>
-                                <span class="n">parse_integer</span><span class="p">,</span> <span class="n">parse_sounds</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">tibiawikisql.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">clean_links</span><span class="p">,</span> <span class="n">clean_question_mark</span><span class="p">,</span> <span class="n">client_color_to_rgb</span><span class="p">,</span> <span class="n">find_templates</span><span class="p">,</span> <span class="n">parse_boolean</span><span class="p">,</span>
+                                <span class="n">parse_float</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">,</span> <span class="n">parse_sounds</span><span class="p">,</span> <span class="n">strip_code</span><span class="p">)</span>
 
 <span class="n">ELEMENTAL_RESISTANCES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;physical%&#39;</span><span class="p">,</span> <span class="s1">&#39;earth%&#39;</span><span class="p">,</span> <span class="s1">&#39;fire%&#39;</span><span class="p">,</span> <span class="s1">&#39;energy%&#39;</span><span class="p">,</span> <span class="s1">&#39;ice%&#39;</span><span class="p">,</span> <span class="s1">&#39;holy%&#39;</span><span class="p">,</span> <span class="s1">&#39;death%&#39;</span><span class="p">,</span> <span class="s1">&#39;drowning%&#39;</span><span class="p">]</span>
 
@@ -112,7 +112,7 @@
 <span class="sd">        The item&#39;s weight in ounces.</span>
 <span class="sd">    item_class: :class:`str`</span>
 <span class="sd">        The item class the item belongs to.</span>
-<span class="sd">    type: :class:`str`</span>
+<span class="sd">    item_type: :class:`str`</span>
 <span class="sd">        The item&#39;s type.</span>
 <span class="sd">    type_secondary: :class:`str`</span>
 <span class="sd">        The item&#39;s secondary type, if any.</span>
@@ -155,8 +155,8 @@
         <span class="s2">&quot;npcvalue&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;value_sell&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;npcprice&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;value_buy&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;flavortext&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;flavor_text&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
-        <span class="s2">&quot;itemclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;item_class&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
-        <span class="s2">&quot;primarytype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;objectclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;item_class&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;primarytype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;item_type&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;secondarytype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type_secondary&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;lightcolor&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;light_color&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">client_color_to_rgb</span><span class="p">(</span><span class="n">parse_integer</span><span class="p">(</span><span class="n">x</span><span class="p">))),</span>
         <span class="s2">&quot;lightradius&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;light_radius&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
@@ -164,7 +164,7 @@
         <span class="s2">&quot;itemid&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;client_id&quot;</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">),</span>
         <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>
     <span class="p">}</span>
-    <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Item&quot;</span><span class="p">)</span>
+    <span class="n">_template</span> <span class="o">=</span> <span class="s2">&quot;Infobox_Object&quot;</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;article_id&quot;</span><span class="p">,</span>
@@ -180,7 +180,7 @@
         <span class="s2">&quot;value_buy&quot;</span><span class="p">,</span>
         <span class="s2">&quot;weight&quot;</span><span class="p">,</span>
         <span class="s2">&quot;item_class&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;item_type&quot;</span><span class="p">,</span>
         <span class="s2">&quot;type_secondary&quot;</span><span class="p">,</span>
         <span class="s2">&quot;flavor_text&quot;</span><span class="p">,</span>
         <span class="s2">&quot;light_color&quot;</span><span class="p">,</span>
@@ -195,9 +195,17 @@
         <span class="s2">&quot;awarded_in&quot;</span><span class="p">,</span>
         <span class="s2">&quot;sounds&quot;</span><span class="p">,</span>
         <span class="s2">&quot;status&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;store_offers&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store_offers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropped_by</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bought_by</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sold_by</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sounds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">awarded_in</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -310,53 +318,105 @@
 
 <div class="viewcode-block" id="Item.from_article"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Item.from_article">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_article</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">article</span><span class="p">):</span>
-        <span class="n">item</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_article</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+        <span class="n">item</span><span class="p">:</span> <span class="bp">cls</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_article</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="n">item</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">ItemAttribute</span><span class="o">.</span><span class="n">_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">]:</span>
                 <span class="n">item</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                                                      <span class="n">value</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">]))</span>
-        <span class="k">if</span> <span class="s2">&quot;attrib&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
-            <span class="n">attribs</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;attrib&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attribs</span><span class="p">:</span>
-                <span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([\s\w]+)\s([+\-\d]+)&#39;</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
-                    <span class="n">attribute</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;fighting&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-                    <span class="n">item</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">attribute</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">))</span>
-                <span class="k">if</span> <span class="s2">&quot;regeneration&quot;</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
-                    <span class="n">item</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;regeneration&quot;</span><span class="p">,</span>
-                                                         <span class="n">value</span><span class="o">=</span><span class="s2">&quot;faster regeneration&quot;</span><span class="p">))</span>
-        <span class="k">if</span> <span class="s2">&quot;resist&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
-            <span class="n">resistances</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;resist&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">resistances</span><span class="p">:</span>
-                <span class="n">element</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([a-zA-Z0-9_ ]+) +(-?\+?\d+)%&#39;</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
-                    <span class="n">attribute</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span>
-                    <span class="k">try</span><span class="p">:</span>
-                        <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                        <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
-                    <span class="n">item</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">attribute</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">))</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">_parse_attributes</span><span class="p">()</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">_parse_resists</span><span class="p">()</span>
         <span class="n">vocations</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;vocrequired&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">vocations</span> <span class="ow">and</span> <span class="s2">&quot;none&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vocations</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
             <span class="n">vocation</span> <span class="o">=</span> <span class="n">vocations</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
             <span class="n">item</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vocation&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">vocation</span><span class="p">))</span>
-        <span class="k">if</span> <span class="s2">&quot;sounds&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
-            <span class="n">sounds</span> <span class="o">=</span> <span class="n">parse_sounds</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;sounds&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">sounds</span><span class="p">:</span>
-                <span class="n">item</span><span class="o">.</span><span class="n">sounds</span> <span class="o">=</span> <span class="p">[</span><span class="n">ItemSound</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">sound</span><span class="p">)</span> <span class="k">for</span> <span class="n">sound</span> <span class="ow">in</span> <span class="n">sounds</span><span class="p">]</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">_parse_sounds</span><span class="p">()</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">_parse_store_value</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">item</span></div>
+
+    <span class="k">def</span> <span class="nf">_parse_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;attrib&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">attribs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;attrib&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attribs</span><span class="p">:</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([\s\w]+)\s([+\-\d]+)&#39;</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;perfect shot&quot;</span> <span class="ow">in</span> <span class="n">attr</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">numbers</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\d+)&quot;</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+                        <span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;perfect_shot&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">numbers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+                        <span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;perfect_shot_range&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">numbers</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                    <span class="p">])</span>
+                    <span class="k">continue</span>
+            <span class="k">if</span> <span class="s2">&quot;damage reflection&quot;</span> <span class="ow">in</span> <span class="n">attr</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;damage_reflection&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">if</span> <span class="s2">&quot;damage reflection&quot;</span> <span class="ow">in</span> <span class="n">attr</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;damage_reflection&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">if</span> <span class="s2">&quot;magic shield capacity&quot;</span> <span class="ow">in</span> <span class="n">attr</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">numbers</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\d+)&quot;</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+                        <span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;magic_shield_capacity&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">numbers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+                        <span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;magic_shield_capacity%&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">numbers</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">),</span>
+                    <span class="p">])</span>
+                    <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+                <span class="n">attribute</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;fighting&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">attribute</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">if</span> <span class="s2">&quot;regeneration&quot;</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;regeneration&quot;</span><span class="p">,</span>
+                                                     <span class="n">value</span><span class="o">=</span><span class="s2">&quot;faster regeneration&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_parse_resists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;resist&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">resistances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;resist&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">resistances</span><span class="p">:</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([a-zA-Z0-9_ ]+) +(-?\+?\d+)%&#39;</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">attribute</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">attribute</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_parse_sounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;sounds&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">sounds</span> <span class="o">=</span> <span class="n">parse_sounds</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;sounds&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sounds</span> <span class="o">=</span> <span class="p">[</span><span class="n">ItemSound</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">sound</span><span class="p">)</span> <span class="k">for</span> <span class="n">sound</span> <span class="ow">in</span> <span class="n">sounds</span><span class="p">]</span> <span class="k">if</span> <span class="n">sounds</span> <span class="k">else</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">_parse_store_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;storevalue&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">templates</span> <span class="o">=</span> <span class="n">find_templates</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="s2">&quot;storevalue&quot;</span><span class="p">],</span> <span class="s2">&quot;Store Product&quot;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store_offers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">templates</span><span class="p">:</span>
+            <span class="n">price</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">strip_code</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+            <span class="n">currency</span> <span class="o">=</span> <span class="n">strip_code</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Tibia Coin&quot;</span><span class="p">))</span>
+            <span class="n">amount</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">strip_code</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">store_offers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">ItemStoreOffer</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="n">price</span><span class="p">,</span> <span class="n">currency</span><span class="o">=</span><span class="n">currency</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="n">amount</span><span class="p">),</span>
+            <span class="p">)</span>
 
 <div class="viewcode-block" id="Item.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Item.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="n">attribute</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;sounds&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">attribute</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;store_offers&quot;</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="n">attribute</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Item.get_by_field"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Item.get_by_field">[docs]</a>    <span class="nd">@classmethod</span>
@@ -370,7 +430,91 @@
         <span class="n">item</span><span class="o">.</span><span class="n">bought_by</span> <span class="o">=</span> <span class="n">NpcBuyOffer</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">item</span><span class="o">.</span><span class="n">awarded_in</span> <span class="o">=</span> <span class="n">QuestReward</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
         <span class="n">item</span><span class="o">.</span><span class="n">sounds</span> <span class="o">=</span> <span class="n">ItemSound</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">store_offers</span> <span class="o">=</span> <span class="n">ItemStoreOffer</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">item</span></div></div>
+
+
+<div class="viewcode-block" id="Book"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Book">[docs]</a><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">Book</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents a book or written document in Tibia.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    article_id: :class:`int`</span>
+<span class="sd">        The ID of the article that contains this book.</span>
+<span class="sd">    title: :class:`str`</span>
+<span class="sd">        The title of the article containing this book.</span>
+<span class="sd">    name: :class:´str´</span>
+<span class="sd">        The name of the book.</span>
+<span class="sd">    book_type: :class:`str`</span>
+<span class="sd">        The type of item this book can be found in.</span>
+<span class="sd">    item_id: :class:`int`</span>
+<span class="sd">        The ID of the item this book is written in.</span>
+<span class="sd">    location: :class:`str`</span>
+<span class="sd">        Where the book can be found.</span>
+<span class="sd">    blurb: :class:`str`</span>
+<span class="sd">        A short introduction text of the book.</span>
+<span class="sd">    author: :class:`str`</span>
+<span class="sd">        The person that wrote the book, if known.</span>
+<span class="sd">    prev_book: :class:`str`</span>
+<span class="sd">        If the book is part of a series, the book that precedes this one.</span>
+<span class="sd">    next_book: :class:`str`</span>
+<span class="sd">        If the book is part of a series, the book that follows this one.</span>
+<span class="sd">    text: :class:`str`</span>
+<span class="sd">        The content of the book.</span>
+<span class="sd">    version: :class:`str`</span>
+<span class="sd">        The client version where this item was first implemented.</span>
+<span class="sd">    status: :class:`str`</span>
+<span class="sd">        The status of this item in the game.</span>
+<span class="sd">    timestamp: :class:`int`</span>
+<span class="sd">        The last time the containing article was edited.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;article_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;book_type&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;item_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;location&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;blurb&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;author&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prev_book&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;next_book&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;version&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span>
+        <span class="s2">&quot;booktype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;book_type&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
+        <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">clean_links</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">True</span><span class="p">)),</span>
+        <span class="s2">&quot;blurb&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;blurb&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">clean_links</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">True</span><span class="p">)),</span>
+        <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">clean_links</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">True</span><span class="p">)),</span>
+        <span class="s2">&quot;prevbook&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;prev_book&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span>
+        <span class="s2">&quot;nextbook&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;next_book&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
+        <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="n">_template</span> <span class="o">=</span> <span class="s2">&quot;Infobox_Book&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Book.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Book.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                INSERT INTO </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">(article_id, title, name, book_type, item_id, location, blurb,</span>
+<span class="s2">                author, prev_book, next_book, text, version, status, timestamp)</span>
+<span class="s2">                VALUES(?, ?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">book_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">book_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">blurb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">author</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_book</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_book</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">ItemKey</span><span class="p">):</span>
@@ -403,6 +547,7 @@
 <span class="sd">    version: :class:`str`</span>
 <span class="sd">        The client version where this creature was first implemented.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;article_id&quot;</span><span class="p">,</span>
         <span class="s2">&quot;title&quot;</span><span class="p">,</span>
@@ -427,7 +572,7 @@
         <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>
     <span class="p">}</span>
-    <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Key&quot;</span><span class="p">)</span>
+    <span class="n">_template</span> <span class="o">=</span> <span class="s2">&quot;Infobox_Key&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -446,7 +591,7 @@
 
 
 <div class="viewcode-block" id="ItemAttribute"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.ItemAttribute">[docs]</a><span class="k">class</span> <span class="nc">ItemAttribute</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">ItemAttribute</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represents an Item&#39;s attribute</span>
+    <span class="sd">&quot;&quot;&quot;Represents an Item&#39;s attribute.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -471,7 +616,7 @@
         <span class="s2">&quot;hit%+&quot;</span><span class="p">:</span> <span class="s2">&quot;hit_mod&quot;</span><span class="p">,</span>
         <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="s2">&quot;range&quot;</span><span class="p">,</span>
         <span class="s2">&quot;damage_type&quot;</span><span class="p">:</span> <span class="s2">&quot;damagetype&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;damage&quot;</span><span class="p">:</span> <span class="s2">&quot;damage&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;damage_range&quot;</span><span class="p">:</span> <span class="s2">&quot;damagerange&quot;</span><span class="p">,</span>
         <span class="s2">&quot;mana&quot;</span><span class="p">:</span> <span class="s2">&quot;mana&quot;</span><span class="p">,</span>
         <span class="s2">&quot;magic_level&quot;</span><span class="p">:</span> <span class="s2">&quot;mlrequired&quot;</span><span class="p">,</span>
         <span class="s2">&quot;words&quot;</span><span class="p">:</span> <span class="s2">&quot;words&quot;</span><span class="p">,</span>
@@ -489,6 +634,7 @@
         <span class="s2">&quot;energy_attack&quot;</span><span class="p">:</span> <span class="s2">&quot;energy_attack&quot;</span><span class="p">,</span>
         <span class="s2">&quot;ice_attack&quot;</span><span class="p">:</span> <span class="s2">&quot;ice_attack&quot;</span><span class="p">,</span>
         <span class="s2">&quot;earth_attack&quot;</span><span class="p">:</span> <span class="s2">&quot;earth_attack&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weapon_type&quot;</span><span class="p">:</span> <span class="s2">&quot;weapontype&quot;</span><span class="p">,</span>
         <span class="s2">&quot;destructible&quot;</span><span class="p">:</span> <span class="s2">&quot;destructible&quot;</span><span class="p">,</span>
         <span class="s2">&quot;holds_liquid&quot;</span><span class="p">:</span> <span class="s2">&quot;holdsliquid&quot;</span><span class="p">,</span>
         <span class="s2">&quot;hangable&quot;</span><span class="p">:</span> <span class="s2">&quot;hangable&quot;</span><span class="p">,</span>
@@ -496,7 +642,12 @@
         <span class="s2">&quot;rewritable&quot;</span><span class="p">:</span> <span class="s2">&quot;rewritable&quot;</span><span class="p">,</span>
         <span class="s2">&quot;writable_chars&quot;</span><span class="p">:</span> <span class="s2">&quot;writechars&quot;</span><span class="p">,</span>
         <span class="s2">&quot;consumable&quot;</span><span class="p">:</span> <span class="s2">&quot;consumable&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;fansite&quot;</span><span class="p">:</span> <span class="s2">&quot;fansite&quot;</span>
+        <span class="s2">&quot;fansite&quot;</span><span class="p">:</span> <span class="s2">&quot;fansite&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;unshootable&quot;</span><span class="p">:</span> <span class="s2">&quot;unshootable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;blocks_path&quot;</span><span class="p">:</span> <span class="s2">&quot;blockspath&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;walkable&quot;</span><span class="p">:</span> <span class="s2">&quot;walkable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;walking_speed&quot;</span><span class="p">:</span> <span class="s2">&quot;walkingspeed&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;map_color&quot;</span><span class="p">:</span> <span class="s2">&quot;mapcolor&quot;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;item_id&quot;</span><span class="p">,</span>
@@ -543,6 +694,53 @@
     <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;item_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_id</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ItemStoreOffer"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.ItemStoreOffer">[docs]</a><span class="k">class</span> <span class="nc">ItemStoreOffer</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">ItemStoreOffer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents an offer for an item on the Tibia Store.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    item_id: :class:`int`</span>
+<span class="sd">        The ID of the item this offer is for.</span>
+<span class="sd">    price: :class:`int`</span>
+<span class="sd">        The price of the item.</span>
+<span class="sd">    amount: :class:`int`</span>
+<span class="sd">        The amount of the item.</span>
+<span class="sd">    currency: :class:`str`</span>
+<span class="sd">        The currency used. In most of the times it is Tibia Coins.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;item_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;price&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;amount&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;currency&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+<div class="viewcode-block" id="ItemStoreOffer.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.ItemStoreOffer.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;item_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_id</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">price</span><span class="p">,</span>
+            <span class="s1">&#39;amount&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;currency&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">currency</span> <span class="ow">or</span> <span class="s1">&#39;Tibia Coin&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span></div></div>
 </pre></div>
 
             <div class="clearer"></div>
@@ -607,7 +805,7 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -635,7 +833,7 @@
     </div>
   <div class="footer">
     &copy; Copyright 2021, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.
   </div>
   
   </body>

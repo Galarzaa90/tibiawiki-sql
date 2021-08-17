@@ -53,6 +53,11 @@ Achievement
    :members:
    :inherited-members:
 
+Book
+~~~~
+.. autoclass:: tibiawikisql.models.Book()
+   :members:
+   :inherited-members:
 
 Charm
 ~~~~~~~~
@@ -66,9 +71,22 @@ Creature
    :members:
    :inherited-members:
 
-CreatureDrop
-~~~~~~~~~~~~
-.. autoclass:: tibiawikisql.models.CreatureDrop()
+CreatureAbility
+~~~~~~~~~~~~~~~
+.. autoclass:: tibiawikisql.models.CreatureAbility()
+   :members:
+   :inherited-members:
+
+CreatureMaxDamage
+~~~~~~~~~~~~~~~~~
+.. autoclass:: tibiawikisql.models.CreatureMaxDamage()
+   :members:
+   :inherited-members:
+
+
+CreatureSound
+~~~~~~~~~~~~~
+.. autoclass:: tibiawikisql.models.CreatureSound()
    :members:
    :inherited-members:
 
@@ -103,6 +121,11 @@ ItemAttribute
    :members:
    :inherited-members:
 
+ItemStoreOffer
+~~~~~~~~~~~~~~
+.. autoclass:: tibiawikisql.models.ItemStoreOffer()
+   :members:
+   :inherited-members:
 
 Key
 ~~~

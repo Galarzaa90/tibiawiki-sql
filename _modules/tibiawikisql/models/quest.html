@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tibiawikisql.models.quest &#8212; TibiaWikiSQL 5.0.1 documentation</title>
+    <title>tibiawikisql.models.quest &#8212; TibiaWikiSQL 6.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
@@ -32,7 +32,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 5.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">TibiaWikiSQL 6.0.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tibiawikisql.models.quest</a></li> 
       </ul>
@@ -70,8 +70,7 @@
 
 
 <span class="k">def</span> <span class="nf">parse_links</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Finds all the links in a string and returns a list of them.</span>
+    <span class="sd">&quot;&quot;&quot;Find all the links in a string and returns a list of them.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -87,8 +86,7 @@
 
 
 <div class="viewcode-block" id="Quest"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Quest">[docs]</a><span class="k">class</span> <span class="nc">Quest</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">Quest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents a quest</span>
+    <span class="sd">&quot;&quot;&quot;Represents a quest.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -127,6 +125,7 @@
 <span class="sd">    rewards: list of :class:`QuestReward`</span>
 <span class="sd">        Items rewarded in the quest.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;article_id&quot;</span><span class="p">,</span>
         <span class="s2">&quot;title&quot;</span><span class="p">,</span>
@@ -161,7 +160,7 @@
         <span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>
     <span class="p">}</span>
-    <span class="n">_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Infobox[\s_]Quest&quot;</span><span class="p">)</span>
+    <span class="n">_template</span> <span class="o">=</span> <span class="s2">&quot;Infobox_Quest&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -214,6 +213,7 @@
 <span class="sd">    item_title: :class:`str`</span>
 <span class="sd">        The title of the rewarded item.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;quest_id&quot;</span><span class="p">,</span>
         <span class="s2">&quot;quest_title&quot;</span><span class="p">,</span>
@@ -252,22 +252,23 @@
 <div class="viewcode-block" id="QuestDanger"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.QuestDanger">[docs]</a><span class="k">class</span> <span class="nc">QuestDanger</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">QuestDanger</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represents a creature found in the quest.</span>
 
-<span class="sd">        Attributes</span>
-<span class="sd">        ----------</span>
-<span class="sd">        quest_id: :class:`int`</span>
-<span class="sd">            The article id of the quest.</span>
-<span class="sd">        quest_title: :class:`str`</span>
-<span class="sd">            The title of the quest.</span>
-<span class="sd">        creature_id: :class:`int`</span>
-<span class="sd">            The article id of the found creature.</span>
-<span class="sd">        creature_title: :class:`str`</span>
-<span class="sd">            The title of the found creature.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    quest_id: :class:`int`</span>
+<span class="sd">        The article id of the quest.</span>
+<span class="sd">    quest_title: :class:`str`</span>
+<span class="sd">        The title of the quest.</span>
+<span class="sd">    creature_id: :class:`int`</span>
+<span class="sd">        The article id of the found creature.</span>
+<span class="sd">    creature_title: :class:`str`</span>
+<span class="sd">        The title of the found creature.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;quest_id&quot;</span><span class="p">,</span>
         <span class="s2">&quot;quest_title&quot;</span><span class="p">,</span>
         <span class="s2">&quot;creature_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;creature_title&quot;</span>
+        <span class="s2">&quot;creature_title&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -360,7 +361,7 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -388,7 +389,7 @@
     </div>
   <div class="footer">
     &copy; Copyright 2021, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.
   </div>
   
   </body>
