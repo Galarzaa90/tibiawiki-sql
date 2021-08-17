@@ -4,7 +4,7 @@ Changelog
 
 .. v6.0.0
 
-6.0.0 (Unreleased)
+6.0.0 (2021-08-17)
 ==================
 - Books are now parsed.
 - Changes to creature's max damage and abilities parsing:
