@@ -307,10 +307,24 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
                         ItemAttribute(item_id=self.article_id, name="perfect_shot_range", value=numbers[1]),
                     ])
                     continue
+            if "damage reflection" in attr.lower():
+                value = parse_integer(attr)
+                self.attributes.append(ItemAttribute(item_id=self.article_id, name="damage_reflection", value=value))
+            if "damage reflection" in attr.lower():
+                value = parse_integer(attr)
+                self.attributes.append(ItemAttribute(item_id=self.article_id, name="damage_reflection", value=value))
+            if "magic shield capacity" in attr.lower():
+                numbers = re.findall(r"(\d+)", attr)
+                if len(numbers) == 2:
+                    self.attributes.extend([
+                        ItemAttribute(item_id=self.article_id, name="magic_shield_capacity", value=f"+{numbers[0]}"),
+                        ItemAttribute(item_id=self.article_id, name="magic_shield_capacity%", value=f"{numbers[1]}%"),
+                    ])
+                    continue
             if m:
-                attribute = m.group(1).replace("fighting", "").replace("level", "").strip()
+                attribute = m.group(1).replace("fighting", "").replace("level", "").strip().replace(" ", "_").lower()
                 value = m.group(2)
-                self.attributes.append(ItemAttribute(item_id=self.article_id, name=attribute, value=value))
+                self.attributes.append(ItemAttribute(item_id=self.article_id, name=attribute.lower(), value=value))
             if "regeneration" in attr:
                 self.attributes.append(ItemAttribute(item_id=self.article_id, name="regeneration",
                                                      value="faster regeneration"))
@@ -556,7 +570,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "hit%+": "hit_mod",
         "range": "range",
         "damage_type": "damagetype",
-        "damage": "damage",
+        "damage_range": "damagerange",
         "mana": "mana",
         "magic_level": "mlrequired",
         "words": "words",
@@ -574,6 +588,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "energy_attack": "energy_attack",
         "ice_attack": "ice_attack",
         "earth_attack": "earth_attack",
+        "weapon_type": "weapontype",
         "destructible": "destructible",
         "holds_liquid": "holdsliquid",
         "hangable": "hangable",
@@ -582,6 +597,11 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "writable_chars": "writechars",
         "consumable": "consumable",
         "fansite": "fansite",
+        "unshootable": "unshootable",
+        "blocks_path": "blockspath",
+        "walkable": "walkable",
+        "walking_speed": "walkingspeed",
+        "map_color": "mapcolor",
     }
     __slots__ = (
         "item_id",
