@@ -22,6 +22,8 @@ This allows you to have all the data available at once, as well as take advantag
 
 All information is gathered from TibiaWiki, click the image to visit and contribute to the project!
 
+If you use this into your project or use the generate data, make sure to credit them and their contributors.
+
 .. image:: images/TibiaWiki.gif
    :target: https://tibia.fandom.com/wiki/Main_Page
 
