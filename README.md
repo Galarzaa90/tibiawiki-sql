@@ -10,6 +10,8 @@ that are not updated as frequently. By using the API, the data obtained is alway
 This script is not intended to be running constantly, it is meant to be run once, generate a sqlite database and use it 
 externally.
 
+If you integrate this into your project or use the generated data, make sure to credit [TibiaWiki](https://tibia.fandom.com) and its contributors.
+
 
 [![Build Status](https://travis-ci.org/Galarzaa90/tibiawiki-sql.svg?branch=master)](https://travis-ci.org/Galarzaa90/tibiawiki-sql)
 [![GitHub (pre-)release](https://img.shields.io/github/release/Galarzaa90/tibiawiki-sql/all.svg)](https://github.com/Galarzaa90/tibiawiki-sql/releases)
