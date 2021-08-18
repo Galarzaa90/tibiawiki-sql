@@ -571,7 +571,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "range": "range",
         "damage_type": "damagetype",
         "damage_range": "damagerange",
-        "mana": "mana",
+        "mana_cost": "manacost",
         "magic_level": "mlrequired",
         "words": "words",
         "critical_chance": "crithit_ch",
