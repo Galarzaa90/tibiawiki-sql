@@ -185,10 +185,14 @@ def parse_loot(value):
     loot = []
     for item_template in loot_items_templates:
         param_count = len(item_template.params)
-        if param_count < 3:
+        if param_count < 2:
             loot.append((strip_code(item_template.get(1)), ""))
         else:
-            loot.append((strip_code(item_template.get(2)), (strip_code(item_template.get(1)))))
+            second_param = strip_code(item_template.get(2))
+            if second_param in ["always", "common", "uncommon", "semi-rare", "rare", "very rare"]:
+                loot.append((strip_code(item_template.get(1)), ""))
+            else:
+                loot.append((second_param, (strip_code(item_template.get(1)))))
     return loot
 
 

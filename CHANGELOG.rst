@@ -2,6 +2,13 @@
 Changelog
 =========
 
+.. v6.0.1
+
+6.0.1 (2021-08-18)
+==================
+
+- Fixed some creature drops not being parsed properly, resulting in incomplete data.
+
 .. v6.0.0
 
 6.0.0 (2021-08-17)

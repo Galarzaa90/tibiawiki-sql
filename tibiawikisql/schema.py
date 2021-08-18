@@ -157,8 +157,8 @@ class ItemStoreOffer(Table, table_name="item_store_offer"):
 
 
 class CreatureDrop(Table, table_name="creature_drop"):
-    creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
-    item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True)
+    creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True, nullable=False)
+    item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True, nullable=False)
     chance = Column(Real)
     min = Column(Integer)
     max = Column(Integer)
