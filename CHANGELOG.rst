@@ -2,6 +2,13 @@
 Changelog
 =========
 
+.. 6.0.2
+
+6.0.2 (2021-09-10)
+==================
+
+- Fixed spell effects including file names.
+
 .. v6.0.1
 
 6.0.1 (2021-08-18)

@@ -61,8 +61,13 @@ def clean_links(content, strip_question_mark=False):
     :class:`str`:
         The clean string, with no links.
     """
+    img = re.compile('(File|Image):', re.I)
     content = re.sub(r"</?[bB][rR] ?/?>", "\n", content)
     parsed = mwparserfromhell.parse(content)
+    # Remove image links as well
+    remove_img = [f for f in parsed.ifilter_wikilinks() if img.match(str(f.title))]
+    for f in remove_img:
+        parsed.remove(f)
     content = parsed.strip_code().strip()
     if strip_question_mark and content == "?":
         return None
