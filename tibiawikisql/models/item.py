@@ -602,6 +602,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "walkable": "walkable",
         "walking_speed": "walkingspeed",
         "map_color": "mapcolor",
+        "upgrade_classification": "upgradeclass"
     }
     __slots__ = (
         "item_id",

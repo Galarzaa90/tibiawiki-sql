@@ -2,6 +2,14 @@
 Changelog
 =========
 
+.. 6.1.0
+
+6.1.0 (2022-01-04)
+==================
+
+- Added ``upgrade_classification`` to item attributes.
+- Fixed empty creature and item sounds being saved.
+
 .. 6.0.2
 
 6.0.2 (2021-09-10)

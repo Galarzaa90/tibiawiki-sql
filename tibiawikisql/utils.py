@@ -14,7 +14,7 @@
 import datetime
 import re
 from collections import defaultdict
-from typing import TYPE_CHECKING, List
+from typing import List, TYPE_CHECKING
 
 import mwparserfromhell
 from mwparserfromhell.nodes.extras import Parameter
@@ -338,7 +338,7 @@ def parse_sounds(value):
     template = find_template(value, "Sound", True)
     if not template:
         return []
-    return [strip_code(param) for param in template.params]
+    return [strip_code(param) for param in template.params if param]
 
 
 def client_color_to_rgb(value: int):

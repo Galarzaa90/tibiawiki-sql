@@ -29,21 +29,21 @@ class Achievement(Table):
     premium = Column(Boolean)
     achievement_id = Column(Integer)
     version = Column(Text, index=True)
-    status = Column(Text, default="active")
-    timestamp = Column(Integer)
+    status = Column(Text, default="active", nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
 
 class Charm(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True)
     name = Column(Text, no_case=True, index=True)
-    type = Column(Text)
-    effect = Column(Text)
-    cost = Column(Integer)
+    type = Column(Text, nullable=False)
+    effect = Column(Text, nullable=False)
+    cost = Column(Integer, nullable=False)
     image = Column(Blob)
     version = Column(Text, index=True)
-    status = Column(Text, default="active")
-    timestamp = Column(Integer)
+    status = Column(Text, default="active", nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
 
 class Creature(Table):
@@ -87,13 +87,13 @@ class Creature(Table):
     location = Column(Text)
     version = Column(Text, index=True)
     image = Column(Blob)
-    status = Column(Text, default="active")
-    timestamp = Column(Integer)
+    status = Column(Text, default="active", nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
 
 class CreatureAbility(Table, table_name="creature_ability"):
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
-    name = Column(Text)
+    name = Column(Text, nullable=False)
     effect = Column(Text)
     element = Column(Text)
 
@@ -116,7 +116,7 @@ class CreatureMaxDamage(Table, table_name="creature_max_damage"):
 
 class CreatureSound(Table, table_name="creature_sound"):
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
-    content = Column(Text)
+    content = Column(Text, nullable=False)
 
 
 class Item(Table):
@@ -140,8 +140,8 @@ class Item(Table):
     version = Column(Text, index=True)
     client_id = Column(Integer)
     image = Column(Blob)
-    status = Column(Text, default="active")
-    timestamp = Column(Integer)
+    status = Column(Text, default="active", nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
 
 class ItemSound(Table, table_name="item_sound"):
@@ -183,8 +183,8 @@ class Book(Table):
     next_book = Column(Text)
     text = Column(Text)
     version = Column(Text, index=True)
-    status = Column(Text, default="active")
-    timestamp = Column(Integer)
+    status = Column(Text, default="active", nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
 
 class DatabaseInfo(Table, table_name="database_info"):
@@ -210,8 +210,8 @@ class House(Table):
     z = Column(Integer)
     guildhall = Column(Integer, index=True)
     version = Column(Text, index=True)
-    status = Column(Text, default="active")
-    timestamp = Column(Integer)
+    status = Column(Text, default="active", nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
 
 class Imbuement(Table):
@@ -224,8 +224,8 @@ class Imbuement(Table):
     slots = Column(Text)
     version = Column(Text, index=True)
     image = Column(Blob)
-    status = Column(Text, default="active")
-    timestamp = Column(Integer)
+    status = Column(Text, default="active", nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
 
 class ImbuementMaterial(Table, table_name="imbuement_material"):
@@ -245,8 +245,8 @@ class ItemKey(Table, table_name="item_key"):
     origin = Column(Text)
     notes = Column(Text)
     version = Column(Text, index=True)
-    status = Column(Text, default="active")
-    timestamp = Column(Integer)
+    status = Column(Text, default="active", nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
 
 class Map(Table):
@@ -280,8 +280,8 @@ class Spell(Table):
     paladin = Column(Boolean, default=False)
     image = Column(Blob)
     version = Column(Text, index=True)
-    status = Column(Text, default="active")
-    timestamp = Column(Integer)
+    status = Column(Text, default="active", nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
 
 class Npc(Table):
@@ -296,8 +296,8 @@ class Npc(Table):
     y = Column(Integer)
     z = Column(Integer)
     image = Column(Blob)
-    status = Column(Text, default="active")
-    timestamp = Column(Integer)
+    status = Column(Text, default="active", nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
 
 class NpcJob(Table, table_name="npc_job"):
@@ -351,8 +351,8 @@ class Outfit(Table):
     full_price = Column(Integer)
     achievement = Column(Text)
     version = Column(Text)
-    status = Column(Text, default="active")
-    timestamp = Column(Integer)
+    status = Column(Text, default="active", nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
 
 class OutfitImage(Table, table_name="outfit_image"):
@@ -377,8 +377,8 @@ class Quest(Table):
     estimated_time = Column(Text)
     premium = Column(Boolean)
     version = Column(Text, index=True)
-    status = Column(Text, default="active")
-    timestamp = Column(Integer)
+    status = Column(Text, default="active", nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
 
 class OutfitQuest(Table, table_name="outfit_quest"):
@@ -422,7 +422,7 @@ class World(Table):
     protected_since = Column(Text)
     world_board = Column(Integer)
     trade_board = Column(Integer)
-    timestamp = Column(Integer)
+    timestamp = Column(Integer, nullable=False)
 
 
 class Mount(Table):
@@ -438,8 +438,8 @@ class Mount(Table):
     light_radius = Column(Integer)
     version = Column(Text, index=True)
     image = Column(Blob)
-    status = Column(Text, default="active")
-    timestamp = Column(Integer)
+    status = Column(Text, default="active", nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
 
 class Update(Table, table_name="game_update"):
@@ -455,7 +455,7 @@ class Update(Table, table_name="game_update"):
     version = Column(Text, index=True)
     summary = Column(Text, index=True)
     changes = Column(Text, index=True)
-    timestamp = Column(Integer)
+    timestamp = Column(Integer, nullable=False)
 
 
 def create_tables(conn):

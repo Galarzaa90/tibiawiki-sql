@@ -207,8 +207,13 @@ def img_show(item):
 def article_show(item):
     if item is None:
         return ""
-    return item.title
+    return constraint(item.title, 25)
 
+
+def constraint(value, limit):
+    if value is None or len(value) <= limit:
+        return value
+    return value[:limit - 1] + "…"
 
 def get_cache_info(table):
     try:
