@@ -146,22 +146,22 @@ class Item(Table):
 
 class ItemSound(Table, table_name="item_sound"):
     item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True)
-    content = Column(Text)
+    content = Column(Text, nullable=False)
 
 
 class ItemStoreOffer(Table, table_name="item_store_offer"):
     item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True)
-    price = Column(Integer)
-    amount = Column(Integer)
-    currency = Column(Text)
+    price = Column(Integer, nullable=False)
+    amount = Column(Integer, nullable=False)
+    currency = Column(Text, nullable=False)
 
 
 class CreatureDrop(Table, table_name="creature_drop"):
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True, nullable=False)
     item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True, nullable=False)
     chance = Column(Real)
-    min = Column(Integer)
-    max = Column(Integer)
+    min = Column(Integer, nullable=False)
+    max = Column(Integer, nullable=False)
 
 
 class ItemAttribute(Table, table_name="item_attribute"):
@@ -197,7 +197,7 @@ class House(Table):
     house_id = Column(Integer, index=True)
     title = Column(Text, unique=True, no_case=True)
     name = Column(Text, unique=True, no_case=True)
-    city = Column(Text, index=True)
+    city = Column(Text, index=True, nullable=False)
     street = Column(Text, index=True)
     location = Column(Text, index=True)
     beds = Column(Integer)
@@ -218,8 +218,8 @@ class Imbuement(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, index=True)
     name = Column(Text, unique=True, index=True)
-    tier = Column(Text)
-    type = Column(Text)
+    tier = Column(Text, nullable=False)
+    type = Column(Text, nullable=False)
     effect = Column(Text)
     slots = Column(Text)
     version = Column(Text, index=True)
@@ -231,7 +231,7 @@ class Imbuement(Table):
 class ImbuementMaterial(Table, table_name="imbuement_material"):
     imbuement_id = Column(ForeignKey(Integer, "imbuement", "article_id"), index=True)
     item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True)
-    amount = Column(Integer)
+    amount = Column(Integer, nullable=False)
 
 
 class ItemKey(Table, table_name="item_key"):

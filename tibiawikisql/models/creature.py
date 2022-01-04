@@ -21,8 +21,8 @@ import mwparserfromhell
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
-from tibiawikisql.utils import (clean_links, int_pattern, parse_boolean, parse_integer, parse_min_max, parse_sounds,
-                                clean_question_mark, strip_code, find_template)
+from tibiawikisql.utils import (clean_links, clean_question_mark, find_template, int_pattern, parse_boolean,
+                                parse_integer, parse_min_max, parse_sounds, strip_code)
 
 if TYPE_CHECKING:
     from mwparserfromhell.nodes import Template
@@ -66,12 +66,15 @@ def parse_abilities(value):
     parsed = mwparserfromhell.parse(value)
     ability_list_template = find_template(value, "Ability List")
     if not ability_list_template:
+        name = strip_code(parsed)
         return [{
-            "name": strip_code(parsed),
+            "name": name,
             "element": "no_template",
-        }]
+        }] if name else []
     abilities = []
     for element in ability_list_template.params:
+        if not element.strip():
+            continue
         ability_template = next(element.value.ifilter_templates(recursive=False), None)
         if not ability_template:
             abilities.append({

@@ -9,6 +9,8 @@ Changelog
 
 - Added ``upgrade_classification`` to item attributes.
 - Fixed empty creature and item sounds being saved.
+- Fixed empty creature abilities being saved.
+- Marked more SQLite columns as ``NOT NULL``.
 
 .. 6.0.2
 
