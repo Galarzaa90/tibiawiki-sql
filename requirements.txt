@@ -2,3 +2,4 @@ requests
 click
 colorama
 mwparserfromhell
+lupa

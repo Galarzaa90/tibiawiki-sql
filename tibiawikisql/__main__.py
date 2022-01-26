@@ -16,6 +16,7 @@ import datetime
 import json
 import os
 import platform
+import re
 import sqlite3
 import time
 from typing import Optional, Type
@@ -24,6 +25,7 @@ import click
 import colorama
 import requests
 from colorama import Fore, Style
+from lupa import LuaRuntime
 
 from tibiawikisql import Image, WikiClient, __version__, models, schema
 from tibiawikisql.models import abc
@@ -33,6 +35,8 @@ from tibiawikisql.utils import parse_loot_statistics, parse_min_max
 DATABASE_FILE = "tibiawiki.db"
 
 colorama.init()
+
+lua = LuaRuntime()
 
 
 def progress_bar(iterable, label, length, **kwargs):
@@ -152,6 +156,41 @@ def generate(skip_images, db_name, skip_deprecated):
     conn.close()
     dt = (time.perf_counter() - command_start)
     click.echo(f"Command finished in {dt:.2f} seconds.")
+
+
+link_pattern = re.compile(r"(?:(?P<price>\d+))?\s?\[\[([^\]|]+)")
+
+
+def generate_item_offers():
+    article = WikiClient.get_article("Module:ItemPrices/data")
+    data = lua.execute(article.content)
+
+    sell_offers = []
+    buy_offers = []
+
+    for name, table in list(data.items()):
+        if "sells" in table:
+            process_offer_list(name, table["sells"], sell_offers)
+        if "buys" in table:
+            process_offer_list(name, table["buys"], buy_offers)
+    print(article)
+
+
+def process_offer_list(npc_name, array, list_store):
+    for lua_item in array.values():
+        data = dict(lua_item.items())
+        price = data["price"]
+        currency = data.get("currency", "gold coin")
+        if not isinstance(price, int):
+            m = link_pattern.search(price)
+            price = int(m.group("price") or 1)
+            currency = m.group(2)
+        list_store.append({
+            "npc": npc_name,
+            "item": data["item"],
+            "price": price,
+            "currency": currency
+        })
 
 
 def generate_loot_statistics(conn: sqlite3.Connection):
