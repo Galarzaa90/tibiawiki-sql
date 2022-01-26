@@ -29,7 +29,6 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-#            ghcr.io/${{ github.repository }}
             ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPO }}
           tags: |
             type=ref,event=branch
