@@ -28,8 +28,8 @@ from colorama import Fore, Style
 from lupa import LuaRuntime
 
 from tibiawikisql import Image, WikiClient, __version__, models, schema
-from tibiawikisql.models import Item, abc
-from tibiawikisql.models.npc import Npc, rashid_positions
+from tibiawikisql.models import abc
+from tibiawikisql.models.npc import rashid_positions
 from tibiawikisql.utils import parse_loot_statistics, parse_min_max
 
 DATABASE_FILE = "tibiawiki.db"
@@ -57,23 +57,24 @@ class Category:
 
     Class for internal use only, for easier autocompletion and maintenance."""
     def __init__(self, name: Optional[str], model: Type[abc.Row] = None, *, no_images=False, extension=".gif",
-                 include_deprecated=False, no_title=False):
+                 include_deprecated=False, no_title=False, generate_map=False):
         self.name = name
         self.model = model
         self.no_images = no_images
         self.extension = extension
         self.include_deprecated = include_deprecated
         self.no_title = no_title
+        self.generate_map = generate_map
 
 
 categories = {
     "achievements": Category("Achievements", models.Achievement, no_images=True),
     "spells": Category("Spells", models.Spell),
-    "items": Category("Objects", models.Item),
-    "creatures": Category("Creatures", models.Creature),
+    "items": Category("Objects", models.Item, generate_map=True),
+    "creatures": Category("Creatures", models.Creature, generate_map=True),
     "books": Category("Book Texts", models.Book, no_images=True),
     "keys": Category("Keys", models.Key, no_images=True),
-    "npcs": Category("NPCs", models.Npc),
+    "npcs": Category("NPCs", models.Npc, generate_map=True),
     "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
     "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
     "house": Category("Player-Ownable Buildings", models.House, no_images=True),
@@ -115,10 +116,9 @@ def generate(skip_images, db_name, skip_deprecated):
         if not issubclass(model, abc.Parseable):
             continue
         titles = [a.title for a in data_store[key]]
-        if key == "items":
-            data_store["item_map"] = {}
-        if key == "npcs":
-            data_store["npc_map"] = {}
+
+        if value.generate_map:
+            data_store[f"{key}_map"] = {}
         unparsed = []
         exec_time = time.perf_counter()
         generator = WikiClient.get_articles(titles)
@@ -128,12 +128,10 @@ def generate(skip_images, db_name, skip_deprecated):
                     entry = model.from_article(article)
                     if entry is not None:
                         entry.insert(conn)
+                        if value.generate_map:
+                            data_store[f"{key}_map"][entry.title.lower()] = entry.article_id
                     else:
                         unparsed.append(article.title)
-                    if isinstance(entry, Item):
-                        data_store["item_map"][entry.title.lower()] = entry.article_id
-                    elif isinstance(entry, Npc):
-                        data_store["npc_map"][entry.title.lower()] = entry.article_id
             if unparsed:
                 click.echo(f"{Fore.RED}Could not parse {len(unparsed):,} articles.{Style.RESET_ALL}")
                 click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed)}{Style.RESET_ALL}")
@@ -144,7 +142,7 @@ def generate(skip_images, db_name, skip_deprecated):
         position.insert(conn)
 
     generate_item_offers(conn, data_store)
-    generate_loot_statistics(conn)
+    generate_loot_statistics(conn, data_store)
 
     if not skip_images:
         with conn:
@@ -181,7 +179,7 @@ def generate_item_offers(conn: sqlite3.Connection, data_store):
     npc_offers = list(data.items())
     with progress_bar(npc_offers, "Fetching NPC offers", len(npc_offers)) as bar:
         for name, table in bar:
-            npc_id = data_store["npc_map"].get(name.lower())
+            npc_id = data_store["npcs_map"].get(name.lower())
             if npc_id is None:
                 not_found_store["npc"].add(name)
                 continue
@@ -218,8 +216,8 @@ def process_offer_list(npc_id, array, list_store, data_store, not_found):
             currency = m.group(2)
         item_name = data["item"]
         currency_name = currency
-        item_id = data_store["item_map"].get(item_name.lower())
-        currency_id = data_store["item_map"].get(currency_name.lower())
+        item_id = data_store["items_map"].get(item_name.lower())
+        currency_id = data_store["items_map"].get(currency_name.lower())
         if currency_id is None:
             not_found["item"].add(currency_name)
             continue
@@ -234,24 +232,23 @@ def process_offer_list(npc_id, array, list_store, data_store, not_found):
         ))
 
 
-def generate_loot_statistics(conn: sqlite3.Connection):
+def generate_loot_statistics(conn: sqlite3.Connection, data_store):
     c = conn.cursor()
     try:
         results = conn.execute("SELECT title FROM creature")
         titles = [f"Loot Statistics:{t[0]}" for t in results]
         start_time = time.perf_counter()
+        unknown_items = set()
         with progress_bar(WikiClient.get_articles(titles), "Fetching loot statistics", len(titles),
                           item_show_func=article_show) as bar:
             for article in bar:
                 if article is None:
                     continue
                 creature_title = article.title.replace("Loot Statistics:", "")
-                c.execute("SELECT article_id from creature WHERE title = ?", (creature_title,))
-                result = c.fetchone()
-                if result is None:
+                creature_id = data_store["creatures_map"].get(creature_title.lower())
+                if creature_id is None:
                     # This could happen if a creature's article was deleted but its Loot Statistics weren't
                     continue
-                creature_id = result[0]
                 # Most loot statistics contain stats for older versions too, we onl care about the latest version.
                 kills, loot_stats = parse_loot_statistics(article.content)
                 loot_items = []
@@ -259,11 +256,10 @@ def generate_loot_statistics(conn: sqlite3.Connection):
                     item = entry["item"]
                     times = entry["times"]
                     amount = entry.get("amount", 1)
-                    c.execute("SELECT article_id FROM item WHERE title LIKE ?", (item,))
-                    result = c.fetchone()
-                    if result is None:
+                    item_id = data_store["items_map"].get(item.lower())
+                    if item_id is None:
+                        unknown_items.add(item)
                         continue
-                    item_id = result[0]
                     percentage = min(int(times) / kills * 100, 100)
                     _min, _max = parse_min_max(amount)
                     loot_items.append((creature_id, item_id, percentage, _min, _max))
@@ -273,6 +269,9 @@ def generate_loot_statistics(conn: sqlite3.Connection):
                 c.executemany("INSERT INTO creature_drop(creature_id, item_id, chance, min, max) VALUES(?,?,?,?,?)",
                               loot_items)
         dt = (time.perf_counter() - start_time)
+        if unknown_items:
+            click.echo(f"{Fore.RED}Could not find {len(unknown_items):,} items.{Style.RESET_ALL}")
+            click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unknown_items)}{Style.RESET_ALL}")
         click.echo(f"{Fore.GREEN}\tParsed loot statistics in {dt:.2f} seconds.{Style.RESET_ALL}")
     finally:
         conn.commit()
