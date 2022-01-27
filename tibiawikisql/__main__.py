@@ -26,11 +26,10 @@ import colorama
 import requests
 from colorama import Fore, Style
 from lupa import LuaRuntime
-import luadata
 
 from tibiawikisql import Image, WikiClient, __version__, models, schema
-from tibiawikisql.models import abc
-from tibiawikisql.models.npc import rashid_positions
+from tibiawikisql.models import Item, abc
+from tibiawikisql.models.npc import Npc, rashid_positions
 from tibiawikisql.utils import parse_loot_statistics, parse_min_max
 
 DATABASE_FILE = "tibiawiki.db"
@@ -116,6 +115,10 @@ def generate(skip_images, db_name, skip_deprecated):
         if not issubclass(model, abc.Parseable):
             continue
         titles = [a.title for a in data_store[key]]
+        if key == "items":
+            data_store["item_map"] = {}
+        if key == "npcs":
+            data_store["npc_map"] = {}
         unparsed = []
         exec_time = time.perf_counter()
         generator = WikiClient.get_articles(titles)
@@ -127,6 +130,10 @@ def generate(skip_images, db_name, skip_deprecated):
                         entry.insert(conn)
                     else:
                         unparsed.append(article.title)
+                    if isinstance(entry, Item):
+                        data_store["item_map"][entry.title.lower()] = entry.article_id
+                    elif isinstance(entry, Npc):
+                        data_store["npc_map"][entry.title.lower()] = entry.article_id
             if unparsed:
                 click.echo(f"{Fore.RED}Could not parse {len(unparsed):,} articles.{Style.RESET_ALL}")
                 click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed)}{Style.RESET_ALL}")
@@ -136,8 +143,8 @@ def generate(skip_images, db_name, skip_deprecated):
     for position in rashid_positions:
         position.insert(conn)
 
+    generate_item_offers(conn, data_store)
     generate_loot_statistics(conn)
-    generate_item_offers(conn)
 
     if not skip_images:
         with conn:
@@ -163,35 +170,44 @@ def generate(skip_images, db_name, skip_deprecated):
 link_pattern = re.compile(r"(?:(?P<price>\d+))?\s?\[\[([^\]|]+)")
 
 
-def generate_item_offers(conn: sqlite3.Connection):
+def generate_item_offers(conn: sqlite3.Connection, data_store):
+    start_time = time.perf_counter()
     article = WikiClient.get_article("Module:ItemPrices/data")
     data = lua.execute(article.content)
 
     sell_offers = []
     buy_offers = []
-    item_map = {}
-    with conn:
-        rows = conn.execute("SELECT article_id, title, name FROM item")
-        for row in rows:
-            item_map[row[1]] = row[0]
-            item_map[row[2]] = row[0]
-        npc_map = {row[1]: row[0] for row in conn.execute("SELECT article_id, title FROM npc")}
-
     not_found_store = collections.defaultdict(set)
+    npc_offers = list(data.items())
+    with progress_bar(npc_offers, "Fetching NPC offers", len(npc_offers)) as bar:
+        for name, table in bar:
+            npc_id = data_store["npc_map"].get(name.lower())
+            if npc_id is None:
+                not_found_store["npc"].add(name)
+                continue
+            if "sells" in table:
+                process_offer_list(npc_id, table["sells"], sell_offers, data_store, not_found_store)
+            if "buys" in table:
+                process_offer_list(npc_id, table["buys"], buy_offers, data_store, not_found_store)
+        with conn:
+            conn.execute("DELETE FROM npc_offer_sell")
+            conn.execute("DELETE FROM npc_offer_buy")
+            conn.executemany("INSERT INTO npc_offer_sell(npc_id, value, item_id, currency_id) VALUES(?, ?, ?, ?)", sell_offers)
+            conn.executemany("INSERT INTO npc_offer_buy(npc_id, value, item_id, currency_id) VALUES(?, ?, ?, ?)", buy_offers)
+            dt = (time.perf_counter() - start_time)
+    total_offers = len(sell_offers) + len(buy_offers)
+    if not_found_store["npc"]:
+        unknonw_npcs = not_found_store["npc"]
+        click.echo(f"{Fore.RED}Could not parse offers for {len(unknonw_npcs):,} npcs.{Style.RESET_ALL}")
+        click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unknonw_npcs)}{Style.RESET_ALL}")
+    if not_found_store["item"]:
+        unknonw_items = not_found_store["item"]
+        click.echo(f"{Fore.RED}Could not parse offers for {len(unknonw_items):,} items.{Style.RESET_ALL}")
+        click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unknonw_items)}{Style.RESET_ALL}")
+    click.echo(f"{Fore.GREEN}\tSaved {total_offers:,} NPC offers in {dt:.2f} seconds.")
 
-    for name, table in list(data.items()):
-        if "sells" in table:
-            process_offer_list(name, table["sells"], sell_offers, item_map, npc_map, not_found_store)
-        if "buys" in table:
-            process_offer_list(name, table["buys"], buy_offers, item_map, npc_map, not_found_store)
-    with conn:
-        conn.execute("DELETE FROM npc_offer_sell")
-        conn.execute("DELETE FROM npc_offer_buy")
-        conn.executemany("INSERT INTO npc_offer_sell(npc_id, value, item_id, currency_id) VALUES(?, ?, ?, ?)", sell_offers)
-        conn.executemany("INSERT INTO npc_offer_buy(npc_id, value, item_id, currency_id) VALUES(?, ?, ?, ?)", buy_offers)
 
-
-def process_offer_list(npc_name, array, list_store, item_map, npc_map, not_found):
+def process_offer_list(npc_id, array, list_store, data_store, not_found):
     for lua_item in array.values():
         data = dict(lua_item.items())
         price = data["price"]
@@ -202,23 +218,19 @@ def process_offer_list(npc_name, array, list_store, item_map, npc_map, not_found
             currency = m.group(2)
         item_name = data["item"]
         currency_name = currency
-        skip = False
-        if npc_name not in npc_map:
-            not_found["npc"].add(npc_name)
-            skip = True
-        if currency_name not in item_map:
+        item_id = data_store["item_map"].get(item_name.lower())
+        currency_id = data_store["item_map"].get(currency_name.lower())
+        if currency_id is None:
             not_found["item"].add(currency_name)
-            skip = True
-        if item_name not in item_map:
+            continue
+        if item_id is None:
             not_found["item"].add(item_name)
-            skip = True
-        if skip:
             continue
         list_store.append((
-            npc_map[npc_name],
+            npc_id,
             price,
-            item_map[item_name],
-            item_map[currency_name]
+            item_id,
+            currency_id
         ))
 
 
