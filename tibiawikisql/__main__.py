@@ -11,7 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
+import collections
 import datetime
 import json
 import os
@@ -26,6 +26,7 @@ import colorama
 import requests
 from colorama import Fore, Style
 from lupa import LuaRuntime
+import luadata
 
 from tibiawikisql import Image, WikiClient, __version__, models, schema
 from tibiawikisql.models import abc
@@ -136,6 +137,7 @@ def generate(skip_images, db_name, skip_deprecated):
         position.insert(conn)
 
     generate_loot_statistics(conn)
+    generate_item_offers(conn)
 
     if not skip_images:
         with conn:
@@ -161,22 +163,35 @@ def generate(skip_images, db_name, skip_deprecated):
 link_pattern = re.compile(r"(?:(?P<price>\d+))?\s?\[\[([^\]|]+)")
 
 
-def generate_item_offers():
+def generate_item_offers(conn: sqlite3.Connection):
     article = WikiClient.get_article("Module:ItemPrices/data")
     data = lua.execute(article.content)
 
     sell_offers = []
     buy_offers = []
+    item_map = {}
+    with conn:
+        rows = conn.execute("SELECT article_id, title, name FROM item")
+        for row in rows:
+            item_map[row[1]] = row[0]
+            item_map[row[2]] = row[0]
+        npc_map = {row[1]: row[0] for row in conn.execute("SELECT article_id, title FROM npc")}
+
+    not_found_store = collections.defaultdict(set)
 
     for name, table in list(data.items()):
         if "sells" in table:
-            process_offer_list(name, table["sells"], sell_offers)
+            process_offer_list(name, table["sells"], sell_offers, item_map, npc_map, not_found_store)
         if "buys" in table:
-            process_offer_list(name, table["buys"], buy_offers)
-    print(article)
+            process_offer_list(name, table["buys"], buy_offers, item_map, npc_map, not_found_store)
+    with conn:
+        conn.execute("DELETE FROM npc_offer_sell")
+        conn.execute("DELETE FROM npc_offer_buy")
+        conn.executemany("INSERT INTO npc_offer_sell(npc_id, value, item_id, currency_id) VALUES(?, ?, ?, ?)", sell_offers)
+        conn.executemany("INSERT INTO npc_offer_buy(npc_id, value, item_id, currency_id) VALUES(?, ?, ?, ?)", buy_offers)
 
 
-def process_offer_list(npc_name, array, list_store):
+def process_offer_list(npc_name, array, list_store, item_map, npc_map, not_found):
     for lua_item in array.values():
         data = dict(lua_item.items())
         price = data["price"]
@@ -185,12 +200,26 @@ def process_offer_list(npc_name, array, list_store):
             m = link_pattern.search(price)
             price = int(m.group("price") or 1)
             currency = m.group(2)
-        list_store.append({
-            "npc": npc_name,
-            "item": data["item"],
-            "price": price,
-            "currency": currency
-        })
+        item_name = data["item"]
+        currency_name = currency
+        skip = False
+        if npc_name not in npc_map:
+            not_found["npc"].add(npc_name)
+            skip = True
+        if currency_name not in item_map:
+            not_found["item"].add(currency_name)
+            skip = True
+        if item_name not in item_map:
+            not_found["item"].add(item_name)
+            skip = True
+        if skip:
+            continue
+        list_store.append((
+            npc_map[npc_name],
+            price,
+            item_map[item_name],
+            item_map[currency_name]
+        ))
 
 
 def generate_loot_statistics(conn: sqlite3.Connection):

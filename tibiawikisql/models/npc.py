@@ -359,10 +359,10 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
 
     def insert(self, c):
         super().insert(c)
-        for offer in getattr(self, "buy_offers", []):
-            offer.insert(c)
-        for offer in getattr(self, "sell_offers", []):
-            offer.insert(c)
+        # for offer in getattr(self, "buy_offers", []):
+        #     offer.insert(c)
+        # for offer in getattr(self, "sell_offers", []):
+        #     offer.insert(c)
         for spell in getattr(self, "teaches", []):
             spell.insert(c)
         for destination in getattr(self, "destinations", []):
