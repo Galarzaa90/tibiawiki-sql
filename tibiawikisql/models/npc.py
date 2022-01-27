@@ -164,6 +164,8 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         The jobs of the NPC.
     location: :class:`str`
         The location of the NPC.
+    subarea: :class:`str`
+        A finer location of the NPC.
     city: :class:`str`
         The nearest city to where the NPC is located.
     x: :class:`int`
@@ -198,6 +200,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         "jobs",
         "location",
         "city",
+        "subarea",
         "x",
         "y",
         "z",
@@ -219,6 +222,7 @@ class Npc(abc.Row, abc.Parseable, table=schema.Npc):
         "location": ("location", clean_links),
         "gender": ("gender", str.strip),
         "city": ("city", str.strip),
+        "subarea": ("subarea", str.strip),
         "posx": ("x", convert_tibiawiki_position),
         "posy": ("y", convert_tibiawiki_position),
         "posz": ("z", int),

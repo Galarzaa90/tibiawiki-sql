@@ -600,7 +600,7 @@ class ItemAttribute(abc.Row, table=schema.ItemAttribute):
         "unshootable": "unshootable",
         "blocks_path": "blockspath",
         "walkable": "walkable",
-        "walking_speed": "walkingspeed",
+        "tile_friction": "walkingspeed",
         "map_color": "mapcolor",
         "upgrade_classification": "upgradeclass"
     }

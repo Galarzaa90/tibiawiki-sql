@@ -123,6 +123,8 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         The tier of the imbuement.
     type: :class:`str`
         The imbuement's type.
+    category: :class:`str`
+        The imbuement's category.
     effect: :class:`str`
         The effect given by the imbuement.
     slots: :class:`str`
@@ -141,6 +143,7 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         "name": ("name", str.strip),
         "prefix": ("tier", str.strip),
         "type": ("type", str.strip),
+        "category": ("category", str.strip),
         "effect": ("effect", parse_effect),
         "implemented": ("version", str.strip),
         "slots": ("slots", parse_slots),
@@ -155,6 +158,7 @@ class Imbuement(abc.Row, abc.Parseable, table=schema.Imbuement):
         "name",
         "tier",
         "type",
+        "category",
         "effect",
         "slots",
         "version",

@@ -169,6 +169,8 @@ link_pattern = re.compile(r"(?:(?P<price>\d+))?\s?\[\[([^\]|]+)")
 
 
 def generate_item_offers(conn: sqlite3.Connection, data_store):
+    if "npcs_map" not in data_store or "items_map" not in data_store:
+        return
     start_time = time.perf_counter()
     article = WikiClient.get_article("Module:ItemPrices/data")
     data = lua.execute(article.content)
