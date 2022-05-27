@@ -69,7 +69,7 @@ class Category:
 
 categories = {
     "achievements": Category("Achievements", models.Achievement, no_images=True),
-    "spells": Category("Spells", models.Spell),
+    "spells": Category("Spells", models.Spell, generate_map=True),
     "items": Category("Objects", models.Item, generate_map=True),
     "creatures": Category("Creatures", models.Creature, generate_map=True),
     "books": Category("Book Texts", models.Book, no_images=True),
@@ -142,6 +142,7 @@ def generate(skip_images, db_name, skip_deprecated):
         position.insert(conn)
 
     generate_item_offers(conn, data_store)
+    generate_spell_offers(conn, data_store)
     generate_loot_statistics(conn, data_store)
 
     if not skip_images:
@@ -166,6 +167,55 @@ def generate(skip_images, db_name, skip_deprecated):
 
 
 link_pattern = re.compile(r"(?:(?P<price>\d+))?\s?\[\[([^\]|]+)")
+
+
+def generate_spell_offers(conn: sqlite3.Connection, data_store):
+    if "npcs_map" not in data_store or "spells_map" not in data_store:
+        return
+    start_time = time.perf_counter()
+    article = WikiClient.get_article("Module:ItemPrices/spelldata")
+    data = lua.execute(article.content)
+
+    spell_offers = []
+    not_found_store = collections.defaultdict(set)
+    spells = list(data.items())
+    with progress_bar(spells, "Fetching spell offers", len(spells)) as bar:
+        for name, table in bar:
+            spell_id = data_store["spells_map"].get(name.lower())
+            if spell_id is None:
+                not_found_store["spell"].add(name)
+                continue
+            spell_vocations = list((table["vocation"].values()))
+            for npc, vocation in table["sellers"].items():
+                npc_id = data_store["npcs_map"].get(npc.lower())
+                if npc_id is None:
+                    not_found_store["item"].add(npc)
+                    continue
+                if isinstance(vocation, bool):
+                    npc_vocations = spell_vocations
+                elif isinstance(vocation, str):
+                    npc_vocations = [vocation]
+                else:
+                    npc_vocations = list(vocation.values())
+                spell_offers.append((
+                    npc_id,
+                    spell_id,
+                    "Knight" in npc_vocations,
+                    "Sorcerer" in npc_vocations,
+                    "Druid" in npc_vocations,
+                    "Paladin" in npc_vocations,
+                ))
+        with conn:
+            conn.execute("DELETE FROM npc_spell")
+            conn.executemany("INSERT INTO npc_spell(npc_id, spell_id, knight, sorcerer, paladin, druid) VALUES(?, ?, ?, ?, ?, ?)", spell_offers)
+        if not_found_store["spell"]:
+            unknonw_spells = not_found_store["spell"]
+            click.echo(f"{Fore.RED}Could not parse offers for {len(unknonw_spells):,} spell.{Style.RESET_ALL}")
+            click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unknonw_spells)}{Style.RESET_ALL}")
+        if not_found_store["npc"]:
+            unknown_npcs = not_found_store["npc"]
+            click.echo(f"{Fore.RED}Could not parse offers of {len(unknown_npcs):,} npcs.{Style.RESET_ALL}")
+            click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unknown_npcs)}{Style.RESET_ALL}")
 
 
 def generate_item_offers(conn: sqlite3.Connection, data_store):
