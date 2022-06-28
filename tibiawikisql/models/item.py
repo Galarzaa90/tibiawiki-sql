@@ -282,15 +282,18 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
             if attribute in item._raw_attributes and item._raw_attributes[attribute]:
                 item.attributes.append(ItemAttribute(item_id=item.article_id, name=name,
                                                      value=item._raw_attributes[attribute]))
-        item._parse_attributes()
-        item._parse_resists()
-        vocations = item._raw_attributes.get('vocrequired')
-        if vocations and "none" not in vocations.lower():
-            vocation = vocations.replace('and', '+').replace(',', '+').replace(' ', '')
-            item.attributes.append(ItemAttribute(item_id=item.article_id, name="vocation", value=vocation))
-        item._parse_sounds()
-        item._parse_store_value()
-        return item
+        try:
+            item._parse_attributes()
+            item._parse_resists()
+            vocations = item._raw_attributes.get('vocrequired')
+            if vocations and "none" not in vocations.lower():
+                vocation = vocations.replace('and', '+').replace(',', '+').replace(' ', '')
+                item.attributes.append(ItemAttribute(item_id=item.article_id, name="vocation", value=vocation))
+            item._parse_sounds()
+            item._parse_store_value()
+            return item
+        except Exception:
+            return None
 
     def _parse_attributes(self):
         if "attrib" not in self._raw_attributes:

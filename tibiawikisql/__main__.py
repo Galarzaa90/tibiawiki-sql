@@ -301,23 +301,24 @@ def generate_loot_statistics(conn: sqlite3.Connection, data_store):
                 if creature_id is None:
                     # This could happen if a creature's article was deleted but its Loot Statistics weren't
                     continue
-                # Most loot statistics contain stats for older versions too, we onl care about the latest version.
+                # Most loot statistics contain stats for older versions too, we only care about the latest version.
                 kills, loot_stats = parse_loot_statistics(article.content)
                 loot_items = []
                 for entry in loot_stats:
-                    item = entry["item"]
-                    times = entry["times"]
-                    amount = entry.get("amount", 1)
-                    item_id = data_store["items_map"].get(item.lower())
-                    if item_id is None:
-                        unknown_items.add(item)
-                        continue
-                    percentage = min(int(times) / kills * 100, 100)
-                    _min, _max = parse_min_max(amount)
-                    loot_items.append((creature_id, item_id, percentage, _min, _max))
-                    # We delete any duplicate record that was added from the creature's article's loot if it exists
-                    c.execute("DELETE FROM creature_drop WHERE creature_id = ? AND item_id = ?",
-                              (creature_id, item_id))
+                    if entry:
+                        item = entry["item"]
+                        times = entry["times"]
+                        amount = entry.get("amount", 1)
+                        item_id = data_store["items_map"].get(item.lower())
+                        if item_id is None:
+                            unknown_items.add(item)
+                            continue
+                        percentage = min(int(times) / kills * 100, 100)
+                        _min, _max = parse_min_max(amount)
+                        loot_items.append((creature_id, item_id, percentage, _min, _max))
+                        # We delete any duplicate record that was added from the creature's article's loot if it exists
+                        c.execute("DELETE FROM creature_drop WHERE creature_id = ? AND item_id = ?",
+                                (creature_id, item_id))
                 c.executemany("INSERT INTO creature_drop(creature_id, item_id, chance, min, max) VALUES(?,?,?,?,?)",
                               loot_items)
         dt = (time.perf_counter() - start_time)

@@ -203,7 +203,10 @@ def parse_date(value):
     try:
         dt = datetime.datetime.strptime(value, "%B %d, %Y")
     except ValueError:
-        dt = datetime.datetime.strptime(value, "%b %d, %Y")
+        try:
+            dt = datetime.datetime.strptime(value, "%b %d, %Y")
+        except ValueError:
+            dt = datetime.datetime.strptime(value, "%Y")
     return dt.date().isoformat()
 
 
@@ -297,7 +300,10 @@ def _parse_loot_entry(entry):
             key = subarg[0].strip()
             value = subarg[1].strip()
         entry[key] = value
-    return entry
+    if "item" in entry:
+        return entry
+    else:
+        return None
 
 
 def parse_min_max(value):
