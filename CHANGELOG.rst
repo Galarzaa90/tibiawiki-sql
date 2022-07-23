@@ -2,6 +2,16 @@
 Changelog
 =========
 
+
+.. 6.2.0
+
+6.2.0 (2022-07-22)
+==================
+- Added `bosstiary_class` to creatures.
+- NPC Offers are read from the ItemPrices data list.
+- NPC Spell offers are read from the ItemPrices spell list.
+- Performance improvements.
+
 .. 6.1.0
 
 6.1.0 (2022-01-04)
