@@ -261,6 +261,8 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         The creature's bestiary level, from 'Trivial' to 'Hard'
     bestiary_occurrence: :class:`str`
         The creature's bestiary occurrence, from 'Common'  to 'Very Rare'.
+    bosstiary_class: :class:`str`
+        The creature's bosstiary class, if applicable.
     hitpoints: :class:`int`
         The creature's hitpoints, may be `None` if unknown.
     experience: :class:`int`
@@ -336,6 +338,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "creatureclass": ("creature_class", str.strip),
         "bestiaryclass": ("bestiary_class", str.strip),
         "bestiarylevel": ("bestiary_level", str.strip),
+        "bosstiaryclass": ("bosstiary_class", str.strip),
         "occurrence": ("bestiary_occurrence", str.strip),
         "primarytype": ("creature_type", str.strip),
         "secondarytype": ("type_secondary", str.strip),
@@ -384,6 +387,7 @@ class Creature(abc.Row, abc.Parseable, table=schema.Creature):
         "bestiary_level",
         "bestiary_class",
         "bestiary_occurrence",
+        "bosstiary_class",
         "hitpoints",
         "experience",
         "armor",

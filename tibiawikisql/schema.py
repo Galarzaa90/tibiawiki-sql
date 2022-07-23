@@ -63,6 +63,7 @@ class Creature(Table):
     bestiary_class = Column(Text, index=True)
     bestiary_level = Column(Text, index=True)
     bestiary_occurrence = Column(Text, index=True)
+    bosstiary_class = Column(Text, index=True)
     runs_at = Column(Integer)
     summon_cost = Column(Integer)
     convince_cost = Column(Integer)

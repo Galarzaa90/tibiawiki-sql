@@ -255,6 +255,10 @@ creature
 |                     |             | this creature. ``NULL`` for                                   |
 |                     |             | creatures not in the bestiary.                                |
 +---------------------+-------------+---------------------------------------------------------------+
+| bosstiary_class     | ``TEXT``    | The bosstiary category of this                                |
+|                     |             | creature. ``NULL`` for creatures                              |
+|                     |             | not in the bestiary.                                          |
++---------------------+-------------+---------------------------------------------------------------+
 | max_damage          | ``INTEGER`` | The maximum damage a creature may                             |
 |                     |             | deal if it were to use all it’s                               |
 |                     |             | abilities at once. May be ``NULL`` if unknown.                |
