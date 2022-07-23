@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,6 +12,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/custom.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -210,6 +211,8 @@
 <span class="sd">        The jobs of the NPC.</span>
 <span class="sd">    location: :class:`str`</span>
 <span class="sd">        The location of the NPC.</span>
+<span class="sd">    subarea: :class:`str`</span>
+<span class="sd">        A finer location of the NPC.</span>
 <span class="sd">    city: :class:`str`</span>
 <span class="sd">        The nearest city to where the NPC is located.</span>
 <span class="sd">    x: :class:`int`</span>
@@ -244,6 +247,7 @@
         <span class="s2">&quot;jobs&quot;</span><span class="p">,</span>
         <span class="s2">&quot;location&quot;</span><span class="p">,</span>
         <span class="s2">&quot;city&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;subarea&quot;</span><span class="p">,</span>
         <span class="s2">&quot;x&quot;</span><span class="p">,</span>
         <span class="s2">&quot;y&quot;</span><span class="p">,</span>
         <span class="s2">&quot;z&quot;</span><span class="p">,</span>
@@ -265,6 +269,7 @@
         <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="n">clean_links</span><span class="p">),</span>
         <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;subarea&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;subarea&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;posx&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">convert_tibiawiki_position</span><span class="p">),</span>
         <span class="s2">&quot;posy&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">convert_tibiawiki_position</span><span class="p">),</span>
         <span class="s2">&quot;posz&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
@@ -405,10 +410,10 @@
 
 <div class="viewcode-block" id="Npc.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Npc.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">offer</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;buy_offers&quot;</span><span class="p">,</span> <span class="p">[]):</span>
-            <span class="n">offer</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">offer</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;sell_offers&quot;</span><span class="p">,</span> <span class="p">[]):</span>
-            <span class="n">offer</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="c1"># for offer in getattr(self, &quot;buy_offers&quot;, []):</span>
+        <span class="c1">#     offer.insert(c)</span>
+        <span class="c1"># for offer in getattr(self, &quot;sell_offers&quot;, []):</span>
+        <span class="c1">#     offer.insert(c)</span>
         <span class="k">for</span> <span class="n">spell</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;teaches&quot;</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="n">spell</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">destination</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;destinations&quot;</span><span class="p">,</span> <span class="p">[]):</span>
@@ -837,7 +842,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 <h3 class="donation">Donate/support</h3>
@@ -860,7 +865,7 @@
     </div>
   <div class="footer">
     &copy; Copyright 2021, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.2.
   </div>
   
   </body>

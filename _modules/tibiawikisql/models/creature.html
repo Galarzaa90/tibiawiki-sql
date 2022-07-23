@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,6 +12,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/custom.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -307,6 +308,8 @@
 <span class="sd">        The creature&#39;s bestiary level, from &#39;Trivial&#39; to &#39;Hard&#39;</span>
 <span class="sd">    bestiary_occurrence: :class:`str`</span>
 <span class="sd">        The creature&#39;s bestiary occurrence, from &#39;Common&#39;  to &#39;Very Rare&#39;.</span>
+<span class="sd">    bosstiary_class: :class:`str`</span>
+<span class="sd">        The creature&#39;s bosstiary class, if applicable.</span>
 <span class="sd">    hitpoints: :class:`int`</span>
 <span class="sd">        The creature&#39;s hitpoints, may be `None` if unknown.</span>
 <span class="sd">    experience: :class:`int`</span>
@@ -382,6 +385,7 @@
         <span class="s2">&quot;creatureclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;creature_class&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;bestiaryclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_class&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;bestiarylevel&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_level&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
+        <span class="s2">&quot;bosstiaryclass&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bosstiary_class&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;occurrence&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;bestiary_occurrence&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;primarytype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;creature_type&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
         <span class="s2">&quot;secondarytype&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;type_secondary&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">),</span>
@@ -430,6 +434,7 @@
         <span class="s2">&quot;bestiary_level&quot;</span><span class="p">,</span>
         <span class="s2">&quot;bestiary_class&quot;</span><span class="p">,</span>
         <span class="s2">&quot;bestiary_occurrence&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bosstiary_class&quot;</span><span class="p">,</span>
         <span class="s2">&quot;hitpoints&quot;</span><span class="p">,</span>
         <span class="s2">&quot;experience&quot;</span><span class="p">,</span>
         <span class="s2">&quot;armor&quot;</span><span class="p">,</span>
@@ -910,7 +915,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 <h3 class="donation">Donate/support</h3>
@@ -933,7 +938,7 @@
     </div>
   <div class="footer">
     &copy; Copyright 2021, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.2.
   </div>
   
   </body>

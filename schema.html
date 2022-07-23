@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Database &#8212; TibiaWikiSQL 6.1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -13,6 +13,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/custom.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -52,17 +53,13 @@
           <div class="body" role="main">
             
   <section id="database">
-<h1>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h1>
+<h1>Database<a class="headerlink" href="#database" title="Permalink to this heading">¶</a></h1>
 <p>The SQLite database contains a series of tables dedicated to each of the model types. Following SQL best practices where possible.</p>
 <p>The database can be accessed through the API provided by this module, or directly any SQLite API using queries.</p>
 <p>The generated database has the following tables.</p>
 <section id="tables">
-<h2>Tables<a class="headerlink" href="#tables" title="Permalink to this headline">¶</a></h2>
+<h2>Tables<a class="headerlink" href="#tables" title="Permalink to this heading">¶</a></h2>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 30%" />
-<col style="width: 70%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Table</p></th>
 <th class="head"><p>Description</p></th>
@@ -184,20 +181,15 @@ every day of the week.</p></td>
 </table>
 </section>
 <section id="table-schemas">
-<h2>Table schemas<a class="headerlink" href="#table-schemas" title="Permalink to this headline">¶</a></h2>
+<h2>Table schemas<a class="headerlink" href="#table-schemas" title="Permalink to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>SQLite does not have an actual Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true).</p>
 <p>This is not much of an issue in Python, but it might be an issue on more strict typed languages.</p>
 </div>
 <section id="achievement">
-<h3>achievement<a class="headerlink" href="#achievement" title="Permalink to this headline">¶</a></h3>
+<h3>achievement<a class="headerlink" href="#achievement" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 19%" />
-<col style="width: 16%" />
-<col style="width: 65%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -267,13 +259,8 @@ was implemented in.</p></td>
 </table>
 </section>
 <section id="book">
-<h3>book<a class="headerlink" href="#book" title="Permalink to this headline">¶</a></h3>
+<h3>book<a class="headerlink" href="#book" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 13%" />
-<col style="width: 14%" />
-<col style="width: 73%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -343,13 +330,8 @@ introduced to the game.</p></td>
 </table>
 </section>
 <section id="charm">
-<h3>charm<a class="headerlink" href="#charm" title="Permalink to this headline">¶</a></h3>
+<h3>charm<a class="headerlink" href="#charm" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 13%" />
-<col style="width: 14%" />
-<col style="width: 73%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -402,13 +384,8 @@ introduced to the game.</p></td>
 </table>
 </section>
 <section id="creature">
-<h3>creature<a class="headerlink" href="#creature" title="Permalink to this headline">¶</a></h3>
+<h3>creature<a class="headerlink" href="#creature" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 22%" />
-<col style="width: 13%" />
-<col style="width: 65%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -497,55 +474,61 @@ not in the bestiary.</p></td>
 this creature. <code class="docutils literal notranslate"><span class="pre">NULL</span></code> for
 creatures not in the bestiary.</p></td>
 </tr>
-<tr class="row-even"><td><p>max_damage</p></td>
+<tr class="row-even"><td><p>bosstiary_class</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
+<td><p>The bosstiary category of this
+creature. <code class="docutils literal notranslate"><span class="pre">NULL</span></code> for creatures
+not in the bestiary.</p></td>
+</tr>
+<tr class="row-odd"><td><p>max_damage</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>The maximum damage a creature may
 deal if it were to use all it’s
 abilities at once. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if unknown.</p></td>
 </tr>
-<tr class="row-odd"><td><p>runs_at</p></td>
+<tr class="row-even"><td><p>runs_at</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>The amount of hitpoints when the creature starts to run away.
 0 means it won’t run away.</p></td>
 </tr>
-<tr class="row-even"><td><p>summon_cost</p></td>
+<tr class="row-odd"><td><p>summon_cost</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>The mana cost to summon this
 creature. <code class="docutils literal notranslate"><span class="pre">0</span></code> means it is not summonable.</p></td>
 </tr>
-<tr class="row-odd"><td><p>convince_cost</p></td>
+<tr class="row-even"><td><p>convince_cost</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>The mana cost to convince this
 creature. <code class="docutils literal notranslate"><span class="pre">0</span></code> means it is not convincible.</p></td>
 </tr>
-<tr class="row-even"><td><p>illusionable</p></td>
+<tr class="row-odd"><td><p>illusionable</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
 <td><p>Whether the player can turn into
 this creature with Creature Illusion.</p></td>
 </tr>
-<tr class="row-odd"><td><p>pushable</p></td>
+<tr class="row-even"><td><p>pushable</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
 <td><p>Whether this creature can be pushed or not.</p></td>
 </tr>
-<tr class="row-even"><td><p>push_objects</p></td>
+<tr class="row-odd"><td><p>push_objects</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
 <td><p>Whether this creature can push objects or not.</p></td>
 </tr>
-<tr class="row-odd"><td><p>paralysable</p></td>
+<tr class="row-even"><td><p>paralysable</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
 <td><p>Whether this creature can be paralyzed or not.</p></td>
 </tr>
-<tr class="row-even"><td><p>sees_invisible</p></td>
+<tr class="row-odd"><td><p>sees_invisible</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
 <td><p>Whether this creature can see
 invisible players or not.</p></td>
 </tr>
-<tr class="row-odd"><td><p>boss</p></td>
+<tr class="row-even"><td><p>boss</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></p></td>
 <td><p>Whether this creature is a boss or
 not.</p></td>
 </tr>
-<tr class="row-even"><td><p>modifier_physical</p></td>
+<tr class="row-odd"><td><p>modifier_physical</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>Percentage of damage the creature
 receives from this damage type.
@@ -553,7 +536,7 @@ receives from this damage type.
 <code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
 if unknown.</p></td>
 </tr>
-<tr class="row-odd"><td><p>modifier_earth</p></td>
+<tr class="row-even"><td><p>modifier_earth</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>Percentage of damage the creature
 receives from this damage type.
@@ -561,7 +544,7 @@ receives from this damage type.
 <code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
 if unknown.</p></td>
 </tr>
-<tr class="row-even"><td><p>modifier_fire</p></td>
+<tr class="row-odd"><td><p>modifier_fire</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>Percentage of damage the creature
 receives from this damage type.
@@ -569,7 +552,7 @@ receives from this damage type.
 <code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
 if unknown.</p></td>
 </tr>
-<tr class="row-odd"><td><p>modifier_ice</p></td>
+<tr class="row-even"><td><p>modifier_ice</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>Percentage of damage the creature
 receives from this damage type.
@@ -577,7 +560,7 @@ receives from this damage type.
 <code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
 if unknown.</p></td>
 </tr>
-<tr class="row-even"><td><p>modifier_energy</p></td>
+<tr class="row-odd"><td><p>modifier_energy</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>Percentage of damage the creature
 receives from this damage type.
@@ -585,7 +568,7 @@ receives from this damage type.
 <code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
 if unknown.</p></td>
 </tr>
-<tr class="row-odd"><td><p>modifier_death</p></td>
+<tr class="row-even"><td><p>modifier_death</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>Percentage of damage the creature
 receives from this damage type.
@@ -593,7 +576,7 @@ receives from this damage type.
 <code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
 if unknown.</p></td>
 </tr>
-<tr class="row-even"><td><p>modifier_holy</p></td>
+<tr class="row-odd"><td><p>modifier_holy</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>Percentage of damage the creature
 receives from this damage type.
@@ -601,15 +584,7 @@ receives from this damage type.
 <code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
 if unknown.</p></td>
 </tr>
-<tr class="row-odd"><td><p>modifier_drown</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
-<td><p>Percentage of damage the creature
-receives from this damage type.
-<code class="docutils literal notranslate"><span class="pre">0</span></code> being completely immune,
-<code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
-if unknown.</p></td>
-</tr>
-<tr class="row-even"><td><p>modifier_hpdrain</p></td>
+<tr class="row-even"><td><p>modifier_drown</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>Percentage of damage the creature
 receives from this damage type.
@@ -619,43 +594,51 @@ if unknown.</p></td>
 </tr>
 <tr class="row-odd"><td><p>modifier_hpdrain</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
+<td><p>Percentage of damage the creature
+receives from this damage type.
+<code class="docutils literal notranslate"><span class="pre">0</span></code> being completely immune,
+<code class="docutils literal notranslate"><span class="pre">100</span></code> neutral. May be <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
+if unknown.</p></td>
+</tr>
+<tr class="row-even"><td><p>modifier_hpdrain</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>The healing modifier. <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if unknown.</p></td>
 </tr>
-<tr class="row-even"><td><p>abilities</p></td>
+<tr class="row-odd"><td><p>abilities</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
 <td><p>A summary of a creature’s
 abilities (attacks, spells,
 healing).</p></td>
 </tr>
-<tr class="row-odd"><td><p>walks_through</p></td>
+<tr class="row-even"><td><p>walks_through</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
 <td><p>The type of fields the creature
 will walk through.</p></td>
 </tr>
-<tr class="row-even"><td><p>walks_around</p></td>
+<tr class="row-odd"><td><p>walks_around</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
 <td><p>The type of fields the creature
 will walk around to avoid when
 possible.</p></td>
 </tr>
-<tr class="row-odd"><td><p>location</p></td>
+<tr class="row-even"><td><p>location</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
 <td><p>The locations where the creature can be found.</p></td>
 </tr>
-<tr class="row-even"><td><p>version</p></td>
+<tr class="row-odd"><td><p>version</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
 <td><p>The client version this creature
 was introduced to the game.</p></td>
 </tr>
-<tr class="row-odd"><td><p>image</p></td>
+<tr class="row-even"><td><p>image</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">BLOB</span></code></p></td>
 <td><p>The creature’s image bytes.</p></td>
 </tr>
-<tr class="row-even"><td><p>status</p></td>
+<tr class="row-odd"><td><p>status</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></p></td>
 <td><p>The status of the creature in game.</p></td>
 </tr>
-<tr class="row-odd"><td><p>timestamp</p></td>
+<tr class="row-even"><td><p>timestamp</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">INTEGER</span></code></p></td>
 <td><p>Unix timestamp of the article’s last edit.</p></td>
 </tr>
@@ -663,13 +646,8 @@ was introduced to the game.</p></td>
 </table>
 </section>
 <section id="creature-ability">
-<h3>creature_ability<a class="headerlink" href="#creature-ability" title="Permalink to this headline">¶</a></h3>
+<h3>creature_ability<a class="headerlink" href="#creature-ability" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 78%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -697,13 +675,8 @@ was introduced to the game.</p></td>
 </table>
 </section>
 <section id="creature-drop">
-<h3>creature_drop<a class="headerlink" href="#creature-drop" title="Permalink to this headline">¶</a></h3>
+<h3>creature_drop<a class="headerlink" href="#creature-drop" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 15%" />
-<col style="width: 69%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -735,13 +708,8 @@ was introduced to the game.</p></td>
 </table>
 </section>
 <section id="creature-max-damage">
-<h3>creature_max_damage<a class="headerlink" href="#creature-max-damage" title="Permalink to this headline">¶</a></h3>
+<h3>creature_max_damage<a class="headerlink" href="#creature-max-damage" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 10%" />
-<col style="width: 81%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -819,13 +787,8 @@ If it is unknown, but the creature does deal damage, it will be -1.</p></td>
 </table>
 </section>
 <section id="creature-sound">
-<h3>creature_sound<a class="headerlink" href="#creature-sound" title="Permalink to this headline">¶</a></h3>
+<h3>creature_sound<a class="headerlink" href="#creature-sound" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 18%" />
-<col style="width: 18%" />
-<col style="width: 64%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -845,13 +808,8 @@ If it is unknown, but the creature does deal damage, it will be -1.</p></td>
 </table>
 </section>
 <section id="database-info">
-<h3>database_info<a class="headerlink" href="#database-info" title="Permalink to this headline">¶</a></h3>
+<h3>database_info<a class="headerlink" href="#database-info" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 24%" />
-<col style="width: 62%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -871,13 +829,8 @@ If it is unknown, but the creature does deal damage, it will be -1.</p></td>
 </table>
 </section>
 <section id="game-update">
-<h3>game_update<a class="headerlink" href="#game-update" title="Permalink to this headline">¶</a></h3>
+<h3>game_update<a class="headerlink" href="#game-update" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 18%" />
-<col style="width: 14%" />
-<col style="width: 68%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -938,13 +891,8 @@ If it is unknown, but the creature does deal damage, it will be -1.</p></td>
 </table>
 </section>
 <section id="house">
-<h3>house<a class="headerlink" href="#house" title="Permalink to this headline">¶</a></h3>
+<h3>house<a class="headerlink" href="#house" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 16%" />
-<col style="width: 18%" />
-<col style="width: 66%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1033,13 +981,8 @@ If it is unknown, but the creature does deal damage, it will be -1.</p></td>
 </table>
 </section>
 <section id="imbuement">
-<h3>imbuement<a class="headerlink" href="#imbuement" title="Permalink to this headline">¶</a></h3>
+<h3>imbuement<a class="headerlink" href="#imbuement" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 13%" />
-<col style="width: 15%" />
-<col style="width: 72%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1097,13 +1040,8 @@ was introduced to the game.</p></td>
 </table>
 </section>
 <section id="imbuement-material">
-<h3>imbuement_material<a class="headerlink" href="#imbuement-material" title="Permalink to this headline">¶</a></h3>
+<h3>imbuement_material<a class="headerlink" href="#imbuement-material" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 18%" />
-<col style="width: 17%" />
-<col style="width: 65%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1127,13 +1065,8 @@ was introduced to the game.</p></td>
 </table>
 </section>
 <section id="item">
-<h3>item<a class="headerlink" href="#item" title="Permalink to this headline">¶</a></h3>
+<h3>item<a class="headerlink" href="#item" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 19%" />
-<col style="width: 15%" />
-<col style="width: 65%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1236,13 +1169,8 @@ introduced to the game.</p></td>
 </table>
 </section>
 <section id="item-attribute">
-<h3>item_attribute<a class="headerlink" href="#item-attribute" title="Permalink to this headline">¶</a></h3>
+<h3>item_attribute<a class="headerlink" href="#item-attribute" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 13%" />
-<col style="width: 19%" />
-<col style="width: 68%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1266,13 +1194,8 @@ introduced to the game.</p></td>
 </table>
 </section>
 <section id="item-key">
-<h3>item_key<a class="headerlink" href="#item-key" title="Permalink to this headline">¶</a></h3>
+<h3>item_key<a class="headerlink" href="#item-key" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 17%" />
-<col style="width: 18%" />
-<col style="width: 65%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1336,13 +1259,8 @@ introduced to the game.</p></td>
 </table>
 </section>
 <section id="item-sound">
-<h3>item_sound<a class="headerlink" href="#item-sound" title="Permalink to this headline">¶</a></h3>
+<h3>item_sound<a class="headerlink" href="#item-sound" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 14%" />
-<col style="width: 20%" />
-<col style="width: 66%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1362,13 +1280,8 @@ introduced to the game.</p></td>
 </table>
 </section>
 <section id="item-store-offer">
-<h3>item_store_offer<a class="headerlink" href="#item-store-offer" title="Permalink to this headline">¶</a></h3>
+<h3>item_store_offer<a class="headerlink" href="#item-store-offer" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 14%" />
-<col style="width: 18%" />
-<col style="width: 68%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1396,13 +1309,8 @@ introduced to the game.</p></td>
 </table>
 </section>
 <section id="map">
-<h3>map<a class="headerlink" href="#map" title="Permalink to this headline">¶</a></h3>
+<h3>map<a class="headerlink" href="#map" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 11%" />
-<col style="width: 18%" />
-<col style="width: 72%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1423,13 +1331,8 @@ introduced to the game.</p></td>
 </table>
 </section>
 <section id="mount">
-<h3>mount<a class="headerlink" href="#mount" title="Permalink to this headline">¶</a></h3>
+<h3>mount<a class="headerlink" href="#mount" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 16%" />
-<col style="width: 14%" />
-<col style="width: 70%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1498,13 +1401,8 @@ introduced to the game.</p></td>
 </table>
 </section>
 <section id="npc">
-<h3>npc<a class="headerlink" href="#npc" title="Permalink to this headline">¶</a></h3>
+<h3>npc<a class="headerlink" href="#npc" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 15%" />
-<col style="width: 64%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1582,13 +1480,8 @@ to the game.</p></td>
 </table>
 </section>
 <section id="npc-destination">
-<h3>npc_destination<a class="headerlink" href="#npc-destination" title="Permalink to this headline">¶</a></h3>
+<h3>npc_destination<a class="headerlink" href="#npc-destination" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 14%" />
-<col style="width: 23%" />
-<col style="width: 63%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1621,13 +1514,8 @@ exceptions.</p></td>
 </table>
 </section>
 <section id="npc-job">
-<h3>npc_job<a class="headerlink" href="#npc-job" title="Permalink to this headline">¶</a></h3>
+<h3>npc_job<a class="headerlink" href="#npc-job" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 14%" />
-<col style="width: 23%" />
-<col style="width: 63%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1647,13 +1535,8 @@ exceptions.</p></td>
 </table>
 </section>
 <section id="npc-offer-buy">
-<h3>npc_offer_buy<a class="headerlink" href="#npc-offer-buy" title="Permalink to this headline">¶</a></h3>
+<h3>npc_offer_buy<a class="headerlink" href="#npc-offer-buy" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 18%" />
-<col style="width: 23%" />
-<col style="width: 59%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1686,13 +1569,8 @@ coins.</p></td>
 </table>
 </section>
 <section id="npc-offer-sell">
-<h3>npc_offer_sell<a class="headerlink" href="#npc-offer-sell" title="Permalink to this headline">¶</a></h3>
+<h3>npc_offer_sell<a class="headerlink" href="#npc-offer-sell" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 18%" />
-<col style="width: 23%" />
-<col style="width: 59%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1725,13 +1603,8 @@ coins.</p></td>
 </table>
 </section>
 <section id="npc-race">
-<h3>npc_race<a class="headerlink" href="#npc-race" title="Permalink to this headline">¶</a></h3>
+<h3>npc_race<a class="headerlink" href="#npc-race" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 14%" />
-<col style="width: 22%" />
-<col style="width: 64%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1751,13 +1624,8 @@ coins.</p></td>
 </table>
 </section>
 <section id="npc-spell">
-<h3>npc_spell<a class="headerlink" href="#npc-spell" title="Permalink to this headline">¶</a></h3>
+<h3>npc_spell<a class="headerlink" href="#npc-spell" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 19%" />
-<col style="width: 66%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1797,13 +1665,8 @@ paladins.</p></td>
 </table>
 </section>
 <section id="outfit">
-<h3>outfit<a class="headerlink" href="#outfit" title="Permalink to this headline">¶</a></h3>
+<h3>outfit<a class="headerlink" href="#outfit" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 15%" />
-<col style="width: 70%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1866,13 +1729,8 @@ article.</p></td>
 </table>
 </section>
 <section id="outfit-image">
-<h3>outfit_image<a class="headerlink" href="#outfit-image" title="Permalink to this headline">¶</a></h3>
+<h3>outfit_image<a class="headerlink" href="#outfit-image" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 17%" />
-<col style="width: 20%" />
-<col style="width: 63%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1900,13 +1758,8 @@ article.</p></td>
 </table>
 </section>
 <section id="outfit-quest">
-<h3>outfit_quest<a class="headerlink" href="#outfit-quest" title="Permalink to this headline">¶</a></h3>
+<h3>outfit_quest<a class="headerlink" href="#outfit-quest" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 14%" />
-<col style="width: 17%" />
-<col style="width: 68%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -1930,13 +1783,8 @@ article.</p></td>
 </table>
 </section>
 <section id="quest">
-<h3>quest<a class="headerlink" href="#quest" title="Permalink to this headline">¶</a></h3>
+<h3>quest<a class="headerlink" href="#quest" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 21%" />
-<col style="width: 14%" />
-<col style="width: 65%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -2021,13 +1869,8 @@ article.</p></td>
 </table>
 </section>
 <section id="quest-danger">
-<h3>quest_danger<a class="headerlink" href="#quest-danger" title="Permalink to this headline">¶</a></h3>
+<h3>quest_danger<a class="headerlink" href="#quest-danger" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 19%" />
-<col style="width: 19%" />
-<col style="width: 61%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -2047,13 +1890,8 @@ article.</p></td>
 </table>
 </section>
 <section id="quest-reward">
-<h3>quest_reward<a class="headerlink" href="#quest-reward" title="Permalink to this headline">¶</a></h3>
+<h3>quest_reward<a class="headerlink" href="#quest-reward" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 16%" />
-<col style="width: 20%" />
-<col style="width: 64%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -2073,13 +1911,8 @@ article.</p></td>
 </table>
 </section>
 <section id="rashid-position">
-<h3>rashid_position<a class="headerlink" href="#rashid-position" title="Permalink to this headline">¶</a></h3>
+<h3>rashid_position<a class="headerlink" href="#rashid-position" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 20%" />
-<col style="width: 65%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -2116,13 +1949,8 @@ article.</p></td>
 </table>
 </section>
 <section id="spell">
-<h3>spell<a class="headerlink" href="#spell" title="Permalink to this headline">¶</a></h3>
+<h3>spell<a class="headerlink" href="#spell" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 28%" />
-<col style="width: 14%" />
-<col style="width: 59%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -2252,13 +2080,8 @@ paladins or not.</p></td>
 </table>
 </section>
 <section id="world">
-<h3>world<a class="headerlink" href="#world" title="Permalink to this headline">¶</a></h3>
+<h3>world<a class="headerlink" href="#world" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 16%" />
-<col style="width: 12%" />
-<col style="width: 72%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Column</p></th>
 <th class="head"><p>Type</p></th>
@@ -2447,7 +2270,7 @@ paladins or not.</p></td>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 <h3 class="donation">Donate/support</h3>
@@ -2470,7 +2293,7 @@ paladins or not.</p></td>
     </div>
   <div class="footer">
     &copy; Copyright 2021, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.2.
   </div>
   
   </body>

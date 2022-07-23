@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,6 +12,7 @@
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/custom.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -328,15 +329,18 @@
             <span class="k">if</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">]:</span>
                 <span class="n">item</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                                                      <span class="n">value</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">]))</span>
-        <span class="n">item</span><span class="o">.</span><span class="n">_parse_attributes</span><span class="p">()</span>
-        <span class="n">item</span><span class="o">.</span><span class="n">_parse_resists</span><span class="p">()</span>
-        <span class="n">vocations</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;vocrequired&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">vocations</span> <span class="ow">and</span> <span class="s2">&quot;none&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vocations</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
-            <span class="n">vocation</span> <span class="o">=</span> <span class="n">vocations</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-            <span class="n">item</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vocation&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">vocation</span><span class="p">))</span>
-        <span class="n">item</span><span class="o">.</span><span class="n">_parse_sounds</span><span class="p">()</span>
-        <span class="n">item</span><span class="o">.</span><span class="n">_parse_store_value</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">item</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">_parse_attributes</span><span class="p">()</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">_parse_resists</span><span class="p">()</span>
+            <span class="n">vocations</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;vocrequired&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">vocations</span> <span class="ow">and</span> <span class="s2">&quot;none&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vocations</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">vocation</span> <span class="o">=</span> <span class="n">vocations</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vocation&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">vocation</span><span class="p">))</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">_parse_sounds</span><span class="p">()</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">_parse_store_value</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">item</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
 
     <span class="k">def</span> <span class="nf">_parse_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="s2">&quot;attrib&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_attributes</span><span class="p">:</span>
@@ -646,7 +650,7 @@
         <span class="s2">&quot;unshootable&quot;</span><span class="p">:</span> <span class="s2">&quot;unshootable&quot;</span><span class="p">,</span>
         <span class="s2">&quot;blocks_path&quot;</span><span class="p">:</span> <span class="s2">&quot;blockspath&quot;</span><span class="p">,</span>
         <span class="s2">&quot;walkable&quot;</span><span class="p">:</span> <span class="s2">&quot;walkable&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;walking_speed&quot;</span><span class="p">:</span> <span class="s2">&quot;walkingspeed&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tile_friction&quot;</span><span class="p">:</span> <span class="s2">&quot;walkingspeed&quot;</span><span class="p">,</span>
         <span class="s2">&quot;map_color&quot;</span><span class="p">:</span> <span class="s2">&quot;mapcolor&quot;</span><span class="p">,</span>
         <span class="s2">&quot;upgrade_classification&quot;</span><span class="p">:</span> <span class="s2">&quot;upgradeclass&quot;</span>
     <span class="p">}</span>
@@ -811,7 +815,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 <h3 class="donation">Donate/support</h3>
@@ -834,7 +838,7 @@
     </div>
   <div class="footer">
     &copy; Copyright 2021, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.2.
   </div>
   
   </body>
