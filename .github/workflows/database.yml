@@ -30,7 +30,7 @@ jobs:
             images
 
       - name: Generate Database 🗄
-        run: tibiawikisql generate
+        run: tibiawikisql generate --skip-deprecated
 
       - name: Upload database 🚀
         uses: actions/upload-artifact@v2
