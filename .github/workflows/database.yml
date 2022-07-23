@@ -25,9 +25,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/images
-          key: images-${{env.GITHUB_SHA}}
+          key: images
           restore-keys: |
-            images-
+            images
 
       - name: Generate Database 🗄
         run: tibiawikisql generate
