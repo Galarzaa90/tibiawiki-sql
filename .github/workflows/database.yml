@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+  schedule:
+    - cron: '0 0 * * 0'  # Every Sunday at 00:00
 
 jobs:
   build:
