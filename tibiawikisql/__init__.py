@@ -15,10 +15,10 @@
 """API that reads and parses information from `TibiaWiki <https://tibiawiki.fandom.com>`_."""
 
 __author__ = "Allan Galarza"
-__copyright__ = "Copyright 2021 Allan Galarza"
+__copyright__ = "Copyright 2024 Allan Galarza"
 
 __license__ = "Apache 2.0"
-__version__ = "6.2.0"
+__version__ = "6.2.1"
 
 from tibiawikisql import models
 from tibiawikisql.api import Article, Image, WikiClient, WikiEntry

@@ -2,6 +2,12 @@
 Changelog
 =========
 
+.. 6.2.1
+
+6.2.1 (2024-06-27)
+==================
+- Fix database generation failing due to invalid date format.
+
 
 .. 6.2.0
 
