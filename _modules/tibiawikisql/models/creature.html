@@ -1,20 +1,17 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tibiawikisql.models.creature &#8212; TibiaWikiSQL 6.2.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/custom.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=a66d8bb5" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=4183444b" />
+    <script src="../../../_static/documentation_options.js?v=f13f159b"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/custom.js?v=49006cea"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -96,7 +93,7 @@
 
 
 <span class="k">def</span> <span class="nf">parse_abilities</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Parse the abilities of a creature.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the abilities of a creature.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -163,7 +160,7 @@
 
 
 <span class="k">def</span> <span class="nf">parse_maximum_damage</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Parse the maximum damage template from TibiaWiki.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the maximum damage template from TibiaWiki.</span>
 
 <span class="sd">    If no template is found, the highest number found is considered the total damage.</span>
 
@@ -195,7 +192,7 @@
 
 
 <span class="k">def</span> <span class="nf">parse_maximum_integer</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    From a string, finds the highest integer found.</span>
 
 <span class="sd">    Parameters</span>
@@ -216,7 +213,7 @@
 
 
 <span class="k">def</span> <span class="nf">parse_loot</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get every item drop entry of a creature&#39;s drops.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get every item drop entry of a creature&#39;s drops.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -247,7 +244,7 @@
 
 
 <span class="k">def</span> <span class="nf">parse_monster_walks</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Match the values against a regex to filter typos or bad data on the wiki.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Match the values against a regex to filter typos or bad data on the wiki.</span>
 
 <span class="sd">    Element names followed by any character that is not a comma will be considered unknown and will not be returned.</span>
 
@@ -277,8 +274,10 @@
     <span class="k">return</span> <span class="n">content</span>
 
 
-<div class="viewcode-block" id="Creature"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature">[docs]</a><span class="k">class</span> <span class="nc">Creature</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">Creature</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represents a creature.</span>
+<div class="viewcode-block" id="Creature">
+<a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature">[docs]</a>
+<span class="k">class</span> <span class="nc">Creature</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">Parseable</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">Creature</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a creature.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -475,7 +474,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bestiary_kills</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;:class:`int`, optional:Total kills needed to complete the bestiary entry if applicable.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;:class:`int`, optional:Total kills needed to complete the bestiary entry if applicable.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">KILLS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bestiary_level</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestiary_occurrence</span> <span class="o">!=</span> <span class="s1">&#39;Very Rare&#39;</span> <span class="k">else</span> <span class="mi">5</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
@@ -483,7 +482,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">charm_points</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;:class:`int`, optional: Charm points awarded for completing the creature&#39;s bestiary entry, if applicable.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;:class:`int`, optional: Charm points awarded for completing the creature&#39;s bestiary entry, if applicable.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">multiplier</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestiary_occurrence</span> <span class="o">==</span> <span class="s1">&#39;Very Rare&#39;</span><span class="p">:</span>
@@ -497,29 +496,31 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">elemental_modifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;:class:`OrderedDict`: Returns a dictionary containing all elemental modifiers, sorted in descending order.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;:class:`OrderedDict`: Returns a dictionary containing all elemental modifiers, sorted in descending order.&quot;&quot;&quot;</span>
         <span class="n">modifiers</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;modifier_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ELEMENTAL_MODIFIERS</span> <span class="k">if</span>
                      <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;modifier_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">modifiers</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">immune_to</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;:class:`list` of :class:`str`: Gets a list of the elements the creature is immune to.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;:class:`list` of :class:`str`: Gets a list of the elements the creature is immune to.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elemental_modifiers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">weak_to</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;:class:`OrderedDict`: Dictionary containing the elements the creature is weak to and modifier.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;:class:`OrderedDict`: Dictionary containing the elements the creature is weak to and modifier.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elemental_modifiers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">})</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">resistant_to</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;:class:`OrderedDict`: Dictionary containing the elements the creature is resistant to and modifier.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;:class:`OrderedDict`: Dictionary containing the elements the creature is resistant to and modifier.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elemental_modifiers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="mi">100</span> <span class="o">&gt;</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">})</span>
 
-<div class="viewcode-block" id="Creature.from_article"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature.from_article">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Creature.from_article">
+<a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature.from_article">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_article</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">article</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parse an article into a TibiaWiki model.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse an article into a TibiaWiki model.</span>
 
 <span class="sd">        This method is overridden to parse extra attributes like loot.</span>
 
@@ -561,8 +562,11 @@
                 <span class="n">creature</span><span class="o">.</span><span class="n">max_damage</span> <span class="o">=</span> <span class="n">CreatureMaxDamage</span><span class="p">(</span><span class="n">creature_id</span><span class="o">=</span><span class="n">creature</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="o">**</span><span class="n">max_damage</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">creature</span></div>
 
-<div class="viewcode-block" id="Creature.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Insert the current model into its respective database.</span>
+
+<div class="viewcode-block" id="Creature.insert">
+<a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature.insert">[docs]</a>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Insert the current model into its respective database.</span>
 
 <span class="sd">        This method is overridden to insert elements of child rows.</span>
 
@@ -582,7 +586,10 @@
         <span class="k">if</span> <span class="n">max_damage</span><span class="p">:</span>
             <span class="n">max_damage</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Creature.get_by_field"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature.get_by_field">[docs]</a>    <span class="nd">@classmethod</span>
+
+<div class="viewcode-block" id="Creature.get_by_field">
+<a class="viewcode-back" href="../../../api.html#tibiawikisql.models.Creature.get_by_field">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_by_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">use_like</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="n">creature</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_by_field</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">use_like</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">creature</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -591,11 +598,15 @@
         <span class="n">creature</span><span class="o">.</span><span class="n">sounds</span> <span class="o">=</span> <span class="n">CreatureSound</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;creature_id&quot;</span><span class="p">,</span> <span class="n">creature</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
         <span class="n">creature</span><span class="o">.</span><span class="n">abilities</span> <span class="o">=</span> <span class="n">CreatureAbility</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;creature_id&quot;</span><span class="p">,</span> <span class="n">creature</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
         <span class="n">creature</span><span class="o">.</span><span class="n">max_damage</span> <span class="o">=</span> <span class="n">CreatureMaxDamage</span><span class="o">.</span><span class="n">get_by_field</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s2">&quot;creature_id&quot;</span><span class="p">,</span> <span class="n">creature</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">creature</span></div></div>
+        <span class="k">return</span> <span class="n">creature</span></div>
+</div>
 
 
-<div class="viewcode-block" id="CreatureAbility"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureAbility">[docs]</a><span class="k">class</span> <span class="nc">CreatureAbility</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">CreatureAbility</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represents a creature&#39;s ability.</span>
+
+<div class="viewcode-block" id="CreatureAbility">
+<a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureAbility">[docs]</a>
+<span class="k">class</span> <span class="nc">CreatureAbility</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">CreatureAbility</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a creature&#39;s ability.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -631,18 +642,22 @@
                 <span class="k">pass</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
 
-<div class="viewcode-block" id="CreatureAbility.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureAbility.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<div class="viewcode-block" id="CreatureAbility.insert">
+<a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureAbility.insert">[docs]</a>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;creature_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">creature_id</span><span class="p">,</span>
             <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="s1">&#39;effect&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">effect</span><span class="p">,</span>
             <span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span></div>
+</div>
+
 
 
 <span class="k">class</span> <span class="nc">CreatureDrop</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">CreatureDrop</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represents an item dropped by a creature.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents an item dropped by a creature.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -690,7 +705,7 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
 
     <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Insert the current model into its respective database.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Insert the current model into its respective database.</span>
 
 <span class="sd">        Overridden to insert using a subquery to get the item&#39;s id from the name.</span>
 
@@ -716,13 +731,15 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_base_query</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">.*, item.title as item_title, creature.title as creature_title</span>
-<span class="s2">                   FROM </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">                   FROM </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span>
 <span class="s2">                   LEFT JOIN creature ON creature.article_id = creature_id</span>
 <span class="s2">                   LEFT JOIN item ON item.article_id = item_id&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="CreatureMaxDamage"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureMaxDamage">[docs]</a><span class="k">class</span> <span class="nc">CreatureMaxDamage</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">CreatureMaxDamage</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represent a creature&#39;s max damage, broke down by damage type.</span>
+<div class="viewcode-block" id="CreatureMaxDamage">
+<a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureMaxDamage">[docs]</a>
+<span class="k">class</span> <span class="nc">CreatureMaxDamage</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">CreatureMaxDamage</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represent a creature&#39;s max damage, broke down by damage type.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -796,7 +813,9 @@
                 <span class="k">pass</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
 
-<div class="viewcode-block" id="CreatureMaxDamage.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureMaxDamage.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<div class="viewcode-block" id="CreatureMaxDamage.insert">
+<a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureMaxDamage.insert">[docs]</a>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;creature_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">creature_id</span><span class="p">,</span>
             <span class="s1">&#39;physical&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">physical</span><span class="p">,</span>
@@ -812,11 +831,15 @@
             <span class="s1">&#39;summons&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">summons</span><span class="p">,</span>
             <span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="CreatureSound"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureSound">[docs]</a><span class="k">class</span> <span class="nc">CreatureSound</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">CreatureSound</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represents a sound made by a creature.</span>
+
+<div class="viewcode-block" id="CreatureSound">
+<a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureSound">[docs]</a>
+<span class="k">class</span> <span class="nc">CreatureSound</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">Row</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">CreatureSound</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a sound made by a creature.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -843,9 +866,13 @@
                 <span class="k">pass</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
 
-<div class="viewcode-block" id="CreatureSound.insert"><a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureSound.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<div class="viewcode-block" id="CreatureSound.insert">
+<a class="viewcode-back" href="../../../api.html#tibiawikisql.models.CreatureSound.insert">[docs]</a>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;creature_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">creature_id</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">columns</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
 
             <div class="clearer"></div>
@@ -906,7 +933,7 @@
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
@@ -914,7 +941,7 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 
 
@@ -938,7 +965,7 @@
     </div>
   <div class="footer">
     &copy; Copyright 2021, Allan Galarza.
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.0.2.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7.
   </div>
   
   </body>
