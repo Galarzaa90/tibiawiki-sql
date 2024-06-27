@@ -188,6 +188,7 @@ def parse_date(value):
 
     - June 28, 2019
     - Aug 21, 2014
+    - May 14, 2024 17:45
 
     Parameters
     ----------
@@ -200,14 +201,22 @@ def parse_date(value):
         The date represented by the string.
     """
     value = value.strip()
-    try:
-        dt = datetime.datetime.strptime(value, "%B %d, %Y")
-    except ValueError:
+    date_formats = [
+        "%B %d, %Y",
+        "%b %d, %Y",
+        "%Y",
+        "%B %d, %Y %H:%M",
+        "%b %d, %Y %H:%M",
+        "%Y %H:%M",
+    ]
+    for date_format in date_formats:
         try:
-            dt = datetime.datetime.strptime(value, "%b %d, %Y")
+            dt = datetime.datetime.strptime(value, date_format)
+            return dt.date().isoformat()
         except ValueError:
-            dt = datetime.datetime.strptime(value, "%Y")
-    return dt.date().isoformat()
+            continue
+
+    raise ValueError(f"Date format for value '{value}' not recognized")
 
 
 def parse_float(value, default=0.0):
