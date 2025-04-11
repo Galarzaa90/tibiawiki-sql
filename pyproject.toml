@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+
+[tool.setuptools.packages.find]
+include = [
+    "tibiawikisql*",
+]
+
+[project]
+name = "tibiawikisql"
+dynamic = ["version", "dependencies"]
+authors = [
+    { name = "Allan Galarza", email = "allan.galarza@gmail.com" }
+]
+maintainers = [
+    { name = "Allan Galarza", email = "allan.galarza@gmail.com" }
+]
+license = { text = 'Apache 2.0' }
+description = "Python script that generates a SQLite database from TibiaWiki articles"
+requires-python = '>=3.6'
+readme = "README.md"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: SQL",
+    "Topic :: Database",
+    "Topic :: Games/Entertainment :: Role-Playing",
+    "Topic :: Internet",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Galarzaa90/tibiawiki-sql"
+
+[project.optional-dependencies]
+docs = [
+    "Sphinx"
+]
+
+[project.scripts]
+tibiawikisql = "tibiawikisql.__main__:cli"
+
+[tool.setuptools.dynamic]
+version = { attr = "tibiawikisql.__version__" }
+dependencies = { file = ["requirements.txt"] }
+
+
+[tool.flake8]
+max-line-length = 120
+exclude = [
+    "__pycache__",
+    ".git/",
+    "build/",
+    ".idea/",
+    "venv/",
+    ".venv/",
+    "docs/",
+    "images/",
+    "logs/",
+    "tibiawikisql/__main__.py"
+]
+tee = true
+per-file-ignores = [
+    "__init__.py:F401,F403",
+    "schema.py:D101",
+    "tests/*:D101"
+]
+count = true
+ignore = ["D100", "D102", "D104", "D105", "D107", "W503", "FS003"]
+rst-roles = ["class", "py:attr"]
+

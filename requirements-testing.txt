@@ -9,3 +9,4 @@ flake8-docstrings
 flake8-return
 flake8-rst-docstrings
 flake8-use-fstring
+flake8-pyproject
