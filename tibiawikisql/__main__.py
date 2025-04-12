@@ -68,21 +68,21 @@ class Category:
 
 
 categories = {
-    "achievements": Category("Achievements", models.Achievement, no_images=True),
-    "spells": Category("Spells", models.Spell, generate_map=True),
-    "items": Category("Objects", models.Item, generate_map=True),
-    "creatures": Category("Creatures", models.Creature, generate_map=True),
-    "books": Category("Book Texts", models.Book, no_images=True),
-    "keys": Category("Keys", models.Key, no_images=True),
-    "npcs": Category("NPCs", models.Npc, generate_map=True),
-    "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
-    "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
-    "house": Category("Player-Ownable Buildings", models.House, no_images=True),
-    "charm": Category("Charms", models.Charm, extension=".png"),
-    "outfits": Category("Outfits", models.Outfit, no_images=True),
-    "worlds": Category("Game Worlds", models.World, no_images=True, include_deprecated=True),
-    "mounts": Category("Mounts", models.Mount),
-    "updates": Category("Updates", models.Update, no_images=True),
+    "achievements": Category("Achievements", models.AchievementPy, no_images=True),
+    # "spells": Category("Spells", models.Spell, generate_map=True),
+    # "items": Category("Objects", models.Item, generate_map=True),
+    # "creatures": Category("Creatures", models.Creature, generate_map=True),
+    # "books": Category("Book Texts", models.Book, no_images=True),
+    # "keys": Category("Keys", models.Key, no_images=True),
+    # "npcs": Category("NPCs", models.Npc, generate_map=True),
+    # "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
+    # "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
+    # "house": Category("Player-Ownable Buildings", models.House, no_images=True),
+    # "charm": Category("Charms", models.Charm, extension=".png"),
+    # "outfits": Category("Outfits", models.Outfit, no_images=True),
+    # "worlds": Category("Game Worlds", models.World, no_images=True, include_deprecated=True),
+    # "mounts": Category("Mounts", models.Mount),
+    # "updates": Category("Updates", models.Update, no_images=True),
 }
 
 
@@ -138,12 +138,12 @@ def generate(skip_images, db_name, skip_deprecated):
             dt = (time.perf_counter() - exec_time)
             click.echo(f"\t{Fore.GREEN}Parsed articles in {dt:.2f} seconds.{Style.RESET_ALL}")
 
-    for position in rashid_positions:
-        position.insert(conn)
-
-    generate_item_offers(conn, data_store)
-    generate_spell_offers(conn, data_store)
-    generate_loot_statistics(conn, data_store)
+    # for position in rashid_positions:
+    #     position.insert(conn)
+    #
+    # generate_item_offers(conn, data_store)
+    # generate_spell_offers(conn, data_store)
+    # generate_loot_statistics(conn, data_store)
 
     if not skip_images:
         with conn:

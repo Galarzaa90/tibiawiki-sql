@@ -17,7 +17,9 @@
 import datetime
 import json
 import urllib.parse
+from collections.abc import Generator
 
+import pydantic
 import requests
 
 from tibiawikisql import __version__
@@ -25,6 +27,23 @@ from tibiawikisql.utils import parse_templatates_data
 
 BASE_URL = "https://tibia.fandom.com"
 
+class WikiEntryPy(pydantic.BaseModel):
+    article_id: int
+    """The entry's ID."""
+    title: str
+    """The entry's title."""
+    timestamp: datetime.datetime
+    """The date of the entry's last edit."""
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.article_id == other.article_id
+        return False
+
+    @property
+    def url(self) -> str:
+        """:class:`str`: The URL to the article's display page."""
+        return f"{BASE_URL}/wiki/{urllib.parse.quote(self.title)}"
 
 class WikiEntry:
     """A TibiaWiki entry.
@@ -67,6 +86,15 @@ class WikiEntry:
         """:class:`str`: The URL to the article's display page."""
         return f"{BASE_URL}/wiki/{urllib.parse.quote(self.title)}"
 
+
+class ArticlePy(WikiEntryPy):
+    content: str
+    """The article's source content."""
+
+    @property
+    def infobox_attributes(self):
+        """:class:`dict`: Returns a mapping of the template attributes."""
+        return parse_templatates_data(self.content)
 
 class Article(WikiEntry):
     """
@@ -142,7 +170,7 @@ class WikiClient:
     }
 
     @classmethod
-    def get_category_members(cls, name, skip_index=True):
+    def get_category_members(cls, name: str, skip_index: bool = True) -> Generator[WikiEntryPy]:
         """Create a generator that obtains entries in a certain category.
 
         Parameters
@@ -176,8 +204,11 @@ class WikiClient:
             for member in data["query"]["categorymembers"]:
                 if member["sortkeyprefix"] == "*" and skip_index:
                     continue
-                member = WikiEntry(member["pageid"], member["title"], timestamp=member["timestamp"])
-                yield member
+                yield WikiEntryPy(
+                    article_id=member["pageid"],
+                    title=member["title"],
+                    timestamp=member["timestamp"]
+                )
             try:
                 cmcontinue = data["continue"]["cmcontinue"]
             except KeyError:
@@ -185,7 +216,7 @@ class WikiClient:
                 break
 
     @classmethod
-    def get_category_members_titles(cls, name, skip_index=True):
+    def get_category_members_titles(cls, name, skip_index=True) -> Generator[str]:
         """Create a generator that obtains a list of article titles in a category.
 
         Parameters
@@ -310,9 +341,12 @@ class WikiClient:
                 if "missing" in article:
                     yield None
                     continue
-                article = Article(article["pageid"], article["title"], timestamp=article["revisions"][0]["timestamp"],
-                                  content=article["revisions"][0]["*"])
-                yield article
+                yield ArticlePy(
+                    article_id=article["pageid"],
+                    timestamp=article["revisions"][0]["timestamp"],
+                    title=article["title"],
+                    content=article["revisions"][0]["*"],
+                )
 
     @classmethod
     def get_article(cls, name):

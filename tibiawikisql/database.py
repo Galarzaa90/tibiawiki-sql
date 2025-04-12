@@ -13,7 +13,7 @@
 #  limitations under the License.
 
 """Contains all the SQL related model definitions."""
-
+import datetime
 import inspect
 from collections import OrderedDict
 
@@ -40,6 +40,15 @@ class SQLType:
 
     def is_real_type(self):
         return True
+
+
+class Timestamp(SQLType):
+    """Integer type."""
+
+    python = datetime.datetime
+
+    def to_sql(self):
+        return "INTEGER"
 
 
 class Integer(SQLType):

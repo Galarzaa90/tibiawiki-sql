@@ -68,6 +68,11 @@ def clean_links(content, strip_question_mark=False):
     remove_img = [f for f in parsed.ifilter_wikilinks() if img.match(str(f.title))]
     for f in remove_img:
         parsed.remove(f)
+    for template in parsed.ifilter_templates():
+        if template.name:
+            parsed.replace(template, template.params[0])
+        else:
+            pass
     content = parsed.strip_code().strip()
     if strip_question_mark and content == "?":
         return None

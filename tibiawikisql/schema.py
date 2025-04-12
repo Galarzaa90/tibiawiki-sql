@@ -14,7 +14,7 @@
 
 """Defines the SQL schemas to use."""
 
-from tibiawikisql.database import Blob, Boolean, Column, ForeignKey, Integer, Real, Table, Text
+from tibiawikisql.database import Blob, Boolean, Column, ForeignKey, Integer, Real, Table, Text, Timestamp
 
 
 class Achievement(Table):
@@ -30,7 +30,7 @@ class Achievement(Table):
     achievement_id = Column(Integer)
     version = Column(Text, index=True)
     status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class Charm(Table):

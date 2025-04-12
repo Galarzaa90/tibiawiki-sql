@@ -15,13 +15,33 @@
 
 import abc
 import sqlite3
+from typing import Callable, Generic, Type, TypeVar
+
+import pydantic
+from pygments.lexer import default
 
 from tibiawikisql import database
-from tibiawikisql.api import Article
+from tibiawikisql.api import Article, ArticlePy
 from tibiawikisql.utils import parse_templatates_data
 
+P = TypeVar('P', bound=pydantic.BaseModel)
+T = TypeVar('T')
 
-class Parseable(Article, metaclass=abc.ABCMeta):
+class AttributeParser(Generic[T]):
+
+    def __init__(self, func: Callable[[dict[str, str]], T], fallback: T = ...) -> None:
+        self.func = func
+        self.fallback = fallback
+
+    def __call__(self, *args, **kwargs):
+        try:
+            return self.func(args[0])
+        except:
+            if self.fallback is Ellipsis:
+                raise
+            return self.fallback
+
+class Parseable(Generic[P], metaclass=abc.ABCMeta):
     """An abstract base class with the common parsing operations.
 
     This class is inherited by Models that are parsed directly from a TibiaWiki article.
@@ -38,13 +58,13 @@ class Parseable(Article, metaclass=abc.ABCMeta):
         The last time the containing article was edited.
     """
 
-    _map = None
+    _attribute_map = None
     """map: :class:`dict`: A dictionary mapping the article's attributes to object attributes."""
     _template = None
     """The name of the infobox template containing the data"""
 
     @classmethod
-    def from_article(cls, article):
+    def from_article(cls: Type[P], article: ArticlePy):
         """Parse an article into a TibiaWiki model.
 
         Parameters
@@ -73,13 +93,9 @@ class Parseable(Article, metaclass=abc.ABCMeta):
         }
         attributes = templates[cls._template]
         row["_raw_attributes"] = {}
-        for attribute, value in attributes.items():
-            if attribute not in cls._map:
-                row["_raw_attributes"][attribute] = value
-                continue
-            column, func = cls._map[attribute]
-            row[column] = func(value)
-        return cls(**row)
+        for field, parser in cls._attribute_map.items():
+            row[field] = parser(attributes)
+        return cls.model_validate(row)
 
     @property
     def infobox_attributes(self):

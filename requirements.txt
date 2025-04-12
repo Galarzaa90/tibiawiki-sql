@@ -3,3 +3,4 @@ click
 colorama
 mwparserfromhell
 lupa
+pydantic
