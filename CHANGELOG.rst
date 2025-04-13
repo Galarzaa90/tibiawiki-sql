@@ -2,6 +2,11 @@
 Changelog
 =========
 
+7.0.0 (Unreleased)
+==================
+- Achievement improvements
+    - Spoiler properly handles quest links.
+
 .. 6.2.1
 
 6.2.1 (2024-06-27)

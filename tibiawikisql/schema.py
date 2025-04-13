@@ -43,7 +43,7 @@ class Charm(Table):
     image = Column(Blob)
     version = Column(Text, index=True)
     status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class Creature(Table):

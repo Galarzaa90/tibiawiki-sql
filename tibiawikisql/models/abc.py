@@ -77,7 +77,7 @@ class Parseable(Generic[P], metaclass=abc.ABCMeta):
         :class:`abc.Parseable`
             An inherited model object for the current article.
         """
-        if cls._map is None:
+        if cls._attribute_map is None:
             raise NotImplementedError("Inherited class must override map")
 
         if article is None:

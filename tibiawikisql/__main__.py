@@ -68,7 +68,7 @@ class Category:
 
 
 categories = {
-    "achievements": Category("Achievements", models.AchievementPy, no_images=True),
+    # "achievements": Category("Achievements", models.AchievementPy, no_images=True),
     # "spells": Category("Spells", models.Spell, generate_map=True),
     # "items": Category("Objects", models.Item, generate_map=True),
     # "creatures": Category("Creatures", models.Creature, generate_map=True),
@@ -78,7 +78,7 @@ categories = {
     # "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
     # "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
     # "house": Category("Player-Ownable Buildings", models.House, no_images=True),
-    # "charm": Category("Charms", models.Charm, extension=".png"),
+    "charm": Category("Charms", models.CharmPy, extension=".png"),
     # "outfits": Category("Outfits", models.Outfit, no_images=True),
     # "worlds": Category("Game Worlds", models.World, no_images=True, include_deprecated=True),
     # "mounts": Category("Mounts", models.Mount),

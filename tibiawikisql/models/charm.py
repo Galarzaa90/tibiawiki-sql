@@ -11,38 +11,44 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+from typing import ClassVar
 
 from tibiawikisql import schema
+from tibiawikisql.api import WikiEntryPy
 from tibiawikisql.models import abc
+from tibiawikisql.models.abc import AttributeParser
 from tibiawikisql.utils import clean_links, parse_integer
 
+class CharmPy(WikiEntryPy, abc.Row, abc.Parseable["CharmPy"], table=schema.Charm):
+    """Represents a charm."""
+
+    name: str
+    """The name of the charm."""
+    type: str
+    """The type of the charm."""
+    effect: str
+    """The charm's description."""
+    cost: int
+    """The number of charm points needed to unlock."""
+    version: str | None
+    """The client version where this creature was first implemented."""
+    status: str
+    """The status of this charm in the game."""
+    image: bytes | None = None
+    """The charm's icon."""
+
+    _attribute_map: ClassVar = {
+        "name": AttributeParser(lambda x: x.get("actualname") or x.get("name")),
+        "type": AttributeParser(lambda x: x.get("type")),
+        "effect": AttributeParser(lambda x: clean_links(x.get("effect"))),
+        "cost": AttributeParser(lambda x: parse_integer(x.get("cost"))),
+        "version": AttributeParser(lambda x: x.get("implemented"), None),
+        "status": AttributeParser(lambda x: x.get("status").lower(), "active"),
+    }
+    _template: ClassVar = "Infobox_Charm"
 
 class Charm(abc.Row, abc.Parseable, table=schema.Charm):
-    """Represents a charm.
-
-    Attributes
-    ----------
-    article_id: :class:`int`
-        The id of the  containing article.
-    title: :class:`str`
-        The title of the containing article.
-    timestamp: :class:`int`
-        The last time the containing article was edited.
-    name: :class:`str`
-        The name of the charm.
-    type: :class:`str`
-        The type of the charm.
-    effect: :class:`str`
-        The charm's description.
-    cost: :class:`int`
-        The number of charm points needed to unlock.
-    version: :class:`str`
-        The client version where this creature was first implemented.
-    status: :class:`str`
-        The status of this charm in the game.
-    image: :class:`bytes`
-        The charm's icon.
-    """
+    """Represents a charm."""
 
     _map = {
         "name": ("name", str.strip),

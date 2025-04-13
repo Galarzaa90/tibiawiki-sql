@@ -48,8 +48,7 @@ class Timestamp(SQLType):
     python = datetime.datetime
 
     def to_sql(self):
-        return "INTEGER"
-
+        return "TEXT"
 
 class Integer(SQLType):
     """Integer type."""
