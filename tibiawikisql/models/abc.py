@@ -18,7 +18,6 @@ import sqlite3
 from typing import Callable, Generic, Type, TypeVar
 
 import pydantic
-from pygments.lexer import default
 
 from tibiawikisql import database
 from tibiawikisql.api import Article, ArticlePy

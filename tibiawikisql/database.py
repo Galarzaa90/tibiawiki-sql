@@ -41,6 +41,9 @@ class SQLType:
     def is_real_type(self):
         return True
 
+    def to_sql_value(self, value):
+        return value
+
 
 class Timestamp(SQLType):
     """Integer type."""
@@ -49,6 +52,10 @@ class Timestamp(SQLType):
 
     def to_sql(self):
         return "TEXT"
+
+    def to_sql_value(self, value: datetime.datetime):
+        return value.isoformat()
+
 
 class Integer(SQLType):
     """Integer type."""
@@ -319,7 +326,7 @@ class Table(metaclass=TableMeta):
                 fmt = 'column {0.name} expected {1.__name__}, received {2.__class__.__name__}'
                 raise TypeError(fmt.format(column, check, value))
 
-            verified[column.name] = value
+            verified[column.name] = column.column_type.to_sql_value(value)
 
         sql = f'INSERT INTO {cls.__tablename__} ({", ".join(verified)}) VALUES ({", ".join("?" for _ in verified)});'
         c.execute(sql, tuple(verified.values()))

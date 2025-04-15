@@ -17,7 +17,7 @@
 from tibiawikisql.database import Blob, Boolean, Column, ForeignKey, Integer, Real, Table, Text, Timestamp
 
 
-class Achievement(Table):
+class AchievementTable(Table, table_name="achievement"):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True)
     name = Column(Text, no_case=True, index=True)

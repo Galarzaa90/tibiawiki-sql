@@ -27,9 +27,10 @@ import requests
 from colorama import Fore, Style
 from lupa import LuaRuntime
 
-from tibiawikisql import Image, WikiClient, __version__, models, schema
+from tibiawikisql import Image, WikiClient, __version__, models, parsers, schema
 from tibiawikisql.models import abc
 from tibiawikisql.models.npc import rashid_positions
+from tibiawikisql.parsers import BaseParser
 from tibiawikisql.utils import parse_loot_statistics, parse_min_max
 
 DATABASE_FILE = "tibiawiki.db"
@@ -56,10 +57,19 @@ class Category:
     """Defines the article groups to be fetched.
 
     Class for internal use only, for easier autocompletion and maintenance."""
-    def __init__(self, name: Optional[str], model: Type[abc.Row] = None, *, no_images=False, extension=".gif",
-                 include_deprecated=False, no_title=False, generate_map=False):
+
+    def __init__(
+            self,
+            name: Optional[str],
+            parser: Type[BaseParser] = None,
+            *,
+            no_images=False, extension=".gif",
+            include_deprecated=False,
+            no_title=False,
+            generate_map=False
+    ):
         self.name = name
-        self.model = model
+        self.parser = parser
         self.no_images = no_images
         self.extension = extension
         self.include_deprecated = include_deprecated
@@ -68,7 +78,7 @@ class Category:
 
 
 categories = {
-    # "achievements": Category("Achievements", models.AchievementPy, no_images=True),
+    "achievements": Category("Achievements", parsers.AchievementParser, no_images=True),
     # "spells": Category("Spells", models.Spell, generate_map=True),
     # "items": Category("Objects", models.Item, generate_map=True),
     # "creatures": Category("Creatures", models.Creature, generate_map=True),
@@ -78,7 +88,7 @@ categories = {
     # "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
     # "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
     # "house": Category("Player-Ownable Buildings", models.House, no_images=True),
-    "charm": Category("Charms", models.CharmPy, extension=".png"),
+    # "charm": Category("Charms", models.CharmPy, extension=".png"),
     # "outfits": Category("Outfits", models.Outfit, no_images=True),
     # "worlds": Category("Game Worlds", models.World, no_images=True, include_deprecated=True),
     # "mounts": Category("Mounts", models.Mount),
@@ -112,9 +122,7 @@ def generate(skip_images, db_name, skip_deprecated):
 
     click.echo("Parsing articles...")
     for key, value in categories.items():
-        model = value.model
-        if not issubclass(model, abc.Parseable):
-            continue
+        parser = value.parser
         titles = [a.title for a in data_store[key]]
 
         if value.generate_map:
@@ -125,9 +133,9 @@ def generate(skip_images, db_name, skip_deprecated):
         with conn:
             with progress_bar(generator, f"Parsing {key}", len(titles), item_show_func=article_show) as bar:
                 for article in bar:
-                    entry = model.from_article(article)
+                    entry = parser.from_article(article)
                     if entry is not None:
-                        entry.insert(conn)
+                        parser.insert(conn, entry)
                         if value.generate_map:
                             data_store[f"{key}_map"][entry.title.lower()] = entry.article_id
                     else:
@@ -207,7 +215,9 @@ def generate_spell_offers(conn: sqlite3.Connection, data_store):
                 ))
         with conn:
             conn.execute("DELETE FROM npc_spell")
-            conn.executemany("INSERT INTO npc_spell(npc_id, spell_id, knight, sorcerer, paladin, druid) VALUES(?, ?, ?, ?, ?, ?)", spell_offers)
+            conn.executemany(
+                "INSERT INTO npc_spell(npc_id, spell_id, knight, sorcerer, paladin, druid) VALUES(?, ?, ?, ?, ?, ?)",
+                spell_offers)
         if not_found_store["spell"]:
             unknonw_spells = not_found_store["spell"]
             click.echo(f"{Fore.RED}Could not parse offers for {len(unknonw_spells):,} spell.{Style.RESET_ALL}")
@@ -242,8 +252,10 @@ def generate_item_offers(conn: sqlite3.Connection, data_store):
         with conn:
             conn.execute("DELETE FROM npc_offer_sell")
             conn.execute("DELETE FROM npc_offer_buy")
-            conn.executemany("INSERT INTO npc_offer_sell(npc_id, value, item_id, currency_id) VALUES(?, ?, ?, ?)", sell_offers)
-            conn.executemany("INSERT INTO npc_offer_buy(npc_id, value, item_id, currency_id) VALUES(?, ?, ?, ?)", buy_offers)
+            conn.executemany("INSERT INTO npc_offer_sell(npc_id, value, item_id, currency_id) VALUES(?, ?, ?, ?)",
+                             sell_offers)
+            conn.executemany("INSERT INTO npc_offer_buy(npc_id, value, item_id, currency_id) VALUES(?, ?, ?, ?)",
+                             buy_offers)
             dt = (time.perf_counter() - start_time)
     total_offers = len(sell_offers) + len(buy_offers)
     if not_found_store["npc"]:
@@ -318,7 +330,7 @@ def generate_loot_statistics(conn: sqlite3.Connection, data_store):
                         loot_items.append((creature_id, item_id, percentage, _min, _max))
                         # We delete any duplicate record that was added from the creature's article's loot if it exists
                         c.execute("DELETE FROM creature_drop WHERE creature_id = ? AND item_id = ?",
-                                (creature_id, item_id))
+                                  (creature_id, item_id))
                 c.executemany("INSERT INTO creature_drop(creature_id, item_id, chance, min, max) VALUES(?,?,?,?,?)",
                               loot_items)
         dt = (time.perf_counter() - start_time)
@@ -346,6 +358,7 @@ def constraint(value, limit):
     if value is None or len(value) <= limit:
         return value
     return value[:limit - 1] + "…"
+
 
 def get_cache_info(table):
     try:
@@ -438,7 +451,7 @@ def save_images(conn: sqlite3.Connection, key: str, value: Category):
         click.echo(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
         click.echo(f"\t-> {Style.RESET_ALL}{f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed)}{Style.RESET_ALL}")
     click.echo(f"{Fore.GREEN}\tSaved {key} images in {dt:.2f} seconds."
-          f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.{Style.RESET_ALL}")
+               f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.{Style.RESET_ALL}")
 
 
 def save_outfit_images(conn):
@@ -511,7 +524,7 @@ def save_outfit_images(conn):
         click.echo(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
         click.echo(f"\t-> {Style.RESET_ALL}{f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed)}{Style.RESET_ALL}")
     click.echo(f"{Fore.GREEN}\tSaved outfit images in {dt:.2f} seconds."
-          f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.{Style.RESET_ALL}")
+               f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.{Style.RESET_ALL}")
 
 
 def get_articles(category, data_store, key=None, include_deprecated=False):

@@ -15,8 +15,8 @@
 """Contains all the models representing TibiaWiki articles."""
 
 from tibiawikisql.models.abc import Parseable, Row
-from tibiawikisql.models.achievement import Achievement, AchievementPy
-from tibiawikisql.models.charm import Charm, CharmPy
+from tibiawikisql.models.achievement import Achievement
+from tibiawikisql.models.charm import Charm
 from tibiawikisql.models.creature import Creature, CreatureAbility, CreatureDrop, CreatureMaxDamage, CreatureSound
 from tibiawikisql.models.house import House
 from tibiawikisql.models.imbuement import Imbuement, ImbuementMaterial
