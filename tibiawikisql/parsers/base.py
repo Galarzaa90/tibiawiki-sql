@@ -1,10 +1,10 @@
 import sqlite3
-from abc import ABC, abstractmethod
-from typing import ClassVar, Generic, Type, TypeVar
+from abc import ABC
+from typing import Any, ClassVar, TypeVar
 
 from pydantic import BaseModel
 
-from tibiawikisql.api import ArticlePy
+from tibiawikisql.api import Article
 from tibiawikisql.database import Table
 from tibiawikisql.utils import parse_templatates_data
 
@@ -25,7 +25,23 @@ class BaseParser(ABC):
                 raise NotImplementedError(f"{cls.__name__} must define class variable `{attr}`")
 
     @classmethod
-    def from_article(cls, article: ArticlePy) -> M | None:
+    def parse_attributes(cls, article: Article) -> dict[str, Any]:
+        templates = parse_templatates_data(article.content)
+        if cls.template_name not in templates:
+            return {}
+        row = {
+            "article_id": article.article_id,
+            "timestamp": article.timestamp,
+            "title": article.title,
+        }
+        attributes = templates[cls.template_name]
+        row["attributes"] = attributes
+        for field, parser in cls.attribute_map.items():
+            row[field] = parser(attributes)
+        return row
+
+    @classmethod
+    def from_article(cls, article: Article) -> M | None:
         """Parse an article into a TibiaWiki model.
 
         Parameters
@@ -41,19 +57,9 @@ class BaseParser(ABC):
 
         if article is None:
             return None
-        templates = parse_templatates_data(article.content)
-        if cls.template_name not in templates:
+        row = cls.parse_attributes(article)
+        if not row:
             return None
-        row = {
-            "article_id": article.article_id,
-            "timestamp": article.timestamp,
-            "title": article.title,
-            "attributes": {},
-        }
-        attributes = templates[cls.template_name]
-        row["_raw_attributes"] = {}
-        for field, parser in cls.attribute_map.items():
-            row[field] = parser(attributes)
         return cls.model.model_validate(row)
 
     @classmethod

@@ -27,7 +27,8 @@ from tibiawikisql.utils import parse_templatates_data
 
 BASE_URL = "https://tibia.fandom.com"
 
-class WikiEntryPy(pydantic.BaseModel):
+
+class WikiEntry(pydantic.BaseModel):
     article_id: int
     """The entry's ID."""
     title: str
@@ -45,49 +46,8 @@ class WikiEntryPy(pydantic.BaseModel):
         """:class:`str`: The URL to the article's display page."""
         return f"{BASE_URL}/wiki/{urllib.parse.quote(self.title)}"
 
-class WikiEntry:
-    """A TibiaWiki entry.
 
-    This is a partial object that is obtained when fetching category members.
-
-    The following classes implement this:
-
-    - :class:`Article`
-    - :class:`Image`
-
-    Attributes
-    ----------
-    article_id: :class:`int`
-        The entry's id.
-    title: :class:`str`
-        The entry's title.
-    timestamp : :class:`int`
-        The date of the entry's last edit, represented as a unix timestamp.
-    """
-
-    def __init__(self, article_id, title, timestamp=None):
-        self.article_id = article_id
-        self.title = title
-        if isinstance(timestamp, str):
-            self.timestamp = int(datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ").timestamp())
-        if isinstance(timestamp, datetime.datetime):
-            self.timestamp = int(timestamp.timestamp())
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}(article_id={self.article_id},title={self.title!r})"
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.article_id == other.article_id
-        return False
-
-    @property
-    def url(self):
-        """:class:`str`: The URL to the article's display page."""
-        return f"{BASE_URL}/wiki/{urllib.parse.quote(self.title)}"
-
-
-class ArticlePy(WikiEntryPy):
+class Article(WikiEntry):
     content: str
     """The article's source content."""
 
@@ -96,50 +56,11 @@ class ArticlePy(WikiEntryPy):
         """:class:`dict`: Returns a mapping of the template attributes."""
         return parse_templatates_data(self.content)
 
-class Article(WikiEntry):
-    """
-    Represents a text article.
-
-    Attributes
-    ----------
-    article_id: :class:`int`
-        The article's internal id.
-    title : :class:`str`
-        The article's title.
-    timestamp : :class:`int`
-        The date of the entry's last edit, represented as a unix timestamp.
-    content: :class:`str`
-        The article's source content.
-    """
-
-    def __init__(self, article_id, title, *, timestamp=None, content=None):
-        super().__init__(article_id, title, timestamp)
-        self.content = content
-
-    @property
-    def infobox_attributes(self):
-        """:class:`dict`: Returns a mapping of the template attributes."""
-        return parse_templatates_data(self.content)
-
 
 class Image(WikiEntry):
-    """Represents an image info.
+    """Represents an image info."""
 
-    Attributes
-    ----------
-    article_id: int
-        The image's internal id.
-    title : str
-        The image's title.
-    timestamp : :class:`int`
-        The date of the entry's last edit, represented as a unix timestamp.
     file_url: str
-        The image's url.
-    """
-
-    def __init__(self, article_id, title, *, timestamp=None, file_url=None):
-        super().__init__(article_id, title, timestamp)
-        self.file_url = file_url
 
     @property
     def extension(self):
@@ -170,7 +91,7 @@ class WikiClient:
     }
 
     @classmethod
-    def get_category_members(cls, name: str, skip_index: bool = True) -> Generator[WikiEntryPy]:
+    def get_category_members(cls, name: str, skip_index: bool = True) -> Generator[WikiEntry]:
         """Create a generator that obtains entries in a certain category.
 
         Parameters
@@ -204,10 +125,10 @@ class WikiClient:
             for member in data["query"]["categorymembers"]:
                 if member["sortkeyprefix"] == "*" and skip_index:
                     continue
-                yield WikiEntryPy(
+                yield WikiEntry(
                     article_id=member["pageid"],
                     title=member["title"],
-                    timestamp=member["timestamp"]
+                    timestamp=member["timestamp"],
                 )
             try:
                 cmcontinue = data["continue"]["cmcontinue"]
@@ -297,8 +218,12 @@ class WikiClient:
                     yield None
                     continue
                 try:
-                    image = Image(image["pageid"], image["title"], timestamp=image["imageinfo"][0]["timestamp"],
-                                  file_url=image["imageinfo"][0]["url"])
+                    image = Image(
+                        article_id=image["pageid"],
+                        title=image["title"],
+                        timestamp=image["imageinfo"][0]["timestamp"],
+                        file_url=image["imageinfo"][0]["url"],
+                    )
                     yield image
                 except KeyError:
                     continue
@@ -341,7 +266,7 @@ class WikiClient:
                 if "missing" in article:
                     yield None
                     continue
-                yield ArticlePy(
+                yield Article(
                     article_id=article["pageid"],
                     timestamp=article["revisions"][0]["timestamp"],
                     title=article["title"],

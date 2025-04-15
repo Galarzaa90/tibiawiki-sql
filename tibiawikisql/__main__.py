@@ -79,7 +79,7 @@ class Category:
 
 categories = {
     "achievements": Category("Achievements", parsers.AchievementParser, no_images=True),
-    # "spells": Category("Spells", models.Spell, generate_map=True),
+    "spells": Category("Spells", parsers.SpellParser, generate_map=True),
     # "items": Category("Objects", models.Item, generate_map=True),
     # "creatures": Category("Creatures", models.Creature, generate_map=True),
     # "books": Category("Book Texts", models.Book, no_images=True),
@@ -88,7 +88,7 @@ categories = {
     # "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
     # "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
     # "house": Category("Player-Ownable Buildings", models.House, no_images=True),
-    # "charm": Category("Charms", models.CharmPy, extension=".png"),
+    "charm": Category("Charms", parsers.CharmParser, extension=".png"),
     # "outfits": Category("Outfits", models.Outfit, no_images=True),
     # "worlds": Category("Game Worlds", models.World, no_images=True, include_deprecated=True),
     # "mounts": Category("Mounts", models.Mount),
@@ -411,7 +411,7 @@ def save_images(conn: sqlite3.Connection, key: str, value: Category):
         The category of the images.
     """
     extension = value.extension
-    table = value.model.table.__tablename__
+    table = value.parser.table.__tablename__
     column = "name" if value.no_title else "title"
     results = conn.execute(f"SELECT {column} FROM {table}")
     titles = [f"{r[0]}{extension}" for r in results]
@@ -428,11 +428,12 @@ def save_images(conn: sqlite3.Connection, key: str, value: Category):
             if image is None:
                 continue
             try:
-                last_update = cache_info.get(image.file_name, 0)
-                if image.timestamp > last_update:
+                last_update_str = cache_info.get(image.file_name)
+                last_update = datetime.datetime.fromisoformat(last_update_str) if last_update_str else None
+                if last_update is None or image.timestamp > last_update:
                     image_bytes = fetch_image(session, table, image)
                     fetch_count += 1
-                    cache_info[image.file_name] = image.timestamp
+                    cache_info[image.file_name] = image.timestamp.isoformat()
                 else:
                     with open(f"images/{table}/{image.file_name}", "rb") as f:
                         image_bytes = f.read()

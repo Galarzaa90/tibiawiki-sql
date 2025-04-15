@@ -17,7 +17,7 @@
 from tibiawikisql.database import Blob, Boolean, Column, ForeignKey, Integer, Real, Table, Text, Timestamp
 
 
-class AchievementTable(Table, table_name="achievement"):
+class Achievement(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True)
     name = Column(Text, no_case=True, index=True)
@@ -89,7 +89,7 @@ class Creature(Table):
     version = Column(Text, index=True)
     image = Column(Blob)
     status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class CreatureAbility(Table, table_name="creature_ability"):
@@ -142,7 +142,7 @@ class Item(Table):
     client_id = Column(Integer)
     image = Column(Blob)
     status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class ItemSound(Table, table_name="item_sound"):
@@ -185,7 +185,7 @@ class Book(Table):
     text = Column(Text)
     version = Column(Text, index=True)
     status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class DatabaseInfo(Table, table_name="database_info"):
@@ -212,7 +212,7 @@ class House(Table):
     guildhall = Column(Integer, index=True)
     version = Column(Text, index=True)
     status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class Imbuement(Table):
@@ -227,7 +227,7 @@ class Imbuement(Table):
     version = Column(Text, index=True)
     image = Column(Blob)
     status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class ImbuementMaterial(Table, table_name="imbuement_material"):
@@ -248,7 +248,7 @@ class ItemKey(Table, table_name="item_key"):
     notes = Column(Text)
     version = Column(Text, index=True)
     status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class Map(Table):
@@ -280,10 +280,11 @@ class Spell(Table):
     sorcerer = Column(Boolean, default=False)
     druid = Column(Boolean, default=False)
     paladin = Column(Boolean, default=False)
+    monk = Column(Boolean, default=False)
     image = Column(Blob)
     version = Column(Text, index=True)
     status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class Npc(Table):
@@ -300,7 +301,7 @@ class Npc(Table):
     z = Column(Integer)
     image = Column(Blob)
     status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class NpcJob(Table, table_name="npc_job"):
@@ -355,7 +356,7 @@ class Outfit(Table):
     achievement = Column(Text)
     version = Column(Text)
     status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class OutfitImage(Table, table_name="outfit_image"):
@@ -381,7 +382,7 @@ class Quest(Table):
     premium = Column(Boolean)
     version = Column(Text, index=True)
     status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class OutfitQuest(Table, table_name="outfit_quest"):
@@ -425,7 +426,7 @@ class World(Table):
     protected_since = Column(Text)
     world_board = Column(Integer)
     trade_board = Column(Integer)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class Mount(Table):
@@ -442,7 +443,7 @@ class Mount(Table):
     version = Column(Text, index=True)
     image = Column(Blob)
     status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 class Update(Table, table_name="game_update"):
@@ -458,7 +459,7 @@ class Update(Table, table_name="game_update"):
     version = Column(Text, index=True)
     summary = Column(Text, index=True)
     changes = Column(Text, index=True)
-    timestamp = Column(Integer, nullable=False)
+    timestamp = Column(Timestamp, nullable=False)
 
 
 def create_tables(conn):

@@ -15,16 +15,17 @@
 
 import abc
 import sqlite3
-from typing import Callable, Generic, Type, TypeVar
+from typing import Callable, Generic, Self, Type, TypeVar
 
 import pydantic
 
 from tibiawikisql import database
-from tibiawikisql.api import Article, ArticlePy
+from tibiawikisql.api import Article
 from tibiawikisql.utils import parse_templatates_data
 
 P = TypeVar('P', bound=pydantic.BaseModel)
 T = TypeVar('T')
+
 
 class AttributeParser(Generic[T]):
 
@@ -39,6 +40,17 @@ class AttributeParser(Generic[T]):
             if self.fallback is Ellipsis:
                 raise
             return self.fallback
+
+    @classmethod
+    def optional(cls, field_name: str, post_process: Callable[[str], T | None] = str, default = None) -> Self:
+        """Create optional attribute parser. Will fall back to None."""
+        return cls(lambda x: post_process(x[field_name]), default)
+
+
+    @classmethod
+    def status(cls):
+        return cls(lambda x: x.get("status").lower(), "active")
+
 
 class Parseable(Generic[P], metaclass=abc.ABCMeta):
     """An abstract base class with the common parsing operations.
@@ -62,8 +74,9 @@ class Parseable(Generic[P], metaclass=abc.ABCMeta):
     _template = None
     """The name of the infobox template containing the data"""
 
+
     @classmethod
-    def from_article(cls: Type[P], article: ArticlePy):
+    def from_article(cls: Type[P], article: Article):
         """Parse an article into a TibiaWiki model.
 
         Parameters

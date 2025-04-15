@@ -4,8 +4,10 @@ Changelog
 
 7.0.0 (Unreleased)
 ==================
-- Achievement improvements
+- Achievement changes
     - Spoiler properly handles quest links.
+- Spell changes
+    - Added `monk` attribute.
 
 .. 6.2.1
 
