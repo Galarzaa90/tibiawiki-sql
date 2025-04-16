@@ -13,6 +13,8 @@
 #  limitations under the License.
 
 """Defines the SQL schemas to use."""
+import logging
+import sqlite3
 
 from tibiawikisql.database import Blob, Boolean, Column, ForeignKey, Integer, Real, Table, Text, Timestamp
 
@@ -81,7 +83,7 @@ class Creature(Table):
     modifier_death = Column(Integer)
     modifier_holy = Column(Integer)
     modifier_drown = Column(Integer)
-    modifier_hpdrain = Column(Integer)
+    modifier_lifedrain = Column(Integer)
     modifier_healing = Column(Integer)
     walks_through = Column(Text)
     walks_around = Column(Text)
@@ -163,6 +165,18 @@ class CreatureDrop(Table, table_name="creature_drop"):
     chance = Column(Real)
     min = Column(Integer, nullable=False)
     max = Column(Integer, nullable=False)
+
+    @classmethod
+    def insert(cls, c, **kwargs):
+        if kwargs.get("item_id"):
+            super().insert(c, **kwargs)
+            return
+        try:
+            query = f"""INSERT INTO {cls.__tablename__}(creature_id, item_id, min, max)
+                        VALUES(?, (SELECT article_id from item WHERE title = ?), ?, ?)"""
+            c.execute(query, (kwargs["creature_id"], kwargs["item_title"], kwargs["min"], kwargs["max"]))
+        except sqlite3.IntegrityError:
+            pass
 
 
 class ItemAttribute(Table, table_name="item_attribute"):
