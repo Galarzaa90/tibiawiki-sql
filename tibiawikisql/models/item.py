@@ -11,16 +11,15 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import re
 from collections import OrderedDict
 
+import pydantic
+from pydantic import BaseModel, Field
+
 from tibiawikisql import schema
+from tibiawikisql.api import WikiEntry
 from tibiawikisql.models import abc
-from tibiawikisql.models.creature import CreatureDrop
-from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
-from tibiawikisql.models.quest import QuestReward
-from tibiawikisql.utils import (clean_links, clean_question_mark, client_color_to_rgb, find_templates, parse_boolean,
-                                parse_float, parse_integer, parse_sounds, strip_code)
+from tibiawikisql.utils import (clean_links)
 
 ELEMENTAL_RESISTANCES = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
 
@@ -35,132 +34,95 @@ SKILL_ATTRIBUTES_MAPPING = {
 }
 
 
-class Item(abc.Row, abc.Parseable, table=schema.Item):
-    """Represents an Item.
+class ItemAttribute(BaseModel):
+    """Represents an Item's attribute."""
 
-    Attributes
-    ----------
-    id: :class:`int`
-        The id of the  containing article.
-    title: :class:`str`
-        The title of the containing article.
-    timestamp: :class:`int`
-        The last time the containing article was edited.
-    name: :class:`str`
-        The in-game name of the item.
-    plural: :class:`str`
-        The plural of the name.
-    article: :class:`str`
-        The article that goes before the name when looking at the item.
-    marketable: :class:`bool`
-        Whether the item can be traded on the Market or not.
-    stackable: :class:`bool`
-        Whether the item can be stacked or not.
-    pickupable: :class:`bool`
-        Whether the item can be picked up or not.
-    value_sell: :class:`int`
-        The highest price an NPC will buy this item for.
-    value_buy: :class:`int`
-        The lowest price an NPC will sell this item for.
-    weight: :class:`float`
-        The item's weight in ounces.
-    item_class: :class:`str`
-        The item class the item belongs to.
-    item_type: :class:`str`
-        The item's type.
-    type_secondary: :class:`str`
-        The item's secondary type, if any.
-    flavor_text: :class:`str`
-        The extra text that is displayed when some items are looked at.
-    light_color: :class:`int`, optional.
-        The color of the light emitted by this item in RGB, if any.
-    light_radius: :class:`int`
-        The radius of the light emitted by this item, if any.
-    client_id: :class:`int`
-        The internal id of the item in the client.
-    version: :class:`str`
-        The client version where this item was first implemented.
-    status: :class:`str`
-        The status of this item in the game.
-    image: :class:`bytes`
-        The item's image in bytes.
-    attributes: list of :class:`ItemAttribute`
-        The item's attributes.
-    dropped_by: list of :class:`CreatureDrop`
-        List of creatures that drop this item, with the chances.
-    sold_by: list of :class:`NpcSellOffer`
-        List of NPCs that sell this item.
-    bought_by: list of :class:`NpcBuyOffer`
-        List of NPCs that buy this item.
-    awarded_in: list of :class:`QuestReward`
-        List of quests that give this item as reward.
-    sounds: list of :class:`ItemSound`.
-        List of sounds made when using the item.
-    """
+    item_id: int
+    """The id of the item the attribute belongs to."""
+    name: str
+    """The name of the attribute."""
+    value: str
+    """The value of the attribute."""
 
-    _map = {
-        "article": ("article", str.strip),
-        "actualname": ("name", str.strip),
-        "plural": ("plural", clean_question_mark),
-        "marketable": ("marketable", parse_boolean),
-        "stackable": ("stackable", parse_boolean),
-        "pickupable": ("pickupable", parse_boolean),
-        "weight": ("weight", parse_float),
-        "npcvalue": ("value_sell", parse_integer),
-        "npcprice": ("value_buy", parse_integer),
-        "flavortext": ("flavor_text", str.strip),
-        "objectclass": ("item_class", str.strip),
-        "primarytype": ("item_type", str.strip),
-        "secondarytype": ("type_secondary", str.strip),
-        "lightcolor": ("light_color", lambda x: client_color_to_rgb(parse_integer(x))),
-        "lightradius": ("light_radius", parse_integer),
-        "implemented": ("version", str.strip),
-        "itemid": ("client_id", parse_integer),
-        "status": ("status", str.lower),
-    }
-    _template = "Infobox_Object"
 
-    __slots__ = (
-        "article_id",
-        "title",
-        "timestamp",
-        "name",
-        "plural",
-        "article",
-        "marketable",
-        "stackable",
-        "pickupable",
-        "value_sell",
-        "value_buy",
-        "weight",
-        "item_class",
-        "item_type",
-        "type_secondary",
-        "flavor_text",
-        "light_color",
-        "light_radius",
-        "client_id",
-        "version",
-        "image",
-        "attributes",
-        "dropped_by",
-        "sold_by",
-        "bought_by",
-        "awarded_in",
-        "sounds",
-        "status",
-        "store_offers",
-    )
+class ItemSound(BaseModel):
+    """Represents a sound made by an item."""
 
-    def __init__(self, **kwargs):
-        self.store_offers = []
-        self.dropped_by = []
-        self.bought_by = []
-        self.sold_by = []
-        self.sounds = []
-        self.awarded_in = []
-        self.attributes = []
-        super().__init__(**kwargs)
+    item_id: int
+    """The article id of the item that does this sound."""
+    content: str
+    """The content of the sound."""
+
+
+
+class ItemStoreOffer(pydantic.BaseModel):
+    """Represents an offer for an item on the Tibia Store."""
+
+    item_id: int
+    """The ID of the item this offer is for."""
+    price: int
+    """The price of the item."""
+    amount: int
+    """The amount of the item."""
+    currency: str
+    """The currency used. In most of the times it is Tibia Coins."""
+
+
+class Item(WikiEntry):
+    """Represents an Item."""
+    name: str
+    """The in-game name of the item."""
+    plural: str | None
+    """The plural of the name."""
+    article: str | None
+    """The article that goes before the name when looking at the item."""
+    marketable: bool
+    """Whether the item can be traded on the Market or not."""
+    stackable: bool
+    """Whether the item can be stacked or not."""
+    pickupable: bool
+    """Whether the item can be picked up or not."""
+    value_sell: int | None
+    """The highest price an NPC will buy this item for."""
+    value_buy: int | None
+    """The lowest price an NPC will sell this item for."""
+    weight: float | None
+    """The item's weight in ounces."""
+    item_class: str | None
+    """The item class the item belongs to."""
+    item_type: str | None
+    """The item's type."""
+    type_secondary: str | None
+    """The item's secondary type, if any."""
+    flavor_text: str | None
+    """The extra text that is displayed when some items are looked at."""
+    light_color: int | None = None
+    """The color of the light emitted by this item in RGB, if any."""
+    light_radius: int | None
+    """The radius of the light emitted by this item, if any."""
+    client_id: int | None
+    """The internal id of the item in the client."""
+    version: str | None
+    """The client version where this item was first implemented."""
+    status: str
+    """The status of this item in the game."""
+    image: bytes | None = None
+    """The item's image in bytes."""
+    attributes: list[ItemAttribute] = Field(default_factory=list)
+    """The item's attributes."""
+    # dropped_by: List["CreatureDrop"]
+    # """List of creatures that drop this item, with the chances."""
+    # sold_by: List["NpcSellOffer"]
+    # """List of NPCs that sell this item."""
+    # bought_by: List["NpcBuyOffer"]
+    # """List of NPCs that buy this item."""
+    # awarded_in: List["QuestReward"]
+    # """List of quests that give this item as reward."""
+    sounds: list[ItemSound] = Field(default_factory=list)
+    """List of sounds made when using the item."""
+    store_offers: list[ItemStoreOffer] = Field(default_factory=list)
+
+
 
     @property
     def attributes_dict(self):
@@ -269,126 +231,6 @@ class Item(abc.Row, abc.Parseable, table=schema.Item):
         for attribute, template in SKILL_ATTRIBUTES_MAPPING.items():
             if attribute in attributes:
                 attributes_rep.append(template.format(attributes[attribute]))
-
-    @classmethod
-    def from_article(cls, article):
-        item: cls = super().from_article(article)
-        if item is None:
-            return None
-        if item.name is None:
-            item.name = item.title.lower()
-        item.attributes = []
-        for name, attribute in ItemAttribute._map.items():
-            if attribute in item._raw_attributes and item._raw_attributes[attribute]:
-                item.attributes.append(ItemAttribute(item_id=item.article_id, name=name,
-                                                     value=item._raw_attributes[attribute]))
-        try:
-            item._parse_attributes()
-            item._parse_resists()
-            vocations = item._raw_attributes.get('vocrequired')
-            if vocations and "none" not in vocations.lower():
-                vocation = vocations.replace('and', '+').replace(',', '+').replace(' ', '')
-                item.attributes.append(ItemAttribute(item_id=item.article_id, name="vocation", value=vocation))
-            item._parse_sounds()
-            item._parse_store_value()
-            return item
-        except Exception:
-            return None
-
-    def _parse_attributes(self):
-        if "attrib" not in self._raw_attributes:
-            return
-        attribs = self._raw_attributes["attrib"].split(",")
-        for attr in attribs:
-            attr = attr.strip()
-            m = re.search(r'([\s\w]+)\s([+\-\d]+)', attr)
-            if "perfect shot" in attr.lower():
-                numbers = re.findall(r"(\d+)", attr)
-                if len(numbers) == 2:
-                    self.attributes.extend([
-                        ItemAttribute(item_id=self.article_id, name="perfect_shot", value=f"+{numbers[0]}"),
-                        ItemAttribute(item_id=self.article_id, name="perfect_shot_range", value=numbers[1]),
-                    ])
-                    continue
-            if "damage reflection" in attr.lower():
-                value = parse_integer(attr)
-                self.attributes.append(ItemAttribute(item_id=self.article_id, name="damage_reflection", value=value))
-            if "damage reflection" in attr.lower():
-                value = parse_integer(attr)
-                self.attributes.append(ItemAttribute(item_id=self.article_id, name="damage_reflection", value=value))
-            if "magic shield capacity" in attr.lower():
-                numbers = re.findall(r"(\d+)", attr)
-                if len(numbers) == 2:
-                    self.attributes.extend([
-                        ItemAttribute(item_id=self.article_id, name="magic_shield_capacity", value=f"+{numbers[0]}"),
-                        ItemAttribute(item_id=self.article_id, name="magic_shield_capacity%", value=f"{numbers[1]}%"),
-                    ])
-                    continue
-            if m:
-                attribute = m.group(1).replace("fighting", "").replace("level", "").strip().replace(" ", "_").lower()
-                value = m.group(2)
-                self.attributes.append(ItemAttribute(item_id=self.article_id, name=attribute.lower(), value=value))
-            if "regeneration" in attr:
-                self.attributes.append(ItemAttribute(item_id=self.article_id, name="regeneration",
-                                                     value="faster regeneration"))
-
-    def _parse_resists(self):
-        if "resist" not in self._raw_attributes:
-            return
-        resistances = self._raw_attributes["resist"].split(",")
-        for element in resistances:
-            element = element.strip()
-            m = re.search(r'([a-zA-Z0-9_ ]+) +(-?\+?\d+)%', element)
-            if not m:
-                continue
-            attribute = m.group(1) + "%"
-            try:
-                value = int(m.group(2))
-            except ValueError:
-                value = 0
-            self.attributes.append(ItemAttribute(item_id=self.article_id, name=attribute, value=value))
-
-    def _parse_sounds(self):
-        if "sounds" not in self._raw_attributes:
-            return
-        sounds = parse_sounds(self._raw_attributes["sounds"])
-        self.sounds = [ItemSound(item_id=self.article_id, content=sound) for sound in sounds] if sounds else []
-
-    def _parse_store_value(self):
-        if "storevalue" not in self._raw_attributes:
-            return
-        templates = find_templates(self._raw_attributes["storevalue"], "Store Product", recursive=True)
-        self.store_offers = []
-        for template in templates:
-            price = int(strip_code(template.get(1, 0)))
-            currency = strip_code(template.get(2, "Tibia Coin"))
-            amount = int(strip_code(template.get("amount", 1)))
-            self.store_offers.append(
-                ItemStoreOffer(item_id=self.article_id, price=price, currency=currency, amount=amount),
-            )
-
-    def insert(self, c):
-        super().insert(c)
-        for attribute in getattr(self, "attributes", []):
-            attribute.insert(c)
-        for attribute in getattr(self, "sounds", []):
-            attribute.insert(c)
-        for attribute in getattr(self, "store_offers", []):
-            attribute.insert(c)
-
-    @classmethod
-    def get_by_field(cls, c, field, value, use_like=False):
-        item: cls = super().get_by_field(c, field, value, use_like)
-        if item is None:
-            return None
-        item.attributes = ItemAttribute.search(c, "item_id", item.article_id)
-        item.dropped_by = CreatureDrop.search(c, "item_id", item.article_id, sort_by="chance", ascending=False)
-        item.sold_by = NpcSellOffer.search(c, "item_id", item.article_id, sort_by="value", ascending=True)
-        item.bought_by = NpcBuyOffer.search(c, "item_id", item.article_id, sort_by="value", ascending=False)
-        item.awarded_in = QuestReward.search(c, "item_id", item.article_id)
-        item.sounds = ItemSound.search(c, "item_id", item.article_id)
-        item.store_offers = ItemStoreOffer.search(c, "item_id", item.article_id)
-        return item
 
 
 class Book(abc.Row, abc.Parseable, table=schema.Book):
@@ -546,156 +388,3 @@ class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
             c.execute(query, (self.article_id, self.title, self.number, self.material + " Key", self.name,
                               self.material, self.location, self.origin, self.notes, self.version, self.timestamp))
 
-
-class ItemAttribute(abc.Row, table=schema.ItemAttribute):
-    """Represents an Item's attribute.
-
-    Attributes
-    ----------
-    item_id: :class:`int`
-        The id of the item the attribute belongs to
-    name: :class:`str`
-        The name of the attribute.
-    value: :class:`str`
-        The value of the attribute.
-    """
-
-    _map = {
-        "level": "levelrequired",
-        "attack": "attack",
-        "defense": "defense",
-        "defense_modifier": "defensemod",
-        "armor": "armor",
-        "hands": "hands",
-        "imbue_slots": "imbueslots",
-        "imbuements": "imbuements",
-        "attack+": "atk_mod",
-        "hit%+": "hit_mod",
-        "range": "range",
-        "damage_type": "damagetype",
-        "damage_range": "damagerange",
-        "mana_cost": "manacost",
-        "magic_level": "mlrequired",
-        "words": "words",
-        "critical_chance": "crithit_ch",
-        "critical%": "critextra_dmg",
-        "hpleech_chance": "hpleech_ch",
-        "hpleech%": "hpleech_am",
-        "manaleech_chance": "manaleech_ch",
-        "manaleech%": "manaleech_am",
-        "volume": "volume",
-        "charges": "charges",
-        "food_time": "regenseconds",
-        "duration": "duration",
-        "fire_attack": "fire_attack",
-        "energy_attack": "energy_attack",
-        "ice_attack": "ice_attack",
-        "earth_attack": "earth_attack",
-        "weapon_type": "weapontype",
-        "destructible": "destructible",
-        "holds_liquid": "holdsliquid",
-        "hangable": "hangable",
-        "writable": "writable",
-        "rewritable": "rewritable",
-        "writable_chars": "writechars",
-        "consumable": "consumable",
-        "fansite": "fansite",
-        "unshootable": "unshootable",
-        "blocks_path": "blockspath",
-        "walkable": "walkable",
-        "tile_friction": "walkingspeed",
-        "map_color": "mapcolor",
-        "upgrade_classification": "upgradeclass"
-    }
-    __slots__ = (
-        "item_id",
-        "name",
-        "value",
-    )
-
-    def insert(self, c):
-        columns = {'item_id': self.item_id, 'name': self.name, 'value': clean_links(str(self.value))}
-        self.table.insert(c, **columns)
-
-
-class ItemSound(abc.Row, table=schema.ItemSound):
-    """Represents a sound made by an item.
-
-    Attributes
-    ----------
-    item_id: :class:`int`
-        The article id of the item that does this sound.
-    content: :class:`str`
-        The content of the sound.
-    """
-
-    __slots__ = (
-        "item_id",
-        "content",
-    )
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-    def __repr__(self):
-        attributes = []
-        for attr in self.__slots__:
-            try:
-                v = getattr(self, attr)
-                if v is None:
-                    continue
-                attributes.append(f"{attr}={v!r}")
-            except AttributeError:
-                pass
-        return f"{self.__class__.__name__}({','.join(attributes)})"
-
-    def insert(self, c):
-        columns = {'item_id': self.item_id, 'content': self.content}
-        self.table.insert(c, **columns)
-
-
-class ItemStoreOffer(abc.Row, table=schema.ItemStoreOffer):
-    """Represents an offer for an item on the Tibia Store.
-
-    Attributes
-    ----------
-    item_id: :class:`int`
-        The ID of the item this offer is for.
-    price: :class:`int`
-        The price of the item.
-    amount: :class:`int`
-        The amount of the item.
-    currency: :class:`str`
-        The currency used. In most of the times it is Tibia Coins.
-    """
-
-    __slots__ = (
-        "item_id",
-        "price",
-        "amount",
-        "currency",
-    )
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-    def __repr__(self):
-        attributes = []
-        for attr in self.__slots__:
-            try:
-                v = getattr(self, attr)
-                if v is None:
-                    continue
-                attributes.append(f"{attr}={v!r}")
-            except AttributeError:
-                pass
-        return f"{self.__class__.__name__}({','.join(attributes)})"
-
-    def insert(self, c):
-        columns = {
-            'item_id': self.item_id,
-            'price': self.price,
-            'amount': self.amount or 1,
-            'currency': self.currency or 'Tibia Coin',
-        }
-        self.table.insert(c, **columns)

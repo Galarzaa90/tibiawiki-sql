@@ -2,10 +2,11 @@ import sqlite3
 from abc import ABC
 from typing import Any, ClassVar, TypeVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
 from tibiawikisql.api import Article
 from tibiawikisql.database import Table
+from tibiawikisql.exceptions import ArticleParsingError, AttributeParsingError
 from tibiawikisql.utils import parse_templatates_data
 
 M = TypeVar("M", bound=BaseModel)
@@ -35,9 +36,12 @@ class BaseParser(ABC):
             "title": article.title,
         }
         attributes = templates[cls.template_name]
-        row["attributes"] = attributes
+        row["_raw_attributes"] = attributes
         for field, parser in cls.attribute_map.items():
-            row[field] = parser(attributes)
+            try:
+                row[field] = parser(attributes)
+            except (AttributeParsingError) as e:
+                raise ArticleParsingError(article, e) from e
         return row
 
     @classmethod
@@ -60,7 +64,10 @@ class BaseParser(ABC):
         row = cls.parse_attributes(article)
         if not row:
             return None
-        return cls.model.model_validate(row)
+        try:
+            return cls.model.model_validate(row)
+        except ValidationError as e:
+            raise ArticleParsingError(article, e) from e
 
     @classmethod
     def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: M) -> None:

@@ -78,9 +78,9 @@ class Category:
 
 
 categories = {
-    "achievements": Category("Achievements", parsers.AchievementParser, no_images=True),
-    "spells": Category("Spells", parsers.SpellParser, generate_map=True),
-    # "items": Category("Objects", models.Item, generate_map=True),
+    # "achievements": Category("Achievements", parsers.AchievementParser, no_images=True),
+    # "spells": Category("Spells", parsers.SpellParser, generate_map=True),
+    "items": Category("Objects", parsers.ItemParser, generate_map=True),
     # "creatures": Category("Creatures", models.Creature, generate_map=True),
     # "books": Category("Book Texts", models.Book, no_images=True),
     # "keys": Category("Keys", models.Key, no_images=True),
@@ -88,7 +88,7 @@ categories = {
     # "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
     # "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
     # "house": Category("Player-Ownable Buildings", models.House, no_images=True),
-    "charm": Category("Charms", parsers.CharmParser, extension=".png"),
+    # "charm": Category("Charms", parsers.CharmParser, extension=".png"),
     # "outfits": Category("Outfits", models.Outfit, no_images=True),
     # "worlds": Category("Game Worlds", models.World, no_images=True, include_deprecated=True),
     # "mounts": Category("Mounts", models.Mount),

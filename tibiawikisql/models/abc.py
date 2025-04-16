@@ -21,6 +21,7 @@ import pydantic
 
 from tibiawikisql import database
 from tibiawikisql.api import Article
+from tibiawikisql.exceptions import AttributeParsingError
 from tibiawikisql.utils import parse_templatates_data
 
 P = TypeVar('P', bound=pydantic.BaseModel)
@@ -36,10 +37,14 @@ class AttributeParser(Generic[T]):
     def __call__(self, *args, **kwargs):
         try:
             return self.func(args[0])
-        except:
+        except Exception as e:
             if self.fallback is Ellipsis:
-                raise
+                raise AttributeParsingError(e) from e
             return self.fallback
+
+    @classmethod
+    def required(cls, field_name: str, post_process: Callable[[str], T] = str):
+        return cls(lambda x: post_process(x[field_name]))
 
     @classmethod
     def optional(cls, field_name: str, post_process: Callable[[str], T | None] = str, default = None) -> Self:

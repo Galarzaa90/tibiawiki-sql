@@ -36,7 +36,7 @@ class SpellParser(BaseParser):
     def parse_attributes(cls, article: Article):
         row = super().parse_attributes(article)
         for vocation in ["knight", "sorcerer", "druid", "paladin", "monk"]:
-            if vocation in row["attributes"].get("voc", "").lower():
+            if vocation in row["_raw_attributes"].get("voc", "").lower():
                 row[vocation] = True
         return row
 

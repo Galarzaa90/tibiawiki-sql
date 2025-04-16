@@ -1,0 +1,198 @@
+import re
+import sqlite3
+from typing import Any
+
+import tibiawikisql.schema
+from tibiawikisql import Article
+from tibiawikisql.models import Item, ItemAttribute
+from tibiawikisql.models.abc import AttributeParser
+from tibiawikisql.models.item import ItemSound, ItemStoreOffer
+from tibiawikisql.parsers import BaseParser
+from tibiawikisql.utils import clean_question_mark, client_color_to_rgb, find_templates, parse_boolean, parse_float, \
+    parse_integer, \
+    parse_sounds, strip_code
+
+
+class ItemParser(BaseParser):
+    model = Item
+    table = tibiawikisql.schema.Item
+    template_name = "Infobox_Object"
+    attribute_map = {
+        "name": AttributeParser.required("name"),
+        "plural": AttributeParser.optional("plural", clean_question_mark),
+        "article": AttributeParser.optional("article"),
+        "marketable": AttributeParser.optional("marketable", parse_boolean, False),
+        "stackable": AttributeParser.optional("stackable", parse_boolean, False),
+        "pickupable": AttributeParser.optional("pickupable", parse_boolean, False),
+        "value_sell": AttributeParser.optional("npcvalue", parse_integer),
+        "value_buy": AttributeParser.optional("npcprice", parse_integer),
+        "weight": AttributeParser.optional("weight", parse_float),
+        "flavor_text": AttributeParser.optional("flavortext"),
+        "item_class": AttributeParser.optional("objectclass"),
+        "item_type": AttributeParser.optional("primarytype"),
+        "type_secondary": AttributeParser.optional("secondarytype"),
+        "light_color": AttributeParser.optional("lightcolor", lambda x: client_color_to_rgb(parse_integer(x))),
+        "light_radius": AttributeParser.optional("lightradius", parse_integer),
+        "version": AttributeParser.optional("implemented"),
+        "client_id": AttributeParser.optional("itemid", parse_integer),
+        "status": AttributeParser.status(),
+    }
+
+    item_attributes = {
+        "level": "levelrequired",
+        "attack": "attack",
+        "defense": "defense",
+        "defense_modifier": "defensemod",
+        "armor": "armor",
+        "hands": "hands",
+        "imbue_slots": "imbueslots",
+        "imbuements": "imbuements",
+        "attack+": "atk_mod",
+        "hit%+": "hit_mod",
+        "range": "range",
+        "damage_type": "damagetype",
+        "damage_range": "damagerange",
+        "mana_cost": "manacost",
+        "magic_level": "mlrequired",
+        "words": "words",
+        "critical_chance": "crithit_ch",
+        "critical%": "critextra_dmg",
+        "hpleech_chance": "hpleech_ch",
+        "hpleech%": "hpleech_am",
+        "manaleech_chance": "manaleech_ch",
+        "manaleech%": "manaleech_am",
+        "volume": "volume",
+        "charges": "charges",
+        "food_time": "regenseconds",
+        "duration": "duration",
+        "fire_attack": "fire_attack",
+        "energy_attack": "energy_attack",
+        "ice_attack": "ice_attack",
+        "earth_attack": "earth_attack",
+        "weapon_type": "weapontype",
+        "destructible": "destructible",
+        "holds_liquid": "holdsliquid",
+        "hangable": "hangable",
+        "writable": "writable",
+        "rewritable": "rewritable",
+        "writable_chars": "writechars",
+        "consumable": "consumable",
+        "fansite": "fansite",
+        "unshootable": "unshootable",
+        "blocks_path": "blockspath",
+        "walkable": "walkable",
+        "tile_friction": "walkingspeed",
+        "map_color": "mapcolor",
+        "upgrade_classification": "upgradeclass",
+    }
+
+    @classmethod
+    def parse_attributes(cls, article: Article) -> dict[str, Any]:
+        row = super().parse_attributes(article)
+        if not row:
+            return row
+        row["attributes"] = []
+        for name, attribute in cls.item_attributes.items():
+            if attribute in row["_raw_attributes"] and row["_raw_attributes"][attribute]:
+                row["attributes"].append(ItemAttribute(
+                    item_id=row["article_id"],
+                    name=name,
+                    value=row["_raw_attributes"][attribute],
+                ))
+        cls.parse_item_attributes(row)
+        cls.parse_resistances(row)
+        cls.parse_sounds(row)
+        cls.parse_store_value(row)
+        return row
+
+    @classmethod
+    def parse_item_attributes(cls, row):
+        raw_attributes = row["_raw_attributes"]
+        attributes = row["attributes"]
+        item_id = row["article_id"]
+        if "attrib" not in raw_attributes:
+            return
+        attribs = raw_attributes["attrib"].split(",")
+        for attr in attribs:
+            attr = attr.strip()
+            m = re.search(r"([\s\w]+)\s([+\-\d]+)", attr)
+            if "perfect shot" in attr.lower():
+                numbers = re.findall(r"(\d+)", attr)
+                if len(numbers) == 2:
+                    attributes.extend([
+                        ItemAttribute(item_id=item_id, name="perfect_shot", value=f"+{numbers[0]}"),
+                        ItemAttribute(item_id=item_id, name="perfect_shot_range", value=numbers[1]),
+                    ])
+                    continue
+            if "damage reflection" in attr.lower():
+                value = parse_integer(attr)
+                attributes.append(ItemAttribute(item_id=item_id, name="damage_reflection", value=str(value)))
+            if "damage reflection" in attr.lower():
+                value = parse_integer(attr)
+                attributes.append(ItemAttribute(item_id=item_id, name="damage_reflection", value=str(value)))
+            if "magic shield capacity" in attr.lower():
+                numbers = re.findall(r"(\d+)", attr)
+                if len(numbers) == 2:
+                    attributes.extend([
+                        ItemAttribute(item_id=item_id, name="magic_shield_capacity", value=f"+{numbers[0]}"),
+                        ItemAttribute(item_id=item_id, name="magic_shield_capacity%", value=f"{numbers[1]}%"),
+                    ])
+                    continue
+            if m:
+                attribute = m.group(1).replace("fighting", "").replace("level", "").strip().replace(" ", "_").lower()
+                value = m.group(2)
+                attributes.append(ItemAttribute(item_id=item_id, name=attribute.lower(), value=value))
+            if "regeneration" in attr:
+                attributes.append(ItemAttribute(item_id=item_id, name="regeneration",
+                                                value="faster regeneration"))
+
+    @classmethod
+    def parse_resistances(cls, row):
+        raw_attributes = row["_raw_attributes"]
+        attributes = row["attributes"]
+        item_id = row["article_id"]
+        if "resist" not in raw_attributes:
+            return
+        resistances = raw_attributes["resist"].split(",")
+        for element in resistances:
+            element = element.strip()
+            m = re.search(r"([a-zA-Z0-9_ ]+) +(-?\+?\d+)%", element)
+            if not m:
+                continue
+            attribute = m.group(1) + "%"
+            try:
+                value = int(m.group(2))
+            except ValueError:
+                value = 0
+            attributes.append(ItemAttribute(item_id=item_id, name=attribute, value=str(value)))
+
+    @classmethod
+    def parse_sounds(cls, row):
+        if "sounds" not in row["_raw_attributes"]:
+            return
+        sounds = parse_sounds(row["_raw_attributes"]["sounds"])
+        row["sounds"] = [ItemSound(item_id=row["article_id"], content=sound) for sound in sounds] if sounds else []
+
+    @classmethod
+    def parse_store_value(self, row):
+        if "storevalue" not in row["_raw_attributes"]:
+            return
+        templates = find_templates(row["_raw_attributes"]["storevalue"], "Store Product", recursive=True)
+        row["store_offers"] = []
+        for template in templates:
+            price = int(strip_code(template.get(1, 0)))
+            currency = strip_code(template.get(2, "Tibia Coin"))
+            amount = int(strip_code(template.get("amount", 1)))
+            row["store_offers"].append(
+                ItemStoreOffer(item_id=row["article_id"], price=price, currency=currency, amount=amount),
+            )
+
+    @classmethod
+    def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: Item):
+        super().insert(cursor, model)
+        for attribute in model.attributes:
+            tibiawikisql.schema.ItemAttribute.insert(cursor, **attribute.model_dump())
+        for sound in model.sounds:
+            tibiawikisql.schema.ItemSound.insert(cursor, **sound.model_dump())
+        for store_offer in model.store_offers:
+            tibiawikisql.schema.ItemStoreOffer.insert(cursor, **store_offer.model_dump())
