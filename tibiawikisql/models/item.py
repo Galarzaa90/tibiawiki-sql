@@ -16,10 +16,7 @@ from collections import OrderedDict
 import pydantic
 from pydantic import BaseModel, Field
 
-from tibiawikisql import schema
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models import abc
-from tibiawikisql.utils import (clean_links)
 
 ELEMENTAL_RESISTANCES = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
 
@@ -52,7 +49,6 @@ class ItemSound(BaseModel):
     """The article id of the item that does this sound."""
     content: str
     """The content of the sound."""
-
 
 
 class ItemStoreOffer(pydantic.BaseModel):
@@ -121,8 +117,6 @@ class Item(WikiEntry):
     sounds: list[ItemSound] = Field(default_factory=list)
     """List of sounds made when using the item."""
     store_offers: list[ItemStoreOffer] = Field(default_factory=list)
-
-
 
     @property
     def attributes_dict(self):
@@ -259,90 +253,25 @@ class Book(WikiEntry):
     status: str
     """The status of this item in the game."""
 
-    _map = {
-        "title": ("name", str),
-        "booktype": ("book_type", clean_links),
-        "location": ("location", lambda x: clean_links(x, True)),
-        "blurb": ("blurb", lambda x: clean_links(x, True)),
-        "author": ("author", lambda x: clean_links(x, True)),
-        "prevbook": ("prev_book", str),
-        "nextbook": ("next_book", str),
-        "text": ("text", clean_links),
-        "implemented": ("version", str),
-        "status": ("status", str),
-    }
-    _template = "Infobox_Book"
 
+class Key(WikiEntry):
+    """Represents a key item."""
 
-class Key(abc.Row, abc.Parseable, table=schema.ItemKey):
-    """Represents a key item.
-
-    Attributes
-    ----------
-    article_id: :class:`int`
-        The id of the  containing article.
-    title: :class:`str`
-        The title of the containing article.
-    timestamp: :class:`int`
-        The last time the containing article was edited.
-    name: :class:`str`
-        The name of the creature, as displayed in-game.
-    number: :class:`int`
-        The key's number.
-    item_id: :class:`int`
-        The article id of the item this key is based on.
-    material: :class:`str`
-        The key's material.
-    location: :class:`str`
-        The key's location.
-    notes: :class:`str`
-        Notes about the key.
-    origin: :class:`str`
-        Notes about the origin of the key.
-    status: :class:`str`
-        The status of this key in the game.
-    version: :class:`str`
-        The client version where this creature was first implemented.
-    """
-
-    __slots__ = (
-        "article_id",
-        "title",
-        "timestamp",
-        "name",
-        "number",
-        "item_id",
-        "material",
-        "notes",
-        "origin",
-        "version",
-        "location",
-        "status",
-    )
-    _map = {
-        "aka": ("name", clean_links),
-        "number": ("number", int),
-        "primarytype": ("material", str.strip),
-        "location": ("location", clean_links),
-        "origin": ("origin", clean_links),
-        "shortnotes": ("notes", clean_links),
-        "implemented": ("version", str.strip),
-        "status": ("status", str.lower),
-    }
-    _template = "Infobox_Key"
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-    def insert(self, c):
-        if getattr(self, "item_id", None):
-            super().insert(c)
-        else:
-            query = f"""
-                INSERT INTO {self.table.__tablename__}(article_id, title, number, item_id, name, material, location,
-                    origin, notes, version, timestamp)
-                VALUES(?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?)
-            """
-            c.execute(query, (self.article_id, self.title, self.number, self.material + " Key", self.name,
-                              self.material, self.location, self.origin, self.notes, self.version, self.timestamp))
-
+    name: str | None = None
+    """The name of the creature, as displayed in-game."""
+    number: int
+    """The key's number."""
+    item_id: int | None = None
+    """The article id of the item this key is based on."""
+    material: str | None = None
+    """The key's material."""
+    location: str | None
+    """The key's location."""
+    notes: str | None
+    """Notes about the key."""
+    origin: str | None
+    """Notes about the origin of the key."""
+    status: str
+    """The status of this key in the game."""
+    version: str | None
+    """The client version where this creature was first implemented."""
