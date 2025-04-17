@@ -233,57 +233,31 @@ class Item(WikiEntry):
                 attributes_rep.append(template.format(attributes[attribute]))
 
 
-class Book(abc.Row, abc.Parseable, table=schema.Book):
-    """Represents a book or written document in Tibia.
+class Book(WikiEntry):
+    """Represents a book or written document in Tibia."""
 
-    Parameters
-    ----------
-    article_id: :class:`int`
-        The ID of the article that contains this book.
-    title: :class:`str`
-        The title of the article containing this book.
-    name: :class:´str´
-        The name of the book.
-    book_type: :class:`str`
-        The type of item this book can be found in.
-    item_id: :class:`int`
-        The ID of the item this book is written in.
-    location: :class:`str`
-        Where the book can be found.
-    blurb: :class:`str`
-        A short introduction text of the book.
-    author: :class:`str`
-        The person that wrote the book, if known.
-    prev_book: :class:`str`
-        If the book is part of a series, the book that precedes this one.
-    next_book: :class:`str`
-        If the book is part of a series, the book that follows this one.
-    text: :class:`str`
-        The content of the book.
-    version: :class:`str`
-        The client version where this item was first implemented.
-    status: :class:`str`
-        The status of this item in the game.
-    timestamp: :class:`int`
-        The last time the containing article was edited.
-    """
-
-    __slots__ = (
-        "article_id",
-        "title",
-        "name",
-        "book_type",
-        "item_id",
-        "location",
-        "blurb",
-        "author",
-        "prev_book",
-        "next_book",
-        "text",
-        "version",
-        "status",
-        "timestamp",
-    )
+    name: str
+    """The name of the book."""
+    book_type: str | None = None
+    """The type of item this book can be found in."""
+    item_id: int | None = None
+    """The ID of the item this book is written in."""
+    location: str | None
+    """Where the book can be found."""
+    blurb: str | None
+    """A short introduction text of the book."""
+    author: str | None
+    """The person that wrote the book, if known."""
+    prev_book: str | None
+    """If the book is part of a series, the book that precedes this one."""
+    next_book: str | None
+    """If the book is part of a series, the book that follows this one."""
+    text: str
+    """The content of the book."""
+    version: str | None
+    """The client version where this item was first implemented."""
+    status: str
+    """The status of this item in the game."""
 
     _map = {
         "title": ("name", str),
@@ -298,22 +272,6 @@ class Book(abc.Row, abc.Parseable, table=schema.Book):
         "status": ("status", str),
     }
     _template = "Infobox_Book"
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-    def insert(self, c):
-        if getattr(self, "item_id", None):
-            super().insert(c)
-        else:
-            query = f"""
-                INSERT INTO {self.table.__tablename__}(article_id, title, name, book_type, item_id, location, blurb,
-                author, prev_book, next_book, text, version, status, timestamp)
-                VALUES(?, ?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """
-            c.execute(query, (self.article_id, self.title, self.name, self.book_type, self.book_type, self.location,
-                              self.blurb, self.author, self.prev_book, self.next_book, self.text, self.version,
-                              self.status, self.timestamp))
 
 
 class Key(abc.Row, abc.Parseable, table=schema.ItemKey):

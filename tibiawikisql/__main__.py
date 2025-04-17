@@ -78,11 +78,11 @@ class Category:
 
 
 categories = {
-    # "achievements": Category("Achievements", parsers.AchievementParser, no_images=True),
-    # "spells": Category("Spells", parsers.SpellParser, generate_map=True),
+    "achievements": Category("Achievements", parsers.AchievementParser, no_images=True),
+    "spells": Category("Spells", parsers.SpellParser, generate_map=True),
     "items": Category("Objects", parsers.ItemParser, generate_map=True),
     "creatures": Category("Creatures", parsers.CreatureParser, generate_map=True),
-    # "books": Category("Book Texts", models.Book, no_images=True),
+    "books": Category("Book Texts", parsers.BookParser, no_images=True),
     # "keys": Category("Keys", models.Key, no_images=True),
     # "npcs": Category("NPCs", models.Npc, generate_map=True),
     # "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
