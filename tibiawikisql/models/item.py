@@ -17,6 +17,9 @@ import pydantic
 from pydantic import BaseModel, Field
 
 from tibiawikisql.api import WikiEntry
+from tibiawikisql.models.creature import CreatureDrop
+from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
+from tibiawikisql.models.quest import QuestReward
 
 ELEMENTAL_RESISTANCES = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
 
@@ -66,18 +69,21 @@ class ItemStoreOffer(pydantic.BaseModel):
 
 class Item(WikiEntry):
     """Represents an Item."""
+
     name: str
     """The in-game name of the item."""
     plural: str | None
     """The plural of the name."""
     article: str | None
     """The article that goes before the name when looking at the item."""
-    marketable: bool
+    is_marketable: bool
     """Whether the item can be traded on the Market or not."""
-    stackable: bool
+    is_stackable: bool
     """Whether the item can be stacked or not."""
-    pickupable: bool
+    is_pickupable: bool
     """Whether the item can be picked up or not."""
+    is_immobile: bool
+    """Whether the item can be moved around the map or not."""
     value_sell: int | None
     """The highest price an NPC will buy this item for."""
     value_buy: int | None
@@ -106,13 +112,13 @@ class Item(WikiEntry):
     """The item's image in bytes."""
     attributes: list[ItemAttribute] = Field(default_factory=list)
     """The item's attributes."""
-    # dropped_by: List["CreatureDrop"]
-    # """List of creatures that drop this item, with the chances."""
-    # sold_by: List["NpcSellOffer"]
-    # """List of NPCs that sell this item."""
-    # bought_by: List["NpcBuyOffer"]
-    # """List of NPCs that buy this item."""
-    # awarded_in: List["QuestReward"]
+    dropped_by: list[CreatureDrop] = Field(default_factory=list)
+    """List of creatures that drop this item, with the chances."""
+    sold_by: list[NpcSellOffer] = Field(default_factory=list)
+    """List of NPCs that sell this item."""
+    bought_by: list[NpcBuyOffer] = Field(default_factory=list)
+    """List of NPCs that buy this item."""
+    # awarded_in: list[QuestReward] = Field(default_factory=list)
     # """List of quests that give this item as reward."""
     sounds: list[ItemSound] = Field(default_factory=list)
     """List of sounds made when using the item."""

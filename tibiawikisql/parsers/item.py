@@ -8,7 +8,8 @@ from tibiawikisql.models import Item, ItemAttribute
 from tibiawikisql.models.abc import AttributeParser
 from tibiawikisql.models.item import ItemSound, ItemStoreOffer
 from tibiawikisql.parsers import BaseParser
-from tibiawikisql.utils import clean_question_mark, client_color_to_rgb, find_templates, parse_boolean, parse_float, \
+from tibiawikisql.utils import clean_links, clean_question_mark, client_color_to_rgb, find_templates, parse_boolean, \
+    parse_float, \
     parse_integer, \
     parse_sounds, strip_code
 
@@ -21,9 +22,10 @@ class ItemParser(BaseParser):
         "name": AttributeParser.required("name"),
         "plural": AttributeParser.optional("plural", clean_question_mark),
         "article": AttributeParser.optional("article"),
-        "marketable": AttributeParser.optional("marketable", parse_boolean, False),
-        "stackable": AttributeParser.optional("stackable", parse_boolean, False),
-        "pickupable": AttributeParser.optional("pickupable", parse_boolean, False),
+        "is_marketable": AttributeParser.optional("marketable", parse_boolean, False),
+        "is_stackable": AttributeParser.optional("stackable", parse_boolean, False),
+        "is_pickupable": AttributeParser.optional("pickupable", parse_boolean, False),
+        "is_immobile": AttributeParser.optional("immobile", parse_boolean, False),
         "value_sell": AttributeParser.optional("npcvalue", parse_integer),
         "value_buy": AttributeParser.optional("npcprice", parse_integer),
         "weight": AttributeParser.optional("weight", parse_float),
@@ -72,18 +74,20 @@ class ItemParser(BaseParser):
         "weapon_type": "weapontype",
         "destructible": "destructible",
         "holds_liquid": "holdsliquid",
-        "hangable": "hangable",
-        "writable": "writable",
-        "rewritable": "rewritable",
+        "is_hangable": "hangable",
+        "is_writable": "writable",
+        "is_rewritable": "rewritable",
         "writable_chars": "writechars",
-        "consumable": "consumable",
+        "is_consumable": "consumable",
         "fansite": "fansite",
-        "unshootable": "unshootable",
+        "blocks_projectiles": "unshootable",
         "blocks_path": "blockspath",
-        "walkable": "walkable",
+        "is_walkable": "walkable",
         "tile_friction": "walkingspeed",
         "map_color": "mapcolor",
         "upgrade_classification": "upgradeclass",
+        "is_rotatable": "rotatable",
+        "augments": "augments",
     }
 
     @classmethod
@@ -97,7 +101,7 @@ class ItemParser(BaseParser):
                 row["attributes"].append(ItemAttribute(
                     item_id=row["article_id"],
                     name=name,
-                    value=row["_raw_attributes"][attribute],
+                    value=clean_links(row["_raw_attributes"][attribute]),
                 ))
         cls.parse_item_attributes(row)
         cls.parse_resistances(row)

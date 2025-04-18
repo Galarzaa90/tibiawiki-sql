@@ -81,7 +81,7 @@ class Category:
 categories = {
     "achievements": Category("Achievements", parsers.AchievementParser, no_images=True),
     "spells": Category("Spells", parsers.SpellParser, generate_map=True),
-    # "items": Category("Objects", parsers.ItemParser, generate_map=True),
+    "items": Category("Objects", parsers.ItemParser, generate_map=True),
     # "creatures": Category("Creatures", parsers.CreatureParser, generate_map=True),
     # "books": Category("Book Texts", parsers.BookParser, no_images=True),
     # "keys": Category("Keys", parsers.KeyParser, no_images=True),

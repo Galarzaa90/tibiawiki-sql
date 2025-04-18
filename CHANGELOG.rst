@@ -19,6 +19,19 @@ Changelog
     - Rename ``promotion`` to ``is_promotion``.
     - Added ``is_wheel_spell`` attribute.
     - Added ``is_passive`` attribute.
+- Item changes
+    - Added ``is_immobile`` attribute.
+    - Rename ``promotion`` to ``is_promotion``.
+    - Added parseable attributes:
+        - ``is_rotatable``
+        - ``augments``
+    - Renamed attributes:
+        - ``hangable`` to ``is_hangable``.
+        - ``writable`` to ``is_writable``.
+        - ``rewritable`` to ``is_rewritable``.
+        - ``consumable`` to ``is_consumable``.
+        - ``unshootable`` to ``blocks_projectiles``.
+        - ``walkable`` to ``is_walkable``.
 - Quest changes
     - Added missing `premium` attribute.
 
