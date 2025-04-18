@@ -27,6 +27,7 @@ import requests
 from colorama import Fore, Style
 from lupa import LuaRuntime
 
+import tibiawikisql.schema
 from tibiawikisql import Image, WikiClient, __version__, models, parsers, schema
 from tibiawikisql.models import abc
 from tibiawikisql.models.npc import rashid_positions
@@ -84,8 +85,8 @@ categories = {
     "creatures": Category("Creatures", parsers.CreatureParser, generate_map=True),
     "books": Category("Book Texts", parsers.BookParser, no_images=True),
     "keys": Category("Keys", parsers.KeyParser, no_images=True),
-    # "npcs": Category("NPCs", models.Npc, generate_map=True),
-    # "imbuements": Category("Imbuements", models.Imbuement, extension=".png"),
+    "npcs": Category("NPCs", parsers.NpcParser, generate_map=True),
+    "imbuements": Category("Imbuements", parsers.ImbuementParser, extension=".png"),
     # "quests": Category("Quest Overview Pages", models.Quest, no_images=True),
     # "house": Category("Player-Ownable Buildings", models.House, no_images=True),
     # "charm": Category("Charms", parsers.CharmParser, extension=".png"),
@@ -146,12 +147,12 @@ def generate(skip_images, db_name, skip_deprecated):
             dt = (time.perf_counter() - exec_time)
             click.echo(f"\t{Fore.GREEN}Parsed articles in {dt:.2f} seconds.{Style.RESET_ALL}")
 
-    # for position in rashid_positions:
-    #     position.insert(conn)
-    #
-    # generate_item_offers(conn, data_store)
-    # generate_spell_offers(conn, data_store)
-    # generate_loot_statistics(conn, data_store)
+    for position in rashid_positions:
+        tibiawikisql.schema.RashidPosition.insert(conn, **position.model_dump())
+
+    generate_item_offers(conn, data_store)
+    generate_spell_offers(conn, data_store)
+    generate_loot_statistics(conn, data_store)
 
     if not skip_images:
         with conn:
@@ -212,11 +213,12 @@ def generate_spell_offers(conn: sqlite3.Connection, data_store):
                     "Sorcerer" in npc_vocations,
                     "Druid" in npc_vocations,
                     "Paladin" in npc_vocations,
+                    "Monk" in npc_vocations,
                 ))
         with conn:
             conn.execute("DELETE FROM npc_spell")
             conn.executemany(
-                "INSERT INTO npc_spell(npc_id, spell_id, knight, sorcerer, paladin, druid) VALUES(?, ?, ?, ?, ?, ?)",
+                "INSERT INTO npc_spell(npc_id, spell_id, knight, sorcerer, paladin, druid, monk) VALUES(?, ?, ?, ?, ?, ?, ?)",
                 spell_offers)
         if not_found_store["spell"]:
             unknonw_spells = not_found_store["spell"]

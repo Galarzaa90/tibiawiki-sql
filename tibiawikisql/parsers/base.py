@@ -7,6 +7,7 @@ from pydantic import BaseModel, ValidationError
 from tibiawikisql.api import Article
 from tibiawikisql.database import Table
 from tibiawikisql.exceptions import ArticleParsingError, AttributeParsingError
+from tibiawikisql.models.abc import AttributeParser
 from tibiawikisql.utils import parse_templatates_data
 
 M = TypeVar("M", bound=BaseModel)
@@ -14,7 +15,7 @@ M = TypeVar("M", bound=BaseModel)
 
 class BaseParser(ABC):
     template_name: ClassVar = NotImplemented
-    attribute_map: ClassVar = NotImplemented
+    attribute_map: ClassVar[dict[str, AttributeParser]] = NotImplemented
     model: ClassVar[type[BaseModel]] = NotImplemented
     table: ClassVar[type[Table]] = NotImplemented
 

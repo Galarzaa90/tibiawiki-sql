@@ -246,8 +246,17 @@ class Imbuement(Table):
 
 class ImbuementMaterial(Table, table_name="imbuement_material"):
     imbuement_id = Column(ForeignKey(Integer, "imbuement", "article_id"), index=True)
-    item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True)
+    item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True, nullable=False)
     amount = Column(Integer, nullable=False)
+
+    @classmethod
+    def insert(cls, c, **kwargs):
+        if kwargs.get("item_id"):
+            super().insert(c, **kwargs)
+        else:
+            query = f"""INSERT INTO {cls.__tablename__}({','.join(col.name for col in cls.columns)})
+                        VALUES(?, (SELECT article_id from item WHERE title = ?), ?)"""
+            c.execute(query, (kwargs["imbuement_id"], kwargs["item_title"], kwargs["amount"]))
 
 
 class ItemKey(Table, table_name="item_key"):
@@ -344,8 +353,8 @@ class NpcSelling(Table, table_name="npc_offer_sell"):
 
 class NpcDestination(Table, table_name="npc_destination"):
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
-    name = Column(Text, index=True)
-    price = Column(Integer)
+    name = Column(Text, index=True, nullable=False)
+    price = Column(Integer, nullable=False)
     notes = Column(Text)
 
 
@@ -356,6 +365,7 @@ class NpcSpell(Table, table_name="npc_spell"):
     sorcerer = Column(Boolean, nullable=False, default=False)
     paladin = Column(Boolean, nullable=False, default=False)
     druid = Column(Boolean, nullable=False, default=False)
+    monk = Column(Boolean, nullable=False, default=False)
 
 
 class Outfit(Table):
