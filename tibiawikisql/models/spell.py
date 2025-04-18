@@ -14,9 +14,11 @@
 from pydantic import Field
 
 from tibiawikisql.api import WikiEntry
+from tibiawikisql.models.npc import NpcSpell
+from tibiawikisql.models.base import WithStatus, WithVersion
 
 
-class Spell(WikiEntry):
+class Spell(WikiEntry, WithVersion, WithStatus):
     """Represents a Spell."""
 
     name: str
@@ -25,7 +27,7 @@ class Spell(WikiEntry):
     """The spell's invocation words."""
     effect: str
     """The effects of casting the spell."""
-    type: str
+    spell_type: str
     """The spell's type."""
     group_spell: str
     """The spell's group."""
@@ -43,16 +45,24 @@ class Spell(WikiEntry):
     """The gold cost of the spell."""
     cooldown: int
     """The spell's individual cooldown in seconds."""
+    cooldown2: int | None
+    """The spell's individual cooldown for the level 2 perk of the Wheel of Destiny."""
+    cooldown3: int | None
+    """The spell's individual cooldown for the level 3 perk of the Wheel of Destiny."""
     cooldown_group: int | None = Field(None)
     """The spell's group cooldown in seconds. The time you have to wait before casting another spell in the same group."""
     cooldown_group_secondary: int | None = Field(None)
     """The spell's secondary group cooldown."""
     level: int
     """The level required to use the spell."""
-    premium: bool
+    is_premium: bool
     """Whether the spell is premium only or not."""
-    promotion: bool
+    is_promotion: bool
     """Whether you need to be promoted to buy or cast this spell."""
+    is_wheel_spell: bool
+    """Whether this spell is acquired through the Wheel of Destiny."""
+    is_passive: bool
+    """Whether this spell is triggered automatically without casting."""
     knight: bool = Field(False)
     """Whether the spell can be used by knights or not."""
     paladin: bool = Field(False)
@@ -63,11 +73,7 @@ class Spell(WikiEntry):
     """Whether the spell can be used by sorcerers or not."""
     monk: bool = Field(False)
     """Whether the spell can be used by monks or not."""
-    # taught_by: list[NpcSpell]
-    # """NPCs that teach this spell."""
-    status: str
-    """The status of this spell in the game."""
-    version: str | None = Field(None)
-    """The client version where the spell was implemented."""
+    taught_by: list[NpcSpell] = Field(default_factory=list)
+    """NPCs that teach this spell."""
     image: bytes | None = Field(None)
     """The spell's image in bytes."""

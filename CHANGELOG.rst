@@ -11,6 +11,14 @@ Changelog
     - Links now cleaned from ``description``.
 - Spell changes
     - Added `monk` attribute.
+    - Rename ``type```to ``spell_type``
+    - Added ``cooldown2`` and ``cooldown3`` for reduced cooldowns by the Wheel of Destiny.
+    - Rename ``premium`` to ``is_premium``.
+    - Rename ``promotion`` to ``is_promotion``.
+    - Rename ``promotion`` to ``is_promotion``.
+    - Rename ``promotion`` to ``is_promotion``.
+    - Added ``is_wheel_spell`` attribute.
+    - Added ``is_passive`` attribute.
 - Quest changes
     - Added missing `premium` attribute.
 
