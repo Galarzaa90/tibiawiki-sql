@@ -6,8 +6,13 @@ Changelog
 ==================
 - Achievement changes
     - Spoiler properly handles quest links.
+    - Rename ``spoiler`` to ``is_spoiler``.
+    - Rename ``premium`` to ``is_premium``.
+    - Links now cleaned from ``description``.
 - Spell changes
     - Added `monk` attribute.
+- Quest changes
+    - Added missing `premium` attribute.
 
 .. 6.2.1
 

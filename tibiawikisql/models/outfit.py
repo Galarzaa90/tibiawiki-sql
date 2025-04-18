@@ -15,7 +15,7 @@ import sqlite3
 
 from tibiawikisql import schema
 from tibiawikisql.models import abc
-from tibiawikisql.models.quest import parse_links
+# from tibiawikisql.models.quest import parse_links
 from tibiawikisql.utils import parse_integer, parse_boolean
 
 

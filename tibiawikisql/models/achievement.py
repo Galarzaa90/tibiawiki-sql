@@ -13,9 +13,10 @@
 #  limitations under the License.
 
 from tibiawikisql.api import WikiEntry
+from tibiawikisql.models.base import WithStatus, WithVersion
 
 
-class Achievement(WikiEntry):
+class Achievement(WikiEntry, WithStatus, WithVersion):
     """Represents an Achievement."""
 
     name: str
@@ -28,13 +29,9 @@ class Achievement(WikiEntry):
     """The official description shown for the achievement."""
     spoiler: str | None
     """Instructions or information on how to obtain the achievement."""
-    secret: bool
+    is_secret: bool
     """Whether the achievement is secret or not."""
-    premium: bool
+    is_premium: bool
     """Whether a premium account is required to get this achievement."""
     achievement_id: int | None
     """The internal ID of the achievement."""
-    status: str
-    """The status of this achievement in the game."""
-    version: str | None
-    """The client version where this was first implemented."""
