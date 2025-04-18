@@ -9,9 +9,11 @@ import tibiawikisql.schema
 from tibiawikisql.api import Article
 from tibiawikisql.models import Creature
 from tibiawikisql.models.abc import AttributeParser
+from tibiawikisql.models.base import WithStatus, WithVersion
 from tibiawikisql.models.creature import CreatureAbility, CreatureDrop, CreatureMaxDamage, CreatureSound
 from tibiawikisql.parsers import BaseParser
-from tibiawikisql.utils import clean_links, find_template, int_pattern, parse_boolean, parse_integer, parse_min_max, \
+from tibiawikisql.utils import clean_links, find_template, int_pattern, parse_boolean, parse_float, parse_integer, \
+    parse_min_max, \
     parse_sounds, \
     strip_code
 
@@ -223,6 +225,7 @@ class CreatureParser(BaseParser):
         "hitpoints": AttributeParser.optional("hp", parse_integer),
         "experience": AttributeParser.optional("exp", parse_integer),
         "armor": AttributeParser.optional("armor", parse_integer),
+        "mitigation": AttributeParser.optional("mitigation", parse_integer),
         "speed": AttributeParser.optional("speed", parse_integer),
         "runs_at": AttributeParser.optional("runsat", parse_integer),
         "summon_cost": AttributeParser.optional("summon", parse_integer),
@@ -232,7 +235,9 @@ class CreatureParser(BaseParser):
         "push_objects": AttributeParser.optional("pushobjects", parse_boolean),
         "sees_invisible": AttributeParser.optional("senseinvis", parse_boolean),
         "paralysable": AttributeParser.optional("paraimmune", parse_boolean),
-        "boss": AttributeParser.optional("isboss", parse_boolean, False),
+        "spawn_type": AttributeParser.optional("spawntype"),
+        "is_boss": AttributeParser.optional("isboss", parse_boolean, False),
+        "cooldown": AttributeParser.optional("cooldown", parse_float),
         "modifier_physical": AttributeParser.optional("physicalDmgMod", parse_integer),
         "modifier_earth": AttributeParser.optional("earthDmgMod", parse_integer),
         "modifier_fire": AttributeParser.optional("fireDmgMod", parse_integer),

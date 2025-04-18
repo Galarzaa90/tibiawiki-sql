@@ -4,6 +4,8 @@ Changelog
 
 7.0.0 (Unreleased)
 ==================
+- General model changes:
+    - All ``timestamp`` properties are now ``datetime.datetime`` objects. Their database counterparts are IS08601 strings.
 - Achievement changes
     - Spoiler properly handles quest links.
     - Rename ``spoiler`` to ``is_spoiler``.
@@ -32,6 +34,11 @@ Changelog
         - ``consumable`` to ``is_consumable``.
         - ``unshootable`` to ``blocks_projectiles``.
         - ``walkable`` to ``is_walkable``.
+- Creature changes
+    - Added ``mitigation`` attribute.
+    - Added ``spawn_type`` attribute.
+    - Added ``cooldown`` attribute.
+    - Renamed ``boss`` to ``is_boss``
 - Quest changes
     - Added missing `premium` attribute.
 

@@ -21,6 +21,7 @@ import mwparserfromhell
 import pydantic
 
 from tibiawikisql.api import WikiEntry
+from tibiawikisql.models.base import WithStatus, WithVersion
 from tibiawikisql.utils import (find_template, int_pattern, parse_integer, parse_min_max, parse_sounds, strip_code)
 
 if TYPE_CHECKING:
@@ -136,7 +137,7 @@ class CreatureSound(pydantic.BaseModel):
     """The content of the sound."""
 
 
-class Creature(WikiEntry):
+class Creature(WikiEntry, WithStatus, WithVersion):
     """Represents a creature."""
 
     article: str | None
@@ -167,6 +168,8 @@ class Creature(WikiEntry):
     """Experience points yielded by the creature. Might be `None` if unknown."""
     armor: int | None
     """The creature's armor value."""
+    mitigation: int | None
+    """The creature's mitigation value."""
     speed: int | None
     """The creature's speed value."""
     runs_at: int | None
@@ -185,8 +188,12 @@ class Creature(WikiEntry):
     """Whether the creature can see invisible players or not."""
     paralysable: bool | None
     """Whether the creature can be paralyzed or not."""
-    boss: bool
+    spawn_type: str | None
+    """The way this creature spawns."""
+    is_boss: bool
     """Whether the creature is a boss or not."""
+    cooldown: float | None
+    """The cooldown in hours to fight the boss again."""
     modifier_physical: int | None
     """The percentage of damage received of physical damage. ``None`` if unknown."""
     modifier_earth: int | None
@@ -218,10 +225,6 @@ class Creature(WikiEntry):
     sounds: list[CreatureSound] = []
     location: str | None
     """The locations where the creature can be found."""
-    version: str | None
-    """The client version where this creature was first implemented."""
-    status: str
-    """The status of this creature in the game."""
     image: bytes | None = None
     """The creature's image in bytes."""
     loot: list[CreatureDrop] = []
