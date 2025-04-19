@@ -1,4 +1,28 @@
-#  Copyright 2021 Allan Galarza
+#  Copyright (c) 2025.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -90,8 +114,8 @@ categories = {
     "imbuements": Category("Imbuements", parsers.ImbuementParser, extension=".png"),
     "quests": Category("Quest Overview Pages", parsers.QuestParser, no_images=True),
     "house": Category("Player-Ownable Buildings", parsers.HouseParser, no_images=True),
-    # "charm": Category("Charms", parsers.CharmParser, extension=".png"),
-    # "outfits": Category("Outfits", models.Outfit, no_images=True),
+    "charm": Category("Charms", parsers.CharmParser, extension=".png"),
+    "outfits": Category("Outfits", parsers.OutfitParser, no_images=True),
     # "worlds": Category("Game Worlds", models.World, no_images=True, include_deprecated=True),
     # "mounts": Category("Mounts", models.Mount),
     # "updates": Category("Updates", models.Update, no_images=True),
@@ -444,7 +468,7 @@ def save_images(conn: sqlite3.Connection, key: str, value: Category):
             except FileNotFoundError:
                 image_bytes = fetch_image(session, table, image)
                 fetch_count += 1
-                cache_info[image.file_name] = image.timestamp
+                cache_info[image.file_name] = image.timestamp.isoformat()
             except requests.HTTPError:
                 failed.append(image.file_name)
                 continue
@@ -469,7 +493,7 @@ def save_outfit_images(conn):
     if "outfits" not in categories:
         return
     category = categories["outfits"]
-    table = category.model.table.__tablename__
+    table = category.parser.table.__tablename__
     os.makedirs(f"images/{table}", exist_ok=True)
     results = conn.execute(f"SELECT article_id, name FROM {table}")
     image_info = {}
@@ -503,11 +527,12 @@ def save_outfit_images(conn):
             if image is None:
                 continue
             try:
-                last_update = cache_info.get(image.file_name, 0)
-                if image.timestamp > last_update:
+                last_update_str = cache_info.get(image.file_name)
+                last_update = datetime.datetime.fromisoformat(last_update_str) if last_update_str else None
+                if last_update is None or image.timestamp > last_update:
                     image_bytes = fetch_image(session, table, image)
                     fetch_count += 1
-                    cache_info[image.file_name] = image.timestamp
+                    cache_info[image.file_name] = image.timestamp.isoformat()
                 else:
                     with open(f"images/{table}/{image.file_name}", "rb") as f:
                         image_bytes = f.read()
@@ -515,7 +540,7 @@ def save_outfit_images(conn):
             except FileNotFoundError:
                 image_bytes = fetch_image(session, table, image)
                 fetch_count += 1
-                cache_info[image.file_name] = image.timestamp
+                cache_info[image.file_name] = image.timestamp.isoformat()
             except requests.HTTPError:
                 failed.append(image.file_name)
                 continue

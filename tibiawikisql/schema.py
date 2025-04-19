@@ -1,4 +1,28 @@
-#  Copyright 2021 Allan Galarza
+#  Copyright (c) 2025.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -380,10 +404,10 @@ class Outfit(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, no_case=True, unique=True)
     name = Column(Text, no_case=True, index=True)
-    type = Column(Text, index=True)
-    premium = Column(Boolean, nullable=False, default=False)
-    bought = Column(Boolean, nullable=False, default=False)
-    tournament = Column(Boolean, nullable=False, default=False)
+    outfit_type = Column(Text, index=True)
+    is_premium = Column(Boolean, nullable=False, default=False)
+    is_bought = Column(Boolean, nullable=False, default=False)
+    is_tournament = Column(Boolean, nullable=False, default=False)
     full_price = Column(Integer)
     achievement = Column(Text)
     version = Column(Text)
@@ -421,6 +445,18 @@ class OutfitQuest(Table, table_name="outfit_quest"):
     outfit_id = Column(ForeignKey(Integer, "outfit", "article_id"), index=True, nullable=False)
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True, nullable=False)
     type = Column(Text)
+
+    @classmethod
+    def insert(cls, c, **kwargs):
+        if kwargs.get("item_id"):
+            super().insert(c, **kwargs)
+            return
+        try:
+            c.execute(f"""INSERT INTO {cls.__tablename__}(outfit_id, quest_id, type)
+                          VALUES(?, (SELECT article_id FROM quest WHERE title = ?), ?)""",
+                      (kwargs["outfit_id"], kwargs["quest_title"], kwargs["type"]))
+        except sqlite3.IntegrityError:
+            pass
 
 
 class QuestDanger(Table, table_name="quest_danger"):

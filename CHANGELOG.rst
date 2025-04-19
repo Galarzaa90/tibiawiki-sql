@@ -43,6 +43,11 @@ Changelog
     - Added missing `premium` attribute, renamed to ``is_premium``
 - House changes
     - Renamed ``guildhall`` to ``is_guildhall``
+- Outfit changes
+    - Renamed ``type`` to ``outfit_type``.
+    - Renamed ``premium`` to ``is_premium``.
+    - Renamed ``bought`` to ``is_bought``.
+    - Renamed ``tournament`` to ``is_tournament``.
 
 .. 6.2.1
 
