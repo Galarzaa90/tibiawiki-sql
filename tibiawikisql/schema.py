@@ -227,7 +227,7 @@ class House(Table):
     x = Column(Integer)
     y = Column(Integer)
     z = Column(Integer)
-    guildhall = Column(Integer, index=True)
+    is_guildhall = Column(Integer, index=True)
     version = Column(Text, index=True)
     status = Column(Text, default="active", nullable=False)
     timestamp = Column(Timestamp, nullable=False)
@@ -411,7 +411,7 @@ class Quest(Table):
     level_recommended = Column(Integer)
     active_time = Column(Text)
     estimated_time = Column(Text)
-    premium = Column(Boolean)
+    is_premium = Column(Boolean)
     version = Column(Text, index=True)
     status = Column(Text, default="active", nullable=False)
     timestamp = Column(Timestamp, nullable=False)
@@ -427,10 +427,34 @@ class QuestDanger(Table, table_name="quest_danger"):
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True)
     creature_id = Column(ForeignKey(Integer, "creature", "article_id"), nullable=False, index=True)
 
+    @classmethod
+    def insert(cls, c, **kwargs):
+        if kwargs.get("creature_id"):
+            super().insert(c, **kwargs)
+            return
+        try:
+            c.execute(f"""INSERT INTO {cls.__tablename__}(quest_id, creature_id)
+                                      VALUES(?, (SELECT article_id FROM creature WHERE title = ?))""",
+                      (kwargs["quest_id"], kwargs["creature_title"]))
+        except sqlite3.IntegrityError:
+            pass
+
 
 class QuestReward(Table, table_name="quest_reward"):
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True)
     item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False, index=True)
+
+    @classmethod
+    def insert(cls, c, **kwargs):
+        if kwargs.get("item_id"):
+            super().insert(c, **kwargs)
+            return
+        try:
+            c.execute(f"""INSERT INTO {cls.__tablename__}(quest_id, item_id)
+                                  VALUES(?, (SELECT article_id FROM item WHERE title = ?))""",
+                      (kwargs["quest_id"], kwargs["item_title"]))
+        except sqlite3.IntegrityError:
+            pass
 
 
 class RashidPosition(Table, table_name="rashid_position"):

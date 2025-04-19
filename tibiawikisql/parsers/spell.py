@@ -1,4 +1,4 @@
-from tibiawikisql import Article
+from tibiawikisql.api import Article
 from tibiawikisql.models import Spell
 import tibiawikisql.schema
 from tibiawikisql.models.abc import AttributeParser

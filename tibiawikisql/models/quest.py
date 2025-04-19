@@ -16,41 +16,30 @@ import html
 import re
 import sqlite3
 
+import pydantic
+from pydantic import Field
+
 from tibiawikisql import schema
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models import abc
+from tibiawikisql.models.base import WithStatus, WithVersion
 from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
 
 
 
 
 
-class QuestReward(abc.Row, table=schema.QuestReward):
-    """Represents an item obtained in the quest.
+class QuestReward(pydantic.BaseModel):
+    """Represents an item obtained in the quest."""
 
-    Attributes
-    ----------
-    quest_id: :class:`int`
-        The article id of the quest.
-    quest_title: :class:`str`
-        The title of the quest.
-    item_id: :class:`int`
-        The article id of the rewarded item.
-    item_title: :class:`str`
-        The title of the rewarded item.
-    """
-
-    __slots__ = (
-        "quest_id",
-        "quest_title",
-        "item_id",
-        "item_title",
-    )
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.quest_title = kwargs.get("quest_title")
-        self.item_title = kwargs.get("item_title")
+    quest_id: int
+    """The article id of the quest."""
+    quest_title: str
+    """The title of the quest."""
+    item_id: int | None = None
+    """The article id of the rewarded item."""
+    item_title: str | None = None
+    """The title of the rewarded item."""
 
     def insert(self, c):
         if getattr(self, "item_id", None):
@@ -75,32 +64,18 @@ class QuestReward(abc.Row, table=schema.QuestReward):
                    LEFT JOIN quest ON quest.article_id = quest_id"""
 
 
-class QuestDanger(abc.Row, table=schema.QuestDanger):
-    """Represents a creature found in the quest.
+class QuestDanger(pydantic.BaseModel):
+    """Represents a creature found in the quest."""
 
-    Attributes
-    ----------
-    quest_id: :class:`int`
-        The article id of the quest.
-    quest_title: :class:`str`
-        The title of the quest.
-    creature_id: :class:`int`
-        The article id of the found creature.
-    creature_title: :class:`str`
-        The title of the found creature.
-    """
+    quest_id: int
+    """The article id of the quest."""
+    quest_title: str
+    """The title of the quest."""
+    creature_id: int | None = None
+    """The article id of the found creature."""
+    creature_title: str | None = None
+    """The title of the found creature."""
 
-    __slots__ = (
-        "quest_id",
-        "quest_title",
-        "creature_id",
-        "creature_title",
-    )
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.quest_title = kwargs.get("quest_title")
-        self.creature_title = kwargs.get("creature_title")
 
     def insert(self, c):
         if getattr(self, "creature_id", None):
@@ -126,7 +101,7 @@ class QuestDanger(abc.Row, table=schema.QuestDanger):
 
 
 
-class Quest(WikiEntry):
+class Quest(WikiEntry, WithStatus, WithVersion):
     """Represents a quest."""
 
     name: str
@@ -135,7 +110,7 @@ class Quest(WikiEntry):
     """The location of the quest."""
     rookgaard: bool
     """Whether this quest is in Rookgaard or not."""
-    premium: bool
+    is_premium: bool
     """Whether this quest requires a Premium account or not."""
     type: str | None
     """The type of quest."""
@@ -151,14 +126,10 @@ class Quest(WikiEntry):
     """Times of the year when this quest is active."""
     estimated_time: str | None
     """Estimated time to finish this quest."""
-    status: str
-    """The status of this quest in the game."""
-    version: str | None
-    """The client version where this outfit was first implemented."""
-    # dangers: list[QuestDanger]
-    # """Creatures found in the quest."""
-    # rewards: list[QuestReward]
-    # """Items rewarded in the quest."""
+    dangers: list[QuestDanger]= Field(default_factory=list)
+    """Creatures found in the quest."""
+    rewards: list[QuestReward] = Field(default_factory=list)
+    """Items rewarded in the quest."""
 
 
     @classmethod

@@ -2,7 +2,7 @@ import re
 import sqlite3
 from typing import Any
 
-from tibiawikisql import Article
+from tibiawikisql.api import Article
 from tibiawikisql.models import Imbuement, ImbuementMaterial
 from tibiawikisql.models.abc import AttributeParser
 from tibiawikisql.parsers import BaseParser

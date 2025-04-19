@@ -3,7 +3,7 @@ import sqlite3
 from typing import Any
 
 import tibiawikisql.schema
-from tibiawikisql import Article
+from tibiawikisql.api import Article
 from tibiawikisql.models import Item, ItemAttribute
 from tibiawikisql.models.abc import AttributeParser
 from tibiawikisql.models.item import ItemSound, ItemStoreOffer

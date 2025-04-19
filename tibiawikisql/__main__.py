@@ -28,8 +28,9 @@ from colorama import Fore, Style
 from lupa import LuaRuntime
 
 import tibiawikisql.schema
-from tibiawikisql import Image, WikiClient, __version__, models, parsers, schema
-from tibiawikisql.models import abc
+from tibiawikisql import  __version__, models, parsers, schema
+from tibiawikisql.api import WikiClient
+
 from tibiawikisql.models.npc import rashid_positions
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.utils import parse_loot_statistics, parse_min_max
@@ -83,12 +84,12 @@ categories = {
     "spells": Category("Spells", parsers.SpellParser, generate_map=True),
     "items": Category("Objects", parsers.ItemParser, generate_map=True),
     "creatures": Category("Creatures", parsers.CreatureParser, generate_map=True),
-    # "books": Category("Book Texts", parsers.BookParser, no_images=True),
-    # "keys": Category("Keys", parsers.KeyParser, no_images=True),
-    # "npcs": Category("NPCs", parsers.NpcParser, generate_map=True),
-    # "imbuements": Category("Imbuements", parsers.ImbuementParser, extension=".png"),
-    # "quests": Category("Quest Overview Pages", parsers.QuestParser, no_images=True),
-    # "house": Category("Player-Ownable Buildings", models.House, no_images=True),
+    "books": Category("Book Texts", parsers.BookParser, no_images=True),
+    "keys": Category("Keys", parsers.KeyParser, no_images=True),
+    "npcs": Category("NPCs", parsers.NpcParser, generate_map=True),
+    "imbuements": Category("Imbuements", parsers.ImbuementParser, extension=".png"),
+    "quests": Category("Quest Overview Pages", parsers.QuestParser, no_images=True),
+    "house": Category("Player-Ownable Buildings", parsers.HouseParser, no_images=True),
     # "charm": Category("Charms", parsers.CharmParser, extension=".png"),
     # "outfits": Category("Outfits", models.Outfit, no_images=True),
     # "worlds": Category("Game Worlds", models.World, no_images=True, include_deprecated=True),

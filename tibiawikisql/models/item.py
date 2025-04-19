@@ -17,6 +17,7 @@ import pydantic
 from pydantic import BaseModel, Field
 
 from tibiawikisql.api import WikiEntry
+from tibiawikisql.models.base import WithStatus, WithVersion
 from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
 from tibiawikisql.models.quest import QuestReward
@@ -233,7 +234,7 @@ class Item(WikiEntry):
                 attributes_rep.append(template.format(attributes[attribute]))
 
 
-class Book(WikiEntry):
+class Book(WikiEntry, WithStatus, WithVersion):
     """Represents a book or written document in Tibia."""
 
     name: str
@@ -254,13 +255,9 @@ class Book(WikiEntry):
     """If the book is part of a series, the book that follows this one."""
     text: str
     """The content of the book."""
-    version: str | None
-    """The client version where this item was first implemented."""
-    status: str
-    """The status of this item in the game."""
 
 
-class Key(WikiEntry):
+class Key(WikiEntry, WithStatus, WithVersion):
     """Represents a key item."""
 
     name: str | None = None
@@ -277,7 +274,3 @@ class Key(WikiEntry):
     """Notes about the key."""
     origin: str | None
     """Notes about the origin of the key."""
-    status: str
-    """The status of this key in the game."""
-    version: str | None
-    """The client version where this creature was first implemented."""

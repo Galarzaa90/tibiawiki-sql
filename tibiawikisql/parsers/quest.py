@@ -1,12 +1,13 @@
 import html
 import re
 import sqlite3
+from typing import Any
 
-from tibiawikisql.models import Quest
+from tibiawikisql.api import Article
+from tibiawikisql.models import Quest, QuestDanger, QuestReward
 from tibiawikisql.models.abc import AttributeParser
 from tibiawikisql.parsers import BaseParser
 import tibiawikisql.schema
-from tibiawikisql.parsers.base import M
 from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
 
 link_pattern = re.compile(r'\[\[([^|\]]+)')
@@ -41,13 +42,60 @@ class QuestParser(BaseParser):
         "level_recommended": AttributeParser.optional("lvlrec", parse_integer),
         "active_time": AttributeParser.optional("time"),
         "estimated_time": AttributeParser.optional("timealloc"),
-        "premium": AttributeParser.required("premium", parse_boolean),
+        "is_premium": AttributeParser.required("premium", parse_boolean),
         "version": AttributeParser.optional("implemented"),
         "status": AttributeParser.status(),
     }
 
     @classmethod
-    def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: M) -> None:
-        super().insert(cursor, model)
+    def parse_attributes(cls, article: Article) -> dict[str, Any]:
+        row = super().parse_attributes(article)
+        if not row:
+            return row
+        cls._parse_quest_rewards(row)
+        cls._parse_quest_dangers(row)
+        return row
 
+
+    @classmethod
+    def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: Quest) -> None:
+        super().insert(cursor, model)
+        for reward in model.rewards:
+            tibiawikisql.schema.QuestReward.insert(cursor, **reward.model_dump())
+        for danger in model.dangers:
+            tibiawikisql.schema.QuestDanger.insert(cursor, **danger.model_dump())
+
+
+    # region Auxiliary Functions
+
+    @classmethod
+    def _parse_quest_rewards(cls, row: dict[str, Any]):
+        raw_attributes = row["_raw_attributes"]
+        if not raw_attributes.get("reward"):
+            return
+        rewards = parse_links(raw_attributes["reward"])
+        row["rewards"] = []
+        for reward in rewards:
+            row["rewards"].append(QuestReward(
+                quest_id=row["article_id"],
+                item_title=reward.strip(),
+                quest_title=row["title"],
+            ))
+
+    @classmethod
+    def _parse_quest_dangers(cls, row: dict[str, Any]):
+        raw_attributes = row["_raw_attributes"]
+        if not raw_attributes.get("dangers"):
+            return
+        dangers = parse_links(raw_attributes["dangers"])
+        row["dangers"] = []
+        for danger in dangers:
+            row["dangers"].append(QuestDanger(
+                quest_id=row["article_id"],
+                creature_title=danger.strip(),
+                quest_title=row["title"],
+            ))
+
+
+    # endregion
 

@@ -56,6 +56,10 @@ class AttributeParser(Generic[T]):
     def status(cls):
         return cls(lambda x: x.get("status").lower(), "active")
 
+    @classmethod
+    def version(cls):
+        return cls(lambda x: x.get("implemented").lower())
+
 
 class Parseable(Generic[P], metaclass=abc.ABCMeta):
     """An abstract base class with the common parsing operations.

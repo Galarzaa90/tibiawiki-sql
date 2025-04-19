@@ -19,6 +19,8 @@ class BaseParser(ABC):
     model: ClassVar[type[BaseModel]] = NotImplemented
     table: ClassVar[type[Table]] = NotImplemented
 
+    RAW_ATTRIBUTES: ClassVar[str] = "_raw_attributes"
+
     def __init_subclass__(cls):
         super().__init_subclass__()
         required_attrs = ["template_name", "attribute_map", "model", "table"]
@@ -31,13 +33,13 @@ class BaseParser(ABC):
         templates = parse_templatates_data(article.content)
         if cls.template_name not in templates:
             return {}
+        attributes = templates[cls.template_name]
         row = {
             "article_id": article.article_id,
             "timestamp": article.timestamp,
             "title": article.title,
+            "_raw_attributes": attributes,
         }
-        attributes = templates[cls.template_name]
-        row["_raw_attributes"] = attributes
         for field, parser in cls.attribute_map.items():
             try:
                 row[field] = parser(attributes)

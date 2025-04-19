@@ -40,7 +40,9 @@ Changelog
     - Added ``cooldown`` attribute.
     - Renamed ``boss`` to ``is_boss``
 - Quest changes
-    - Added missing `premium` attribute.
+    - Added missing `premium` attribute, renamed to ``is_premium``
+- House changes
+    - Renamed ``guildhall`` to ``is_guildhall``
 
 .. 6.2.1
 

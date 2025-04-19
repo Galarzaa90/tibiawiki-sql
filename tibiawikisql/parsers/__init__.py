@@ -10,3 +10,4 @@ from tibiawikisql.parsers.key import KeyParser
 from tibiawikisql.parsers.npc import NpcParser
 from tibiawikisql.parsers.imbuement import ImbuementParser
 from tibiawikisql.parsers.quest import QuestParser
+from tibiawikisql.parsers.house import HouseParser
