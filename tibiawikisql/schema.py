@@ -35,12 +35,24 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
 
 """Defines the SQL schemas to use."""
 import logging
 import sqlite3
 
-from tibiawikisql.database import Blob, Boolean, Column, ForeignKey, Integer, Real, Table, Text, Timestamp
+from tibiawikisql.database import Blob, Boolean, Column, Date, ForeignKey, Integer, Real, Table, Text, Timestamp
 
 
 class Achievement(Table):
@@ -508,14 +520,14 @@ class World(Table):
     name = Column(Text, no_case=True, index=True)
     location = Column(Text, index=True)
     pvp_type = Column(Text, index=True)
-    preview = Column(Boolean, default=False)
-    experimental = Column(Boolean, default=False)
-    online_since = Column(Text)
-    offline_since = Column(Text)
+    is_preview = Column(Boolean, default=False)
+    is_experimental = Column(Boolean, default=False)
+    online_since = Column(Date, nullable=False)
+    offline_since = Column(Date)
     merged_into = Column(Text)
     battleye = Column(Boolean, default=False)
     battleye_type = Column(Text, index=True)
-    protected_since = Column(Text)
+    protected_since = Column(Date)
     world_board = Column(Integer)
     trade_board = Column(Integer)
     timestamp = Column(Timestamp, nullable=False)

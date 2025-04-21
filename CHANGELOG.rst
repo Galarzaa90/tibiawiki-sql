@@ -48,7 +48,11 @@ Changelog
     - Renamed ``premium`` to ``is_premium``.
     - Renamed ``bought`` to ``is_bought``.
     - Renamed ``tournament`` to ``is_tournament``.
-
+- World changes
+    - ``online_since``, ``offline_since`` and ``protected_since`` are now ``datetime.date`` objects.
+    - Renamed ``experimental`` to ``is_experimental``
+    - Renamed ``preview`` to ``is_preview``
+    - Renamed ``experimental`` to ``is_experimental``
 .. 6.2.1
 
 6.2.1 (2024-06-27)
