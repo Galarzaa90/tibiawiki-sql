@@ -38,7 +38,7 @@ Changelog
     - Added ``mitigation`` attribute.
     - Added ``spawn_type`` attribute.
     - Added ``cooldown`` attribute.
-    - Renamed ``boss`` to ``is_boss``
+    - Renamed ``boss`` to ``is_boss``.
 - Quest changes
     - Added missing `premium` attribute, renamed to ``is_premium``
 - House changes
@@ -50,9 +50,11 @@ Changelog
     - Renamed ``tournament`` to ``is_tournament``.
 - World changes
     - ``online_since``, ``offline_since`` and ``protected_since`` are now ``datetime.date`` objects.
-    - Renamed ``experimental`` to ``is_experimental``
-    - Renamed ``preview`` to ``is_preview``
-    - Renamed ``experimental`` to ``is_experimental``
+    - Renamed ``experimental`` to ``is_experimental``.
+    - Renamed ``preview`` to ``is_preview``.
+    - Renamed ``experimental`` to ``is_experimental``.
+- Mount changes:
+    - Renamed ``buyable`` to ``is_buyable```.
 .. 6.2.1
 
 6.2.1 (2024-06-27)
