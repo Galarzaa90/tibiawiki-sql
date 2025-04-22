@@ -55,6 +55,8 @@ Changelog
     - Renamed ``experimental`` to ``is_experimental``.
 - Mount changes:
     - Renamed ``buyable`` to ``is_buyable```.
+- Update changes:
+    - Renamed ``date`` to ``release_date``.
 .. 6.2.1
 
 6.2.1 (2024-06-27)

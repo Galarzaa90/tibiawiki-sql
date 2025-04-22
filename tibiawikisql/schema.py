@@ -566,7 +566,7 @@ class Update(Table, table_name="game_update"):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True)
     name = Column(Text, no_case=True, index=True)
-    date = Column(Text, index=True)
+    release_date = Column(Date, index=True)
     news_id = Column(Integer, index=True)
     type_primary = Column(Text, index=True)
     type_secondary = Column(Text, index=True)

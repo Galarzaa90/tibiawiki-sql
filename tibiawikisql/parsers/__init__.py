@@ -64,3 +64,4 @@ from tibiawikisql.parsers.house import HouseParser
 from tibiawikisql.parsers.outfit import OutfitParser
 from tibiawikisql.parsers.world import WorldParser
 from tibiawikisql.parsers.mount import MountParser
+from tibiawikisql.parsers.update import UpdateParser

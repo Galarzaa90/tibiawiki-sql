@@ -142,7 +142,7 @@ categories = {
     "outfits": Category("Outfits", parsers.OutfitParser, no_images=True),
     "worlds": Category("Game Worlds", parsers.WorldParser, no_images=True, include_deprecated=True),
     "mounts": Category("Mounts", parsers.MountParser),
-    # "updates": Category("Updates", models.Update, no_images=True),
+    "updates": Category("Updates", parsers.UpdateParser, no_images=True),
 }
 
 
