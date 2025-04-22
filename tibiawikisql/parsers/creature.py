@@ -8,7 +8,7 @@ from mwparserfromhell.nodes import Template
 import tibiawikisql.schema
 from tibiawikisql.api import Article
 from tibiawikisql.models import Creature
-from tibiawikisql.models.abc import AttributeParser
+from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.models.base import WithStatus, WithVersion
 from tibiawikisql.models.creature import CreatureAbility, CreatureDrop, CreatureMaxDamage, CreatureSound
 from tibiawikisql.parsers import BaseParser

@@ -1,25 +1,12 @@
-#  Copyright 2021 Allan Galarza
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-
 """API to fetch information from `TibiaWiki <https://tibiawiki.fandom.com>`_ through MediaWiki's API."""
 
 import datetime
 import json
 import urllib.parse
 from collections.abc import Generator
+from typing import ClassVar
 
-import pydantic
+from pydantic import BaseModel
 import requests
 
 from tibiawikisql import __version__
@@ -28,7 +15,9 @@ from tibiawikisql.utils import parse_templatates_data
 BASE_URL = "https://tibia.fandom.com"
 
 
-class WikiEntry(pydantic.BaseModel):
+class WikiEntry(BaseModel):
+    """Represents a Wiki entry, such as an article or file."""
+
     article_id: int
     """The entry's ID."""
     title: str
@@ -43,17 +32,19 @@ class WikiEntry(pydantic.BaseModel):
 
     @property
     def url(self) -> str:
-        """:class:`str`: The URL to the article's display page."""
+        """The URL to the article's display page."""
         return f"{BASE_URL}/wiki/{urllib.parse.quote(self.title)}"
 
 
 class Article(WikiEntry):
+    """Represents a Wiki article."""
+
     content: str
     """The article's source content."""
 
     @property
-    def infobox_attributes(self):
-        """:class:`dict`: Returns a mapping of the template attributes."""
+    def infobox_attributes(self) -> dict:
+        """Returns a mapping of the template attributes."""
         return parse_templatates_data(self.content)
 
 
@@ -61,50 +52,47 @@ class Image(WikiEntry):
     """Represents an image info."""
 
     file_url: str
+    """The URL to the file."""
 
     @property
-    def extension(self):
-        """:class:`str`: The image's file extension."""
+    def extension(self) -> str | None:
+        """The image's file extension."""
         parts = self.title.split(".")
         if len(parts) == 1:
             return None
         return f".{parts[-1]}"
 
     @property
-    def file_name(self):
-        """:class:`str`: The image's file name."""
+    def file_name(self) -> str:
+        """The image's file name."""
         return self.title.replace("File:", "")
 
     @property
-    def clean_name(self):
-        """:class:`str`: The image's name without extension and prefix."""
+    def clean_name(self) -> str:
+        """The image's name without extension and prefix."""
         return self.file_name.replace(self.extension, "")
 
 
 class WikiClient:
     """Contains methods to communicate with TibiaWiki's API."""
 
-    ENDPOINT = f"{BASE_URL}/api.php"
+    ENDPOINT: ClassVar[str] = f"{BASE_URL}/api.php"
 
-    headers = {
-        'User-Agent': f'tibiawikisql {__version__}',
+    headers: ClassVar[dict[str, str]]= {
+        "User-Agent": f'tibiawikisql {__version__}',  # noqa: Q000
     }
 
     @classmethod
     def get_category_members(cls, name: str, skip_index: bool = True) -> Generator[WikiEntry]:
         """Create a generator that obtains entries in a certain category.
 
-        Parameters
-        ----------
-        name: :class:`str`
-            The category's name. ``Category:`` prefix is not necessary.
-        skip_index: :class:`bool`
-            Whether to skip index articles or not.
+        Args:
+            name: The category's name. ``Category:`` prefix is not necessary.
+            skip_index: Whether to skip index articles or not.
 
-        Yields
-        -------
-        :class:`WikiEntry`
+        Yields:
             Articles in this category.
+
         """
         s = requests.Session()
         s.headers.update(cls.headers)
@@ -137,62 +125,51 @@ class WikiClient:
                 break
 
     @classmethod
-    def get_category_members_titles(cls, name, skip_index=True) -> Generator[str]:
+    def get_category_members_titles(cls, name: str, skip_index: bool =True) -> Generator[str]:
         """Create a generator that obtains a list of article titles in a category.
 
-        Parameters
-        ----------
-        name: :class:`str`
-            The category's name. ``Category:`` prefix is not necessary.
-        skip_index: :class:`bool`
-            Whether to skip index articles or not.
+        Args:
+            name: The category's name. ``Category:`` prefix is not necessary.
+            skip_index: Whether to skip index articles or not.
 
-        Yields
-        -------
-        :class:`str`
+        Yields:
             Titles of articles in this category.
+
         """
         for member in cls.get_category_members(name, skip_index):
             yield member.title
 
     @classmethod
-    def get_image_info(cls, name):
+    def get_image_info(cls, name: str) -> Image:
         """Get an image's info.
 
         It is not required to prefix the name with ``File:``, but the extension is required.
 
-        Parameters
-        ----------
-        name: :class:`str`
-            The name of the image.
+        Args:
+            name: The name of the image.
 
-        Returns
-        -------
-        :class:`Image`
+        Returns:
             The image's information.
+
         """
         gen = cls.get_images_info([name])
         return next(gen)
 
     @classmethod
-    def get_images_info(cls, names):
+    def get_images_info(cls, names: list[str]) -> Generator[Image]:
         """Get the information of a list of image names.
 
         It is not required to prefix the name with ``File:``, but the extension is required.
 
-        .. warning ::
-
+        Warning:
             The order of the returned images might not match the order of the provided names due to an API limitation.
 
-        Parameters
-        ----------
-        names: :class:`list` of :class:`str`
-            A list of names of images to get the info of.
+        Args:
+            names: A list of names of images to get the info of.
 
-        Yields
-        -------
-        :class:`Image`
+        Yields:
             An image's information.
+
         """
         i = 0
         s = requests.Session()
@@ -229,22 +206,18 @@ class WikiClient:
                     continue
 
     @classmethod
-    def get_articles(cls, names):
+    def get_articles(cls, names: list[str]) -> Generator[Article | None]:
         """Create a generator that obtains a list of articles given their titles.
 
-        .. warning ::
-
+        Warning:
             The order of the returned articles might not match the order of the provided names due to an API limitation.
 
-        Parameters
-        ----------
-        names: :class:`list` of :class:`str`
-            A list of names of articles to get the info of.
+        Args:
+            names: A list of names of articles to get the info of.
 
-        Yields
-        -------
-        :class:`Article`
+        Yields:
             An article in the list of names.
+
         """
         i = 0
         s = requests.Session()
@@ -274,18 +247,15 @@ class WikiClient:
                 )
 
     @classmethod
-    def get_article(cls, name):
+    def get_article(cls, name: str) -> Article:
         """Get an article's info.
 
-        Parameters
-        ----------
-        name: str
-            The name of the Article.
+        Args:
+            name: The name of the Article.
 
-        Returns
-        -------
-        :class:`Article`
+        Returns:
             The article matching the title.
+
         """
         gen = cls.get_articles([name])
         return next(gen)

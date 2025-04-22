@@ -25,7 +25,7 @@
 #  limitations under the License.
 import tibiawikisql.schema
 from tibiawikisql.models import World
-from tibiawikisql.models.abc import AttributeParser
+from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.utils import parse_boolean, parse_date, parse_integer
 

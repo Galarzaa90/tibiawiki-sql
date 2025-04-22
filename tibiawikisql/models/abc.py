@@ -15,50 +15,12 @@
 
 import abc
 import sqlite3
-from typing import Callable, Generic, Self, Type, TypeVar
-
-import pydantic
+from typing import Generic, Type
 
 from tibiawikisql import database
 from tibiawikisql.api import Article
-from tibiawikisql.exceptions import AttributeParsingError
+from tibiawikisql.parsers.base import P
 from tibiawikisql.utils import parse_templatates_data
-
-P = TypeVar('P', bound=pydantic.BaseModel)
-T = TypeVar('T')
-
-
-class AttributeParser(Generic[T]):
-
-    def __init__(self, func: Callable[[dict[str, str]], T], fallback: T = ...) -> None:
-        self.func = func
-        self.fallback = fallback
-
-    def __call__(self, *args, **kwargs):
-        try:
-            return self.func(args[0])
-        except Exception as e:
-            if self.fallback is Ellipsis:
-                raise AttributeParsingError(e) from e
-            return self.fallback
-
-    @classmethod
-    def required(cls, field_name: str, post_process: Callable[[str], T] = str):
-        return cls(lambda x: post_process(x[field_name]))
-
-    @classmethod
-    def optional(cls, field_name: str, post_process: Callable[[str], T | None] = str, default = None) -> Self:
-        """Create optional attribute parser. Will fall back to None."""
-        return cls(lambda x: post_process(x[field_name]), default)
-
-
-    @classmethod
-    def status(cls):
-        return cls(lambda x: x.get("status").lower(), "active")
-
-    @classmethod
-    def version(cls):
-        return cls(lambda x: x.get("implemented").lower())
 
 
 class Parseable(Generic[P], metaclass=abc.ABCMeta):

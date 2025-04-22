@@ -14,7 +14,7 @@
 import datetime
 import re
 from collections import defaultdict
-from typing import List, TYPE_CHECKING
+from typing import Any, Generator, List, Literal, TYPE_CHECKING, overload
 
 import mwparserfromhell
 from mwparserfromhell.nodes.extras import Parameter
@@ -28,18 +28,15 @@ int_pattern = re.compile(r"[+-]?\d+")
 float_pattern = re.compile(r'[+-]?(\d*[.])?\d+')
 
 
-def clean_question_mark(content):
-    """Remove question mark strings, turning them to nulls.
+def clean_question_mark(content: str) -> str | None:
+    """Remove question marks from strings, returning ``None`` if one is found.
 
-    Parameters
-    ----------
-    content: :class:`str`
-        A string to clean.
+    Args:
+        content: A string to clean.
 
-    Returns
-    -------
-    :class:`str`
-        The string, or None if it was a question mark.
+    Returns:
+        The string, or ``None` if it was a question mark.
+
     """
     if not content:
         return None
@@ -48,20 +45,33 @@ def clean_question_mark(content):
     return content.strip()
 
 
-def clean_links(content, strip_question_mark=False):
-    """Remove any links from the string, changing them for their plan version.
+@overload
+def clean_links(content: str) -> str:
+    ...
 
-    Parameters
-    ----------
-    content: :class:`str`
-        The string to clean.
 
-    Returns
-    -------
-    :class:`str`:
+@overload
+def clean_links(content: str, strip_question_mark: Literal[False]) -> str:
+    ...
+
+
+@overload
+def clean_links(content: str, strip_question_mark: Literal[True]) -> str | None:
+    ...
+
+
+def clean_links(content: str, strip_question_mark: bool = False) -> str | None:
+    """Remove any links from the string, changing them for their plain version.
+
+    Args:
+        content: The string to clean.
+        strip_question_mark: If the content is a question mark, return None.
+
+    Returns:
         The clean string, with no links.
+
     """
-    img = re.compile('(File|Image):', re.I)
+    img = re.compile("(File|Image):", re.IGNORECASE)
     content = re.sub(r"</?[bB][rR] ?/?>", "\n", content)
     parsed = mwparserfromhell.parse(content)
     # Remove image links as well
@@ -71,28 +81,23 @@ def clean_links(content, strip_question_mark=False):
     for template in parsed.ifilter_templates():
         if template.name:
             parsed.replace(template, template.params[0])
-        else:
-            pass
     content = parsed.strip_code().strip()
     if strip_question_mark and content == "?":
         return None
     return content
 
 
-def convert_tibiawiki_position(pos):
+def convert_tibiawiki_position(pos: str) -> int:
     """Convert from TibiaWiki position system to regular numeric coordinates.
 
     TibiaWiki takes the coordinates and splits in two bytes, represented in decimal, separated by a period.
 
-    Parameters
-    ----------
-    pos : :class:`str`
-        A string containing a coordinate.
+    Args:
+        pos: A string containing a coordinate.
 
-    Returns
-    -------
-    :class:`int`
+    Returns:
         The coordinate value.
+
     """
     position_splits = pos.strip().split(".")
     try:
@@ -104,52 +109,38 @@ def convert_tibiawiki_position(pos):
         return 0
 
 
-def find_template(content: str, template_name, partial=False, recursive=False):
+def find_template(content: str, template_name: str, partial: bool = False, recursive: bool = False) -> Template | None:
     """Find a template in a string containing wiki code.
 
     If there are multiple matches, the first one will be returned.
 
-    Parameters
-    ----------
-    content: :class:`str`
-        A string containing wiki code.
-    template_name: :class:`str`
-        The name of the template to match. Case insensitive.
-    partial: :class:`bool`
-        Whether to match the entire template name or just a substring of it.
+    Args:
+        content: A string containing wiki code.
+        template_name: The name of the template to match. Case-insensitive.
+        partial: Whether to match the entire template name or just a substring of it.
+            e.g. match "Loot Table" when searching for "Loot"
+        recursive: Whether to search for templates recursively, by going inside nested templates.
 
-        e.g. match "Loot Table" when searching for "Loot"
-    recursive: :class:`bool`
-        Whether to search for templates recursively, by going inside nested templates.
+    Returns:
+        The first template found in the content, if any. Otherwise, ``None`` is returned.
 
-    Returns
-    -------
-    :class:`Template`
-        The first template found in the content, if any. Otherwise ``None`` is returned.
     """
     return next(find_templates(content, template_name, partial, recursive), None)
 
 
-def find_templates(content: str, template_name, partial=False, recursive=False):
-    """Create a generator to find templates a wikicode string.
+def find_templates(content: str, template_name: str, partial: bool = False, recursive: bool = False) -> Generator[Template]:
+    """Create a generator to find templates in a wikicode string.
 
-    Parameters
-    ----------
-    content: :class:`str`
-        A string containing wiki code.
-    template_name: :class:`str`
-        The name of the template to match. Case insensitive.
-    partial: :class:`bool`
-        Whether to match the entire template name or just a substring of it.
+    Args:
+        content: A string containing wiki code.
+        template_name: The name of the template to match. Case insensitive.
+        partial: Whether to match the entire template name or just a substring of it.
+            e.g. match "Loot Table" when searching for "Loot"
+        recursive: Whether to search for templates recursively, by going inside nested templates.
 
-        e.g. match "Loot Table" when searching for "Loot"
-    recursive: :class:`bool`
-        Whether to search for templates recursively, by going inside nested templates.
-
-    Yields
-    ------
-    :class:`Template`
+    Yields:
         Templates matching provided string.
+
     """
     parsed = mwparserfromhell.parse(content)
     templates: List['Template'] = parsed.ifilter_templates(recursive=recursive)
@@ -160,23 +151,17 @@ def find_templates(content: str, template_name, partial=False, recursive=False):
             yield template
 
 
-def parse_boolean(value: str, default=False, invert=False):
+def parse_boolean(value: str, default: bool =False, invert: bool =False) -> bool:
     """Parse a boolean value from a string.
 
     String must contain "yes" to be considered True.
 
-    Parameters
-    ----------
-    value: :class:`str`
-        The string containing an integer.
-    default: :class:`bool`, optional
-        The value to return if no boolean string is found.
-    invert: :class:`bool`, optional
-        Whether to invert the value or not.
+    Args:
+        value: The string containing an integer.
+        default: The value to return if no boolean string is found.
+        invert: Whether to invert the value or not.
 
-    Returns
-    -------
-    :class:`bool`
+    Returns:
         The boolean value parsed in the string, or default if it doesn't match yes or no.
     """
     value = value.strip().lower()
@@ -188,22 +173,19 @@ def parse_boolean(value: str, default=False, invert=False):
         return default
 
 
-def parse_date(value):
+def parse_date(value: str) -> datetime.date :
     """Parse a date from the formats used in TibiaWiki.
 
     - June 28, 2019
     - Aug 21, 2014
     - May 14, 2024 17:45
 
-    Parameters
-    ----------
-    value: :class:`str`
-        The string containing the date.
+    Args:
+        value: The string containing the date.
 
-    Returns
-    -------
-    :class:`datetime.date`
+    Returns:
         The date represented by the string.
+
     """
     value = value.strip()
     date_formats = [
@@ -224,21 +206,16 @@ def parse_date(value):
     raise ValueError(f"Date format for value '{value}' not recognized")
 
 
-def parse_float(value, default=0.0):
-    """
-    From a string, parses a floating value.
+def parse_float(value: str, default: float =0.0) -> float:
+    """From a string, parses a floating value.
 
-    Parameters
-    ----------
-    value: :class:`str`
-        The string containing the floating number.
-    default: :class:`float`, optional
-        The value to return if no float is found.
+    Args:
+        value: The string containing the floating number.
+        default: The value to return if no float is found.
 
-    Returns
-    -------
-    :class:`float`
+    Returns:
         The floating number found, or the default value provided.
+
     """
     match = float_pattern.search(value)
     if match:
@@ -247,20 +224,16 @@ def parse_float(value, default=0.0):
         return default
 
 
-def parse_integer(value, default=0):
+def parse_integer(value: str, default: int =0) -> int:
     """Parse an integer from a string. Extra characters are ignored.
 
-    Parameters
-    ----------
-    value:  :class:`str`
-        The string containing an integer.
-    default: :class:`int`, optional
-        The value to return if no integer is found.
+    Args:
+        value: The string containing an integer.
+        default: The value to return if no integer is found.
 
-    Returns
-    -------
-    :class:`int`:
+    Returns:
         The numeric value found, or the default value provided.
+
     """
     match = int_pattern.search(value)
     if match:
@@ -269,17 +242,13 @@ def parse_integer(value, default=0):
         return default
 
 
-def parse_loot_statistics(value):
+def parse_loot_statistics(value: str) -> tuple[int, list[Any]]:
     """Get every dropped item from a creature's loot statistics.
 
-    Parameters
-    ----------
-    value: :class:`str`
-        A string containing a creature's loot statistics.
+    Args:
+        value: A string containing a creature's loot statistics.
 
-    Returns
-    -------
-    tuple:
+    Returns:
         A tuple containing the total kills and a list of entries.
     """
     template = find_template(value, "Loot2", True)
@@ -290,18 +259,15 @@ def parse_loot_statistics(value):
     return kills, entries
 
 
-def _parse_loot_entry(entry):
+def _parse_loot_entry(entry: str):
     """Parse a single parameter of the loot statistics template.
 
-    Parameters
-    ----------
-    entry: :class:`str`
-        A single item entry.
+    Args:
+        entry: A single item entry.
 
-    Returns
-    -------
-    :class:`dict`
+    Returns:
         A dictionary containing the drop data: item name, times dropped, amount dropped, etcetera.
+
     """
     arguments = entry.split(",")
     entry = {"amount": "1"}
@@ -320,40 +286,33 @@ def _parse_loot_entry(entry):
         return None
 
 
-def parse_min_max(value):
-    """Parse the mininum and maximum amounts of a loot drop.
+def parse_min_max(value: str) -> tuple[int, int]:
+    """Parse the minimum and maximum amounts of a loot drop.
 
     They consist of two numbers separated by a hyphen, e.g. ``0-40``
 
-    Parameters
-    ----------
-    value: :class:`str`
-        A string containing minimum and maximum values.
+    Args:
+        value: A string containing minimum and maximum values.
 
-    Returns
-    -------
-    tuple:
+    Returns:
         The minimum and maximum amounts.
+
     """
     match = min_max_pattern.search(value)
     if match:
         return int(match.group(1)), int(match.group(2))
-    else:
-        return 0, parse_integer(value, 1)
+    return 0, parse_integer(value, 1)
 
 
-def parse_sounds(value):
+def parse_sounds(value: str) -> list[str]:
     """Parse a list of sounds, using Template:Sound_List.
 
-    Parameters
-    ----------
-    value: :class:`str`
-        A string containing the list of sounds.
+    Args:
+        value: A string containing the list of sounds.
 
-    Returns
-    -------
-    list:
+    Returns:
         A list of sounds.
+
     """
     template = find_template(value, "Sound", True)
     if not template:
@@ -361,36 +320,30 @@ def parse_sounds(value):
     return [strip_code(param) for param in template.params if param]
 
 
-def client_color_to_rgb(value: int):
+def client_color_to_rgb(value: int) -> int:
     """Convert a color number from Tibia's client data to a RGB value.
 
-    Parameters
-    ----------
-    value: :class:`int`
-        A numeric value representing a color.
+    Args:
+        value: A numeric value representing a color.
 
-    Returns
-    -------
-    int:
+    Returns:
         The hexadecimal color represented.
+
     """
     if value < 0 or value > 215:
         return 0
     return ((value // 36 * 0x33) << 16) + ((value // 6 % 6 * 0x33) << 8) + ((value % 6 * 0x33) & 0xFF)
 
 
-def parse_templatates_data(content):
+def parse_templatates_data(content: str) -> dict[str, dict[str, str]]:
     """Parse the attributes of an Infobox template.
 
-    Parameters
-    ----------
-    content: :class:`str`
-        A string containing an Infobox template.
+    Args:
+        content: A string containing an Infobox template.
 
-    Returns
-    -------
-    :class:`dict[str, str]`:
+    Returns:
         A dictionary with every attribute as key.
+
     """
     parsed = mwparserfromhell.parse(content)
     templates = parsed.filter_templates(recursive=False)
@@ -409,17 +362,13 @@ def parse_templatates_data(content):
     return data
 
 
-def strip_code(value):
+def strip_code(value: Any) -> str | int | dict | None:
     """Strip code from Wikicode elements into plain strings.
 
-    Parameters
-    ----------
-    value:
-        A string or object containing wiki code.
+    Args:
+        value: A string or object containing wiki code.
 
-    Returns
-    -------
-    :class:`str`
+    Returns:
         A string representing the plain text content.
     """
     if value is None or isinstance(value, int):

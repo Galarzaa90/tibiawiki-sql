@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+site_name: TibiaWikiSQL
+docs_dir: mkdocs # TODO: Remove whe documentation is moved back to `docs` folder.
+
+theme:
+  name: material
+  language: en
+  palette:
+
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+  features:
+    - navigation.top
+    - toc.follow
+
+plugins:
+- search
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+          annotations_path: brief
+          docstring_style: google
+          show_bases: true
+          show_source: true
+          members_order: source
+          separate_signature: true
+          show_signature_annotations: true
+          signature_crossrefs: true
+          show_symbol_type_heading: true
+          show_root_heading: true
+          show_overloads: true
+          heading_level: 3
+          summary: true
+          extensions:
+            - griffe_pydantic:
+            - griffe_inherited_docstrings
+            - griffe_generics
+        inventories:
+          - url: https://docs.python.org/3/objects.inv
+            domains: [py, std]
+
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
+watch:
+  - mkdocs
+  - mkdocs.yaml
+  - tibiawikisql

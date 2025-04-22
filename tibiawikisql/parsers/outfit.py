@@ -31,9 +31,8 @@ from typing import Any
 import tibiawikisql.schema
 from tibiawikisql.api import Article
 from tibiawikisql.models import Outfit, OutfitQuest
-from tibiawikisql.models.abc import AttributeParser
 from tibiawikisql.parsers import BaseParser
-from tibiawikisql.parsers.base import M
+from tibiawikisql.parsers.base import AttributeParser, M
 from tibiawikisql.parsers.quest import parse_links
 from tibiawikisql.utils import parse_boolean, parse_integer
 

@@ -5,7 +5,6 @@ from typing import Any
 import tibiawikisql.schema
 from tibiawikisql.api import Article
 from tibiawikisql.models import Npc
-from tibiawikisql.models.abc import AttributeParser
 from tibiawikisql.models.npc import (
     NpcBuyOffer,
     NpcDestination,
@@ -13,7 +12,7 @@ from tibiawikisql.models.npc import (
     NpcSpell,
 )
 from tibiawikisql.parsers import BaseParser
-from tibiawikisql.parsers.base import M
+from tibiawikisql.parsers.base import AttributeParser, M
 from tibiawikisql.utils import clean_links, convert_tibiawiki_position, find_template, strip_code
 
 price_to_template = re.compile(r"{{(?:NPC List\s*|Price to (?:Buy|Sell))\s*([^}]+)}}")

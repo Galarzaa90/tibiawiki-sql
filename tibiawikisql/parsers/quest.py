@@ -5,7 +5,7 @@ from typing import Any
 
 from tibiawikisql.api import Article
 from tibiawikisql.models import Quest, QuestDanger, QuestReward
-from tibiawikisql.models.abc import AttributeParser
+from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
 import tibiawikisql.schema
 from tibiawikisql.utils import clean_links, parse_boolean, parse_integer

@@ -4,10 +4,9 @@ from typing import Any
 
 from tibiawikisql.api import Article
 from tibiawikisql.models import Imbuement, ImbuementMaterial
-from tibiawikisql.models.abc import AttributeParser
 from tibiawikisql.parsers import BaseParser
 import tibiawikisql.schema
-from tibiawikisql.parsers.base import M
+from tibiawikisql.parsers.base import AttributeParser, M
 
 astral_pattern = re.compile(r"\s*([^:]+):\s*(\d+),*")
 effect_pattern = re.compile(r"Effect/([^|]+)\|([^}|]+)")

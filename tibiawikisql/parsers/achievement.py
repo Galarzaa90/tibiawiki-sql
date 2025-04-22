@@ -1,7 +1,6 @@
 import tibiawikisql.schema
 from tibiawikisql.models import Achievement
-from tibiawikisql.models.abc import AttributeParser
-from tibiawikisql.parsers.base import BaseParser
+from tibiawikisql.parsers.base import AttributeParser, BaseParser
 from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
 
 

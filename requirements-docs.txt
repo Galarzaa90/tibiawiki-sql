@@ -1,0 +1,5 @@
+griffe-inherited-docstrings
+griffe-pydantic
+griffe-generics
+mkdocs-material
+mkdocstrings[python]

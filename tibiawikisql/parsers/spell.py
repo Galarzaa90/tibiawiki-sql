@@ -1,7 +1,7 @@
 from tibiawikisql.api import Article
 from tibiawikisql.models import Spell
 import tibiawikisql.schema
-from tibiawikisql.models.abc import AttributeParser
+from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
 

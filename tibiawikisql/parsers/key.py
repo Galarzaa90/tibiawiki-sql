@@ -2,7 +2,7 @@ import sqlite3
 
 import tibiawikisql.schema
 from tibiawikisql.models import Key
-from tibiawikisql.models.abc import AttributeParser
+from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.utils import clean_links, parse_integer
 

@@ -5,7 +5,7 @@ from typing import Any
 import tibiawikisql.schema
 from tibiawikisql.api import Article
 from tibiawikisql.models import Item, ItemAttribute
-from tibiawikisql.models.abc import AttributeParser
+from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.models.item import ItemSound, ItemStoreOffer
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.utils import clean_links, clean_question_mark, client_color_to_rgb, find_templates, parse_boolean, \
