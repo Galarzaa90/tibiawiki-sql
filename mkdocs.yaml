@@ -51,12 +51,11 @@ plugins:
           heading_level: 3
           summary: true
           extensions:
-            - griffe_pydantic:
-            - griffe_inherited_docstrings
-            - griffe_generics
+            - griffe_pydantic
+#            - griffe_inherited_docstrings
+#            - griffe_generics
         inventories:
           - url: https://docs.python.org/3/objects.inv
-            domains: [py, std]
 
 
 markdown_extensions:

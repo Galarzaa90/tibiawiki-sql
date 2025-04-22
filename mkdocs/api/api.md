@@ -1,6 +1,5 @@
-# API Reference
+# TibiaWiki API
 
-## TibiaWiki
 
 ::: tibiawikisql.api.WikiClient
 
