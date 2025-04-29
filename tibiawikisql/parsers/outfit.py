@@ -24,7 +24,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import logging
 import sqlite3
 from typing import Any
 
@@ -32,7 +31,7 @@ import tibiawikisql.schema
 from tibiawikisql.api import Article
 from tibiawikisql.models.outfit import Outfit, OutfitQuest
 from tibiawikisql.parsers import BaseParser
-from tibiawikisql.parsers.base import AttributeParser, M
+from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers.quest import parse_links
 from tibiawikisql.utils import parse_boolean, parse_integer
 

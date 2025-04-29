@@ -30,6 +30,7 @@ def parse_maximum_damage(value):
     -------
     :class:`dict`
         A dictionary containing the maximum damage by element if available.
+
     """
     if not value:
         return None
@@ -49,8 +50,7 @@ def parse_maximum_damage(value):
 
 
 def parse_maximum_integer(value):
-    """
-    From a string, finds the highest integer found.
+    """From a string, finds the highest integer found.
 
     Parameters
     ----------
@@ -61,6 +61,7 @@ def parse_maximum_integer(value):
     -------
     :class:`int`, optional:
         The highest number found, or None if no number is found.
+
     """
     matches = int_pattern.findall(value)
     try:
@@ -81,6 +82,7 @@ def parse_loot(value):
     -------
     tuple:
         A tuple containing the amounts and the item name.
+
     """
 
     def match(k):
@@ -114,6 +116,7 @@ def parse_abilities(value):
     -------
     :class:`list` of :class:`dict`
         A list of dictionaries with the ability data.
+
     """
     if not value:
         return []
@@ -147,7 +150,7 @@ def parse_abilities(value):
         if template_name == "Summon":
             ability = {
                 "name": ability_template.get(1, ability_template.get("creature", None)),
-                "effect": ability_template.get(2, ability_template.get("amount", '1')),
+                "effect": ability_template.get(2, ability_template.get("amount", "1")),
                 "element": "summon",
             }
         if template_name == "Healing":
@@ -174,7 +177,8 @@ def parse_monster_walks(value):
 
     Element names followed by any character that is not a comma will be considered unknown and will not be returned.
 
-    Examples:
+    Examples
+    --------
         - ``Poison?, fire`` will return ``fire``.
         - ``Poison?, fire.`` will return neither.
         - ``Poison, earth, fire?, [[ice]]`` will return ``poison,earth``.
@@ -189,6 +193,7 @@ def parse_monster_walks(value):
     -------
     :class:`str`, optional
         A list of field types, separated by commas.
+
     """
     regex = re.compile(
         r"(physical)(,|$)|(holy)(,|$)|(death)(,|$)|(fire)(,|$)|(ice)(,|$)|(energy)(,|$)|(earth)(,|$)|"

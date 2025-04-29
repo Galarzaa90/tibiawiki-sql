@@ -10,7 +10,7 @@ from tibiawikisql.parsers import BaseParser
 import tibiawikisql.schema
 from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
 
-link_pattern = re.compile(r'\[\[([^|\]]+)')
+link_pattern = re.compile(r"\[\[([^|\]]+)")
 
 def parse_links(value):
     """Find all the links in a string and returns a list of them.
@@ -24,6 +24,7 @@ def parse_links(value):
     -------
     list(:class:`str`):
         The links found in the string.
+
     """
     return list(link_pattern.findall(value))
 

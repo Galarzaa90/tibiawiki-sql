@@ -12,20 +12,13 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import re
-import sqlite3
 from collections import OrderedDict
-from typing import List, Optional, TYPE_CHECKING
 
-import mwparserfromhell
 import pydantic
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import WithStatus, WithVersion
-from tibiawikisql.utils import (find_template, int_pattern, parse_integer, parse_min_max, parse_sounds, strip_code)
 
-if TYPE_CHECKING:
-    from mwparserfromhell.nodes import Template
 
 KILLS = {
     "Harmless": 25,
@@ -234,17 +227,17 @@ class Creature(WikiEntry, WithStatus, WithVersion):
     def bestiary_kills(self) -> int | None:
         """:class:`int`, optional:Total kills needed to complete the bestiary entry if applicable."""
         try:
-            return KILLS[self.bestiary_level] if self.bestiary_occurrence != 'Very Rare' else 5
+            return KILLS[self.bestiary_level] if self.bestiary_occurrence != "Very Rare" else 5
         except KeyError:
             return None
 
     @property
-    def charm_points(self) -> Optional[int]:
+    def charm_points(self) -> int | None:
         """:class:`int`, optional: Charm points awarded for completing the creature's bestiary entry, if applicable."""
         try:
             multiplier = 1
-            if self.bestiary_occurrence == 'Very Rare':
-                if self.bestiary_level == 'Harmless':
+            if self.bestiary_occurrence == "Very Rare":
+                if self.bestiary_level == "Harmless":
                     multiplier = 5
                 else:
                     multiplier = 2
@@ -260,7 +253,7 @@ class Creature(WikiEntry, WithStatus, WithVersion):
         return OrderedDict(sorted(modifiers.items(), key=lambda t: t[1], reverse=True))
 
     @property
-    def immune_to(self) -> List[str]:
+    def immune_to(self) -> list[str]:
         """:class:`list` of :class:`str`: Gets a list of the elements the creature is immune to."""
         return [k for k, v in self.elemental_modifiers.items() if v == 0]
 

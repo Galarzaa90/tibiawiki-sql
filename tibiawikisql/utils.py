@@ -17,8 +17,7 @@ import re
 import time
 from collections import defaultdict
 from contextlib import contextmanager
-from types import TracebackType
-from typing import Any, Literal, TYPE_CHECKING, overload
+from typing import Any, Literal, NotRequired, TYPE_CHECKING, TypedDict, overload
 from collections.abc import Generator
 
 import mwparserfromhell
@@ -331,7 +330,7 @@ def parse_sounds(value: str) -> list[str]:
         A list of sounds.
 
     """
-    template = find_template(value, "Sound", True)
+    template = find_template(value, "Sound", partial=True)
     if not template:
         return []
     return [strip_code(param) for param in template.params if param]

@@ -27,8 +27,9 @@
 """Contains all the SQL related model definitions."""
 import datetime
 import inspect
+import sqlite3
 from collections import OrderedDict
-from typing import Any, ClassVar, Generic
+from typing import Any, ClassVar, Type, TypeVar
 
 
 class SchemaError(Exception):
@@ -40,6 +41,9 @@ class SQLType:
 
     python: ClassVar[type] = None
     """The python class that represents this object."""
+
+    def __repr__(self) -> str:
+        return f"<SQLType {self.__class__.__name__}>"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -250,6 +254,9 @@ class Column:
         if sum(map(bool, (unique, primary_key, default is not None))) > 1:
             raise SchemaError("'unique', 'primary_key', and 'default' are mutually exclusive.")
 
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__} name={self.name!r} column_type={self.column_type!r} nullable={self.nullable}>"
+
     def _create_table(self):
         builder = [self.name, self.column_type.to_sql()]
 
@@ -276,14 +283,14 @@ class Column:
 
         return " ".join(builder)
 
+T = TypeVar("T", bound="TableMeta")
+
 
 class TableMeta(type):
-    @classmethod
-    def __prepare__(mcs, name, bases, **kwargs):
-        return OrderedDict()
 
-    def __new__(mcs, name, parents, dct, **kwargs):
+    def __new__(mcs: type[T], name: str, bases: tuple[type, ...], dct: dict[str, Any], **kwargs: Any) -> T:
         columns = []
+        column_map = {}
 
         try:
             table_name = kwargs["table_name"]
@@ -299,11 +306,13 @@ class TableMeta(type):
                 if value.index:
                     value.index_name = f"{table_name}_{value.name}_idx"
                 columns.append(value)
+                column_map[value.name] = value
 
         dct["columns"] = columns
-        return super().__new__(mcs, name, parents, dct)
+        dct["column_map"] = column_map
+        return super().__new__(mcs, name, bases, dct)
 
-    def __init__(cls, name, parents, dct, **kwargs):
+    def __init__(cls, name: str, parents: tuple[type, ...], dct: dict[str, Any], **kwargs: Any) -> None:
         super().__init__(name, parents, dct)
 
 
@@ -376,3 +385,28 @@ class Table(metaclass=TableMeta):
     @classmethod
     def drop(cls):
         return f"DROP TABLE IF EXISTS {cls.__tablename__}"
+
+    @classmethod
+    def get_by_field(cls, conn: sqlite3.Connection | sqlite3.Cursor, column: str, value: Any, use_like: bool = False) -> dict | None:
+        """Get a row by a specific column's value.
+
+        Args:
+            conn: A SQL connection.
+            column: The name of the column.
+            value: The value to amtch it against.
+            use_like: Whether to use ``LIKE`` as an operator instead of ``=``.
+
+        Returns:
+            The matching row, or ``None``.
+
+        Raises:
+            ValueError: The specified column doesn't exist in the table.
+        """
+        if column not in cls.column_map:
+            msg = f"Column {column!r} doesn't exist"
+            raise ValueError(msg)
+        operator = "LIKE" if use_like else "="
+        query = f"SELECT * FROM {cls.__tablename__} WHERE {column} {operator} ? LIMIT 1"
+        c = conn.execute(query, (value,))
+        conn.row_factory = sqlite3.Row
+        return c.fetchone()

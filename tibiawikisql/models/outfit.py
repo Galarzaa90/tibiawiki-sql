@@ -40,12 +40,9 @@ import sqlite3
 import pydantic
 from pydantic import Field
 
-from tibiawikisql import schema
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models import abc
 from tibiawikisql.models.base import WithStatus, WithVersion
 # from tibiawikisql.models.quest import parse_links
-from tibiawikisql.utils import parse_integer, parse_boolean
 
 
 class OutfitQuest(pydantic.BaseModel):

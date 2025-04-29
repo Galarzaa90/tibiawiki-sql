@@ -12,7 +12,7 @@ from tibiawikisql.models.npc import (
     NpcSpell,
 )
 from tibiawikisql.parsers import BaseParser
-from tibiawikisql.parsers.base import AttributeParser, M
+from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.utils import clean_links, convert_tibiawiki_position, find_template, strip_code
 
 price_to_template = re.compile(r"{{(?:NPC List\s*|Price to (?:Buy|Sell))\s*([^}]+)}}")
@@ -174,7 +174,7 @@ class NpcParser(BaseParser):
         raw_attributes = row["_raw_attributes"]
         article_id = row["article_id"]
         npc_name = row["name"]
-        jobs = ''.join(row["jobs"]).lower()
+        jobs = "".join(row["jobs"]).lower()
         teaches = row["teaches"] = []
         spell_list = cls.parse_spells(raw_attributes["sells"])
         for group, spells in spell_list:
@@ -233,6 +233,7 @@ class NpcParser(BaseParser):
         -------
         list(:class:`tuple`)
             A list of tuples containing the parsed destinations.
+
         """
         template = find_template(value, "Transport", partial=True)
         if not template:
@@ -242,7 +243,7 @@ class NpcParser(BaseParser):
             if param.showkey:
                 continue
             data, *notes = strip_code(param).split(";", 1)
-            notes = notes[0] if notes else ''
+            notes = notes[0] if notes else ""
             destination, price = data.split(",")
             result.append((destination, price, notes))
         return result
@@ -263,12 +264,12 @@ class NpcParser(BaseParser):
         -------
         list(:class:`tuple`)
             A list of tuples containing the parsed offers.
+
         """
         match = price_to_template.search(value)
         if match:
             return npc_offers.findall(match.group(1))
-        else:
-            return []
+        return []
 
     @classmethod
     def parse_item_trades(cls, value):
@@ -286,6 +287,7 @@ class NpcParser(BaseParser):
         -------
         list(:class:`tuple`)
             A list of tuples containing the parsed offers.
+
         """
         result = []
         value = cls.replace_ilinks(value)
@@ -305,6 +307,7 @@ class NpcParser(BaseParser):
         Returns
         -------
         A list of spells grouped by vocation.
+
         """
         result = []
         for name, spell_list in teaches_template.findall(value):
@@ -326,6 +329,7 @@ class NpcParser(BaseParser):
         -------
         :class:`str`
             The string with regular links instead of ILink templates.
+
         """
         return ilink_pattern.sub(r"[[\g<1>]]", value)
 

@@ -1,4 +1,3 @@
-import logging
 import sqlite3
 
 import tibiawikisql.schema

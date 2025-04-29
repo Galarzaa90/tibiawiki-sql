@@ -100,10 +100,10 @@ class TestModels(unittest.TestCase):
 
         # Dynamic properties:
         self.assertEqual(len(item.attributes_dict.keys()), len(item.attributes))
-        fire_sword_look_text = ('You see a fire sword (Atk:24 physical + 11 fire, Def:20 +1).'
-                                ' It can only be wielded properly by players of level 30 or higher.'
-                                '\nIt weights 23.00 oz.\n'
-                                'The blade is a magic flame.')
+        fire_sword_look_text = ("You see a fire sword (Atk:24 physical + 11 fire, Def:20 +1)."
+                                " It can only be wielded properly by players of level 30 or higher."
+                                "\nIt weights 23.00 oz.\n"
+                                "The blade is a magic flame.")
         self.assertEqual(fire_sword_look_text, item.look_text)
 
         db_item = models.Item.get_by_field(self.conn, "name", "fire sword", use_like=True)
@@ -115,11 +115,11 @@ class TestModels(unittest.TestCase):
         item = models.Item.from_article(article)
         self.assertIsInstance(item, models.Item)
         self.assertIn("energy%", item.attributes_dict)
-        self.assertEqual(item.attributes_dict['magic'], "+3")
+        self.assertEqual(item.attributes_dict["magic"], "+3")
 
-        dream_shroud_look_text = ('You see a dream shroud (Arm:12, magic level +3, protection energy +10%).'
-                                  ' It can only be wielded properly by sorcerers and druids of level 180 or higher.'
-                                  '\nIt weights 25.00 oz.')
+        dream_shroud_look_text = ("You see a dream shroud (Arm:12, magic level +3, protection energy +10%)."
+                                  " It can only be wielded properly by sorcerers and druids of level 180 or higher."
+                                  "\nIt weights 25.00 oz.")
         self.assertEqual(dream_shroud_look_text, item.look_text)
         self.assertEqual(len(item.resistances), 1)
         self.assertEqual(item.resistances["energy"], 10)

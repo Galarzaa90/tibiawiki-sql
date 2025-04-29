@@ -7,8 +7,9 @@ from tibiawikisql.models import Achievement
 from tibiawikisql.parsers import AchievementParser
 
 
-class TestParsers(unittest.TestCase):
-    def test_achievement_parser_success(self):
+class TestAchievementParser(unittest.TestCase):
+
+    def test_achievement_parser_from_article(self):
         article = Article(
             article_id=1,
             title="Demonic Barkeeper",
@@ -19,5 +20,3 @@ class TestParsers(unittest.TestCase):
         achievement = AchievementParser.from_article(article)
 
         self.assertIsInstance(achievement, Achievement)
-
-

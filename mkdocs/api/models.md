@@ -1,73 +1,41 @@
-[//]: # (## Base Models)
 
-[//]: # ()
-[//]: # (::: tibiawikisql.models.base.WithStatus)
+::: tibiawikisql.models.base
 
-[//]: # ()
-[//]: # (::: tibiawikisql.models.base.WithVersion)
+::: tibiawikisql.models.achievement
 
-[//]: # ()
-[//]: # (## Models)
 
-[//]: # ()
-[//]: # (::: tibiawikisql.models.Achievement)
+::: tibiawikisql.models.charm
 
-[//]: # (::: tibiawikisql.models.Charm)
 
-[//]: # (::: tibiawikisql.models.Creature)
+::: tibiawikisql.models.creature
 
-[//]: # (::: tibiawikisql.models.CreatureAbility)
 
-[//]: # (::: tibiawikisql.models.CreatureDrop)
+::: tibiawikisql.models.house
 
-[//]: # (::: tibiawikisql.models.CreatureMaxDamage)
 
-[//]: # (::: tibiawikisql.models.CreatureSound)
+::: tibiawikisql.models.imbuement
 
-[//]: # (::: tibiawikisql.models.House)
 
-[//]: # (::: tibiawikisql.models.Imbuement)
+::: tibiawikisql.models.item
 
-[//]: # (::: tibiawikisql.models.ImbuementMaterial)
 
-[//]: # (::: tibiawikisql.models.Book)
 
-[//]: # (::: tibiawikisql.models.Item)
+::: tibiawikisql.models.mount
 
-[//]: # (::: tibiawikisql.models.ItemAttribute)
 
-[//]: # (::: tibiawikisql.models.ItemStoreOffer)
+::: tibiawikisql.models.npc
 
-[//]: # (::: tibiawikisql.models.Key)
 
-[//]: # (::: tibiawikisql.models.Mount)
+::: tibiawikisql.models.outfit
 
-[//]: # (::: tibiawikisql.models.Npc)
 
-[//]: # (::: tibiawikisql.models.NpcBuyOffer)
+::: tibiawikisql.models.quest
 
-[//]: # (::: tibiawikisql.models.NpcDestination)
 
-[//]: # (::: tibiawikisql.models.NpcSellOffer)
+::: tibiawikisql.models.spell
 
-[//]: # (::: tibiawikisql.models.NpcSpell)
 
-[//]: # (::: tibiawikisql.models.RashidPosition)
+::: tibiawikisql.models.update
 
-[//]: # (::: tibiawikisql.models.Outfit)
 
-[//]: # (::: tibiawikisql.models.OutfitImage)
-
-[//]: # (::: tibiawikisql.models.OutfitQuest)
-
-[//]: # (::: tibiawikisql.models.Quest)
-
-[//]: # (::: tibiawikisql.models.QuestDanger)
-
-[//]: # (::: tibiawikisql.models.QuestReward)
-
-[//]: # (::: tibiawikisql.models.Spell)
-
-[//]: # (::: tibiawikisql.models.Update)
-
-[//]: # (::: tibiawikisql.models.World)
+::: tibiawikisql.models.world

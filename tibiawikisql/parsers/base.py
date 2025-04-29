@@ -6,32 +6,46 @@ from typing import Any, ClassVar, Generic, Self, TypeVar
 import pydantic
 from pydantic import BaseModel, ValidationError
 
+import tibiawikisql.database
 from tibiawikisql.api import Article
 from tibiawikisql.database import Table
 from tibiawikisql.exceptions import ArticleParsingError, AttributeParsingError, TemplateNotFoundError
 from tibiawikisql.utils import parse_templatates_data
 
 M = TypeVar("M", bound=BaseModel)
-P = TypeVar('P', bound=pydantic.BaseModel)
-T = TypeVar('T')
+P = TypeVar("P", bound=pydantic.BaseModel)
+T = TypeVar("T")
+D = TypeVar("D")
 
 
 class AttributeParser(Generic[T]):
-    """Defines how to parser an attribute from a Wiki article into a python object.
+    """Defines how to parser an attribute from a Wiki article into a python object."""
 
-    Attributes:
-        func: A callable that takes the template's attributes as a parameter and returns a value.
-        fallback: Fallback value to set if the value is not found or the callable failed.
+    def __init__(self, func: Callable[[dict[str, str]], T], fallback: D = ...) -> None:
+        """Create an instance of the class.
 
-    """
+        Args:
+            func: A callable that takes the template's attributes as a parameter and returns a value.
+            fallback: Fallback value to set if the value is not found or the callable failed.
 
-    def __init__(self, func: Callable[[dict[str, str]], T], fallback: T = ...) -> None:
+        """
         self.func = func
         self.fallback = fallback
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, attributes: dict[str, str]) -> T | D:
+        """Perform parsing on the defined attribute.
+
+        Args:
+            attributes: The template attributes.
+
+        Returns:
+            The result of the parser's function or the fallback value if applicable.
+
+        Raises:
+            AttributeParsingError: If the parser function fails and no fallback was provided.
+        """
         try:
-            return self.func(args[0])
+            return self.func(attributes)
         except Exception as e:
             if self.fallback is Ellipsis:
                 raise AttributeParsingError(e) from e
@@ -88,7 +102,49 @@ class AttributeParser(Generic[T]):
         return cls(lambda x: x.get("implemented").lower())
 
 
-class BaseParser(ABC):
+class ParserMeta(type):
+    """Metaclass for all parsers."""
+
+    registry: ClassVar[dict[str, type["BaseParser"]]] = {}
+
+    def __new__(mcs, name: str, bases: tuple[type, ...], namespace: dict[str, Any]) -> type:
+        cls = super().__new__(mcs, name, bases, namespace)
+
+        if name == "BaseParser":
+            return cls
+        required_attrs = (
+            ("template_name", str, False),
+            ("attribute_map", dict, False),
+            ("model", pydantic.BaseModel, True),
+            ("table", tibiawikisql.database.Table, True),
+        )
+        for attr, expected_type, is_class in required_attrs:
+            value = getattr(cls, attr, NotImplemented)
+            if value is NotImplemented:
+                msg = f"{name} must define `{attr}`"
+                raise NotImplementedError(msg)
+            if is_class:
+                if not isinstance(value, type) or not issubclass(value, expected_type):
+                    msg = f"{name}.{attr} must be a subclass of {expected_type.__name__}"
+                    raise TypeError(msg)
+            elif not isinstance(value, expected_type):
+                msg = f"{name}.{attr} must be of type {expected_type.__name__}"
+                raise TypeError(msg)
+
+        template_name = getattr(cls, "template_name")  # noqa: B009
+        if not isinstance(template_name, str) or not template_name:
+            msg = f"{name} must define a non-empty string for `template_name`."
+            raise ValueError(msg)
+
+        # Register the parser class
+        if template_name in ParserMeta.registry:
+            msg = f"Duplicate parser for template '{template_name}'."
+            raise ValueError(msg)
+        ParserMeta.registry[template_name] = cls
+        return cls
+
+
+class BaseParser(metaclass=ParserMeta):
     """Base class that defines how to extract information from a Wiki template into a model."""
 
     template_name: ClassVar[str] = NotImplemented
@@ -103,13 +159,6 @@ class BaseParser(ABC):
     attribute_map: ClassVar[dict[str, AttributeParser]] = NotImplemented
     """A map defining how to process every template attribute."""
 
-
-    def __init_subclass__(cls):
-        super().__init_subclass__()
-        required_attrs = ["template_name", "attribute_map", "model", "table"]
-        for attr in required_attrs:
-            if getattr(cls, attr) is NotImplemented:
-                raise NotImplementedError(f"{cls.__name__} must define class variable `{attr}`")
 
     @classmethod
     def parse_attributes(cls, article: Article) -> dict[str, Any]:

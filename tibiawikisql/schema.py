@@ -531,6 +531,7 @@ def create_tables(conn):
     ----------
     conn: sqlite3.Connection, sqlite3.Cursor
         A connection to the database.
+
     """
     for table in Table.all_tables():
         conn.execute(table.drop())

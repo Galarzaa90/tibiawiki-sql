@@ -6,7 +6,7 @@ from tibiawikisql.api import Article
 from tibiawikisql.models.imbuement import Imbuement, ImbuementMaterial
 from tibiawikisql.parsers import BaseParser
 import tibiawikisql.schema
-from tibiawikisql.parsers.base import AttributeParser, M
+from tibiawikisql.parsers.base import AttributeParser
 
 astral_pattern = re.compile(r"\s*([^:]+):\s*(\d+),*")
 effect_pattern = re.compile(r"Effect/([^|]+)\|([^}|]+)")
@@ -23,6 +23,7 @@ def parse_astral_sources(content: str):
     -------
     :class:`dict[str,int]`:
         A dictionary containing the material name and te amount required.
+
     """
     materials = astral_pattern.findall(content)
     if materials:
@@ -68,6 +69,7 @@ def parse_effect(effect):
     -------
     :class:`str`:
         The effect string.
+
     """
     m = effect_pattern.search(effect)
     category, amount = m.groups()
@@ -91,6 +93,7 @@ def parse_slots(content):
     -------
     :class:`str`:
         The slots string.
+
     """
     slots = content.split(",")
     return ",".join(s.strip() for s in slots)

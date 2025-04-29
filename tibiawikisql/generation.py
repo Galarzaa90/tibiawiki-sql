@@ -8,7 +8,7 @@ import re
 import sqlite3
 from collections import defaultdict
 import platform
-from typing import TYPE_CHECKING, TextIO, TypeVar
+from typing import Any, TYPE_CHECKING, TypeVar
 
 import click
 import requests
@@ -16,7 +16,7 @@ from colorama import Fore, Style
 from lupa import LuaRuntime
 
 from tibiawikisql import __version__, parsers, schema
-from tibiawikisql.api import Image, WikiClient, WikiEntry
+from tibiawikisql.api import Article, Image, WikiClient, WikiEntry
 from tibiawikisql.exceptions import ArticleParsingError
 from tibiawikisql.models.npc import rashid_positions
 from tibiawikisql.parsers import BaseParser, OutfitParser
@@ -51,7 +51,7 @@ OUTFIT_SEX_SEQUENCE = ["Male"] * 4 + ["Female"] * 4
 V = TypeVar("V")
 
 lua = LuaRuntime()
-link_pattern = re.compile(r"(?:(?P<price>\d+))?\s?\[\[([^\]|]+)")
+link_pattern = re.compile(r"(?P<price>\d+)?\s?\[\[([^]|]+)")
 
 
 class Category:
@@ -69,7 +69,7 @@ class Category:
             extension: str = ".gif",
             include_deprecated: bool = False,
             generate_map: bool = False,
-    ):
+    ) -> None:
         """Create a new instance of the class.
 
         Args:
@@ -110,7 +110,7 @@ CATEGORIES = {
 
 
 def img_label(item: Image | None) -> str:
-    """Get the label to show in progress bar when iterating images.
+    """Get the label to show in progress bars when iterating images.
 
     Args:
         item: The image being iterated.
@@ -124,14 +124,32 @@ def img_label(item: Image | None) -> str:
     return item.clean_name
 
 
-def article_show(item):
+def article_label(item: Article | None) -> str:
+    """Get the label to show in progress bar when iterating articles.
+
+    Args:
+        item: The article being iterated.
+
+    Returns:
+        The name of the image's file or an empty string.
+
+    """
     if item is None:
         return ""
     return constraint(item.title, 25)
 
 
-def constraint(value, limit):
-    if value is None or len(value) <= limit:
+def constraint(value: str, limit: int) -> str:
+    """Limit a string to a certain length if exceeded.
+
+    Args:
+        value: The string to constraint the length of.
+        limit: The length limit.
+
+    Returns:
+        If the string exceeds the limit, the same string is returned, otherwise it is cropped.
+    """
+    if len(value) <= limit:
         return value
     return value[:limit - 1] + "…"
 
@@ -140,33 +158,24 @@ def progress_bar(
         iterable: Iterable[V] | None = None,
         length: int | None = None,
         label: str | None = None,
-        show_eta: bool = True,
-        show_percent: bool | None = None,
-        show_pos: bool = False,
         item_show_func: Callable[[V | None], str | None] | None = None,
         info_sep: str = "  ",
         width: int = 36,
-        file: TextIO | None = None,
-        color: bool | None = None,
-        update_min_steps: int = 1,
 ) -> ProgressBar[V]:
     """Get a progress bar iterator."""
     return click.progressbar(
         iterable,
         length,
         label,
-        show_eta,
-        show_percent,
-        show_pos,
+        True,  # noqa: FBT003
+        True,  # noqa: FBT003
+        True,  # noqa: FBT003
         item_show_func,
         "█",
         "░",
         f"%(label)s {Fore.YELLOW}%(bar)s{Style.RESET_ALL} %(info)s",
         info_sep,
         width,
-        file,
-        color,
-        update_min_steps,
     )
 
 
@@ -198,27 +207,6 @@ def save_cache_info(folder_name: str, cache_info: dict[str, datetime.datetime]) 
     """
     with open(f"images/{folder_name}/cache_info.json", "w") as f:
         json.dump({k: v.isoformat() for k, v in cache_info.items()}, f)
-
-
-def get_articles(category, data_store, key=None, include_deprecated=False):
-    """Get the list of articles from a certain category.
-
-    Args:
-        category: The name of the TibiaWiki category.
-        data_store: A dictionary where articles will be stored.
-        key: The key where articles will be saved in the data store.
-        include_deprecated: Whether to include deprecated articles or not.
-    """
-    if key is None:
-        key = category.lower()
-    click.echo(f"Fetching articles in {Fore.BLUE}Category:{category}{Style.RESET_ALL}...")
-    data_store[key] = []
-    with timed() as t:
-        for article in WikiClient.get_category_members(category):
-            if ((article not in data_store.get("deprecated", []) or include_deprecated)
-                    and not article.title.startswith("User:") and not article.title.startswith("TibiaWiki:")):
-                data_store[key].append(article)
-    click.echo(f"\t{Fore.GREEN}Found {len(data_store[key]):,} articles in {t.elapsed:.2f} seconds.{Style.RESET_ALL}")
 
 
 def fetch_image(session: requests.Session, folder: str, image: Image) -> bytes:
@@ -443,14 +431,12 @@ def fetch_images(conn: sqlite3.Connection) -> None:
         save_maps(conn)
 
 
-def generate_spell_offers(conn: sqlite3.Connection, data_store):
+def generate_spell_offers(conn: sqlite3.Connection, data_store: dict[str, Any]) -> None:
     """Fetch and save the spell offers from the spell data module.
 
     Args:
-        conn:
-        data_store:
-
-    Returns:
+        conn: A connection to the database.
+        data_store: The data store containing information about generated articles.
 
     """
     if "npcs_map" not in data_store or "spells_map" not in data_store:
@@ -470,7 +456,7 @@ def generate_spell_offers(conn: sqlite3.Connection, data_store):
             if spell_id is None:
                 not_found_store["spell"].add(name)
                 continue
-            spell_vocations = list((table["vocation"].values()))
+            spell_vocations = list(table["vocation"].values())
             for npc, vocation in table["sellers"].items():
                 npc_id = data_store["npcs_map"].get(npc.lower())
                 if npc_id is None:
@@ -571,7 +557,7 @@ def process_offer_list(npc_id, array, list_store, data_store, not_found):
             npc_id,
             price,
             item_id,
-            currency_id
+            currency_id,
         ))
 
 
@@ -584,7 +570,7 @@ def generate_loot_statistics(conn: sqlite3.Connection, data_store):
         unknown_items = set()
         with (
             timed() as t,
-            progress_bar(generator, len(titles), "Fetching loot statistics", item_show_func=article_show) as bar
+            progress_bar(generator, len(titles), "Fetching loot statistics", item_show_func=article_label) as bar,
         ):
             for article in bar:
                 if article is None:
@@ -647,7 +633,7 @@ def generate(conn, skip_images, skip_deprecated):
         with (
             timed() as t,
             conn,
-            progress_bar(generator, len(titles), f"Parsing {key}", item_show_func=article_show) as bar,
+            progress_bar(generator, len(titles), f"Parsing {key}", item_show_func=article_label) as bar,
         ):
             for article in bar:
                 try:

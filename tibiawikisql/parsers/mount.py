@@ -42,6 +42,7 @@ def remove_mount(name):
     -------
     :class:`str`
         The name with "(Mount)" removed from it.
+
     """
     return name.replace("(Mount)", "").strip()
 

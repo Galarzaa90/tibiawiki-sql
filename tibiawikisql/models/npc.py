@@ -16,9 +16,7 @@ import sqlite3
 
 import pydantic
 
-from tibiawikisql import schema
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models import abc
 
 
 class NpcOffer(pydantic.BaseModel):
@@ -44,7 +42,6 @@ class NpcOffer(pydantic.BaseModel):
 
 class NpcSellOffer(NpcOffer):
     """Represents an item sellable by an NPC."""
-
 
     def insert(self, c):
         try:
@@ -86,7 +83,6 @@ class NpcSellOffer(NpcOffer):
 
 class NpcBuyOffer(NpcOffer):
     """Represents an item buyable by an NPC."""
-
 
     def insert(self, c):
         try:

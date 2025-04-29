@@ -11,12 +11,14 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+from typing import ClassVar
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import WithStatus, WithVersion
+from tibiawikisql.models.base import Row, WithStatus, WithVersion
+from tibiawikisql.schema import AchievementTable
 
 
-class Achievement(WikiEntry, WithStatus, WithVersion):
+class Achievement(WikiEntry, WithStatus, WithVersion, Row):
     """Represents an Achievement."""
 
     name: str
@@ -35,3 +37,5 @@ class Achievement(WikiEntry, WithStatus, WithVersion):
     """Whether a premium account is required to get this achievement."""
     achievement_id: int | None
     """The internal ID of the achievement."""
+
+    table: ClassVar = AchievementTable

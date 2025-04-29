@@ -20,9 +20,8 @@ from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import WithStatus, WithVersion
 from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
-from tibiawikisql.models.quest import QuestReward
 
-ELEMENTAL_RESISTANCES = ['physical%', 'earth%', 'fire%', 'energy%', 'ice%', 'holy%', 'death%', 'drowning%']
+ELEMENTAL_RESISTANCES = ["physical%", "earth%", "fire%", "energy%", "ice%", "holy%", "death%", "drowning%"]
 
 SKILL_ATTRIBUTES_MAPPING = {
     "magic": "magic level {0}",
@@ -207,7 +206,7 @@ class Item(WikiEntry):
             attributes_rep.append(f"Hit%+{attributes['hit%+']}")
 
         if "attack" in attributes:
-            elements = ['fire_attack', 'earth_attack', 'ice_attack', 'energy_attack']
+            elements = ["fire_attack", "earth_attack", "ice_attack", "energy_attack"]
             attacks = {}
             physical_attack = int(attributes["attack"])
             for element in elements:

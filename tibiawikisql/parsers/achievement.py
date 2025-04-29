@@ -1,14 +1,18 @@
-import tibiawikisql.schema
+from typing import ClassVar
+
 from tibiawikisql.models.achievement import Achievement
 from tibiawikisql.parsers.base import AttributeParser, BaseParser
+from tibiawikisql.schema import AchievementTable
 from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
 
 
 class AchievementParser(BaseParser):
+    """Parser for achievements."""
+
     model = Achievement
-    table = tibiawikisql.schema.AchievementTable
+    table = AchievementTable
     template_name =  "Infobox_Achievement"
-    attribute_map = {
+    attribute_map: ClassVar = {
         "name": AttributeParser(lambda x: x.get("actualname") or x.get("name")),
         "grade": AttributeParser.optional("grade", parse_integer),
         "points": AttributeParser.optional("points", parse_integer),
