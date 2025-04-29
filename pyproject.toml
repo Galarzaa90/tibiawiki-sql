@@ -19,7 +19,7 @@ maintainers = [
 ]
 license = { text = 'Apache 2.0' }
 description = "Python script that generates a SQLite database from TibiaWiki articles"
-requires-python = '>=3.11'
+requires-python = '>=3.10'
 readme = "README.md"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
