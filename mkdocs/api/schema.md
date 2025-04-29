@@ -1,0 +1,2 @@
+
+::: tibiawikisql.schema

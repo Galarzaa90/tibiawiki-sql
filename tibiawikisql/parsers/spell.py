@@ -1,5 +1,5 @@
 from tibiawikisql.api import Article
-from tibiawikisql.models import Spell
+from tibiawikisql.models.spell import Spell
 import tibiawikisql.schema
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
@@ -8,7 +8,7 @@ from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
 
 class SpellParser(BaseParser):
     model = Spell
-    table = tibiawikisql.schema.Spell
+    table = tibiawikisql.schema.SpellTable
     template_name = "Infobox_Spell"
     attribute_map = {
         "name": AttributeParser.required("name"),

@@ -25,7 +25,13 @@ class WikiEntry(BaseModel):
     timestamp: datetime.datetime
     """The date of the entry's last edit."""
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        """Check for equality.
+
+        Returns:
+            `True` if both objects are instances of this class and have the same `article_id`.
+
+        """
         if isinstance(other, self.__class__):
             return self.article_id == other.article_id
         return False
@@ -156,7 +162,7 @@ class WikiClient:
         return next(gen)
 
     @classmethod
-    def get_images_info(cls, names: list[str]) -> Generator[Image]:
+    def get_images_info(cls, names: list[str]) -> Generator[Image | None]:
         """Get the information of a list of image names.
 
         It is not required to prefix the name with ``File:``, but the extension is required.
@@ -190,7 +196,7 @@ class WikiClient:
                 continue
             data = json.loads(r.text)
             i += 50
-            for _, image in data["query"]["pages"].items():
+            for image in data["query"]["pages"].values():
                 if "missing" in image:
                     yield None
                     continue
@@ -235,7 +241,7 @@ class WikiClient:
             i += 50
             r = s.get(cls.ENDPOINT, params=params)
             data = json.loads(r.text)
-            for _, article in data["query"]["pages"].items():
+            for article in data["query"]["pages"].values():
                 if "missing" in article:
                     yield None
                     continue

@@ -1,7 +1,7 @@
 import sqlite3
 
 import tibiawikisql.schema
-from tibiawikisql.models import Key
+from tibiawikisql.models.item import Key
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.utils import clean_links, parse_integer
@@ -9,7 +9,7 @@ from tibiawikisql.utils import clean_links, parse_integer
 
 class KeyParser(BaseParser):
     model = Key
-    table = tibiawikisql.schema.ItemKey
+    table = tibiawikisql.schema.ItemKeyTable
     template_name = "Infobox_Key"
     attribute_map = {
         "name": AttributeParser.optional("aka", clean_links),
@@ -33,4 +33,4 @@ class KeyParser(BaseParser):
             VALUES(?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?)
         """
         cursor.execute(query, (model.article_id, model.title, model.number, model.material + " Key", model.name,
-                          model.material, model.location, model.origin, model.notes, model.version, model.timestamp))
+                          model.material, model.location, model.origin, model.notes, model.version, model.timestamp.isoformat()))

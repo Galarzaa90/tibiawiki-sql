@@ -8,7 +8,7 @@ from pydantic import BaseModel, ValidationError
 
 from tibiawikisql.api import Article
 from tibiawikisql.database import Table
-from tibiawikisql.exceptions import ArticleParsingError, AttributeParsingError
+from tibiawikisql.exceptions import ArticleParsingError, AttributeParsingError, TemplateNotFoundError
 from tibiawikisql.utils import parse_templatates_data
 
 M = TypeVar("M", bound=BaseModel)
@@ -121,10 +121,13 @@ class BaseParser(ABC):
         Returns:
             A dictionary containing the parsed attribute values.
 
+        Raises:
+            AttributeParsingError: If the required template is not found.
+
         """
         templates = parse_templatates_data(article.content)
         if cls.template_name not in templates:
-            return {}
+            raise TemplateNotFoundError(article, cls)
         attributes = templates[cls.template_name]
         row = {
             "article_id": article.article_id,
@@ -140,7 +143,7 @@ class BaseParser(ABC):
         return row
 
     @classmethod
-    def from_article(cls, article: Article) -> M | None:
+    def from_article(cls, article: Article) -> M:
         """Parse an article into a TibiaWiki model.
 
         Args:
@@ -150,15 +153,11 @@ class BaseParser(ABC):
             An inherited model object for the current article.
 
         """
-        if article is None:
-            return None
         row = cls.parse_attributes(article)
-        if not row:
-            return None
         try:
             return cls.model.model_validate(row)
         except ValidationError as e:
-            raise ArticleParsingError(article, e) from e
+            raise ArticleParsingError(article, cause=e) from e
 
     @classmethod
     def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: M) -> None:

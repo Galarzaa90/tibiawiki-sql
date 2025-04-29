@@ -3,3 +3,4 @@ griffe-pydantic
 griffe-generics
 mkdocs-material
 mkdocstrings[python]
+ruff

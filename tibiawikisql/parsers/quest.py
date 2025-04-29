@@ -4,7 +4,7 @@ import sqlite3
 from typing import Any
 
 from tibiawikisql.api import Article
-from tibiawikisql.models import Quest, QuestDanger, QuestReward
+from tibiawikisql.models.quest import Quest, QuestDanger, QuestReward
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
 import tibiawikisql.schema
@@ -29,7 +29,7 @@ def parse_links(value):
 
 class QuestParser(BaseParser):
     model = Quest
-    table = tibiawikisql.schema.Quest
+    table = tibiawikisql.schema.QuestTable
     template_name = "Infobox_Quest"
     attribute_map = {
         "name": AttributeParser.required("name", html.unescape),
@@ -61,9 +61,9 @@ class QuestParser(BaseParser):
     def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: Quest) -> None:
         super().insert(cursor, model)
         for reward in model.rewards:
-            tibiawikisql.schema.QuestReward.insert(cursor, **reward.model_dump())
+            tibiawikisql.schema.QuestRewardTable.insert(cursor, **reward.model_dump())
         for danger in model.dangers:
-            tibiawikisql.schema.QuestDanger.insert(cursor, **danger.model_dump())
+            tibiawikisql.schema.QuestDangerTable.insert(cursor, **danger.model_dump())
 
 
     # region Auxiliary Functions

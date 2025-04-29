@@ -1,0 +1,1 @@
+::: tibiawikisql.generation

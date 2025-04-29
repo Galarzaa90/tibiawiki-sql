@@ -4,7 +4,7 @@ from typing import Any
 
 import tibiawikisql.schema
 from tibiawikisql.api import Article
-from tibiawikisql.models import Npc
+from tibiawikisql.models.npc import Npc
 from tibiawikisql.models.npc import (
     NpcBuyOffer,
     NpcDestination,
@@ -28,7 +28,7 @@ ilink_pattern = re.compile(r"{{Ilink\|([^}]+)}}")
 
 
 class NpcParser(BaseParser):
-    table = tibiawikisql.schema.Npc
+    table = tibiawikisql.schema.NpcTable
     model = Npc
     template_name = "Infobox_NPC"
     attribute_map = {
@@ -79,13 +79,13 @@ class NpcParser(BaseParser):
     def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: Npc) -> None:
         super().insert(cursor, model)
         for job in model.jobs:
-            tibiawikisql.schema.NpcJob.insert(cursor, npc_id=model.article_id, name=job)
+            tibiawikisql.schema.NpcJobTable.insert(cursor, npc_id=model.article_id, name=job)
         for race in model.races:
-            tibiawikisql.schema.NpcRace.insert(cursor, npc_id=model.article_id, name=race)
+            tibiawikisql.schema.NpcRaceTable.insert(cursor, npc_id=model.article_id, name=race)
         for destination in model.destinations:
-            tibiawikisql.schema.NpcDestination.insert(cursor, **destination.model_dump())
+            tibiawikisql.schema.NpcDestinationTable.insert(cursor, **destination.model_dump())
         for spell in model.teaches:
-            tibiawikisql.schema.NpcSpell.insert(cursor, **spell.model_dump())
+            tibiawikisql.schema.NpcSpellTable.insert(cursor, **spell.model_dump())
     # region Auxiliary Methods
 
     @classmethod

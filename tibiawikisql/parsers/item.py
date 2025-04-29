@@ -4,10 +4,9 @@ from typing import Any
 
 import tibiawikisql.schema
 from tibiawikisql.api import Article
-from tibiawikisql.models import Item, ItemAttribute
-from tibiawikisql.parsers.base import AttributeParser
-from tibiawikisql.models.item import ItemSound, ItemStoreOffer
+from tibiawikisql.models.item import Item, ItemAttribute, ItemSound, ItemStoreOffer
 from tibiawikisql.parsers import BaseParser
+from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.utils import clean_links, clean_question_mark, client_color_to_rgb, find_templates, parse_boolean, \
     parse_float, \
     parse_integer, \
@@ -16,7 +15,7 @@ from tibiawikisql.utils import clean_links, clean_question_mark, client_color_to
 
 class ItemParser(BaseParser):
     model = Item
-    table = tibiawikisql.schema.Item
+    table = tibiawikisql.schema.ItemTable
     template_name = "Infobox_Object"
     attribute_map = {
         "name": AttributeParser.required("name"),
@@ -195,8 +194,8 @@ class ItemParser(BaseParser):
     def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: Item):
         super().insert(cursor, model)
         for attribute in model.attributes:
-            tibiawikisql.schema.ItemAttribute.insert(cursor, **attribute.model_dump())
+            tibiawikisql.schema.ItemAttributeTable.insert(cursor, **attribute.model_dump())
         for sound in model.sounds:
-            tibiawikisql.schema.ItemSound.insert(cursor, **sound.model_dump())
+            tibiawikisql.schema.ItemSoundTable.insert(cursor, **sound.model_dump())
         for store_offer in model.store_offers:
-            tibiawikisql.schema.ItemStoreOffer.insert(cursor, **store_offer.model_dump())
+            tibiawikisql.schema.ItemStoreOfferTable.insert(cursor, **store_offer.model_dump())

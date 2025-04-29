@@ -150,7 +150,7 @@ class Creature(WikiEntry, WithStatus, WithVersion):
     """The race name of the creature in Tibia.com's library."""
     creature_class: str | None
     """The creature's classification."""
-    creature_type: str | None
+    type_primary: str | None
     """The creature's type."""
     type_secondary: str | None
     """The creature's secondary type, if any."""

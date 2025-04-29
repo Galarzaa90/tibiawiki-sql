@@ -2,7 +2,7 @@ import logging
 import sqlite3
 
 import tibiawikisql.schema
-from tibiawikisql.models import Book
+from tibiawikisql.models.item import Book
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.utils import clean_links
@@ -10,7 +10,7 @@ from tibiawikisql.utils import clean_links
 
 class BookParser(BaseParser):
     model = Book
-    table = tibiawikisql.schema.Book
+    table = tibiawikisql.schema.BookTable
     template_name = "Infobox_Book"
     attribute_map = {
         "name": AttributeParser.required("title"),
@@ -37,6 +37,6 @@ class BookParser(BaseParser):
         """
         cursor.execute(query, (model.article_id, model.title, model.name, model.book_type, model.book_type, model.location,
                           model.blurb, model.author, model.prev_book, model.next_book, model.text, model.version,
-                          model.status, model.timestamp))
+                          model.status, model.timestamp.isoformat()))
 
 

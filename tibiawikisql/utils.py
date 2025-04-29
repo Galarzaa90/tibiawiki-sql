@@ -11,10 +11,15 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+from __future__ import annotations
 import datetime
 import re
+import time
 from collections import defaultdict
-from typing import Any, Generator, List, Literal, TYPE_CHECKING, overload
+from contextlib import contextmanager
+from types import TracebackType
+from typing import Any, Literal, TYPE_CHECKING, overload
+from collections.abc import Generator
 
 import mwparserfromhell
 from mwparserfromhell.nodes.extras import Parameter
@@ -25,7 +30,20 @@ if TYPE_CHECKING:
 
 min_max_pattern = re.compile(r"(\d+)-(\d+)")
 int_pattern = re.compile(r"[+-]?\d+")
-float_pattern = re.compile(r'[+-]?(\d*[.])?\d+')
+float_pattern = re.compile(r"[+-]?(\d*[.])?\d+")
+
+
+class Elapsed:
+    def __init__(self):
+        self.elapsed = 0.0
+
+
+@contextmanager
+def timed() -> Generator[Elapsed, None, None]:
+    start = time.perf_counter()
+    e = Elapsed()
+    yield e
+    e.elapsed = time.perf_counter() - start
 
 
 def clean_question_mark(content: str) -> str | None:
@@ -128,7 +146,8 @@ def find_template(content: str, template_name: str, partial: bool = False, recur
     return next(find_templates(content, template_name, partial, recursive), None)
 
 
-def find_templates(content: str, template_name: str, partial: bool = False, recursive: bool = False) -> Generator[Template]:
+def find_templates(content: str, template_name: str, partial: bool = False, recursive: bool = False) -> Generator[
+    Template]:
     """Create a generator to find templates in a wikicode string.
 
     Args:
@@ -143,7 +162,7 @@ def find_templates(content: str, template_name: str, partial: bool = False, recu
 
     """
     parsed = mwparserfromhell.parse(content)
-    templates: List['Template'] = parsed.ifilter_templates(recursive=recursive)
+    templates: list[Template] = parsed.ifilter_templates(recursive=recursive)
     template_name = template_name.strip().lower().replace("_", " ")
     for template in templates:
         name = strip_code(template.name).lower().replace("_", " ")
@@ -151,7 +170,7 @@ def find_templates(content: str, template_name: str, partial: bool = False, recu
             yield template
 
 
-def parse_boolean(value: str, default: bool =False, invert: bool =False) -> bool:
+def parse_boolean(value: str, default: bool = False, invert: bool = False) -> bool:
     """Parse a boolean value from a string.
 
     String must contain "yes" to be considered True.
@@ -163,17 +182,17 @@ def parse_boolean(value: str, default: bool =False, invert: bool =False) -> bool
 
     Returns:
         The boolean value parsed in the string, or default if it doesn't match yes or no.
+
     """
     value = value.strip().lower()
     if value == "yes":
         return not invert
-    elif value == "no":
+    if value == "no":
         return invert
-    else:
-        return default
+    return default
 
 
-def parse_date(value: str) -> datetime.date :
+def parse_date(value: str) -> datetime.date:
     """Parse a date from the formats used in TibiaWiki.
 
     - June 28, 2019
@@ -206,7 +225,7 @@ def parse_date(value: str) -> datetime.date :
     raise ValueError(f"Date format for value '{value}' not recognized")
 
 
-def parse_float(value: str, default: float =0.0) -> float:
+def parse_float(value: str, default: float = 0.0) -> float:
     """From a string, parses a floating value.
 
     Args:
@@ -220,11 +239,10 @@ def parse_float(value: str, default: float =0.0) -> float:
     match = float_pattern.search(value)
     if match:
         return float(match.group(0))
-    else:
-        return default
+    return default
 
 
-def parse_integer(value: str, default: int =0) -> int:
+def parse_integer(value: str, default: int = 0) -> int:
     """Parse an integer from a string. Extra characters are ignored.
 
     Args:
@@ -238,8 +256,7 @@ def parse_integer(value: str, default: int =0) -> int:
     match = int_pattern.search(value)
     if match:
         return int(match.group(0))
-    else:
-        return default
+    return default
 
 
 def parse_loot_statistics(value: str) -> tuple[int, list[Any]]:
@@ -250,6 +267,7 @@ def parse_loot_statistics(value: str) -> tuple[int, list[Any]]:
 
     Returns:
         A tuple containing the total kills and a list of entries.
+
     """
     template = find_template(value, "Loot2", True)
     if not template:
@@ -282,8 +300,7 @@ def _parse_loot_entry(entry: str):
         entry[key] = value
     if "item" in entry:
         return entry
-    else:
-        return None
+    return None
 
 
 def parse_min_max(value: str) -> tuple[int, int]:
@@ -370,16 +387,17 @@ def strip_code(value: Any) -> str | int | dict | None:
 
     Returns:
         A string representing the plain text content.
+
     """
     if value is None or isinstance(value, int):
         return value
-    elif isinstance(value, str):
+    if isinstance(value, str):
         return value.strip()
-    elif isinstance(value, Parameter):
+    if isinstance(value, Parameter):
         return value.value.strip_code().strip()
-    elif isinstance(value, Wikicode):
+    if isinstance(value, Wikicode):
         return value.strip_code().strip()
-    elif isinstance(value, dict):
+    if isinstance(value, dict):
         for key, val in value.items():
             value[key] = strip_code(val)
         return value

@@ -1,89 +1,35 @@
-#  Copyright (c) 2025.
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-
 """Defines the SQL schemas to use."""
-import logging
 import sqlite3
+from typing import ClassVar
 
 from tibiawikisql.database import Blob, Boolean, Column, Date, ForeignKey, Integer, Real, Table, Text, Timestamp
 
 
-class Achievement(Table):
-    article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True, no_case=True)
-    name = Column(Text, no_case=True, index=True)
-    grade = Column(Integer)
-    points = Column(Integer)
-    description = Column(Text, nullable=False)
-    spoiler = Column(Text)
-    is_secret = Column(Boolean)
-    is_premium = Column(Boolean)
-    achievement_id = Column(Integer)
-    version = Column(Text, index=True)
-    status = Column(Text, default="active", nullable=False)
-    timestamp = Column(Timestamp, nullable=False)
+class AchievementTable(Table):
+    """Contains achievements from the game.
+
+    Attributes:
+        article_id: The ID of the article containing the achievement.
+
+    """
+
+    article_id: ClassVar[Column] = Column(Integer, primary_key=True)
+    title: ClassVar[Column] = Column(Text, unique=True, no_case=True)
+    """The title of the article contian"""
+    name: ClassVar = Column(Text, no_case=True, index=True)
+    grade: ClassVar = Column(Integer)
+    points: ClassVar = Column(Integer)
+    description: ClassVar = Column(Text, nullable=False)
+    spoiler: ClassVar = Column(Text)
+    is_secret: ClassVar = Column(Boolean)
+    is_premium: ClassVar = Column(Boolean)
+    achievement_id: ClassVar = Column(Integer)
+    version: ClassVar = Column(Text, index=True)
+    status: ClassVar = Column(Text, default="active", nullable=False)
+    timestamp: ClassVar = Column(Timestamp, nullable=False)
 
 
-class Charm(Table):
+class CharmTable(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True)
     name = Column(Text, no_case=True, index=True)
@@ -96,7 +42,7 @@ class Charm(Table):
     timestamp = Column(Timestamp, nullable=False)
 
 
-class Creature(Table):
+class CreatureTable(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True)
     name = Column(Text, no_case=True, index=True)
@@ -109,7 +55,7 @@ class Creature(Table):
     mitigation = Column(Integer)
     speed = Column(Integer)
     creature_class = Column(Text, index=True)
-    creature_type = Column(Text, index=True)
+    type_primary = Column(Text, index=True)
     type_secondary = Column(Text, index=True)
     bestiary_class = Column(Text, index=True)
     bestiary_level = Column(Text, index=True)
@@ -145,14 +91,14 @@ class Creature(Table):
     timestamp = Column(Timestamp, nullable=False)
 
 
-class CreatureAbility(Table, table_name="creature_ability"):
+class CreatureAbilityTable(Table, table_name="creature_ability"):
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
     name = Column(Text, nullable=False)
     effect = Column(Text)
     element = Column(Text)
 
 
-class CreatureMaxDamage(Table, table_name="creature_max_damage"):
+class CreatureMaxDamageTable(Table, table_name="creature_max_damage"):
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
     physical = Column(Integer)
     earth = Column(Integer)
@@ -168,12 +114,12 @@ class CreatureMaxDamage(Table, table_name="creature_max_damage"):
     total = Column(Integer)
 
 
-class CreatureSound(Table, table_name="creature_sound"):
+class CreatureSoundTable(Table, table_name="creature_sound"):
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
     content = Column(Text, nullable=False)
 
 
-class Item(Table):
+class ItemTable(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True)
     name = Column(Text, no_case=True, index=True)
@@ -199,19 +145,19 @@ class Item(Table):
     timestamp = Column(Timestamp, nullable=False)
 
 
-class ItemSound(Table, table_name="item_sound"):
+class ItemSoundTable(Table, table_name="item_sound"):
     item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True)
     content = Column(Text, nullable=False)
 
 
-class ItemStoreOffer(Table, table_name="item_store_offer"):
+class ItemStoreOfferTable(Table, table_name="item_store_offer"):
     item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True)
     price = Column(Integer, nullable=False)
     amount = Column(Integer, nullable=False)
     currency = Column(Text, nullable=False)
 
 
-class CreatureDrop(Table, table_name="creature_drop"):
+class CreatureDropTable(Table, table_name="creature_drop"):
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True, nullable=False)
     item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True, nullable=False)
     chance = Column(Real)
@@ -231,13 +177,13 @@ class CreatureDrop(Table, table_name="creature_drop"):
             pass
 
 
-class ItemAttribute(Table, table_name="item_attribute"):
+class ItemAttributeTable(Table, table_name="item_attribute"):
     item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True)
     name = Column(Text, index=True)
     value = Column(Text)
 
 
-class Book(Table):
+class BookTable(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     name = Column(Text)
@@ -254,12 +200,12 @@ class Book(Table):
     timestamp = Column(Timestamp, nullable=False)
 
 
-class DatabaseInfo(Table, table_name="database_info"):
+class DatabaseInfoTable(Table, table_name="database_info"):
     key = Column(Text, primary_key=True)
     value = Column(Text)
 
 
-class House(Table):
+class HouseTable(Table):
     article_id = Column(Integer, primary_key=True)
     house_id = Column(Integer, index=True)
     title = Column(Text, unique=True, no_case=True)
@@ -281,7 +227,7 @@ class House(Table):
     timestamp = Column(Timestamp, nullable=False)
 
 
-class Imbuement(Table):
+class ImbuementTable(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, index=True)
     name = Column(Text, unique=True, index=True)
@@ -296,7 +242,7 @@ class Imbuement(Table):
     timestamp = Column(Timestamp, nullable=False)
 
 
-class ImbuementMaterial(Table, table_name="imbuement_material"):
+class ImbuementMaterialTable(Table, table_name="imbuement_material"):
     imbuement_id = Column(ForeignKey(Integer, "imbuement", "article_id"), index=True)
     item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True, nullable=False)
     amount = Column(Integer, nullable=False)
@@ -311,7 +257,7 @@ class ImbuementMaterial(Table, table_name="imbuement_material"):
             c.execute(query, (kwargs["imbuement_id"], kwargs["item_title"], kwargs["amount"]))
 
 
-class ItemKey(Table, table_name="item_key"):
+class ItemKeyTable(Table, table_name="item_key"):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     number = Column(Integer, unique=True)
@@ -326,12 +272,12 @@ class ItemKey(Table, table_name="item_key"):
     timestamp = Column(Timestamp, nullable=False)
 
 
-class Map(Table):
+class MapTable(Table):
     z = Column(Integer, primary_key=True)
     image = Column(Blob)
 
 
-class Spell(Table):
+class SpellTable(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     name = Column(Text, no_case=True, index=True)
@@ -366,7 +312,7 @@ class Spell(Table):
     timestamp = Column(Timestamp, nullable=False)
 
 
-class Npc(Table):
+class NpcTable(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True)
     name = Column(Text, no_case=True, index=True)
@@ -383,38 +329,38 @@ class Npc(Table):
     timestamp = Column(Timestamp, nullable=False)
 
 
-class NpcJob(Table, table_name="npc_job"):
+class NpcJobTable(Table, table_name="npc_job"):
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
     name = Column(Text, nullable=False)
 
 
-class NpcRace(Table, table_name="npc_race"):
+class NpcRaceTable(Table, table_name="npc_race"):
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
     name = Column(Text, nullable=False)
 
 
-class NpcBuying(Table, table_name="npc_offer_buy"):
+class NpcBuyingTable(Table, table_name="npc_offer_buy"):
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
     item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False, index=True)
     value = Column(Integer, nullable=False)
     currency_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
 
 
-class NpcSelling(Table, table_name="npc_offer_sell"):
+class NpcSellingTable(Table, table_name="npc_offer_sell"):
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
     item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False, index=True)
     value = Column(Integer, nullable=False)
     currency_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
 
 
-class NpcDestination(Table, table_name="npc_destination"):
+class NpcDestinationTable(Table, table_name="npc_destination"):
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
     name = Column(Text, index=True, nullable=False)
     price = Column(Integer, nullable=False)
     notes = Column(Text)
 
 
-class NpcSpell(Table, table_name="npc_spell"):
+class NpcSpellTable(Table, table_name="npc_spell"):
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
     spell_id = Column(ForeignKey(Integer, "spell", "article_id"), index=True)
     knight = Column(Boolean, nullable=False, default=False)
@@ -424,7 +370,7 @@ class NpcSpell(Table, table_name="npc_spell"):
     monk = Column(Boolean, nullable=False, default=False)
 
 
-class Outfit(Table):
+class OutfitTable(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, no_case=True, unique=True)
     name = Column(Text, no_case=True, index=True)
@@ -439,14 +385,14 @@ class Outfit(Table):
     timestamp = Column(Timestamp, nullable=False)
 
 
-class OutfitImage(Table, table_name="outfit_image"):
+class OutfitImageTable(Table, table_name="outfit_image"):
     outfit_id = Column(ForeignKey(Integer, "outfit", "article_id"), index=True)
     sex = Column(Text)
     addon = Column(Integer)
     image = Column(Blob)
 
 
-class Quest(Table):
+class QuestTable(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, no_case=True, unique=True)
     name = Column(Text, index=True, no_case=True)
@@ -465,7 +411,7 @@ class Quest(Table):
     timestamp = Column(Timestamp, nullable=False)
 
 
-class OutfitQuest(Table, table_name="outfit_quest"):
+class OutfitQuestTable(Table, table_name="outfit_quest"):
     outfit_id = Column(ForeignKey(Integer, "outfit", "article_id"), index=True, nullable=False)
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True, nullable=False)
     type = Column(Text)
@@ -483,7 +429,7 @@ class OutfitQuest(Table, table_name="outfit_quest"):
             pass
 
 
-class QuestDanger(Table, table_name="quest_danger"):
+class QuestDangerTable(Table, table_name="quest_danger"):
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True)
     creature_id = Column(ForeignKey(Integer, "creature", "article_id"), nullable=False, index=True)
 
@@ -500,7 +446,7 @@ class QuestDanger(Table, table_name="quest_danger"):
             pass
 
 
-class QuestReward(Table, table_name="quest_reward"):
+class QuestRewardTable(Table, table_name="quest_reward"):
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True)
     item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False, index=True)
 
@@ -517,7 +463,7 @@ class QuestReward(Table, table_name="quest_reward"):
             pass
 
 
-class RashidPosition(Table, table_name="rashid_position"):
+class RashidPositionTable(Table, table_name="rashid_position"):
     day = Column(Integer, primary_key=True)
     city = Column(Text)
     location = Column(Text)
@@ -526,7 +472,7 @@ class RashidPosition(Table, table_name="rashid_position"):
     z = Column(Integer)
 
 
-class World(Table):
+class WorldTable(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True)
     name = Column(Text, no_case=True, index=True)
@@ -545,7 +491,7 @@ class World(Table):
     timestamp = Column(Timestamp, nullable=False)
 
 
-class Mount(Table):
+class MountTable(Table):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True)
     name = Column(Text, no_case=True, index=True)
@@ -562,7 +508,7 @@ class Mount(Table):
     timestamp = Column(Timestamp, nullable=False)
 
 
-class Update(Table, table_name="game_update"):
+class UpdateTable(Table, table_name="game_update"):
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True)
     name = Column(Text, no_case=True, index=True)

@@ -59,23 +59,28 @@ The generated database has the following tables.
 
     This is not much of an issue in Python, but it might be an issue on more strict typed languages.
 
+!!! note
+    
+    - All columns are NULLABLE unless specified otherwise.
+    - `PRIMARY` keys are always `NOT NULL`.
+
 ### achievement
 
 | Column         | Type                  | Description                                          |
 |----------------|-----------------------|------------------------------------------------------|
-| article_id     | `INTEGER` / `PRIMARY` | The id of the article containing this achievement.   |
+| article_id     | `INTEGER` / `PRIMARY` | The ID of the article containing this achievement.   |
 | title          | `TEXT`                | The title of the article containing the achievement. |
 | name           | `TEXT`                | The name of the achievement.                         |
 | grade          | `INTEGER`             | The grade of the achievement. Goes from 1 to 3.      |
 | points         | `INTEGER`             | The number of points this achievement gives.         |
 | description    | `TEXT`                | The official description shown for this achievement. |
 | spoiler        | `TEXT`                | Brief instructions on how to complete the quest.     |
-| secret         | `BOOLEAN`             | Whether this is a secret achievement or not.         |
-| premium        | `BOOLEAN`             | Whether this achievement requires premium.           |
-| version        | `TEXT`                | Client version this achievement was implemented in.  |
+| is_secret      | `BOOLEAN`             | Whether this is a secret achievement or not.         |
+| is_premium     | `BOOLEAN`             | Whether this achievement requires premium.           |
 | achievement_id | `INTEGER`             | The internal ID of the achievement.                  |
+| version        | `TEXT`                | Client version this achievement was implemented in.  |
 | status         | `TEXT`                | The status of the achievement in game.               |
-| timestamp      | `INTEGER`             | Unix timestamp of the article's last edit.           |
+| timestamp      | `TEXT`                | ISO8601 timestamp of the article's last edit.        |
 
 
 ### book

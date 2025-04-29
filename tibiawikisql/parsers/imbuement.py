@@ -3,7 +3,7 @@ import sqlite3
 from typing import Any
 
 from tibiawikisql.api import Article
-from tibiawikisql.models import Imbuement, ImbuementMaterial
+from tibiawikisql.models.imbuement import Imbuement, ImbuementMaterial
 from tibiawikisql.parsers import BaseParser
 import tibiawikisql.schema
 from tibiawikisql.parsers.base import AttributeParser, M
@@ -98,7 +98,7 @@ def parse_slots(content):
 
 class ImbuementParser(BaseParser):
     model = Imbuement
-    table = tibiawikisql.schema.Imbuement
+    table = tibiawikisql.schema.ImbuementTable
     template_name = "Infobox_Imbuement"
     attribute_map = {
         "name": AttributeParser.required("name"),
@@ -133,7 +133,7 @@ class ImbuementParser(BaseParser):
     def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: Imbuement) -> None:
         super().insert(cursor, model)
         for material in model.materials:
-            tibiawikisql.schema.ImbuementMaterial.insert(cursor, **material.model_dump())
+            tibiawikisql.schema.ImbuementMaterialTable.insert(cursor, **material.model_dump())
 
 
 

@@ -24,14 +24,14 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 import tibiawikisql.schema
-from tibiawikisql.models import World
+from tibiawikisql.models.world import World
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.utils import parse_boolean, parse_date, parse_integer
 
 
 class WorldParser(BaseParser):
-    table = tibiawikisql.schema.World
+    table = tibiawikisql.schema.WorldTable
     model = World
     template_name = "Infobox_World"
     attribute_map = {

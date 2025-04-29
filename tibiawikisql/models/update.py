@@ -14,11 +14,9 @@
 #  limitations under the License.
 import datetime
 
-from tibiawikisql import schema
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models import abc
 from tibiawikisql.models.base import WithVersion
-from tibiawikisql.utils import parse_integer, clean_links, parse_date
+from tibiawikisql.utils import clean_links, parse_date, parse_integer
 
 
 class Update(WikiEntry, WithVersion):
@@ -54,5 +52,4 @@ class Update(WikiEntry, WithVersion):
         "summary": ("summary", clean_links),
         "changelist": ("changes", clean_links),
         "implemented": ("version", str.strip),
-
     }

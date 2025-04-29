@@ -24,7 +24,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 import tibiawikisql.schema
-from tibiawikisql.models import Mount
+from tibiawikisql.models.mount import Mount
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.utils import clean_links, client_color_to_rgb, parse_boolean, parse_integer
@@ -47,7 +47,7 @@ def remove_mount(name):
 
 class MountParser(BaseParser):
     model = Mount
-    table = tibiawikisql.schema.Mount
+    table = tibiawikisql.schema.MountTable
     template_name = "Infobox_Mount"
     attribute_map = {
         "name": AttributeParser.required("name", remove_mount),

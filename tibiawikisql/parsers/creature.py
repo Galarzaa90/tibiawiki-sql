@@ -7,16 +7,13 @@ from mwparserfromhell.nodes import Template
 
 import tibiawikisql.schema
 from tibiawikisql.api import Article
-from tibiawikisql.models import Creature
-from tibiawikisql.parsers.base import AttributeParser
-from tibiawikisql.models.base import WithStatus, WithVersion
-from tibiawikisql.models.creature import CreatureAbility, CreatureDrop, CreatureMaxDamage, CreatureSound
+from tibiawikisql.models.creature import Creature, CreatureAbility, CreatureDrop, CreatureMaxDamage, CreatureSound
 from tibiawikisql.parsers import BaseParser
+from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.utils import clean_links, find_template, int_pattern, parse_boolean, parse_float, parse_integer, \
     parse_min_max, \
     parse_sounds, \
     strip_code
-
 
 
 def parse_maximum_damage(value):
@@ -208,7 +205,7 @@ class CreatureParser(BaseParser):
 
     model = Creature
     template_name = "Infobox_Creature"
-    table = tibiawikisql.schema.Creature
+    table = tibiawikisql.schema.CreatureTable
 
     attribute_map = {
         "name": AttributeParser(lambda x: x.get("actualname") or x.get("name")),
@@ -216,9 +213,9 @@ class CreatureParser(BaseParser):
         "plural": AttributeParser.optional("plural"),
         "library_race": AttributeParser.optional("bestiaryname"),
         "creature_class": AttributeParser.optional("creatureclass"),
-        "creature_type": AttributeParser.optional("primarytype"),
+        "type_primary": AttributeParser.optional("primarytype"),
         "type_secondary": AttributeParser.optional("secondarytype"),
-        "bestiary_class": AttributeParser.optional("bosstiaryclass"),
+        "bestiary_class": AttributeParser.optional("bestiaryclass"),
         "bestiary_level": AttributeParser.optional("bestiarylevel"),
         "bestiary_occurrence": AttributeParser.optional("occurrence"),
         "bosstiary_class": AttributeParser.optional("bosstiaryclass"),
@@ -298,13 +295,13 @@ class CreatureParser(BaseParser):
         super().insert(cursor, model)
 
         for attribute in model.loot:
-            tibiawikisql.schema.CreatureDrop.insert(cursor, **attribute.model_dump())
+            tibiawikisql.schema.CreatureDropTable.insert(cursor, **attribute.model_dump())
         for attribute in model.sounds:
-            tibiawikisql.schema.CreatureSound.insert(cursor, **attribute.model_dump())
+            tibiawikisql.schema.CreatureSoundTable.insert(cursor, **attribute.model_dump())
         for attribute in model.abilities:
-            tibiawikisql.schema.CreatureAbility.insert(cursor, **attribute.model_dump())
+            tibiawikisql.schema.CreatureAbilityTable.insert(cursor, **attribute.model_dump())
         max_damage = model.max_damage
         if max_damage:
-            tibiawikisql.schema.CreatureMaxDamage.insert(cursor, **max_damage.model_dump())
+            tibiawikisql.schema.CreatureMaxDamageTable.insert(cursor, **max_damage.model_dump())
 
 

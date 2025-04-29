@@ -37,10 +37,19 @@ plugins:
     handlers:
       python:
         options:
-          annotations_path: brief
-          docstring_style: google
+          # General
+          allow_inspection: true
+          extensions:
+            - griffe_pydantic: { schema: true }
+            - griffe_inherited_docstrings
+          find_stubs_package: False
+          force_inspection: false
+          preload_modules: []
           show_bases: true
           show_source: true
+          # Headings
+          annotations_path: brief
+          docstring_style: google
           members_order: source
           separate_signature: true
           show_signature_annotations: true
@@ -49,11 +58,10 @@ plugins:
           show_root_heading: true
           show_overloads: true
           heading_level: 3
+          docstring_options:
+            ignore_init_summary: true
+          merge_init_into_class: true
           summary: true
-          extensions:
-            - griffe_pydantic
-#            - griffe_inherited_docstrings
-#            - griffe_generics
         inventories:
           - url: https://docs.python.org/3/objects.inv
 

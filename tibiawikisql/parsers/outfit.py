@@ -30,7 +30,7 @@ from typing import Any
 
 import tibiawikisql.schema
 from tibiawikisql.api import Article
-from tibiawikisql.models import Outfit, OutfitQuest
+from tibiawikisql.models.outfit import Outfit, OutfitQuest
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.parsers.base import AttributeParser, M
 from tibiawikisql.parsers.quest import parse_links
@@ -39,7 +39,7 @@ from tibiawikisql.utils import parse_boolean, parse_integer
 
 class OutfitParser(BaseParser):  # noqa: D101
     model = Outfit
-    table = tibiawikisql.schema.Outfit
+    table = tibiawikisql.schema.OutfitTable
     template_name = "Infobox_Outfit"
     attribute_map = {
         "name": AttributeParser.required("name"),
@@ -86,6 +86,6 @@ class OutfitParser(BaseParser):  # noqa: D101
     def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: Outfit) -> None:
         super().insert(cursor, model)
         for quest in model.quests:
-            tibiawikisql.schema.OutfitQuest.insert(cursor, **quest.model_dump())
+            tibiawikisql.schema.OutfitQuestTable.insert(cursor, **quest.model_dump())
 
 

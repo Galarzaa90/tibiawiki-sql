@@ -1,5 +1,5 @@
 import tibiawikisql.schema
-from tibiawikisql.models import House
+from tibiawikisql.models.house import House
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.utils import clean_links, convert_tibiawiki_position, parse_integer
@@ -7,7 +7,7 @@ from tibiawikisql.utils import clean_links, convert_tibiawiki_position, parse_in
 
 class HouseParser(BaseParser):
     model = House
-    table = tibiawikisql.schema.House
+    table = tibiawikisql.schema.HouseTable
     template_name = "Infobox_Building"
     attribute_map = {
         "house_id": AttributeParser.required("houseid", parse_integer),
