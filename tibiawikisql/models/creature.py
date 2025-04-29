@@ -1,20 +1,7 @@
-#  Copyright 2021 Allan Galarza
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-
 from collections import OrderedDict
 
 import pydantic
+from pydantic import Field
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import WithStatus, WithVersion
@@ -207,7 +194,7 @@ class Creature(WikiEntry, WithStatus, WithVersion):
     """The percentage of damage received of life drain damage. ``None`` if unknown."""
     modifier_healing: int | None
     """The healing modifier. ``None`` if unknown."""
-    abilities: list[CreatureAbility] = []
+    abilities: list[CreatureAbility] = Field([])
     """A list of the creature abilities."""
     max_damage: CreatureMaxDamage | None = None
     """The maximum damage the creature can make."""
@@ -215,17 +202,18 @@ class Creature(WikiEntry, WithStatus, WithVersion):
     """The field types the creature will walk through, separated by commas."""
     walks_around: str | None
     """The field types the creature will walk around, separated by commas."""
-    sounds: list[CreatureSound] = []
+    sounds: list[CreatureSound] = Field([])
+    """The "sounds" made by the creature."""
     location: str | None
     """The locations where the creature can be found."""
     image: bytes | None = None
     """The creature's image in bytes."""
-    loot: list[CreatureDrop] = []
+    loot: list[CreatureDrop] = Field([])
     """The items dropped by this creature."""
 
     @property
     def bestiary_kills(self) -> int | None:
-        """:class:`int`, optional:Total kills needed to complete the bestiary entry if applicable."""
+        """Get the total kills needed to complete the bestiary entry if applicable."""
         try:
             return KILLS[self.bestiary_level] if self.bestiary_occurrence != "Very Rare" else 5
         except KeyError:
@@ -233,36 +221,32 @@ class Creature(WikiEntry, WithStatus, WithVersion):
 
     @property
     def charm_points(self) -> int | None:
-        """:class:`int`, optional: Charm points awarded for completing the creature's bestiary entry, if applicable."""
-        try:
-            multiplier = 1
-            if self.bestiary_occurrence == "Very Rare":
-                if self.bestiary_level == "Harmless":
-                    multiplier = 5
-                else:
-                    multiplier = 2
-            return CHARM_POINTS[self.bestiary_level] * multiplier
-        except KeyError:
+        """Get the charm points awarded for completing the creature's bestiary entry, if applicable."""
+        if not self.bestiary_level:
             return None
+        multiplier = 1
+        if self.bestiary_occurrence == "Very Rare":
+            multiplier = 5 if self.bestiary_level == "Harmless" else 2
+        return CHARM_POINTS[self.bestiary_level] * multiplier
 
     @property
-    def elemental_modifiers(self):
-        """:class:`OrderedDict`: Returns a dictionary containing all elemental modifiers, sorted in descending order."""
+    def elemental_modifiers(self) -> dict[str, int]:
+        """Get a dictionary containing all elemental modifiers, sorted in descending order."""
         modifiers = {k: getattr(self, f"modifier_{k}", None) for k in ELEMENTAL_MODIFIERS if
                      getattr(self, f"modifier_{k}", None) is not None}
-        return OrderedDict(sorted(modifiers.items(), key=lambda t: t[1], reverse=True))
+        return dict(sorted(modifiers.items(), key=lambda t: t[1], reverse=True))
 
     @property
     def immune_to(self) -> list[str]:
-        """:class:`list` of :class:`str`: Gets a list of the elements the creature is immune to."""
+        """Get a list of the elements the creature is immune to."""
         return [k for k, v in self.elemental_modifiers.items() if v == 0]
 
     @property
-    def weak_to(self):
-        """:class:`OrderedDict`: Dictionary containing the elements the creature is weak to and modifier."""
-        return OrderedDict({k: v for k, v in self.elemental_modifiers.items() if v > 100})
+    def weak_to(self) -> dict[str, int]:
+        """Get a dictionary containing the elements the creature is weak to and modifier."""
+        return {k: v for k, v in self.elemental_modifiers.items() if v > 100}
 
     @property
-    def resistant_to(self):
-        """:class:`OrderedDict`: Dictionary containing the elements the creature is resistant to and modifier."""
-        return OrderedDict({k: v for k, v in self.elemental_modifiers.items() if 100 > v > 0})
+    def resistant_to(self) -> dict[str, int]:
+        """Get a dictionary containing the elements the creature is resistant to and modifier."""
+        return {k: v for k, v in self.elemental_modifiers.items() if 100 > v > 0}

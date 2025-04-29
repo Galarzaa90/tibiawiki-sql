@@ -13,7 +13,13 @@ class TibiaWikiSqlError(Exception):
 
 
 class AttributeParsingError(TibiaWikiSqlError):
-    def __init__(self, cause: type[Exception]):
+    def __init__(self, cause: type[Exception]) -> None:
+        """Create an instance of the class.
+
+        Args:
+            cause: The exception that caused this.
+
+        """
         super().__init__(f"{cause.__class__.__name__}: {cause}")
 
 

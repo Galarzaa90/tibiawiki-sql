@@ -29,6 +29,7 @@ theme:
 
   features:
     - navigation.top
+    - navigation.tabs
     - toc.follow
 
 plugins:
@@ -75,3 +76,17 @@ watch:
   - mkdocs
   - mkdocs.yaml
   - tibiawikisql
+
+nav:
+  - Home:
+    - Home: index.md
+    - Introduction: intro.md
+    - Schema: schema.md
+  - API Reference:
+      - TibiaWiki API: api/api.md
+      - Database: api/database.md
+      - Generation: api/generation.md
+      - Models: api/models.md
+      - Parsers: api/parser.md
+      - Schema: api/schema.md
+      - Utilities: api/utils.md

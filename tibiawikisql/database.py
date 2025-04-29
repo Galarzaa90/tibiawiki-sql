@@ -1,36 +1,13 @@
-#  Copyright (c) 2025.
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
 
 """Contains all the SQL related model definitions."""
 import datetime
 import inspect
 import sqlite3
-from collections import OrderedDict
-from typing import Any, ClassVar, Type, TypeVar
+from sqlite3 import Row
+from typing import Any, ClassVar, TypeVar
 
+
+ConnCursor = sqlite3.Connection | sqlite3.Cursor
 
 class SchemaError(Exception):
     """Error raised for invalid schema definitions."""
@@ -360,8 +337,14 @@ class Table(metaclass=TableMeta):
         return cls.__subclasses__()
 
     @classmethod
-    def insert(cls, c, **kwargs):
-        """Insert an element to the table."""
+    def insert(cls, conn: ConnCursor, **kwargs: Any) -> None:
+        """Insert a row into this table.
+
+        Args:
+            conn: A connection to the database.
+            **kwargs: The column values.
+
+        """
         # verify column names:
         verified = {}
         for column in cls.columns:
@@ -380,14 +363,20 @@ class Table(metaclass=TableMeta):
             verified[column.name] = column.column_type.to_sql_value(value)
 
         sql = f'INSERT INTO {cls.__tablename__} ({", ".join(verified)}) VALUES ({", ".join("?" for _ in verified)});'
-        c.execute(sql, tuple(verified.values()))
+        conn.execute(sql, tuple(verified.values()))
 
     @classmethod
     def drop(cls):
         return f"DROP TABLE IF EXISTS {cls.__tablename__}"
 
     @classmethod
-    def get_by_field(cls, conn: sqlite3.Connection | sqlite3.Cursor, column: str, value: Any, use_like: bool = False) -> dict | None:
+    def get_by_field(
+            cls,
+            conn: ConnCursor,
+            column: str,
+            value: Any,
+            use_like: bool = False,
+    ) -> Row | None:
         """Get a row by a specific column's value.
 
         Args:

@@ -5,7 +5,7 @@ from tibiawikisql.utils import (clean_links, client_color_to_rgb, parse_boolean,
                                 parse_loot_statistics, parse_min_max, parse_sounds)
 
 
-class TestWikiApi(unittest.TestCase):
+class TestUtils(unittest.TestCase):
     def test_clean_links(self):
         # Regular link
         self.assertEqual(clean_links("[[Holy Damage]]"), "Holy Damage")

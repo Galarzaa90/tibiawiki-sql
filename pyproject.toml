@@ -89,7 +89,6 @@ select = [
     "ERA", # eradicate
     "F", # Pyflakes
     "FA", # flake8-future-annotations
-    "FBT", #  flake8-boolean-trap
     "FLY", # flynt
     "FURB", # refurb"
     "G", # flake8-logging-format
@@ -113,7 +112,6 @@ select = [
     "T20", # flake8-print
     "TC", # refurb
     "TID", # flake8-tidy-imports
-    "TRY", # tryceratops
     "UP", # pyupgrade,
     "YTT", # flake8-2020
 ]
@@ -122,6 +120,10 @@ ignore = [
     "PLR2004", # Magic value used in comparison, consider replacing {value} with a constant variable
     "PLR0913", # Too many arguments in function definition ({c_args} > {max_args})
 ]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D", "ANN201"]
+"**/models/*" = ["D100"]
 
 [tool.ruff.lint.pycodestyle]
 max-line-length = 120

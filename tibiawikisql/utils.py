@@ -221,7 +221,8 @@ def parse_date(value: str) -> datetime.date:
         except ValueError:
             continue
 
-    raise ValueError(f"Date format for value '{value}' not recognized")
+    msg = f"Date format for value '{value}' not recognized"
+    raise ValueError(msg)
 
 
 def parse_float(value: str, default: float = 0.0) -> float:
@@ -268,7 +269,7 @@ def parse_loot_statistics(value: str) -> tuple[int, list[Any]]:
         A tuple containing the total kills and a list of entries.
 
     """
-    template = find_template(value, "Loot2", True)
+    template = find_template(value, "Loot2", partial=True)
     if not template:
         return 0, []
     kills = parse_integer(strip_code(template.get("kills", 0)))

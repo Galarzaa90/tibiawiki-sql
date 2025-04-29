@@ -1,22 +1,8 @@
-#  Copyright 2021 Allan Galarza
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-from collections import OrderedDict
-
 import pydantic
 from pydantic import BaseModel, Field
 
 from tibiawikisql.api import WikiEntry
+from tibiawikisql.models.quest import QuestReward
 from tibiawikisql.models.base import WithStatus, WithVersion
 from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
@@ -118,33 +104,33 @@ class Item(WikiEntry):
     """List of NPCs that sell this item."""
     bought_by: list[NpcBuyOffer] = Field(default_factory=list)
     """List of NPCs that buy this item."""
-    # awarded_in: list[QuestReward] = Field(default_factory=list)
-    # """List of quests that give this item as reward."""
+    awarded_in: list[QuestReward] = Field(default_factory=list)
+    """List of quests that give this item as reward."""
     sounds: list[ItemSound] = Field(default_factory=list)
     """List of sounds made when using the item."""
     store_offers: list[ItemStoreOffer] = Field(default_factory=list)
 
     @property
-    def attributes_dict(self):
-        """:class:`dict`: A mapping of the attributes this item has."""
+    def attributes_dict(self) -> dict[str, str]:
+        """A mapping of the attributes this item has."""
         if self.attributes:
             return {a.name: a.value for a in self.attributes}
         return {}
 
     @property
-    def resistances(self):
-        """:class:`collections.OrderedDict`: A mapping of the elemental resistances of this item."""
+    def resistances(self) -> dict[str, int]:
+        """A mapping of the elemental resistances of this item."""
         resistances = {}
         attributes = self.attributes_dict
         for element in ELEMENTAL_RESISTANCES:
             value = attributes.get(element)
             if value is not None:
                 resistances[element[:-1]] = int(value)
-        return OrderedDict(sorted(resistances.items(), key=lambda t: t[1], reverse=True))
+        return dict(sorted(resistances.items(), key=lambda t: t[1], reverse=True))
 
     @property
-    def look_text(self):
-        """:class:`str`: The item's look text."""
+    def look_text(self) -> str:
+        """The item's look text."""
         look_text = ["You see ", self.article or self.name[0] in ["a", "e", "i", "o", "u"], f" {self.name}"]
         self._get_attributes_look_text(look_text)
         attributes = self.attributes_dict
@@ -161,7 +147,7 @@ class Item(WikiEntry):
             look_text.append(self.flavor_text)
         return "".join(look_text)
 
-    def _get_requirements(self, look_text):
+    def _get_requirements(self, look_text: list[str]) -> None:
         attributes = self.attributes_dict
         separator = " and " if self.item_class != "Runes" else ", "
         vocation = "players"
@@ -179,7 +165,7 @@ class Item(WikiEntry):
                 look_text.append(" or higher")
             look_text.append(".")
 
-    def _get_attributes_look_text(self, look_text):
+    def _get_attributes_look_text(self, look_text: list[str]) -> None:
         attributes = self.attributes_dict
         attributes_rep = []
         self._parse_combat_attributes(attributes, attributes_rep)
@@ -197,7 +183,7 @@ class Item(WikiEntry):
             look_text.append(f" ({', '.join(attributes_rep)})")
 
     @staticmethod
-    def _parse_combat_attributes(attributes, attributes_rep):
+    def _parse_combat_attributes(attributes: dict[str, str], attributes_rep: list[str]) -> None:
         if "range" in attributes:
             attributes_rep.append(f"Range: {attributes['range']}")
         if "attack+" in attributes:
@@ -227,7 +213,7 @@ class Item(WikiEntry):
             attributes_rep.append(f"Arm:{attributes['armor']}")
 
     @staticmethod
-    def _parse_skill_attributes(attributes, attributes_rep):
+    def _parse_skill_attributes(attributes: dict[str, str], attributes_rep: list[str]) -> None:
         for attribute, template in SKILL_ATTRIBUTES_MAPPING.items():
             if attribute in attributes:
                 attributes_rep.append(template.format(attributes[attribute]))
