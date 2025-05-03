@@ -1,11 +1,11 @@
 from typing import ClassVar
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import Row, WithStatus, WithVersion
+from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
 from tibiawikisql.schema import AchievementTable
 
 
-class Achievement(WikiEntry, WithStatus, WithVersion, Row):
+class Achievement(WikiEntry, WithStatus, WithVersion, RowModel, table=AchievementTable):
     """Represents an Achievement."""
 
     name: str
@@ -24,5 +24,3 @@ class Achievement(WikiEntry, WithStatus, WithVersion, Row):
     """Whether a premium account is required to get this achievement."""
     achievement_id: int | None
     """The internal ID of the achievement."""
-
-    table: ClassVar = AchievementTable

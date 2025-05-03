@@ -14,7 +14,7 @@ class AchievementTable(Table):
     """
 
     article_id: ClassVar[Column] = Column(Integer, primary_key=True)
-    title: ClassVar[Column] = Column(Text, unique=True, no_case=True)
+    title: ClassVar[Column] = Column(Text, unique=True, no_case=True, nullable=False)
     name: ClassVar = Column(Text, no_case=True, index=True)
     grade: ClassVar = Column(Integer)
     points: ClassVar = Column(Integer)
@@ -30,7 +30,7 @@ class AchievementTable(Table):
 
 class CharmTable(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True, no_case=True)
+    title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
     type = Column(Text, nullable=False)
     effect = Column(Text, nullable=False)
@@ -43,7 +43,7 @@ class CharmTable(Table):
 
 class CreatureTable(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True, no_case=True)
+    title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
     plural = Column(Text)
     library_race = Column(Text)
@@ -120,8 +120,9 @@ class CreatureSoundTable(Table, table_name="creature_sound"):
 
 class ItemTable(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True, no_case=True)
+    title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
+    actual_name = Column(Text)
     plural = Column(Text)
     article = Column(Text)
     is_marketable = Column(Boolean, default=False)
@@ -207,7 +208,7 @@ class DatabaseInfoTable(Table, table_name="database_info"):
 class HouseTable(Table):
     article_id = Column(Integer, primary_key=True)
     house_id = Column(Integer, index=True)
-    title = Column(Text, unique=True, no_case=True)
+    title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, unique=True, no_case=True)
     city = Column(Text, index=True, nullable=False)
     street = Column(Text, index=True)
@@ -313,7 +314,7 @@ class SpellTable(Table):
 
 class NpcTable(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True, no_case=True)
+    title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
     gender = Column(Text, index=True)
     city = Column(Text, index=True)
@@ -473,7 +474,7 @@ class RashidPositionTable(Table, table_name="rashid_position"):
 
 class WorldTable(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True, no_case=True)
+    title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
     location = Column(Text, index=True)
     pvp_type = Column(Text, index=True)
@@ -492,7 +493,7 @@ class WorldTable(Table):
 
 class MountTable(Table):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True, no_case=True)
+    title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
     speed = Column(Integer)
     taming_method = Column(Text)
@@ -509,7 +510,7 @@ class MountTable(Table):
 
 class UpdateTable(Table, table_name="game_update"):
     article_id = Column(Integer, primary_key=True)
-    title = Column(Text, unique=True, no_case=True)
+    title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
     release_date = Column(Date, index=True)
     news_id = Column(Integer, index=True)
@@ -533,5 +534,5 @@ def create_tables(conn):
 
     """
     for table in Table.all_tables():
-        conn.execute(table.drop())
-        conn.executescript(table.create_table())
+        conn.execute(table.get_drop_statement())
+        conn.executescript(table.get_create_table_statement())

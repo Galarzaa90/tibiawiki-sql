@@ -58,6 +58,8 @@ class Item(WikiEntry):
 
     name: str
     """The in-game name of the item."""
+    actual_name: str | None
+    """The name of the item as it appears in game when looked at."""
     plural: str | None
     """The plural of the name."""
     article: str | None
@@ -131,7 +133,8 @@ class Item(WikiEntry):
     @property
     def look_text(self) -> str:
         """The item's look text."""
-        look_text = ["You see ", self.article or self.name[0] in ["a", "e", "i", "o", "u"], f" {self.name}"]
+        name = self.actual_name or self.name
+        look_text = ["You see ", self.article or name[0] in ["a", "e", "i", "o", "u"], f" {name}"]
         self._get_attributes_look_text(look_text)
         attributes = self.attributes_dict
         if "charges" in attributes:

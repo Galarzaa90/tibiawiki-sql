@@ -1,11 +1,14 @@
 """Module with base classes used by models."""
 
 import sqlite3
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from pydantic import BaseModel
+from typing_extensions import Self
 
 from tibiawikisql.database import Table
+
+ConnCursor = sqlite3.Connection | sqlite3.Cursor
 
 
 class WithStatus(BaseModel):
@@ -22,34 +25,28 @@ class WithVersion(BaseModel):
     """The client version when this was implemented in the game, if known."""
 
 
-class Row(BaseModel):
+class RowModel(BaseModel):
     """A mixin class to indicate that this model comes from a SQL table."""
 
     table: ClassVar[type[Table]] = NotImplemented
     """The SQL table where this model is stored."""
 
-    def __init_subclass__(cls) -> None:
+    def __init_subclass__(cls, **kwargs) -> None:
         super().__init_subclass__()
 
-        if cls.__name__ == "Row":
+        if cls.__name__ == "RowModel":
             return  # skip base class
 
-        if not hasattr(cls, "table"):
+        if "table" not in kwargs:
             msg = f"{cls.__name__} must define a `table` attribute."
             raise NotImplementedError(msg)
 
-        table = getattr(cls, "table")
+        table = kwargs["table"]
         if not isinstance(table, type) or not issubclass(table, Table):
             msg = f"{cls.__name__}.table must be a subclass of Table."
             raise TypeError(msg)
+        cls.table = table
 
-    @classmethod
-    def _is_column(cls, name):
-        return name in [c.name for c in cls.table.columns]
-
-    @classmethod
-    def _get_base_query(cls):
-        return f"SELECT * FROM {cls.table.__tablename__}"
 
     def insert(self, c: sqlite3.Connection | sqlite3.Cursor) -> None:
         """Insert the model into its respective database table.
@@ -69,113 +66,62 @@ class Row(BaseModel):
         self.table.insert(c, **rows)
 
     @classmethod
-    def from_row(cls, row):
+    def from_row(cls, row: sqlite3.Row | dict[str, Any]) -> Self:
         """Return an instance of the model from a row or dictionary.
 
-        Parameters
-        ----------
-        row: :class:`dict`, :class:`sqlite3.Row`
-            A dict representing a row or a Row object.
+        Args:
+            row: A dict representing a row or a Row object.
 
-        Returns
-        -------
-        :class:`cls`
+        Returns:
             An instance of the class, based on the row.
 
         """
         if isinstance(row, sqlite3.Row):
             row = dict(row)
-        return cls(**row)
+        return cls.model_validate(row)
 
     @classmethod
-    def get_by_field(cls, c, field, value, use_like=False):
+    def get_by_field(cls, conn: ConnCursor, field: str, value: Any, use_like: bool = False) -> Self | None:
         """Get an element by a specific field's value.
 
-        Parameters
-        ----------
-        c: :class:`sqlite3.Connection`, :class:`sqlite3.Cursor`
-            A connection or cursor of the database.
-        field: :class:`str`
-            The field to filter with.
-        value:
-            The value to look for.
-        use_like: :class:`bool`
-            Whether to use ``LIKE`` as a comparator instead of ``=``.
+        Args:
+            conn: A connection or cursor of the database.
+            field: The field to filter with.
+            value: The value to look for.
+            use_like: Whether to use ``LIKE`` as a comparator instead of ``=``.
 
-        Returns
-        -------
-        :class:`cls`
+        Returns:
             The object found, or ``None``.
 
-        Raises
-        ------
-        ValueError
-            The specified field doesn't exist in the table.
+        Raises:
+            ValueError: The specified field doesn't exist in the table.
 
         """
         # This is used to protect the query from possible SQL Injection.
-        if not cls._is_column(field):
-            raise ValueError(f"Field '{field}' doesn't exist.")
-        operator = "LIKE" if use_like else "="
-        query = f"SELECT * FROM {cls.table.__tablename__} WHERE {field} {operator} ? LIMIT 1"
-        c = c.execute(query, (value,))
-        c.row_factory = sqlite3.Row
-        row = c.fetchone()
-        if row is None:
-            return None
-        return cls.from_row(row)
+        row = cls.table.get_by_field(conn, field, value, use_like)
+        return cls.from_row(row) if row else None
 
     @classmethod
-    def search(cls, c, field=None, value=None, use_like=False, sort_by=None, ascending=True):
-        """Find elements matching the provided values.
-
-        If no values are provided, it will return all elements.
+    def get_list_by_field(cls, c: ConnCursor, field: str, value: Any | None = None, use_like: bool = False,
+               sort_by: str | None = None, ascending: bool = True) -> list[Self]:
+        """Get a list of elements matching the specified field's value.
 
         Note that this won't get values found in child tables.
 
-        Parameters
-        ----------
-        c: :class:`sqlite3.Connection`, :class:`sqlite3.Cursor`
-            A connection or cursor of the database.
-        field: :class:`str`, optional
-            The field to filter by.
-        value: optional
-            The value to filter by.
-        use_like: :class:`bool`, optional
-            Whether to use ``LIKE`` as a comparator instead of ``=``.
-        sort_by: :class:`str`, optional
-            The column to sort by.
-        ascending: :class:`bool`, optional
-            Whether to sort ascending or descending.
+        Args:
+            c:  A connection or cursor of the database.
+            field: The name of the field to filter by.
+            value: The value to filter by.
+            use_like: Whether to use ``LIKE`` as a comparator instead of ``=``.
+            sort_by: The name of the field to sort by.
+            ascending: Whether to sort ascending or descending.
 
-        Returns
-        -------
-        list of :class:`cls`
+        Returns:
             A list containing all matching objects.
 
-        Raises
-        ------
-        ValueError
-            The specified field doesn't exist in the table.
+        Raises:
+            ValueError: The specified field doesn't exist in the table.
 
         """
-        if field is not None and not cls._is_column(field):
-            raise ValueError(f"Field '{field}' doesn't exist.")
-        if sort_by is not None and not cls._is_column(sort_by):
-            raise ValueError(f"Field '{sort_by}' doesn't exist.")
-        operator = "LIKE" if use_like else "="
-        query = cls._get_base_query()
-        tup = ()
-        if field is not None:
-            query += f"\nWHERE {field} {operator} ?"
-            tup = (value,)
-        if sort_by is not None:
-            query += f"\nORDER BY {sort_by} {'ASC' if ascending else 'DESC'}"
-        c = c.execute(query, tup)
-        c.row_factory = sqlite3.Row
-        results = []
-        for row in c.fetchall():
-            row = cls.from_row(row)
-            if row is not None:
-                results.append(row)
-        return results
+        rows = cls.table.get_list_by_field(c, field, value, use_like, sort_by, ascending)
+        return [cls.from_row(r) for r in rows]

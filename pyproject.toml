@@ -119,6 +119,7 @@ ignore = [
     "ANN401", # Dynamically typed expressions (typing.Any) are disallowed in {name}
     "PLR2004", # Magic value used in comparison, consider replacing {value} with a constant variable
     "PLR0913", # Too many arguments in function definition ({c_args} > {max_args})
+    "D105", # Missing docstring in magic method
 ]
 
 [tool.ruff.lint.per-file-ignores]
@@ -138,3 +139,21 @@ extend-ignore-names = ["assert*"]
 
 [tool.ruff.lint.flake8-type-checking]
 runtime-evaluated-base-classes = ["pydantic.BaseModel"]
+
+
+[tool.coverage.run]
+include = ["tibiawikisql/**/*.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "def __repr__",
+    "def __eq__",
+    "def __len__",
+    "def __lt__",
+    "def __gt__",
+    "def __ne__",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:"
+]

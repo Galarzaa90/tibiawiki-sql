@@ -9,7 +9,8 @@ from pydantic import BaseModel, ValidationError
 import tibiawikisql.database
 from tibiawikisql.api import Article
 from tibiawikisql.database import Table
-from tibiawikisql.exceptions import ArticleParsingError, AttributeParsingError, TemplateNotFoundError
+from tibiawikisql.errors import ArticleParsingError, AttributeParsingError, TemplateNotFoundError
+from tibiawikisql.models.base import RowModel
 from tibiawikisql.utils import parse_templatates_data
 
 M = TypeVar("M", bound=BaseModel)
@@ -115,7 +116,7 @@ class ParserMeta(type):
         required_attrs = (
             ("template_name", str, False),
             ("attribute_map", dict, False),
-            ("model", pydantic.BaseModel, True),
+            ("model", RowModel, True),
             ("table", tibiawikisql.database.Table, True),
         )
         for attr, expected_type, is_class in required_attrs:
@@ -164,6 +165,9 @@ class BaseParser(metaclass=ParserMeta):
     def parse_attributes(cls, article: Article) -> dict[str, Any]:
         """Parse the attributes of an article into a mapping.
 
+        By default, it will apply the attribute map, but it can be overridden to parse attributes in more complex ways.
+        It is called by `parse_article`.
+
         Args:
             article: The article to extract the data from.
 
@@ -184,11 +188,11 @@ class BaseParser(metaclass=ParserMeta):
             "title": article.title,
             "_raw_attributes": attributes,
         }
-        for field, parser in cls.attribute_map.items():
-            try:
+        try:
+            for field, parser in cls.attribute_map.items():
                 row[field] = parser(attributes)
-            except AttributeParsingError as e:
-                raise ArticleParsingError(article, e) from e
+        except AttributeParsingError as e:
+            raise ArticleParsingError(article, e) from e
         return row
 
     @classmethod

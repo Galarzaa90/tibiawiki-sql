@@ -17,7 +17,7 @@ from lupa import LuaRuntime
 
 from tibiawikisql import __version__, parsers, schema
 from tibiawikisql.api import Article, Image, WikiClient, WikiEntry
-from tibiawikisql.exceptions import ArticleParsingError
+from tibiawikisql.errors import ArticleParsingError
 from tibiawikisql.models.npc import rashid_positions
 from tibiawikisql.parsers import BaseParser, OutfitParser
 from tibiawikisql.schema import RashidPositionTable

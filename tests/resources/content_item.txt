@@ -4,27 +4,29 @@
 | actualname    = fire sword
 | plural        = fire swords
 | itemid        = 3280
-| marketable    = yes
-| usable        = yes
-| sprites       = {{Frames|{{Frame Sprite|55262|500}}|{{Frame Sprite|55263|500}}}}
-| flavortext     = The blade is a magic flame.
-| implemented   = Pre-6.0
 | objectclass   = Weapons
 | primarytype   = Sword Weapons
-| lightcolor    = 199
+| flavortext    = The blade is a magic flame.
+| sounds        = {{Sound List|}}
+| implemented   = 3.0
 | lightradius   = 3
+| lightcolor    = 199
+| immobile      = no
+| walkable      = yes
+| pickupable    = yes
+| usable        = yes
 | levelrequired = 30
 | hands         = One
 | weapontype    = Sword
 | attack        = 24
-| fire_attack    = 11
+| fire_attack   = 11
 | defense       = 20
 | defensemod    = +1
+| upgradeclass  = 2
 | enchantable   = no
 | weight        = 23.00
-| pickupable    = yes
-| sounds        = {{Sound List|}}
-| droppedby     = {{Dropped By|Demodras|Dragon Lord|Enusat the Onyx Wing|Guardian of Tales|Hellfire Fighter|Hellhound|Hero|Kalyassa|Kerberos|Lava Golem|Magma Crawler|Massive Fire Elemental|Mawhawk|Neferi the Spy|Pirat Mate|Renegade Knight|Retching Horror|The Baron from Below|The Count of the Core|The Duke of the Depths|Ushuriel|Vile Grandmaster|Vulcongra|Weeper}}
+| marketable    = yes
+| droppedby     = {{Dropped By|Demodras|Dragon Lord|Enusat the Onyx Wing|Guardian of Tales|Hellfire Fighter|Hellhound|Hero|Kalyassa|Kerberos|Lava Golem|Magma Crawler|Massive Fire Elemental|Mawhawk|Memory of a Hero|Neferi the Spy|Pirat Mate|Renegade Knight|Retching Horror|Sabretooth (Creature)|Sulphur Spouter|The Baron from Below|The Count of the Core|The Duke of the Depths|Thornfire Wolf|Ushuriel|Vile Grandmaster|Vulcongra|Weeper}}
 | value         = 4,000 - 8,000
 | npcvalue      = 4000
 | npcprice      = 0
@@ -37,9 +39,9 @@
 }}
 | history       = Before [[Updates/7.2|Update 7.2]] the Fire Sword was the best easy-obtainable one handed sword on all [[Game World]]s but [[Antica]]. It was possible to inflict two rounds of damage at a time because of its weight.
 
-==== Earlier ways of obtaining ====
+== Earlier ways of obtaining ==
 [[Dragon]]s used to drop these [[sword]]s. Long ago they were also obtainable from a [[quest]] [[A Sweaty Cyclops]] was part of.
 
-==== Sprite Change ====
+== Sprite Change ==
 With the [[Updates/9.5|2012 Spring Patch]] the sprite of the Fire Sword changed from [[File:Fire Sword (Old).gif]] to [[File:Fire Sword.gif]].
 }}

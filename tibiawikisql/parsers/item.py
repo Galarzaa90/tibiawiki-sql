@@ -2,11 +2,11 @@ import re
 import sqlite3
 from typing import Any
 
-import tibiawikisql.schema
 from tibiawikisql.api import Article
 from tibiawikisql.models.item import Item, ItemAttribute, ItemSound, ItemStoreOffer
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.parsers.base import AttributeParser
+from tibiawikisql.schema import ItemTable
 from tibiawikisql.utils import clean_links, clean_question_mark, client_color_to_rgb, find_templates, parse_boolean, \
     parse_float, \
     parse_integer, \
@@ -15,10 +15,11 @@ from tibiawikisql.utils import clean_links, clean_question_mark, client_color_to
 
 class ItemParser(BaseParser):
     model = Item
-    table = tibiawikisql.schema.ItemTable
+    table = ItemTable
     template_name = "Infobox_Object"
     attribute_map = {
         "name": AttributeParser.required("name"),
+        "actual_name": AttributeParser.optional("actualname"),
         "plural": AttributeParser.optional("plural", clean_question_mark),
         "article": AttributeParser.optional("article"),
         "is_marketable": AttributeParser.optional("marketable", parse_boolean, False),
@@ -92,8 +93,6 @@ class ItemParser(BaseParser):
     @classmethod
     def parse_attributes(cls, article: Article) -> dict[str, Any]:
         row = super().parse_attributes(article)
-        if not row:
-            return row
         row["attributes"] = []
         for name, attribute in cls.item_attributes.items():
             if attribute in row["_raw_attributes"] and row["_raw_attributes"][attribute]:
@@ -109,7 +108,7 @@ class ItemParser(BaseParser):
         return row
 
     @classmethod
-    def parse_item_attributes(cls, row):
+    def parse_item_attributes(cls, row: dict[str, Any]):
         raw_attributes = row["_raw_attributes"]
         attributes = row["attributes"]
         item_id = row["article_id"]

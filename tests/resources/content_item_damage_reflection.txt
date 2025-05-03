@@ -1,0 +1,32 @@
+{{Infobox Object|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name          = Spiritthorn Armor
+| article       = a
+| actualname    = spiritthorn armor
+| plural        =
+| itemid        = 39147
+| objectclass   = Body Equipment
+| primarytype   = Armors
+| implemented   = 12.90.12182
+| immobile      = no
+| walkable      = yes
+| pickupable    = yes
+| levelrequired = 400
+| vocrequired   = knights
+| imbueslots    = 2
+| upgradeclass  = 4
+| attrib        = sword fighting +4, axe fighting +4, club fighting +4, 19 damage reflection
+| armor         = 20
+| resist        = physical +13%
+| weight        = 160.00
+| stackable     = no
+| marketable    = yes
+| droppedby     = {{Dropped By|Magma Bubble|Plunder Patriarch}}
+| value         = Negotiable gp
+| npcvalue      = 0
+| npcprice      = 0
+| buyfrom       = --
+| sellto        = --
+| notes         = Part of the [[Spiritthorn Set]]. It is a possible reward of the [[Primal Ordeal Quest]], which guarantees one random item from the [[Primal Set]] through the [[Hazard System]].
+
+It has [[Damage Reflection]].
+}}

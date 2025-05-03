@@ -86,7 +86,8 @@ nav:
       - TibiaWiki API: api/api.md
       - Database: api/database.md
       - Generation: api/generation.md
+      - Errors: api/errors.md
       - Models: api/models.md
-      - Parsers: api/parser.md
+      - Parsers: api/parsers.md
       - Schema: api/schema.md
       - Utilities: api/utils.md

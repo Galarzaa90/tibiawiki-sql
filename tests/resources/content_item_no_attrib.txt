@@ -1,0 +1,22 @@
+{{Infobox Object|List={{{1|}}}|GetValue={{{GetValue|}}}
+| name          = Football
+| article       = a
+| actualname    = football
+| plural        = footballs
+| itemid        = 2990, 9104
+| objectclass   = Other Items
+| primarytype   = Game Tokens
+| implemented   = 6.0
+| destructible  = no
+| immobile      = no
+| walkable      = yes
+| pickupable    = no
+| value         = 0
+| npcvalue      = 0
+| npcprice      = 111
+| npcvaluerook  = 0
+| npcpricerook  = 111
+| buyfrom       = Beatrice, Bertha, Gorn, Lee'Delle: 111, Perod, Sarina, Shiantis, Zora
+| sellto        = --
+| notes         = It is used to play [[Football (Game)|football]] (Soccer in [[USA]] and Australia). Also, it seems to be worshiped by the [[Swamp Troll]]s near [[Venore]].
+}}
