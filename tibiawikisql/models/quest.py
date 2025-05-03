@@ -4,7 +4,8 @@ import pydantic
 from pydantic import Field
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import WithStatus, WithVersion
+from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
+from tibiawikisql.schema import QuestTable
 
 
 class QuestReward(pydantic.BaseModel):
@@ -79,7 +80,7 @@ class QuestDanger(pydantic.BaseModel):
 
 
 
-class Quest(WikiEntry, WithStatus, WithVersion):
+class Quest(WikiEntry, WithStatus, WithVersion, RowModel, table=QuestTable):
     """Represents a quest."""
 
     name: str

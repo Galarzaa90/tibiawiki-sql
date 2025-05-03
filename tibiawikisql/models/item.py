@@ -1,11 +1,14 @@
+import sqlite3
+
 import pydantic
 from pydantic import BaseModel, Field
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.quest import QuestReward
-from tibiawikisql.models.base import WithStatus, WithVersion
+from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
 from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
+from tibiawikisql.schema import BookTable, ItemKeyTable, ItemTable
 
 ELEMENTAL_RESISTANCES = ["physical%", "earth%", "fire%", "energy%", "ice%", "holy%", "death%", "drowning%"]
 
@@ -53,7 +56,7 @@ class ItemStoreOffer(pydantic.BaseModel):
     """The currency used. In most of the times it is Tibia Coins."""
 
 
-class Item(WikiEntry):
+class Item(WikiEntry, WithVersion, WithStatus, RowModel, table=ItemTable):
     """Represents an Item."""
 
     name: str
@@ -92,10 +95,6 @@ class Item(WikiEntry):
     """The radius of the light emitted by this item, if any."""
     client_id: int | None
     """The internal id of the item in the client."""
-    version: str | None
-    """The client version where this item was first implemented."""
-    status: str
-    """The status of this item in the game."""
     image: bytes | None = None
     """The item's image in bytes."""
     attributes: list[ItemAttribute] = Field(default_factory=list)
@@ -222,7 +221,7 @@ class Item(WikiEntry):
                 attributes_rep.append(template.format(attributes[attribute]))
 
 
-class Book(WikiEntry, WithStatus, WithVersion):
+class Book(WikiEntry, WithStatus, WithVersion, RowModel, table=BookTable):
     """Represents a book or written document in Tibia."""
 
     name: str
@@ -244,8 +243,20 @@ class Book(WikiEntry, WithStatus, WithVersion):
     text: str
     """The content of the book."""
 
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+        if self.item_id is not None:
+            return super().insert(conn)
 
-class Key(WikiEntry, WithStatus, WithVersion):
+        query = f"INSERT INTO {self.table.__tablename__}"
+        query += "(article_id, title, name, book_type, item_id, location, blurb, author, prev_book, next_book, text, version, status, timestamp)"
+        query += f"\nVALUES (:article_id, :title, :name, :book_type, (SELECT article_id FROM item WHERE title = :item_name), :location, :blurb, :author, :prev_book, :next_book, :text, :version, :status, :timestamp)"
+        conn.execute(query,
+                       (self.article_id, self.title, self.name, self.book_type, self.book_type, self.location,
+                        self.blurb, self.author, self.prev_book, self.next_book, self.text, self.version,
+                        self.status, self.timestamp.isoformat()))
+
+
+class Key(WikiEntry, WithStatus, WithVersion, RowModel, table=ItemKeyTable):
     """Represents a key item."""
 
     name: str | None = None

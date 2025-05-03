@@ -48,11 +48,11 @@ class RowModel(BaseModel):
         cls.table = table
 
 
-    def insert(self, c: sqlite3.Connection | sqlite3.Cursor) -> None:
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
         """Insert the model into its respective database table.
 
         Args:
-            c: A cursor or connection to the database.
+            conn: A cursor or connection to the database.
         """
         rows = {}
         for column in self.table.columns:
@@ -63,7 +63,7 @@ class RowModel(BaseModel):
                 rows[column.name] = value
             except AttributeError:
                 continue
-        self.table.insert(c, **rows)
+        self.table.insert(conn, **rows)
 
     @classmethod
     def from_row(cls, row: sqlite3.Row | dict[str, Any]) -> Self:

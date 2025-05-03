@@ -2,10 +2,11 @@ from pydantic import Field
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.npc import NpcSpell
-from tibiawikisql.models.base import WithStatus, WithVersion
+from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
+from tibiawikisql.schema import SpellTable
 
 
-class Spell(WikiEntry, WithVersion, WithStatus):
+class Spell(WikiEntry, WithVersion, WithStatus, RowModel, table=SpellTable):
     """Represents a Spell."""
 
     name: str

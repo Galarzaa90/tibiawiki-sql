@@ -1,9 +1,11 @@
 import datetime
 
 from tibiawikisql.api import WikiEntry
+from tibiawikisql.models.base import RowModel
+from tibiawikisql.schema import WorldTable
 
 
-class World(WikiEntry):
+class World(WikiEntry, RowModel, table=WorldTable):
     """Represents a Game World."""
 
     name: str

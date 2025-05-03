@@ -1,10 +1,11 @@
 import datetime
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import WithVersion
+from tibiawikisql.models.base import RowModel, WithVersion
+from tibiawikisql.schema import UpdateTable
 
 
-class Update(WikiEntry, WithVersion):
+class Update(WikiEntry, WithVersion, RowModel, table=UpdateTable):
     """Represents a game update."""
 
     name: str | None

@@ -1,10 +1,10 @@
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import WithStatus, WithVersion
+from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
+from tibiawikisql.schema import MountTable
 
 
-
-class Mount(WikiEntry, WithStatus, WithVersion):
+class Mount(WikiEntry, WithStatus, WithVersion, RowModel, table=MountTable):
     """Represents a Mount."""
 
     name: str

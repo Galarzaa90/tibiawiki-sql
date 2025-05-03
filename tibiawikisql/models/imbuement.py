@@ -2,6 +2,8 @@
 import pydantic
 
 from tibiawikisql.api import WikiEntry
+from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
+from tibiawikisql.schema import ImbuementTable
 
 
 class ImbuementMaterial(pydantic.BaseModel):
@@ -43,7 +45,7 @@ class ImbuementMaterial(pydantic.BaseModel):
         return name in cls.__slots__
 
 
-class Imbuement(WikiEntry):
+class Imbuement(WikiEntry, WithStatus, WithVersion, RowModel, table=ImbuementTable):
     """Represents an imbuement type."""
 
     name: str
@@ -58,10 +60,6 @@ class Imbuement(WikiEntry):
     """The effect given by the imbuement."""
     slots: str
     """The type of items this imbuement may be applied on."""
-    version: str
-    """The client version where this imbuement was first implemented."""
-    status: str
-    """The status of this imbuement the game."""
     image: bytes | None = None
     """The bytes of the imbuement's image."""
     materials: list[ImbuementMaterial]

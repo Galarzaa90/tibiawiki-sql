@@ -4,8 +4,8 @@ import pydantic
 from pydantic import Field
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import WithStatus, WithVersion
-
+from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
+from tibiawikisql.schema import CreatureTable
 
 KILLS = {
     "Harmless": 25,
@@ -117,7 +117,7 @@ class CreatureSound(pydantic.BaseModel):
     """The content of the sound."""
 
 
-class Creature(WikiEntry, WithStatus, WithVersion):
+class Creature(WikiEntry, WithStatus, WithVersion, RowModel, table=CreatureTable):
     """Represents a creature."""
 
     article: str | None

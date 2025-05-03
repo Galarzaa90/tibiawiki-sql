@@ -1,9 +1,10 @@
 
-from tibiawikisql.models.base import WithStatus, WithVersion
+from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
 from tibiawikisql.api import WikiEntry
+from tibiawikisql.schema import HouseTable
 
 
-class House(WikiEntry, WithVersion, WithStatus):
+class House(WikiEntry, WithVersion, WithStatus, RowModel, table=HouseTable):
     """Represents a house or guildhall."""
 
     house_id: int

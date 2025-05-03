@@ -7,6 +7,7 @@ import sqlite3
 from sqlite3 import Row
 from typing import Any, ClassVar, TypeVar
 
+from pypika import Order, Query, Table as pikaTable
 
 from tibiawikisql.errors import InvalidColumnValueError, SchemaError
 
@@ -273,11 +274,11 @@ class Table(metaclass=TableMeta):
         if column not in cls.column_map:
             msg = f"Column {column!r} doesn't exist"
             raise ValueError(msg)
-        operator = "LIKE" if use_like else "="
-        query = f"SELECT * FROM {cls.__tablename__} WHERE {column} {operator} ? LIMIT 1"  # noqa: S608
+        table = pikaTable(cls.__tablename__)
+        q = Query.from_(table).select("*").where(table[column].like(value) if use_like else table[column].eq(value))
         cursor = conn.cursor() if isinstance(conn, sqlite3.Connection) else conn
         cursor.row_factory = sqlite3.Row
-        cursor.execute(query, (value,))
+        cursor.execute(q.get_sql())
         return cursor.fetchone()
 
     @classmethod
@@ -315,19 +316,15 @@ class Table(metaclass=TableMeta):
         if sort_by and sort_by not in cls.column_map:
             msg = f"Column {sort_by!r} doesn't exist"
             raise ValueError(msg)
-        operator = "LIKE" if use_like else "="
-        query = cls.get_select_query()
-        params = {}
-        if column is not None:
-            query += f"\nWHERE {column} {operator} :{column}"
-            params[column] = value
+        table = pikaTable(cls.__tablename__)
+        q = Query.from_(table).select("*").where(table[column].like(value) if use_like else table[column].eq(value))
         if sort_by is not None:
-            query += f"\nORDER BY {sort_by} {'ASC' if ascending else 'DESC'}"
+            q = q.orderby(sort_by, order=Order.asc if ascending else Order.desc)
         if limit is not None:
-            query += f"\nLIMIT {limit}"
+            q = q.limit(limit)
         cursor = conn.cursor() if isinstance(conn, sqlite3.Connection) else conn
         cursor.row_factory = sqlite3.Row
-        return list(cursor.execute(query, params))
+        return list(cursor.execute(q.get_sql()))
 
 
 class SQLType:

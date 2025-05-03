@@ -4,6 +4,8 @@ import sqlite3
 import pydantic
 
 from tibiawikisql.api import WikiEntry
+from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
+from tibiawikisql.schema import NpcTable
 
 
 class NpcOffer(pydantic.BaseModel):
@@ -186,7 +188,7 @@ class RashidPosition(pydantic.BaseModel):
     """The location where Rashid is that day."""
 
 
-class Npc(WikiEntry):
+class Npc(WikiEntry, WithVersion, WithStatus, RowModel, table=NpcTable):
     """Represents a non-playable character."""
 
     name: str
@@ -209,10 +211,6 @@ class Npc(WikiEntry):
     """The y coordinates of the NPC."""
     z: int | None
     """The z coordinates of the NPC."""
-    version: str | None
-    """The client version where the NPC was implemented."""
-    status: str
-    """The status of this NPC in the game."""
     image: bytes | None = None
     """The NPC's image in bytes."""
     sell_offers: list[NpcSellOffer] = []

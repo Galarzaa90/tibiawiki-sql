@@ -11,7 +11,7 @@ class AchievementParser(BaseParser):
 
     model = Achievement
     table = AchievementTable
-    template_name =  "Infobox_Achievement"
+    template_name = "Infobox_Achievement"
     attribute_map: ClassVar = {
         "name": AttributeParser(lambda x: x.get("actualname") or x.get("name")),
         "grade": AttributeParser.optional("grade", parse_integer),

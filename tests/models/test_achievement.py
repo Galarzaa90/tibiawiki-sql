@@ -8,7 +8,14 @@ from tibiawikisql.models import Achievement
 from tibiawikisql.schema import AchievementTable
 
 
-class AchievementFactory(ModelFactory[Achievement]): ...
+class AchievementFactory(ModelFactory[Achievement]):
+    _article_id_counter = 1000
+
+    @classmethod
+    def article_id(cls) -> int:
+        cls._article_id_counter += 1
+        return cls._article_id_counter
+
 
 
 ACHIEVEMENT_ANNIHILATOR = Achievement(
@@ -32,6 +39,9 @@ class TestAchievement(unittest.TestCase):
     def setUp(self):
         self.conn = sqlite3.connect(":memory:")
         self.conn.executescript(AchievementTable.get_create_table_statement())
+
+    def tearDown(self):
+        self.conn.close()
 
     def test_achievement_insert(self):
         achievements = AchievementFactory.batch(50)

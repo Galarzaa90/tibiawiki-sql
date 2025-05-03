@@ -1,6 +1,7 @@
 import sqlite3
+from typing import ClassVar
 
-import tibiawikisql.schema
+from tibiawikisql.schema import BookTable
 from tibiawikisql.models.item import Book
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
@@ -8,10 +9,12 @@ from tibiawikisql.utils import clean_links
 
 
 class BookParser(BaseParser):
+    """Parser for book articles."""
+
     model = Book
-    table = tibiawikisql.schema.BookTable
+    table = BookTable
     template_name = "Infobox_Book"
-    attribute_map = {
+    attribute_map: ClassVar = {
         "name": AttributeParser.required("title"),
         "book_type": AttributeParser.optional("booktype", clean_links),
         "location": AttributeParser.optional("location", lambda x: clean_links(x, True)),
@@ -29,13 +32,6 @@ class BookParser(BaseParser):
         if model.item_id:
             super().insert(cursor, model)
             return
-        query = f"""
-            INSERT INTO {cls.table.__tablename__}(article_id, title, name, book_type, item_id, location, blurb,
-            author, prev_book, next_book, text, version, status, timestamp)
-            VALUES(?, ?, ?, ?, (SELECT article_id FROM item WHERE title = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """
-        cursor.execute(query, (model.article_id, model.title, model.name, model.book_type, model.book_type, model.location,
-                          model.blurb, model.author, model.prev_book, model.next_book, model.text, model.version,
-                          model.status, model.timestamp.isoformat()))
+
 
 

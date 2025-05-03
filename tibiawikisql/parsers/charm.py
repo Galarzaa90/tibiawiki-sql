@@ -1,4 +1,4 @@
-import tibiawikisql.schema
+from tibiawikisql.schema import CharmTable
 from tibiawikisql.models.charm import Charm
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
@@ -7,7 +7,7 @@ from tibiawikisql.utils import clean_links, parse_integer
 
 class CharmParser(BaseParser):
     model = Charm
-    table =  tibiawikisql.schema.CharmTable
+    table =  CharmTable
     template_name =  "Infobox_Charm"
     attribute_map = {
         "name": AttributeParser(lambda x: x.get("actualname") or x.get("name")),

@@ -4,3 +4,4 @@ colorama
 mwparserfromhell
 lupa
 pydantic
+PyPika

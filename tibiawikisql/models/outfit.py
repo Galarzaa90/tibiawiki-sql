@@ -4,7 +4,8 @@ import pydantic
 from pydantic import Field
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import WithStatus, WithVersion
+from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
+from tibiawikisql.schema import OutfitTable
 
 
 class OutfitQuest(pydantic.BaseModel):
@@ -69,7 +70,7 @@ class OutfitImage(pydantic.BaseModel):
 
 
 
-class Outfit(WikiEntry, WithStatus, WithVersion):
+class Outfit(WikiEntry, WithStatus, WithVersion, RowModel, table=OutfitTable):
     """Represents an outfit."""
 
     name: str

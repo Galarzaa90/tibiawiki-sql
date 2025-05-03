@@ -1,7 +1,9 @@
 from tibiawikisql.api import WikiEntry
+from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
+from tibiawikisql.schema import CharmTable
 
 
-class Charm(WikiEntry):
+class Charm(WikiEntry, WithStatus, WithVersion, RowModel, table=CharmTable):
     """Represents a charm."""
 
     name: str
@@ -12,9 +14,5 @@ class Charm(WikiEntry):
     """The charm's description."""
     cost: int
     """The number of charm points needed to unlock."""
-    version: str | None
-    """The client version where this creature was first implemented."""
-    status: str
-    """The status of this charm in the game."""
     image: bytes | None = None
     """The charm's icon."""
