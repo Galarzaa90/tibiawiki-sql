@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 import tibiawikisql.schema
 from tibiawikisql.models.house import House
 from tibiawikisql.parsers.base import AttributeParser
@@ -6,10 +8,11 @@ from tibiawikisql.utils import clean_links, convert_tibiawiki_position, parse_in
 
 
 class HouseParser(BaseParser):
+    """Parses houses and guildhalls."""
     model = House
     table = tibiawikisql.schema.HouseTable
     template_name = "Infobox_Building"
-    attribute_map = {
+    attribute_map: ClassVar = {
         "house_id": AttributeParser.required("houseid", parse_integer),
         "name": AttributeParser.required("name"),
         "is_guildhall": AttributeParser.required("type", lambda x: x is not None and "guildhall" in x.lower()),

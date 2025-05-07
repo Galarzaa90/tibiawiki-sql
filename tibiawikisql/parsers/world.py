@@ -1,28 +1,5 @@
-#  Copyright (c) 2025.
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
+from typing import ClassVar
+
 import tibiawikisql.schema
 from tibiawikisql.models.world import World
 from tibiawikisql.parsers.base import AttributeParser
@@ -31,10 +8,12 @@ from tibiawikisql.utils import parse_boolean, parse_date, parse_integer
 
 
 class WorldParser(BaseParser):
+    """Parser for game worlds (servers)."""
+
     table = tibiawikisql.schema.WorldTable
     model = World
     template_name = "Infobox_World"
-    attribute_map = {
+    attribute_map: ClassVar = {
         "name": AttributeParser.required("name"),
         "location": AttributeParser.required("location"),
         "pvp_type": AttributeParser.required("type"),

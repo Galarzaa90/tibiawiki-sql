@@ -1,11 +1,11 @@
 import re
 import sqlite3
-from typing import Any
+from typing import Any, ClassVar
 
 from tibiawikisql.api import Article
 from tibiawikisql.models.imbuement import Imbuement, ImbuementMaterial
 from tibiawikisql.parsers import BaseParser
-import tibiawikisql.schema
+from tibiawikisql.schema import ImbuementMaterialTable, ImbuementTable
 from tibiawikisql.parsers.base import AttributeParser
 
 astral_pattern = re.compile(r"\s*([^:]+):\s*(\d+),*")
@@ -100,10 +100,11 @@ def parse_slots(content):
 
 
 class ImbuementParser(BaseParser):
+    """Parses imbuements."""
     model = Imbuement
-    table = tibiawikisql.schema.ImbuementTable
+    table = ImbuementTable
     template_name = "Infobox_Imbuement"
-    attribute_map = {
+    attribute_map: ClassVar = {
         "name": AttributeParser.required("name"),
         "tier": AttributeParser.required("prefix"),
         "type": AttributeParser.required("type"),
@@ -131,12 +132,3 @@ class ImbuementParser(BaseParser):
                         imbuement_id=row["article_id"]),
                 )
         return row
-
-    @classmethod
-    def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: Imbuement) -> None:
-        super().insert(cursor, model)
-        for material in model.materials:
-            tibiawikisql.schema.ImbuementMaterialTable.insert(cursor, **material.model_dump())
-
-
-

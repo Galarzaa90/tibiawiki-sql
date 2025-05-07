@@ -1,19 +1,21 @@
-import sqlite3
-from abc import ABC
 from collections.abc import Callable
 from typing import Any, ClassVar, Generic, Self, TypeVar
 
 import pydantic
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 
 import tibiawikisql.database
 from tibiawikisql.api import Article
 from tibiawikisql.database import Table
-from tibiawikisql.errors import ArticleParsingError, AttributeParsingError, TemplateNotFoundError
+from tibiawikisql.errors import (
+    ArticleParsingError,
+    AttributeParsingError,
+    TemplateNotFoundError,
+)
 from tibiawikisql.models.base import RowModel
 from tibiawikisql.utils import parse_templatates_data
 
-M = TypeVar("M", bound=BaseModel)
+M = TypeVar("M", bound=RowModel)
 P = TypeVar("P", bound=pydantic.BaseModel)
 T = TypeVar("T")
 D = TypeVar("D")
@@ -151,7 +153,7 @@ class BaseParser(metaclass=ParserMeta):
     template_name: ClassVar[str] = NotImplemented
     """The name of the template that contains the information."""
 
-    model: ClassVar[type[BaseModel]] = NotImplemented
+    model: ClassVar[type[RowModel]] = NotImplemented
     """The model to convert the data into."""
 
     table: ClassVar[type[Table]] = NotImplemented
@@ -211,16 +213,3 @@ class BaseParser(metaclass=ParserMeta):
             return cls.model.model_validate(row)
         except ValidationError as e:
             raise ArticleParsingError(article, cause=e) from e
-
-    @classmethod
-    def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: M) -> None:
-        rows = {}
-        for column in cls.table.columns:
-            try:
-                value = getattr(model, column.name)
-                if value == column.default:
-                    continue
-                rows[column.name] = value
-            except AttributeError:
-                continue
-        cls.table.insert(cursor, **rows)

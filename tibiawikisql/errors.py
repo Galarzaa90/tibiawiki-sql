@@ -37,6 +37,7 @@ class ArticleParsingError(TibiaWikiSqlError):
             msg: An error message for the error.
             cause: The original exception that caused the parsing to fail.
         """
+        self.article = article
         if cause:
            msg = f"Error parsing article: `{article.title}` | {cause.__class__.__name__}: {cause}"
         else:

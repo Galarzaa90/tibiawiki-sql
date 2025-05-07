@@ -2,13 +2,15 @@ import sqlite3
 
 import pydantic
 from pydantic import BaseModel, Field
+from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.quest import QuestReward
 from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
 from tibiawikisql.models.creature import CreatureDrop
 from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
-from tibiawikisql.schema import BookTable, ItemKeyTable, ItemTable
+from tibiawikisql.schema import BookTable, ItemAttributeTable, ItemKeyTable, ItemSoundTable, ItemStoreOfferTable, \
+    ItemTable
 
 ELEMENTAL_RESISTANCES = ["physical%", "earth%", "fire%", "energy%", "ice%", "holy%", "death%", "drowning%"]
 
@@ -23,7 +25,7 @@ SKILL_ATTRIBUTES_MAPPING = {
 }
 
 
-class ItemAttribute(BaseModel):
+class ItemAttribute(RowModel, table=ItemAttributeTable):
     """Represents an Item's attribute."""
 
     item_id: int
@@ -34,7 +36,7 @@ class ItemAttribute(BaseModel):
     """The value of the attribute."""
 
 
-class ItemSound(BaseModel):
+class ItemSound(RowModel, table=ItemSoundTable):
     """Represents a sound made by an item."""
 
     item_id: int
@@ -43,7 +45,7 @@ class ItemSound(BaseModel):
     """The content of the sound."""
 
 
-class ItemStoreOffer(pydantic.BaseModel):
+class ItemStoreOffer(RowModel, table=ItemStoreOfferTable):
     """Represents an offer for an item on the Tibia Store."""
 
     item_id: int
@@ -220,6 +222,15 @@ class Item(WikiEntry, WithVersion, WithStatus, RowModel, table=ItemTable):
             if attribute in attributes:
                 attributes_rep.append(template.format(attributes[attribute]))
 
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+        super().insert(conn)
+        for attribute in self.attributes:
+            attribute.insert(conn)
+        for sound in self.sounds:
+            sound.insert(conn)
+        for offer in self.store_offers:
+            offer.insert(conn)
+
 
 class Book(WikiEntry, WithStatus, WithVersion, RowModel, table=BookTable):
     """Represents a book or written document in Tibia."""
@@ -245,15 +256,54 @@ class Book(WikiEntry, WithStatus, WithVersion, RowModel, table=BookTable):
 
     def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
         if self.item_id is not None:
-            return super().insert(conn)
+            super().insert(conn)
+            return
 
-        query = f"INSERT INTO {self.table.__tablename__}"
-        query += "(article_id, title, name, book_type, item_id, location, blurb, author, prev_book, next_book, text, version, status, timestamp)"
-        query += f"\nVALUES (:article_id, :title, :name, :book_type, (SELECT article_id FROM item WHERE title = :item_name), :location, :blurb, :author, :prev_book, :next_book, :text, :version, :status, :timestamp)"
-        conn.execute(query,
-                       (self.article_id, self.title, self.name, self.book_type, self.book_type, self.location,
-                        self.blurb, self.author, self.prev_book, self.next_book, self.text, self.version,
-                        self.status, self.timestamp.isoformat()))
+        book_table = Table(self.table.__tablename__)
+        item_table = Table(ItemTable.__tablename__)
+
+        q = (
+            Query.into(book_table)
+            .columns(
+                "article_id",
+                "title",
+                "name",
+                "book_type",
+                "item_id",
+                "location",
+                "blurb",
+                "author",
+                "prev_book",
+                "next_book",
+                "text",
+                "version",
+                "status",
+                "timestamp",
+            )
+            .insert(
+                Parameter(":article_id"),
+                Parameter(":title"),
+                Parameter(":name"),
+                Parameter(":book_type"),
+                (
+                    Query.from_(item_table)
+                    .select(item_table.article_id)
+                    .where(item_table.title == Parameter(":book_type"))
+                ),
+                Parameter(":location"),
+                Parameter(":blurb"),
+                Parameter(":author"),
+                Parameter(":prev_book"),
+                Parameter(":next_book"),
+                Parameter(":text"),
+                Parameter(":version"),
+                Parameter(":status"),
+                Parameter(":timestamp"),
+            )
+        )
+
+        query_str = q.get_sql()
+        conn.execute(query_str, self.model_dump(mode="json"))
 
 
 class Key(WikiEntry, WithStatus, WithVersion, RowModel, table=ItemKeyTable):
@@ -273,3 +323,50 @@ class Key(WikiEntry, WithStatus, WithVersion, RowModel, table=ItemKeyTable):
     """Notes about the key."""
     origin: str | None
     """Notes about the origin of the key."""
+
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+        if self.item_id is not None:
+            super().insert(conn)
+            return
+
+        key_table = Table(self.table.__tablename__)
+        item_table = Table(ItemTable.__tablename__)
+
+        q = (
+            Query.into(key_table)
+            .columns(
+                "article_id",
+                "title",
+                "name",
+                "number",
+                "item_id",
+                "material",
+                "location",
+                "notes",
+                "origin",
+                "version",
+                "status",
+                "timestamp",
+            )
+            .insert(
+                Parameter(":article_id"),
+                Parameter(":title"),
+                Parameter(":name"),
+                Parameter(":number"),
+                (
+                    Query.from_(item_table)
+                    .select(item_table.article_id)
+                    .where(item_table.title == Parameter(":material"))
+                ),
+                Parameter(":material"),
+                Parameter(":location"),
+                Parameter(":notes"),
+                Parameter(":origin"),
+                Parameter(":version"),
+                Parameter(":status"),
+                Parameter(":timestamp"),
+            )
+        )
+
+        query_str = q.get_sql()
+        conn.execute(query_str, self.model_dump(mode="json"))

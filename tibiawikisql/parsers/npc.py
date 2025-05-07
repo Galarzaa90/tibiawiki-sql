@@ -1,6 +1,6 @@
 import re
 import sqlite3
-from typing import Any
+from typing import Any, ClassVar
 
 import tibiawikisql.schema
 from tibiawikisql.api import Article
@@ -28,10 +28,12 @@ ilink_pattern = re.compile(r"{{Ilink\|([^}]+)}}")
 
 
 class NpcParser(BaseParser):
+    """Parser for NPCs."""
+
     table = tibiawikisql.schema.NpcTable
     model = Npc
     template_name = "Infobox_NPC"
-    attribute_map = {
+    attribute_map: ClassVar = {
         "name": AttributeParser(lambda x: x.get("actualname") or x.get("name")),
         "gender": AttributeParser.optional("gender"),
         "location": AttributeParser.optional("location", clean_links),
@@ -75,17 +77,7 @@ class NpcParser(BaseParser):
             ))
         return row
 
-    @classmethod
-    def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: Npc) -> None:
-        super().insert(cursor, model)
-        for job in model.jobs:
-            tibiawikisql.schema.NpcJobTable.insert(cursor, npc_id=model.article_id, name=job)
-        for race in model.races:
-            tibiawikisql.schema.NpcRaceTable.insert(cursor, npc_id=model.article_id, name=race)
-        for destination in model.destinations:
-            tibiawikisql.schema.NpcDestinationTable.insert(cursor, **destination.model_dump())
-        for spell in model.teaches:
-            tibiawikisql.schema.NpcSpellTable.insert(cursor, **spell.model_dump())
+
     # region Auxiliary Methods
 
     @classmethod

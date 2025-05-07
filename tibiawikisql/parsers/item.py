@@ -1,23 +1,31 @@
 import re
 import sqlite3
-from typing import Any
+from typing import Any, ClassVar
 
 from tibiawikisql.api import Article
 from tibiawikisql.models.item import Item, ItemAttribute, ItemSound, ItemStoreOffer
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.schema import ItemTable
-from tibiawikisql.utils import clean_links, clean_question_mark, client_color_to_rgb, find_templates, parse_boolean, \
-    parse_float, \
-    parse_integer, \
-    parse_sounds, strip_code
+from tibiawikisql.utils import (
+    clean_links,
+    clean_question_mark,
+    client_color_to_rgb,
+    find_templates,
+    parse_boolean,
+    parse_float,
+    parse_integer,
+    parse_sounds,
+    strip_code,
+)
 
 
 class ItemParser(BaseParser):
+    """Parses items and objects."""
     model = Item
     table = ItemTable
     template_name = "Infobox_Object"
-    attribute_map = {
+    attribute_map: ClassVar = {
         "name": AttributeParser.required("name"),
         "actual_name": AttributeParser.optional("actualname"),
         "plural": AttributeParser.optional("plural", clean_question_mark),
@@ -40,7 +48,7 @@ class ItemParser(BaseParser):
         "status": AttributeParser.status(),
     }
 
-    item_attributes = {
+    item_attributes: ClassVar = {
         "level": "levelrequired",
         "attack": "attack",
         "defense": "defense",
@@ -188,13 +196,3 @@ class ItemParser(BaseParser):
             row["store_offers"].append(
                 ItemStoreOffer(item_id=row["article_id"], price=price, currency=currency, amount=amount),
             )
-
-    @classmethod
-    def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: Item):
-        super().insert(cursor, model)
-        for attribute in model.attributes:
-            tibiawikisql.schema.ItemAttributeTable.insert(cursor, **attribute.model_dump())
-        for sound in model.sounds:
-            tibiawikisql.schema.ItemSoundTable.insert(cursor, **sound.model_dump())
-        for store_offer in model.store_offers:
-            tibiawikisql.schema.ItemStoreOfferTable.insert(cursor, **store_offer.model_dump())

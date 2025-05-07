@@ -1,14 +1,16 @@
+import contextlib
 import sqlite3
 
 import pydantic
 from pydantic import Field
+from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
-from tibiawikisql.schema import OutfitTable
+from tibiawikisql.schema import OutfitImageTable, OutfitQuestTable, OutfitTable, QuestTable
 
 
-class OutfitQuest(pydantic.BaseModel):
+class OutfitQuest(RowModel, table=OutfitQuestTable):
     """Represents a quest that grants an outfit or it's addon."""
 
     outfit_id: int
@@ -22,17 +24,33 @@ class OutfitQuest(pydantic.BaseModel):
     type: str
     """Whether the quest is for the outfit or addons."""
 
-
-    def insert(self, c):
-        if getattr(self, "item_id", None):
-            super().insert(c)
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor):
+        if self.quest_id is not None:
+            super().insert(conn)
             return
-        try:
-            c.execute(f"""INSERT INTO {self.table.__tablename__}(outfit_id, quest_id, type)
-                          VALUES(?, (SELECT article_id FROM quest WHERE title = ?), ?)""",
-                      (self.outfit_id, self.quest_title, self.type))
-        except sqlite3.IntegrityError:
-            pass
+
+        quest_table = Table(QuestTable.__tablename__)
+        oufit_quest_table = Table(self.table.__tablename__)
+        q = (
+            Query.into(oufit_quest_table)
+            .columns(
+                "outfit_id",
+                "quest_id",
+                "type",
+            )
+            .insert(
+                Parameter(":outfit_id"),
+                (
+                    Query.from_(quest_table)
+                    .select(quest_table.article_id)
+                    .where(quest_table.title == Parameter(":quest_title"))
+                ),
+                Parameter(":type"),
+            )
+        )
+        query_str = q.get_sql()
+        with contextlib.suppress(sqlite3.IntegrityError):
+            conn.execute(query_str, self.model_dump(mode="json"))
 
     @classmethod
     def _is_column(cls, name):
@@ -46,7 +64,7 @@ class OutfitQuest(pydantic.BaseModel):
                    LEFT JOIN outfit ON outfit.article_id = outfit_id"""
 
 
-class OutfitImage(pydantic.BaseModel):
+class OutfitImage(RowModel, table=OutfitImageTable):
     """Represents an outfit image."""
 
     outfit_id: int
@@ -92,6 +110,10 @@ class Outfit(WikiEntry, WithStatus, WithVersion, RowModel, table=OutfitTable):
     quests: list[OutfitQuest] = Field(default_factory=list)
     """Quests that grant the outfit or its addons."""
 
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+        super().insert(conn)
+        for quest in self.quests:
+            quest.insert(conn)
 
     @classmethod
     def get_by_field(cls, c, field, value, use_like=False):

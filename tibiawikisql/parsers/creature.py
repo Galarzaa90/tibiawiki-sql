@@ -1,6 +1,6 @@
 import re
 import sqlite3
-from typing import Any
+from typing import Any, ClassVar
 
 import mwparserfromhell
 from mwparserfromhell.nodes import Template
@@ -16,29 +16,25 @@ from tibiawikisql.utils import clean_links, find_template, int_pattern, parse_bo
     strip_code
 
 
-def parse_maximum_damage(value):
+def parse_maximum_damage(value: str) -> dict[str, int]:
     """Parse the maximum damage template from TibiaWiki.
 
     If no template is found, the highest number found is considered the total damage.
 
-    Parameters
-    ----------
-    value: :class:`str`
-        A string containing the creature's max damage.
+    Args:
+        value: A string containing the creature's max damage.
 
-    Returns
-    -------
-    :class:`dict`
+    Returns:
         A dictionary containing the maximum damage by element if available.
 
     """
     if not value:
-        return None
+        return {}
     max_damage_template = find_template(value, "Max Damage")
     if not max_damage_template:
         total = parse_maximum_integer(value)
         if total is None:
-            return None
+            return {}
         return {"total": parse_maximum_integer(value)}
     damages = {}
     for element in max_damage_template.params:
@@ -49,17 +45,13 @@ def parse_maximum_damage(value):
     return damages
 
 
-def parse_maximum_integer(value):
+def parse_maximum_integer(value: str) -> int | None:
     """From a string, finds the highest integer found.
 
-    Parameters
-    ----------
-    value: :class:`str`
-        The string containing integers.
+    Args:
+        value: The string containing integers.
 
-    Returns
-    -------
-    :class:`int`, optional:
+    Returns:
         The highest number found, or None if no number is found.
 
     """
@@ -70,18 +62,14 @@ def parse_maximum_integer(value):
         return None
 
 
-def parse_loot(value):
+def parse_loot(value: str) -> list[tuple[str, str]]:
     """Get every item drop entry of a creature's drops.
 
-    Parameters
-    ----------
-    value: :class:`str`
-        A string containing item drops.
+    Args:
+        value: A string containing item drops.
 
-    Returns
-    -------
-    tuple:
-        A tuple containing the amounts and the item name.
+    Return:
+        A list of tuples containing the name of the item and the amount dropped (or empty for 1).
 
     """
 
@@ -207,12 +195,12 @@ def parse_monster_walks(value):
 
 
 class CreatureParser(BaseParser):
-
+    """Parses creatures or monsters."""
     model = Creature
     template_name = "Infobox_Creature"
     table = tibiawikisql.schema.CreatureTable
 
-    attribute_map = {
+    attribute_map: ClassVar = {
         "name": AttributeParser(lambda x: x.get("actualname") or x.get("name")),
         "article": AttributeParser.optional("article"),
         "plural": AttributeParser.optional("plural"),
@@ -294,19 +282,5 @@ class CreatureParser(BaseParser):
             if max_damage:
                 row["max_damage"] = CreatureMaxDamage(creature_id=article_id, **max_damage)
         return row
-
-    @classmethod
-    def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: Creature) -> None:
-        super().insert(cursor, model)
-
-        for attribute in model.loot:
-            tibiawikisql.schema.CreatureDropTable.insert(cursor, **attribute.model_dump())
-        for attribute in model.sounds:
-            tibiawikisql.schema.CreatureSoundTable.insert(cursor, **attribute.model_dump())
-        for attribute in model.abilities:
-            tibiawikisql.schema.CreatureAbilityTable.insert(cursor, **attribute.model_dump())
-        max_damage = model.max_damage
-        if max_damage:
-            tibiawikisql.schema.CreatureMaxDamageTable.insert(cursor, **max_damage.model_dump())
 
 

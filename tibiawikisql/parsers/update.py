@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 import tibiawikisql.schema
 from tibiawikisql.models.update import Update
 from tibiawikisql.parsers.base import AttributeParser
@@ -6,10 +8,11 @@ from tibiawikisql.utils import clean_links, parse_date, parse_integer
 
 
 class UpdateParser(BaseParser):
+    """Parser for game updates."""
     model = Update
     table = tibiawikisql.schema.UpdateTable
     template_name = "Infobox_Update"
-    attribute_map = {
+    attribute_map: ClassVar = {
         "name": AttributeParser.optional("name"),
         "type_primary": AttributeParser.required("primarytype"),
         "type_secondary": AttributeParser.optional("secondarytype"),

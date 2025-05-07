@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from tibiawikisql.api import Article
 from tibiawikisql.models.spell import Spell
 import tibiawikisql.schema
@@ -7,10 +9,12 @@ from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
 
 
 class SpellParser(BaseParser):
+    """Parser for spells."""
+
     model = Spell
     table = tibiawikisql.schema.SpellTable
     template_name = "Infobox_Spell"
-    attribute_map = {
+    attribute_map: ClassVar = {
         "name": AttributeParser.required("name"),
         "effect": AttributeParser.required("effect", clean_links),
         "words": AttributeParser.optional("words"),

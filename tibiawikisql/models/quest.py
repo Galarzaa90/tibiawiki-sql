@@ -1,14 +1,16 @@
+import contextlib
 import sqlite3
 
 import pydantic
 from pydantic import Field
+from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
-from tibiawikisql.schema import QuestTable
+from tibiawikisql.schema import CreatureTable, ItemTable, QuestDangerTable, QuestRewardTable, QuestTable
 
 
-class QuestReward(pydantic.BaseModel):
+class QuestReward(RowModel, table=QuestRewardTable):
     """Represents an item obtained in the quest."""
 
     quest_id: int
@@ -20,30 +22,34 @@ class QuestReward(pydantic.BaseModel):
     item_title: str | None = None
     """The title of the rewarded item."""
 
-    def insert(self, c):
-        if getattr(self, "item_id", None):
-            super().insert(c)
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+        if self.item_id is not None:
+            super().insert(conn)
             return
-        try:
-            c.execute(f"""INSERT INTO {self.table.__tablename__}(quest_id, item_id)
-                      VALUES(?, (SELECT article_id FROM item WHERE title = ?))""",
-                      (self.quest_id, self.item_title))
-        except sqlite3.IntegrityError:
-            pass
+        quest_table = Table(self.table.__tablename__)
+        item_table = Table(ItemTable.__tablename__)
+        q = (
+            Query.into(quest_table)
+            .columns(
+                "quest_id",
+                "item_id",
+            )
+            .insert(
+                Parameter(":quest_id"),
+                (
+                    Query.from_(item_table)
+                    .select(item_table.article_id)
+                    .where(item_table.title == Parameter(":item_title"))
+                ),
+            )
+        )
 
-    @classmethod
-    def _is_column(cls, name):
-        return name in cls.__slots__
-
-    @classmethod
-    def _get_base_query(cls):
-        return f"""SELECT {cls.table.__tablename__}.*, item.title as item_title, quest.title as quest_title
-                   FROM {cls.table.__tablename__}
-                   LEFT JOIN item ON item.article_id = item_id
-                   LEFT JOIN quest ON quest.article_id = quest_id"""
+        query_str = q.get_sql()
+        with contextlib.suppress(sqlite3.IntegrityError):
+            conn.execute(query_str, self.model_dump(mode="json"))
 
 
-class QuestDanger(pydantic.BaseModel):
+class QuestDanger(RowModel, table=QuestDangerTable):
     """Represents a creature found in the quest."""
 
     quest_id: int
@@ -55,17 +61,31 @@ class QuestDanger(pydantic.BaseModel):
     creature_title: str | None = None
     """The title of the found creature."""
 
-
-    def insert(self, c):
-        if getattr(self, "creature_id", None):
-            super().insert(c)
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+        if self.creature_id is not None:
+            super().insert(conn)
             return
-        try:
-            c.execute(f"""INSERT INTO {self.table.__tablename__}(quest_id, creature_id)
-                      VALUES(?, (SELECT article_id FROM creature WHERE title = ?))""",
-                      (self.quest_id, self.creature_title))
-        except sqlite3.IntegrityError:
-            pass
+        quest_table = Table(self.table.__tablename__)
+        creature_table = Table(CreatureTable.__tablename__)
+        q = (
+            Query.into(quest_table)
+            .columns(
+                "quest_id",
+                "creature_id",
+            )
+            .insert(
+                Parameter(":quest_id"),
+                (
+                    Query.from_(creature_table)
+                    .select(creature_table.article_id)
+                    .where(creature_table.title == Parameter(":creature_title"))
+                ),
+            )
+        )
+
+        query_str = q.get_sql()
+        with contextlib.suppress(sqlite3.IntegrityError):
+            conn.execute(query_str, self.model_dump(mode="json"))
 
     @classmethod
     def _is_column(cls, name):
@@ -111,29 +131,12 @@ class Quest(WikiEntry, WithStatus, WithVersion, RowModel, table=QuestTable):
     """Items rewarded in the quest."""
 
 
-    @classmethod
-    def from_article(cls, article):
-        quest = super().from_article(article)
-        if quest is None:
-            return quest
-        if "reward" in quest._raw_attributes:
-            rewards = parse_links(quest._raw_attributes["reward"])
-            quest.rewards = []
-            for reward in rewards:
-                quest.rewards.append(QuestReward(quest_id=quest.article_id, item_title=reward.strip()))
-        if "dangers" in quest._raw_attributes:
-            dangers = parse_links(quest._raw_attributes["dangers"])
-            quest.dangers = []
-            for danger in dangers:
-                quest.dangers.append(QuestDanger(quest_id=quest.article_id, creature_title=danger.strip()))
-        return quest
-
-    def insert(self, c):
-        super().insert(c)
-        for reward in getattr(self, "rewards", []):
-            reward.insert(c)
-        for danger in getattr(self, "dangers", []):
-            danger.insert(c)
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+        super().insert(conn)
+        for reward in self.rewards:
+            reward.insert(conn)
+        for danger in self.dangers:
+            danger.insert(conn)
 
     @classmethod
     def get_by_field(cls, c, field, value, use_like=False):

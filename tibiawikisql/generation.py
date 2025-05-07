@@ -638,11 +638,13 @@ def generate(conn, skip_images, skip_deprecated):
             for article in bar:
                 try:
                     entry = parser.from_article(article)
-                    parser.insert(conn, entry)
+                    entry.insert(conn)
                     if value.generate_map:
                         data_store[f"{key}_map"][entry.title.lower()] = entry.article_id
                 except ArticleParsingError:
                     unparsed.append(article.title)
+                # except sqlite3.Error:
+                #     unparsed.append(article.title)
         if unparsed:
             click.echo(f"{Fore.RED}Could not parse {len(unparsed):,} articles.{Style.RESET_ALL}")
             click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed)}{Style.RESET_ALL}")

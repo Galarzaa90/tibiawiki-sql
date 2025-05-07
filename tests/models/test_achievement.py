@@ -17,7 +17,6 @@ class AchievementFactory(ModelFactory[Achievement]):
         return cls._article_id_counter
 
 
-
 ACHIEVEMENT_ANNIHILATOR = Achievement(
     article_id=2744,
     title="Annihilator",

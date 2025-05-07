@@ -303,6 +303,7 @@ class Table(metaclass=TableMeta):
             use_like: Whether to use ``LIKE`` as an operator instead of ``=``.
             sort_by: The name of the field to sort by.
             ascending: Whether to sort ascending or descending.
+            limit: Only return up to this many rows.
 
         Returns:
             The matching row, or ``None``.

@@ -6,12 +6,7 @@ from tibiawikisql.database import Blob, Boolean, Column, Date, ForeignKey, Integ
 
 
 class AchievementTable(Table):
-    """Contains achievements from the game.
-
-    Attributes:
-        article_id: The ID of the article containing the achievement.
-
-    """
+    """Contains achievements from the game."""
 
     article_id: ClassVar[Column] = Column(Integer, primary_key=True)
     title: ClassVar[Column] = Column(Text, unique=True, no_case=True, nullable=False)
@@ -164,18 +159,6 @@ class CreatureDropTable(Table, table_name="creature_drop"):
     min = Column(Integer, nullable=False)
     max = Column(Integer, nullable=False)
 
-    @classmethod
-    def insert(cls, conn, **kwargs):
-        if kwargs.get("item_id"):
-            super().insert(conn, **kwargs)
-            return
-        try:
-            query = f"""INSERT INTO {cls.__tablename__}(creature_id, item_id, min, max)
-                        VALUES(?, (SELECT article_id from item WHERE title = ?), ?, ?)"""
-            conn.execute(query, (kwargs["creature_id"], kwargs["item_title"], kwargs["min"], kwargs["max"]))
-        except sqlite3.IntegrityError:
-            pass
-
 
 class ItemAttributeTable(Table, table_name="item_attribute"):
     item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True)
@@ -246,15 +229,6 @@ class ImbuementMaterialTable(Table, table_name="imbuement_material"):
     imbuement_id = Column(ForeignKey(Integer, "imbuement", "article_id"), index=True)
     item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True, nullable=False)
     amount = Column(Integer, nullable=False)
-
-    @classmethod
-    def insert(cls, conn, **kwargs):
-        if kwargs.get("item_id"):
-            super().insert(conn, **kwargs)
-        else:
-            query = f"""INSERT INTO {cls.__tablename__}({','.join(col.name for col in cls.columns)})
-                        VALUES(?, (SELECT article_id from item WHERE title = ?), ?)"""
-            conn.execute(query, (kwargs["imbuement_id"], kwargs["item_title"], kwargs["amount"]))
 
 
 class ItemKeyTable(Table, table_name="item_key"):
@@ -416,51 +390,16 @@ class OutfitQuestTable(Table, table_name="outfit_quest"):
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True, nullable=False)
     type = Column(Text)
 
-    @classmethod
-    def insert(cls, conn, **kwargs):
-        if kwargs.get("item_id"):
-            super().insert(conn, **kwargs)
-            return
-        try:
-            conn.execute(f"""INSERT INTO {cls.__tablename__}(outfit_id, quest_id, type)
-                          VALUES(?, (SELECT article_id FROM quest WHERE title = ?), ?)""",
-                         (kwargs["outfit_id"], kwargs["quest_title"], kwargs["type"]))
-        except sqlite3.IntegrityError:
-            pass
-
 
 class QuestDangerTable(Table, table_name="quest_danger"):
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True)
     creature_id = Column(ForeignKey(Integer, "creature", "article_id"), nullable=False, index=True)
-
-    @classmethod
-    def insert(cls, conn, **kwargs):
-        if kwargs.get("creature_id"):
-            super().insert(conn, **kwargs)
-            return
-        try:
-            conn.execute(f"""INSERT INTO {cls.__tablename__}(quest_id, creature_id)
-                                      VALUES(?, (SELECT article_id FROM creature WHERE title = ?))""",
-                         (kwargs["quest_id"], kwargs["creature_title"]))
-        except sqlite3.IntegrityError:
-            pass
 
 
 class QuestRewardTable(Table, table_name="quest_reward"):
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True)
     item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False, index=True)
 
-    @classmethod
-    def insert(cls, conn, **kwargs):
-        if kwargs.get("item_id"):
-            super().insert(conn, **kwargs)
-            return
-        try:
-            conn.execute(f"""INSERT INTO {cls.__tablename__}(quest_id, item_id)
-                                  VALUES(?, (SELECT article_id FROM item WHERE title = ?))""",
-                         (kwargs["quest_id"], kwargs["item_title"]))
-        except sqlite3.IntegrityError:
-            pass
 
 
 class RashidPositionTable(Table, table_name="rashid_position"):

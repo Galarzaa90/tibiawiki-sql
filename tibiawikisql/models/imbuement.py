@@ -1,12 +1,15 @@
+import contextlib
+import sqlite3
 
 import pydantic
+from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
-from tibiawikisql.schema import ImbuementTable
+from tibiawikisql.schema import ImbuementMaterialTable, ImbuementTable, ItemTable
 
 
-class ImbuementMaterial(pydantic.BaseModel):
+class ImbuementMaterial(RowModel, table=ImbuementMaterialTable):
     """Represents an item material for an imbuement."""
 
     imbuement_id: int
@@ -20,29 +23,35 @@ class ImbuementMaterial(pydantic.BaseModel):
     amount: int
     """The amount of items required."""
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.item_title = kwargs.get("item_title")
-        self.imbuement_title = kwargs.get("imbuement_title")
 
-    def insert(self, c):
-        if getattr(self, "item_id", None):
-            super().insert(c)
-        else:
-            query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
-                        VALUES(?, (SELECT article_id from item WHERE title = ?), ?)"""
-            c.execute(query, (self.imbuement_id, self.item_title, self.amount))
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+        if self.item_id is not None:
+            super().insert(conn)
+            return
 
-    @classmethod
-    def _get_base_query(cls):
-        return f"""SELECT {cls.table.__tablename__}.*, imbuement.title as imbuement_title, item.title as item_title
-                   FROM {cls.table.__tablename__}
-                   LEFT JOIN imbuement ON imbuement.article_id = imbuement_id
-                   LEFT JOIN item ON item.article_id = item_id"""
+        item_table = Table(ItemTable.__tablename__)
+        imbuement_material_table = Table(self.table.__tablename__)
+        q = (
+            Query.into(imbuement_material_table)
+            .columns(
+                "imbuement_id",
+                "item_id",
+                "amount",
+            )
+            .insert(
+                Parameter(":imbuement_id"),
+                (
+                    Query.from_(item_table)
+                    .select(item_table.article_id)
+                    .where(item_table.title == Parameter(":item_title"))
+                ),
+                Parameter(":amount"),
+            )
+        )
+        query_str = q.get_sql()
+        with contextlib.suppress(sqlite3.IntegrityError):
+            conn.execute(query_str, self.model_dump(mode="json"))
 
-    @classmethod
-    def _is_column(cls, name):
-        return name in cls.__slots__
 
 
 class Imbuement(WikiEntry, WithStatus, WithVersion, RowModel, table=ImbuementTable):
@@ -65,10 +74,10 @@ class Imbuement(WikiEntry, WithStatus, WithVersion, RowModel, table=ImbuementTab
     materials: list[ImbuementMaterial]
     """The materials needed for the imbuement."""
 
-    def insert(self, c):
-        super().insert(c)
-        for material in getattr(self, "materials", []):
-            material.insert(c)
+    def insert(self, conn):
+        super().insert(conn)
+        for material in self.materials:
+            material.insert(conn)
 
     @classmethod
     def get_by_field(cls, c, field, value, use_like=False):

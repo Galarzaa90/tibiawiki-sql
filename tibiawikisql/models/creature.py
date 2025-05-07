@@ -1,11 +1,15 @@
+import sqlite3
 from collections import OrderedDict
 
 import pydantic
 from pydantic import Field
+from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
-from tibiawikisql.schema import CreatureTable
+from tibiawikisql.schema import CreatureAbilityTable, CreatureDropTable, CreatureMaxDamageTable, CreatureSoundTable, \
+    CreatureTable, ItemTable
+import contextlib
 
 KILLS = {
     "Harmless": 25,
@@ -28,7 +32,7 @@ CHARM_POINTS = {
 ELEMENTAL_MODIFIERS = ["physical", "earth", "fire", "ice", "energy", "death", "holy", "drown", "hpdrain"]
 
 
-class CreatureAbility(pydantic.BaseModel):
+class CreatureAbility(RowModel, table=CreatureAbilityTable):
     """Represents a creature's ability."""
 
     creature_id: int
@@ -44,7 +48,7 @@ class CreatureAbility(pydantic.BaseModel):
     with element: ``no_template``."""
 
 
-class CreatureDrop(pydantic.BaseModel):
+class CreatureDrop(RowModel, table=CreatureDropTable):
     """Represents an item dropped by a creature."""
 
     creature_id: int
@@ -62,8 +66,39 @@ class CreatureDrop(pydantic.BaseModel):
     chance: float | None = None
     """The chance percentage of getting this item dropped by this creature."""
 
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+        if self.item_id is not None:
+            super().insert(conn)
+            return
+        item_table = Table(ItemTable.__tablename__)
+        loot_table = Table(self.table.__tablename__)
+        q = (
+            Query.into(loot_table)
+            .columns(
+                "creature_id",
+                "item_id",
+                "min",
+                "max",
+                "chance",
+            )
+            .insert(
+                Parameter(":creature_id"),
+                (
+                    Query.from_(item_table)
+                    .select(item_table.article_id)
+                    .where(item_table.title == Parameter(":item_title"))
+                ),
+                Parameter(":min"),
+                Parameter(":max"),
+                Parameter(":chance"),
+            )
+        )
+        query_str = q.get_sql()
+        with contextlib.suppress(sqlite3.IntegrityError):
+            conn.execute(query_str, self.model_dump(mode="json"))
 
-class CreatureMaxDamage(pydantic.BaseModel):
+
+class CreatureMaxDamage(RowModel, table=CreatureMaxDamageTable):
     """Represent a creature's max damage, broke down by damage type."""
 
     creature_id: int
@@ -108,7 +143,7 @@ class CreatureMaxDamage(pydantic.BaseModel):
     If it is unknown, but the creature does deal damage, it will be -1."""
 
 
-class CreatureSound(pydantic.BaseModel):
+class CreatureSound(RowModel, table=CreatureSoundTable):
     """Represents a sound made by a creature."""
 
     creature_id: int
@@ -250,3 +285,16 @@ class Creature(WikiEntry, WithStatus, WithVersion, RowModel, table=CreatureTable
     def resistant_to(self) -> dict[str, int]:
         """Get a dictionary containing the elements the creature is resistant to and modifier."""
         return {k: v for k, v in self.elemental_modifiers.items() if 100 > v > 0}
+
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+        super().insert(conn)
+
+        for drop in self.loot:
+            drop.insert(conn)
+        for sound in self.sounds:
+            sound.insert(conn)
+        for ability in self.abilities:
+            ability.insert(conn)
+        if self.max_damage:
+            self.max_damage.insert(conn)
+

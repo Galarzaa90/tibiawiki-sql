@@ -1,11 +1,12 @@
-
+import contextlib
 import sqlite3
 
 import pydantic
+from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
-from tibiawikisql.schema import NpcTable
+from tibiawikisql.schema import NpcDestinationTable, NpcJobTable, NpcRaceTable, NpcSpellTable, NpcTable
 
 
 class NpcOffer(pydantic.BaseModel):
@@ -110,7 +111,7 @@ class NpcBuyOffer(NpcOffer):
                    """
 
 
-class NpcSpell(pydantic.BaseModel):
+class NpcSpell(RowModel, table=NpcSpellTable):
     """Represents a spell that a NPC can teach."""
 
     npc_id: int
@@ -136,28 +137,45 @@ class NpcSpell(pydantic.BaseModel):
     monk: bool
     """If the spell is taught to monks."""
 
-    def insert(self, c):
-        if getattr(self, "spell_id", None):
-            super().insert(c)
-        else:
-            query = f"""INSERT INTO {self.table.__tablename__}({','.join(c.name for c in self.table.columns)})
-                        VALUES(?, (SELECT article_id from spell WHERE title = ?), ?, ?, ?, ?)"""
-            c.execute(query, (self.npc_id, self.spell_title, self.knight, self.sorcerer, self.paladin, self.druid))
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+        if self.spell_id is not None:
+            super().insert(conn)
 
-    @classmethod
-    def _is_column(cls, name):
-        return name in cls.__slots__
+        spell_table = Table(NpcSpellTable.__tablename__)
+        npc_spell_table = Table(self.table.__tablename__)
+        q = (
+            Query.into(npc_spell_table)
+            .columns(
+                "npc_id",
+                "spell_id",
+                "price",
+                "knight",
+                "paladin",
+                "druid",
+                "sorcerer",
+                "monk",
+            )
+            .insert(
+                Parameter(":npc_id"),
+                (
+                    Query.from_(spell_table)
+                    .select(spell_table.article_id)
+                    .where(spell_table.title == Parameter(":spell_title"))
+                ),
+                Parameter(":price"),
+                Parameter(":knight"),
+                Parameter(":paladin"),
+                Parameter(":druid"),
+                Parameter(":sorcerer"),
+                Parameter(":monk"),
+            )
+        )
+        query_str = q.get_sql()
+        with contextlib.suppress(sqlite3.IntegrityError):
+            conn.execute(query_str, self.model_dump(mode="json"))
 
-    @classmethod
-    def _get_base_query(cls):
-        return f"""SELECT {cls.table.__tablename__}.*, spell.title as spell_title, npc.title as npc_title,
-                  spell.price as price, npc.city as npc_city
-                  FROM {cls.table.__tablename__}
-                  LEFT JOIN npc ON npc.article_id = npc_id
-                  LEFT JOIN spell ON spell.article_id = spell_id"""
 
-
-class NpcDestination(pydantic.BaseModel):
+class NpcDestination(RowModel, table=NpcDestinationTable):
     """Represents a NPC's travel destination."""
 
     npc_id: int
@@ -239,14 +257,14 @@ class Npc(WikiEntry, WithVersion, WithStatus, RowModel, table=NpcTable):
         #     offer.insert(c)
         # for offer in getattr(self, "sell_offers", []):
         #     offer.insert(c)
-        for spell in getattr(self, "teaches", []):
+        for spell in self.teaches:
             spell.insert(c)
-        for destination in getattr(self, "destinations", []):
+        for destination in self.destinations:
             destination.insert(c)
-        for job in getattr(self, "jobs", []):
-            NpcJob(npc_id=self.article_id, name=job).insert(c)
-        for race in getattr(self, "races", []):
-            NpcRace(npc_id=self.article_id, name=race).insert(c)
+        for job in self.jobs:
+            NpcJobTable.insert(c, npc_id=self.article_id, name=job)
+        for race in self.races:
+            NpcRaceTable.insert(c, npc_id=self.article_id, name=race)
 
     @classmethod
     def get_by_field(cls, c, field, value, use_like=False):

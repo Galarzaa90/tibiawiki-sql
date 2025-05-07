@@ -1,10 +1,9 @@
-import sqlite3
 from typing import ClassVar
 
-from tibiawikisql.schema import BookTable
 from tibiawikisql.models.item import Book
-from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
+from tibiawikisql.parsers.base import AttributeParser
+from tibiawikisql.schema import BookTable
 from tibiawikisql.utils import clean_links
 
 
@@ -26,12 +25,3 @@ class BookParser(BaseParser):
         "version": AttributeParser.optional("implemented"),
         "status": AttributeParser.status(),
     }
-
-    @classmethod
-    def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: Book) -> None:
-        if model.item_id:
-            super().insert(cursor, model)
-            return
-
-
-

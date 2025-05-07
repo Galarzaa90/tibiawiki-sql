@@ -29,6 +29,8 @@ def parse_links(value):
     return list(link_pattern.findall(value))
 
 class QuestParser(BaseParser):
+    """Parser for quests."""
+
     model = Quest
     table = tibiawikisql.schema.QuestTable
     template_name = "Infobox_Quest"
@@ -56,16 +58,6 @@ class QuestParser(BaseParser):
         cls._parse_quest_rewards(row)
         cls._parse_quest_dangers(row)
         return row
-
-
-    @classmethod
-    def insert(cls, cursor: sqlite3.Cursor | sqlite3.Connection, model: Quest) -> None:
-        super().insert(cursor, model)
-        for reward in model.rewards:
-            tibiawikisql.schema.QuestRewardTable.insert(cursor, **reward.model_dump())
-        for danger in model.dangers:
-            tibiawikisql.schema.QuestDangerTable.insert(cursor, **danger.model_dump())
-
 
     # region Auxiliary Functions
 
