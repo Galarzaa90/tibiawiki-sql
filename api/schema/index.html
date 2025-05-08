@@ -9,23 +9,25 @@
       
       
       
+        <link rel="prev" href="../parsers/">
       
-        <link rel="next" href="intro/">
+      
+        <link rel="next" href="../utils/">
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
     
     
       
-        <title>Home - TibiaWikiSQL</title>
+        <title>Schema - TibiaWikiSQL</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.2afb09e1.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -44,9 +46,9 @@
       
     
     
-      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -72,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tibiawikisql" class="md-skip">
+        <a href="#tibiawikisql.schema" class="md-skip">
           Skip to content
         </a>
       
@@ -88,7 +90,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="TibiaWikiSQL" class="md-header__button md-logo" aria-label="TibiaWikiSQL" data-md-component="logo">
+    <a href="../.." title="TibiaWikiSQL" class="md-header__button md-logo" aria-label="TibiaWikiSQL" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Schema
             
           </span>
         </div>
@@ -228,13 +230,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="." class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
           
   
   
@@ -250,11 +250,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="api/api/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../api/" class="md-tabs__link">
           
   
   
@@ -294,7 +296,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="TibiaWikiSQL" class="md-nav__button md-logo" aria-label="TibiaWikiSQL" data-md-component="logo">
+    <a href="../.." title="TibiaWikiSQL" class="md-nav__button md-logo" aria-label="TibiaWikiSQL" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -321,29 +323,24 @@
       
   
   
-    
   
   
-  
     
     
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
         
           
-          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
             
   
   
@@ -356,7 +353,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_1">
             <span class="md-nav__icon md-icon"></span>
             Home
@@ -367,30 +364,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Home
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -401,33 +378,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#tibiawikisql" class="md-nav__link">
-    <span class="md-ellipsis">
-      TibiaWikiSQL
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -440,7 +390,7 @@
   
   
     <li class="md-nav__item">
-      <a href="intro/" class="md-nav__link">
+      <a href="../../intro/" class="md-nav__link">
         
   
   
@@ -467,24 +417,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -497,7 +452,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             API Reference
@@ -511,7 +466,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/api/" class="md-nav__link">
+      <a href="../api/" class="md-nav__link">
         
   
   
@@ -534,7 +489,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/database/" class="md-nav__link">
+      <a href="../database/" class="md-nav__link">
         
   
   
@@ -557,7 +512,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/generation/" class="md-nav__link">
+      <a href="../generation/" class="md-nav__link">
         
   
   
@@ -580,7 +535,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/errors/" class="md-nav__link">
+      <a href="../errors/" class="md-nav__link">
         
   
   
@@ -603,7 +558,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/models/" class="md-nav__link">
+      <a href="../models/" class="md-nav__link">
         
   
   
@@ -626,7 +581,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/parsers/" class="md-nav__link">
+      <a href="../parsers/" class="md-nav__link">
         
   
   
@@ -646,10 +601,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="api/schema/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Schema
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -660,6 +635,72 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tibiawikisql.schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      schema
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="schema">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tibiawikisql.schema.AchievementTable" class="md-nav__link">
+    <span class="md-ellipsis">
+      AchievementTable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tibiawikisql.schema.create_tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      create_tables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="create_tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tibiawikisql.schema.create_tables--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameters
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -672,7 +713,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/utils/" class="md-nav__link">
+      <a href="../utils/" class="md-nav__link">
         
   
   
@@ -720,11 +761,50 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#tibiawikisql" class="md-nav__link">
+  <a href="#tibiawikisql.schema" class="md-nav__link">
     <span class="md-ellipsis">
-      TibiaWikiSQL
+      schema
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="schema">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tibiawikisql.schema.AchievementTable" class="md-nav__link">
+    <span class="md-ellipsis">
+      AchievementTable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tibiawikisql.schema.create_tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      create_tables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="create_tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tibiawikisql.schema.create_tables--parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameters
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -747,14 +827,192 @@
   
 
 
-  <h1>Home</h1>
+  <h1>Schema</h1>
 
-<h2 id="tibiawikisql">TibiaWikiSQL</h2>
-<p>TibiaWikiSQL is a script that generates a SQLite database from TibiaWiki articles by using its API.</p>
-<p>This allows you to have all the data available at once, as well as take advantage of the features of a relational database.</p>
-<p>All information is gathered from TibiaWiki, click the image to visit and contribute to the project!</p>
-<p>If you use this into your project or use the generate data, make sure to credit them and their contributors.</p>
-<p><a href="https://tibia.fandom.com/wiki/Main_Page"><img alt="TibiaWiki Logo" src="images/TibiaWiki.gif" /></a></p>
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="tibiawikisql.schema" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.schema</span>
+
+
+</h3>
+
+    <div class="doc doc-contents first">
+
+        <p>Defines the SQL schemas to use.</p>
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="            AchievementTable (tibiawikisql.schema.AchievementTable)" href="#tibiawikisql.schema.AchievementTable">AchievementTable</a></code></td>
+            <td>
+              <div class="doc-md-description">
+                <p>Contains achievements from the game.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            create_tables (tibiawikisql.schema.create_tables)" href="#tibiawikisql.schema.create_tables">create_tables</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Create all the tables in the database.</p>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="tibiawikisql.schema.AchievementTable" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">AchievementTable</span>
+
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            Table (tibiawikisql.database.Table)" href="../database/#tibiawikisql.database.Table">Table</a></code></p>
+
+
+        <p>Contains achievements from the game.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="tibiawikisql.schema.create_tables" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">create_tables</span>
+
+
+</h4>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">create_tables</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Create all the tables in the database.</p>
+<h6 id="tibiawikisql.schema.create_tables--parameters">Parameters</h6>
+<p>conn: sqlite3.Connection, sqlite3.Cursor
+    A connection to the database.</p>
+
+
+            <details class="quote">
+              <summary>Source code in <code>tibiawikisql/schema.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-466">466</a></span>
+<span class="normal"><a href="#__codelineno-0-467">467</a></span>
+<span class="normal"><a href="#__codelineno-0-468">468</a></span>
+<span class="normal"><a href="#__codelineno-0-469">469</a></span>
+<span class="normal"><a href="#__codelineno-0-470">470</a></span>
+<span class="normal"><a href="#__codelineno-0-471">471</a></span>
+<span class="normal"><a href="#__codelineno-0-472">472</a></span>
+<span class="normal"><a href="#__codelineno-0-473">473</a></span>
+<span class="normal"><a href="#__codelineno-0-474">474</a></span>
+<span class="normal"><a href="#__codelineno-0-475">475</a></span>
+<span class="normal"><a href="#__codelineno-0-476">476</a></span>
+<span class="normal"><a href="#__codelineno-0-477">477</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-466" name="__codelineno-0-466"></a><span class="k">def</span><span class="w"> </span><span class="nf">create_tables</span><span class="p">(</span><span class="n">conn</span><span class="p">):</span>
+<a id="__codelineno-0-467" name="__codelineno-0-467"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create all the tables in the database.</span>
+<a id="__codelineno-0-468" name="__codelineno-0-468"></a>
+<a id="__codelineno-0-469" name="__codelineno-0-469"></a><span class="sd">    Parameters</span>
+<a id="__codelineno-0-470" name="__codelineno-0-470"></a><span class="sd">    ----------</span>
+<a id="__codelineno-0-471" name="__codelineno-0-471"></a><span class="sd">    conn: sqlite3.Connection, sqlite3.Cursor</span>
+<a id="__codelineno-0-472" name="__codelineno-0-472"></a><span class="sd">        A connection to the database.</span>
+<a id="__codelineno-0-473" name="__codelineno-0-473"></a>
+<a id="__codelineno-0-474" name="__codelineno-0-474"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-475" name="__codelineno-0-475"></a>    <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">Table</span><span class="o">.</span><span class="n">all_tables</span><span class="p">():</span>
+<a id="__codelineno-0-476" name="__codelineno-0-476"></a>        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">get_drop_statement</span><span class="p">())</span>
+<a id="__codelineno-0-477" name="__codelineno-0-477"></a>        <span class="n">conn</span><span class="o">.</span><span class="n">executescript</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">get_create_table_statement</span><span class="p">())</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
 
 
 
@@ -789,15 +1047,31 @@
       
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
+          
+          <a href="../parsers/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Parsers">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Parsers
+              </div>
+            </div>
+          </a>
+        
         
           
-          <a href="intro/" class="md-footer__link md-footer__link--next" aria-label="Next: Introduction">
+          <a href="../utils/" class="md-footer__link md-footer__link--next" aria-label="Next: Utilities">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Introduction
+                Utilities
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -850,10 +1124,10 @@
     
     
       
-      <script id="__config" type="application/json">{"base": ".", "features": ["content.code.copy", "navigation.footer", "navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "search.share", "toc.follow"], "search": "assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.footer", "navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "search.share", "toc.follow"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.c8b220af.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
       
     
   </body>
