@@ -1,4 +1,4 @@
-image: python:3.8
+image: python:3.13
 
 variables:
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
@@ -25,13 +25,12 @@ build:
 docs:
   stage: build
   script:
-    - pip install Sphinx
-    - cd docs
-    - make html
+    - pip install -U -e .[docs]
+    - mkdocs build
   artifacts:
     name: tibiawikisql-docs
     paths:
-      - docs/_build/
+      - site/
 
 coverage:
   stage: test
@@ -73,10 +72,10 @@ pages:
   script:
     - mkdir public
     - mv htmlcov/ public/coverage/
-    - mv docs/_build/html/* public/
+    - mv site/* public/
   artifacts:
     paths:
       - public
   only:
-    - master
+    - main
     - dev

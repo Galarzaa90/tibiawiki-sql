@@ -1,8 +1,8 @@
-name: Build Database
+name: 🗄 Build Database
 on:
   push:
     branches:
-      - master
+      - main
   schedule:
     - cron: '0 0 * * 0'  # Every Sunday at 00:00
 
@@ -11,18 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🚚
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Set up Python runtime 🐍
-        uses: actions/setup-python@v1
+      - name: Set up Python 🐍
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.8
+          python-version: "3.13"
 
-      - name: Install module ⚙️
+      - name: Install ⚙️
         run: python setup.py install
 
       - name: Cache Images 📦
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: images/
           key: images
@@ -33,7 +33,7 @@ jobs:
         run: tibiawikisql generate --skip-deprecated
 
       - name: Upload database 🚀
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: tibiawiki-db
           path: |

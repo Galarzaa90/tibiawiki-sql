@@ -1,9 +1,8 @@
-name: Docker Build
+name: 🐋 Docker Build
 
 on:
   push:
     branches:
-      - master
       - dev
       - main
     tags:
@@ -11,22 +10,22 @@ on:
 
 jobs:
   build:
-    name: Build and Publish Images
+    name: ⚙️ Build and Publish Images
     runs-on: ubuntu-latest
     steps:
       - name: Cache Docker Layers 📦
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
       - name: Checkout 🚚
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Docker Meta 📋
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v5
         with:
           images: |
             ghcr.io/${{ github.repository }}
@@ -38,13 +37,13 @@ jobs:
             type=pep440,pattern={{major}}.{{minor}}
             type=pep440,pattern={{major}}
       - name: Login to Docker Hub 🐳
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Login to GHCR 🐙
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -52,11 +51,11 @@ jobs:
 
       - name: Set up Docker Buildx 🐋
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
 
       - name: Build and Push 🚀
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./
           file: ./Dockerfile

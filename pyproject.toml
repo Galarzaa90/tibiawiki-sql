@@ -10,7 +10,7 @@ include = [
 
 [project]
 name = "tibiawikisql"
-dynamic = ["version", "dependencies"]
+dynamic = ["version", "dependencies", "optional-dependencies"]
 authors = [
     { name = "Allan Galarza", email = "allan.galarza@gmail.com" }
 ]
@@ -56,6 +56,9 @@ tibiawikisql = "tibiawikisql.__main__:cli"
 version = { attr = "tibiawikisql.__version__" }
 dependencies = { file = ["requirements.txt"] }
 
+[tool.setuptools.dynamic.optional-dependencies]
+docs = { file = ["requirements-docs.txt"] }
+testing = { file = ["requirements-testing.txt"] }
 
 [tool.ruff]
 exclude = [
