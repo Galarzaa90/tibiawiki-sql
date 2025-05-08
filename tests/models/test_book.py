@@ -3,8 +3,9 @@ import unittest
 
 from polyfactory.factories.pydantic_factory import ModelFactory
 
-from tibiawikisql.models import Book, Item
-from tibiawikisql.schema import BookTable, ItemTable
+from tibiawikisql.models import Book, Item, ItemStoreOffer
+from tibiawikisql.models.item import ItemSound
+from tibiawikisql.schema import BookTable, ItemAttributeTable, ItemSoundTable, ItemStoreOfferTable, ItemTable
 
 
 class BookFactory(ModelFactory[Book]):
@@ -28,6 +29,9 @@ class TestBook(unittest.TestCase):
     def setUp(self):
         self.conn = sqlite3.connect(":memory:")
         self.conn.executescript(ItemTable.get_create_table_statement())
+        self.conn.executescript(ItemAttributeTable.get_create_table_statement())
+        self.conn.executescript(ItemStoreOfferTable.get_create_table_statement())
+        self.conn.executescript(ItemSoundTable.get_create_table_statement())
         self.conn.executescript(BookTable.get_create_table_statement())
 
 

@@ -76,11 +76,11 @@ class TestCreatureParser(unittest.TestCase):
 
         result = parse_maximum_damage(max_damage_content)
 
-        self.assertIsNone(result)
+        self.assertEqual({}, result)
 
     def test_parse_max_damage_empty(self):
         max_damage_content = ""
 
         result = parse_maximum_damage(max_damage_content)
 
-        self.assertIsNone(result)
+        self.assertEqual({}, result)
