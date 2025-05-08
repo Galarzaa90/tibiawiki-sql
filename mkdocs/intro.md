@@ -24,6 +24,8 @@ Or
 python -m tibiawikisql
 ```
 
+The generate script can be run using:
+
 ```shell
 tibiawikisql generate
 ```

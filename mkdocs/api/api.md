@@ -1,10 +1,5 @@
 # TibiaWiki API
 
-
-::: tibiawikisql.api.WikiClient
-
-::: tibiawikisql.api.WikiEntry
-
-::: tibiawikisql.api.Article
-
-::: tibiawikisql.api.Image
+::: tibiawikisql.api
+    options:
+        inherited_members: true 

@@ -1,4 +1,4 @@
-"""API to fetch information from `TibiaWiki <https://tibiawiki.fandom.com>`_ through MediaWiki's API."""
+"""API to fetch information from [TibiaWiki](https://tibia.fandom.com) through MediaWiki's API."""
 
 import datetime
 import json
