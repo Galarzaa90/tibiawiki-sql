@@ -44,11 +44,6 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/Galarzaa90/tibiawiki-sql"
 
-[project.optional-dependencies]
-docs = [
-    "Sphinx"
-]
-
 [project.scripts]
 tibiawikisql = "tibiawikisql.__main__:cli"
 
