@@ -1,8 +1,9 @@
 from collections.abc import Callable
-from typing import Any, ClassVar, Generic, Self, TypeVar
+from typing import Any, ClassVar, Generic, TypeVar
 
 import pydantic
 from pydantic import ValidationError
+from typing_extensions import Self
 
 import tibiawikisql.database
 from tibiawikisql.api import Article
