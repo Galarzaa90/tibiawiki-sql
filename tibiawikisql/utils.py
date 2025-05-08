@@ -12,19 +12,20 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 from __future__ import annotations
+
 import datetime
 import re
 import time
 from collections import defaultdict
 from contextlib import contextmanager
-from typing import Any, Literal, NotRequired, TYPE_CHECKING, TypedDict, overload
-from collections.abc import Generator
+from typing import Any, Literal, TYPE_CHECKING, overload
 
 import mwparserfromhell
 from mwparserfromhell.nodes.extras import Parameter
 from mwparserfromhell.wikicode import Wikicode
 
 if TYPE_CHECKING:
+    from collections.abc import Generator
     from mwparserfromhell.nodes import Template
 
 min_max_pattern = re.compile(r"(\d+)-(\d+)")
