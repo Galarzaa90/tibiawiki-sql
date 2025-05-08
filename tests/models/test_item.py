@@ -13,7 +13,7 @@ class TestItemParser(unittest.TestCase):
         article = Article(
             article_id=1,
             title="Fire Sword",
-            timestamp=datetime.datetime.fromisoformat("2018-08-20T04:33:15Z"),
+            timestamp=datetime.datetime.fromisoformat("2018-08-20T04:33:15+00:00"),
             content=load_resource("content_item.txt"),
         )
 
@@ -31,7 +31,7 @@ class TestItemParser(unittest.TestCase):
         article = Article(
             article_id=1,
             title="Football",
-            timestamp=datetime.datetime.fromisoformat("2018-08-20T04:33:15Z"),
+            timestamp=datetime.datetime.fromisoformat("2018-08-20T04:33:15+00:00"),
             content=load_resource("content_item_no_attrib.txt"),
         )
 
@@ -43,7 +43,7 @@ class TestItemParser(unittest.TestCase):
         article = Article(
             article_id=1,
             title="Gilded Eldritch Wand",
-            timestamp=datetime.datetime.fromisoformat("2018-08-20T04:33:15Z"),
+            timestamp=datetime.datetime.fromisoformat("2018-08-20T04:33:15+00:00"),
             content=load_resource("content_item_perfect_shot.txt"),
         )
 
@@ -57,7 +57,7 @@ class TestItemParser(unittest.TestCase):
         article = Article(
             article_id=1,
             title="Spiritthorn Armor",
-            timestamp=datetime.datetime.fromisoformat("2018-08-20T04:33:15Z"),
+            timestamp=datetime.datetime.fromisoformat("2018-08-20T04:33:15+00:00"),
             content=load_resource("content_item_damage_reflection.txt"),
         )
 

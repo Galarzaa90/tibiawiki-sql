@@ -14,7 +14,7 @@ class TestModels(unittest.TestCase):
         schema.create_tables(self.conn)
 
     def test_achievement(self):
-        article = Article(1, "Demonic Barkeeper", timestamp="2018-08-20T04:33:15Z",
+        article = Article(1, "Demonic Barkeeper", timestamp="2018-08-20T04:33:15+00:00",
                           content=load_resource("content_achievement.txt"))
         achievement = models.Achievement.from_article(article)
         self.assertIsInstance(achievement, models.Achievement)
@@ -29,7 +29,7 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(db_achievement, models.Achievement)
 
     def test_creature(self):
-        article = Article(1, "Demon", timestamp="2018-08-20T04:33:15Z",
+        article = Article(1, "Demon", timestamp="2018-08-20T04:33:15+00:00",
                           content=load_resource("content_creature.txt"))
         creature = models.Creature.from_article(article)
         self.assertIsInstance(creature, models.Creature)
@@ -56,7 +56,7 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(db_creature, models.Creature)
 
     def test_house(self):
-        article = Article(1, "Crystal Glance", timestamp="2018-08-20T04:33:15Z",
+        article = Article(1, "Crystal Glance", timestamp="2018-08-20T04:33:15+00:00",
                           content=load_resource("content_house.txt"))
         house = models.House.from_article(article)
         self.assertIsInstance(house, models.House)

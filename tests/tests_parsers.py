@@ -12,7 +12,7 @@ class TestParsers(unittest.TestCase):
         article = Article(
             article_id=1,
             title="Demonic Barkeeper",
-            timestamp=datetime.datetime.fromisoformat("2018-08-20T04:33:15Z"),
+            timestamp=datetime.datetime.fromisoformat("2018-08-20T04:33:15+00:00"),
             content=load_resource("content_achievement.txt"),
         )
 
