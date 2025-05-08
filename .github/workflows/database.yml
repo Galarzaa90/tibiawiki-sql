@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    name: ⚙️ Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🚚
@@ -19,7 +20,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install ⚙️
-        run: python setup.py install
+        run:  pip install -U -e .
 
       - name: Cache Images 📦
         uses: actions/cache@v4
