@@ -16,7 +16,8 @@ before_script:
 build:
   stage: build
   script:
-    - python setup.py sdist bdist_wheel
+    - python -m pip install build
+    - python -m build
   artifacts:
     name: tibiawikisql-dist
     paths:
