@@ -2,45 +2,68 @@ from __future__ import annotations
 
 import logging
 import sqlite3
-from contextlib import asynccontextmanager
-from typing import Annotated
+from typing import Annotated, TYPE_CHECKING
 
 from fastapi import Depends, FastAPI
-from starlette.requests import Request
 
-from tibiawikisql.models import Npc
+from tibiawikisql.models import Achievement, Charm, Creature, Npc
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
 
 logging.basicConfig(level=logging.DEBUG)
 
 sql_logger = logging.getLogger("sqlite3")
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    conn = app.state.conn = sqlite3.connect("tibiawiki.db")
-    conn.set_trace_callback(sql_logger.info)
-    yield
-    conn.close()
-
 app = FastAPI(
     title="TibiaWikiSQL",
-    lifespan=lifespan,
 )
 
-
-def get_db_connection(request: Request) -> sqlite3.Connection:
-    return request.app.state.conn
+def get_db_connection() -> Generator[sqlite3.Connection]:
+    conn = sqlite3.connect("tibiawiki.db")
+    conn.set_trace_callback(sql_logger.info)
+    try:
+        yield conn
+    finally:
+        conn.close()
 
 Conn = Annotated[sqlite3.Connection, Depends(get_db_connection)]
 
 @app.get("/healthcheck", tags=["General"])
-async def healthcheck() -> bool:
+def healthcheck() -> bool:
     return True
 
 
-@app.get("/npcs/{title}")
-async def get_npc(
+@app.get("/achievements/{title}")
+def get_achievement(
         conn: Conn,
         title: str,
-):
+) -> Achievement | None:
+    achievement = Achievement.get_by_field(conn, "title", title)
+    return achievement
+
+@app.get("/charms/{title}")
+def get_charm(
+        conn: Conn,
+        title: str,
+) -> Charm | None:
+    charm = Charm.get_by_field(conn, "title", title)
+    return charm
+
+@app.get("/creatures/{title}")
+def get_creature(
+        conn: Conn,
+        title: str,
+) -> Creature | None:
+    creature = Creature.get_by_field(conn, "title", title)
+    return creature
+
+
+
+@app.get("/npcs/{title}")
+def get_npc(
+        conn: Conn,
+        title: str,
+) -> Npc | None:
     npc = Npc.get_by_field(conn, "title", title)
     return npc

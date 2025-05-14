@@ -1,15 +1,27 @@
+import contextlib
 import sqlite3
-from collections import OrderedDict
+from typing import Any
 
-import pydantic
-from pydantic import Field
+from pydantic import BaseModel, Field
 from pypika import Parameter, Query, Table
+from typing_extensions import Self
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
-from tibiawikisql.schema import CreatureAbilityTable, CreatureDropTable, CreatureMaxDamageTable, CreatureSoundTable, \
-    CreatureTable, ItemTable
-import contextlib
+from tibiawikisql.models.base import (
+    ConnCursor,
+    RowModel,
+    WithImage,
+    WithStatus,
+    WithVersion,
+)
+from tibiawikisql.schema import (
+    CreatureAbilityTable,
+    CreatureDropTable,
+    CreatureMaxDamageTable,
+    CreatureSoundTable,
+    CreatureTable,
+    ItemTable,
+)
 
 KILLS = {
     "Harmless": 25,
@@ -32,11 +44,9 @@ CHARM_POINTS = {
 ELEMENTAL_MODIFIERS = ["physical", "earth", "fire", "ice", "energy", "death", "holy", "drown", "hpdrain"]
 
 
-class CreatureAbility(RowModel, table=CreatureAbilityTable):
+class CreatureAbility(BaseModel):
     """Represents a creature's ability."""
 
-    creature_id: int
-    """The article ID of the creature this ability belongs to."""
     name: str
     """The name of the ability."""
     effect: str | None = None
@@ -48,13 +58,9 @@ class CreatureAbility(RowModel, table=CreatureAbilityTable):
     with element: ``no_template``."""
 
 
-class CreatureDrop(RowModel, table=CreatureDropTable):
+class CreatureDrop(BaseModel):
     """Represents an item dropped by a creature."""
 
-    creature_id: int
-    """The article id of the creature the drop belongs to."""
-    creature_title: str | None
-    """The title of the creature that drops the item."""
     item_id: int | None = None
     """The article id of the item."""
     item_title: str
@@ -66,12 +72,12 @@ class CreatureDrop(RowModel, table=CreatureDropTable):
     chance: float | None = None
     """The chance percentage of getting this item dropped by this creature."""
 
-    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor, creature_id: int) -> None:
         if self.item_id is not None:
-            super().insert(conn)
+            CreatureDropTable.insert(conn, creature_id=creature_id, **self.model_dump())
             return
         item_table = Table(ItemTable.__tablename__)
-        loot_table = Table(self.table.__tablename__)
+        loot_table = Table(CreatureDropTable.__tablename__)
         q = (
             Query.into(loot_table)
             .columns(
@@ -94,15 +100,15 @@ class CreatureDrop(RowModel, table=CreatureDropTable):
             )
         )
         query_str = q.get_sql()
+        parameters = self.model_dump(mode="json")
+        parameters["creature_id"] = creature_id
         with contextlib.suppress(sqlite3.IntegrityError):
-            conn.execute(query_str, self.model_dump(mode="json"))
+            conn.execute(query_str, parameters)
 
 
-class CreatureMaxDamage(RowModel, table=CreatureMaxDamageTable):
+class CreatureMaxDamage(BaseModel):
     """Represent a creature's max damage, broke down by damage type."""
 
-    creature_id: int
-    """The article ID of the creature this max damage belongs to."""
     physical: int | None = None
     """The maximum physical damage dealt by the creature.
     If it is unknown, but the creature does deal damage, it will be -1."""
@@ -143,16 +149,7 @@ class CreatureMaxDamage(RowModel, table=CreatureMaxDamageTable):
     If it is unknown, but the creature does deal damage, it will be -1."""
 
 
-class CreatureSound(RowModel, table=CreatureSoundTable):
-    """Represents a sound made by a creature."""
-
-    creature_id: int
-    """The article id of the creature that does this sound."""
-    content: str
-    """The content of the sound."""
-
-
-class Creature(WikiEntry, WithStatus, WithVersion, RowModel, table=CreatureTable):
+class Creature(WikiEntry, WithStatus, WithVersion, WithImage, RowModel, table=CreatureTable):
     """Represents a creature."""
 
     article: str | None
@@ -237,12 +234,10 @@ class Creature(WikiEntry, WithStatus, WithVersion, RowModel, table=CreatureTable
     """The field types the creature will walk through, separated by commas."""
     walks_around: str | None
     """The field types the creature will walk around, separated by commas."""
-    sounds: list[CreatureSound] = Field([])
+    sounds: list[str] = Field([])
     """The "sounds" made by the creature."""
     location: str | None
     """The locations where the creature can be found."""
-    image: bytes | None = None
-    """The creature's image in bytes."""
     loot: list[CreatureDrop] = Field([])
     """The items dropped by this creature."""
 
@@ -290,11 +285,29 @@ class Creature(WikiEntry, WithStatus, WithVersion, RowModel, table=CreatureTable
         super().insert(conn)
 
         for drop in self.loot:
-            drop.insert(conn)
+            drop.insert(conn, creature_id=self.article_id)
         for sound in self.sounds:
-            sound.insert(conn)
+            CreatureSoundTable.insert(conn, creature_id=self.article_id, content=sound)
         for ability in self.abilities:
-            ability.insert(conn)
+            CreatureAbilityTable.insert(conn, creature_id=self.article_id, **ability.model_dump())
         if self.max_damage:
-            self.max_damage.insert(conn)
+            CreatureMaxDamageTable.insert(conn, creature_id=self.article_id, **self.max_damage.model_dump())
 
+    @classmethod
+    def get_by_field(cls, conn: ConnCursor, field: str, value: Any, use_like: bool = False) -> Self | None:
+        creature: Self = super().get_by_field(conn, field, value, use_like)
+        if creature is None:
+            return None
+        max_damage = CreatureMaxDamageTable.get_by_field(conn, "creature_id", creature.article_id)
+        if max_damage:
+            creature.max_damage = CreatureMaxDamage(**dict(max_damage))
+
+        sounds = CreatureSoundTable.get_list_by_field(conn, "creature_id", creature.article_id)
+        creature.sounds = [r["content"] for r in sounds]
+
+        abilities = CreatureAbilityTable.get_list_by_field(conn, "creature_id", creature.article_id)
+        creature.abilities = [CreatureAbility(**dict(r)) for r in abilities]
+
+        drops = CreatureDropTable.get_by_creature_id(conn, creature.article_id)
+        creature.loot = [CreatureDrop(**dict(r)) for r in drops]
+        return creature

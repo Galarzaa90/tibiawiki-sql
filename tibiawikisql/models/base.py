@@ -1,9 +1,9 @@
 """Module with base classes used by models."""
-
+import base64
 import sqlite3
 from typing import Any, ClassVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field, field_serializer
 from typing_extensions import Self
 
 from tibiawikisql.database import Table
@@ -23,6 +23,13 @@ class WithVersion(BaseModel):
 
     version: str | None
     """The client version when this was implemented in the game, if known."""
+
+
+class WithImage(BaseModel):
+    """Adds the image field to a model."""
+
+    image: bytes | None = Field(None, exclude=True)
+    """An image representing this article."""
 
 
 class RowModel(BaseModel):
@@ -97,7 +104,6 @@ class RowModel(BaseModel):
             ValueError: The specified field doesn't exist in the table.
 
         """
-        # This is used to protect the query from possible SQL Injection.
         row = cls.table.get_by_field(conn, field, value, use_like)
         return cls.from_row(row) if row else None
 

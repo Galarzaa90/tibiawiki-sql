@@ -1,5 +1,4 @@
 import re
-import sqlite3
 from typing import Any, ClassVar
 
 import mwparserfromhell
@@ -7,13 +6,25 @@ from mwparserfromhell.nodes import Template
 
 import tibiawikisql.schema
 from tibiawikisql.api import Article
-from tibiawikisql.models.creature import Creature, CreatureAbility, CreatureDrop, CreatureMaxDamage, CreatureSound
+from tibiawikisql.models.creature import (
+    Creature,
+    CreatureAbility,
+    CreatureDrop,
+    CreatureMaxDamage,
+)
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.parsers.base import AttributeParser
-from tibiawikisql.utils import clean_links, find_template, int_pattern, parse_boolean, parse_float, parse_integer, \
-    parse_min_max, \
-    parse_sounds, \
-    strip_code
+from tibiawikisql.utils import (
+    clean_links,
+    find_template,
+    int_pattern,
+    parse_boolean,
+    parse_float,
+    parse_integer,
+    parse_min_max,
+    parse_sounds,
+    strip_code,
+)
 
 
 def parse_maximum_damage(value: str) -> dict[str, int]:
@@ -260,27 +271,22 @@ class CreatureParser(BaseParser):
                     _min, _max = parse_min_max(amounts)
                 loot_items.append(
                     CreatureDrop(
-                        creature_id=article_id,
                         item_title=item,
-                        creature_title=row["title"],
                         min=_min,
                         max=_max,
                     ),
                 )
             row["loot"] = loot_items
         if "sounds" in raw_attributes:
-            sounds = parse_sounds(raw_attributes["sounds"])
-            if sounds:
-                row["sounds"] = [CreatureSound(creature_id=article_id, content=sound) for sound in sounds]
+            row["sounds"] = parse_sounds(raw_attributes["sounds"])
         if "abilities" in raw_attributes:
             abilities = parse_abilities(raw_attributes["abilities"])
             if abilities:
-                row["abilities"] = [CreatureAbility(creature_id=article_id, **ability)
-                                    for ability in abilities]
+                row["abilities"] = [CreatureAbility(**ability) for ability in abilities]
         if "maxdmg" in raw_attributes:
             max_damage = parse_maximum_damage(raw_attributes["maxdmg"])
             if max_damage:
-                row["max_damage"] = CreatureMaxDamage(creature_id=article_id, **max_damage)
+                row["max_damage"] = CreatureMaxDamage(**max_damage)
         return row
 
 

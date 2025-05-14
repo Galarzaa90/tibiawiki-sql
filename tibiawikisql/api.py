@@ -6,7 +6,7 @@ import urllib.parse
 from collections.abc import Generator
 from typing import ClassVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, computed_field
 import requests
 
 from tibiawikisql import __version__
@@ -36,6 +36,7 @@ class WikiEntry(BaseModel):
             return self.article_id == other.article_id
         return False
 
+    @computed_field
     @property
     def url(self) -> str:
         """The URL to the article's display page."""

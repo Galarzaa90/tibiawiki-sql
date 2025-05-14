@@ -6,7 +6,7 @@ from pydantic import Field
 from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
+from tibiawikisql.models.base import RowModel, WithImage, WithStatus, WithVersion
 from tibiawikisql.schema import OutfitImageTable, OutfitQuestTable, OutfitTable, QuestTable
 
 
@@ -64,7 +64,7 @@ class OutfitQuest(RowModel, table=OutfitQuestTable):
                    LEFT JOIN outfit ON outfit.article_id = outfit_id"""
 
 
-class OutfitImage(RowModel, table=OutfitImageTable):
+class OutfitImage(RowModel, WithImage, table=OutfitImageTable):
     """Represents an outfit image."""
 
     outfit_id: int
@@ -76,8 +76,6 @@ class OutfitImage(RowModel, table=OutfitImageTable):
     addon: int
     """The addons represented by the image.
     0 for no addons, 1 for first addon, 2 for second addon and 3 for both addons."""
-    image: bytes
-    """The outfit's image in bytes."""
 
 
     @classmethod

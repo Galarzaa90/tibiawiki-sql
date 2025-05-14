@@ -2,11 +2,11 @@ from pydantic import Field
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.npc import NpcSpell
-from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
+from tibiawikisql.models.base import RowModel, WithImage, WithStatus, WithVersion
 from tibiawikisql.schema import SpellTable
 
 
-class Spell(WikiEntry, WithVersion, WithStatus, RowModel, table=SpellTable):
+class Spell(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=SpellTable):
     """Represents a Spell."""
 
     name: str
@@ -63,5 +63,3 @@ class Spell(WikiEntry, WithVersion, WithStatus, RowModel, table=SpellTable):
     """Whether the spell can be used by monks or not."""
     taught_by: list[NpcSpell] = Field(default_factory=list)
     """NPCs that teach this spell."""
-    image: bytes | None = Field(None)
-    """The spell's image in bytes."""

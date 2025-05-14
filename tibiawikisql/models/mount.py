@@ -1,10 +1,10 @@
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
+from tibiawikisql.models.base import RowModel, WithImage, WithStatus, WithVersion
 from tibiawikisql.schema import MountTable
 
 
-class Mount(WikiEntry, WithStatus, WithVersion, RowModel, table=MountTable):
+class Mount(WikiEntry, WithStatus, WithVersion, WithImage, RowModel, table=MountTable):
     """Represents a Mount."""
 
     name: str
@@ -23,6 +23,4 @@ class Mount(WikiEntry, WithStatus, WithVersion, RowModel, table=MountTable):
     """The color of the light emitted by this mount in RGB, if any."""
     light_radius: int | None
     """The radius of the light emitted by this mount, if any."""
-    image: bytes | None = None
-    """The NPC's image in bytes."""
 

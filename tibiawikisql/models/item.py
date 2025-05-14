@@ -6,9 +6,8 @@ from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.quest import QuestReward
-from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
+from tibiawikisql.models.base import RowModel, WithImage, WithStatus, WithVersion
 from tibiawikisql.models.creature import CreatureDrop
-from tibiawikisql.models.npc import NpcBuyOffer, NpcSellOffer
 from tibiawikisql.schema import BookTable, ItemAttributeTable, ItemKeyTable, ItemSoundTable, ItemStoreOfferTable, \
     ItemTable
 
@@ -58,7 +57,7 @@ class ItemStoreOffer(RowModel, table=ItemStoreOfferTable):
     """The currency used. In most of the times it is Tibia Coins."""
 
 
-class Item(WikiEntry, WithVersion, WithStatus, RowModel, table=ItemTable):
+class Item(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=ItemTable):
     """Represents an Item."""
 
     name: str
@@ -97,16 +96,14 @@ class Item(WikiEntry, WithVersion, WithStatus, RowModel, table=ItemTable):
     """The radius of the light emitted by this item, if any."""
     client_id: int | None
     """The internal id of the item in the client."""
-    image: bytes | None = None
-    """The item's image in bytes."""
     attributes: list[ItemAttribute] = Field(default_factory=list)
     """The item's attributes."""
     dropped_by: list[CreatureDrop] = Field(default_factory=list)
     """List of creatures that drop this item, with the chances."""
-    sold_by: list[NpcSellOffer] = Field(default_factory=list)
-    """List of NPCs that sell this item."""
-    bought_by: list[NpcBuyOffer] = Field(default_factory=list)
-    """List of NPCs that buy this item."""
+    # sold_by: list[NpcSellOffer] = Field(default_factory=list)
+    # """List of NPCs that sell this item."""
+    # bought_by: list[NpcBuyOffer] = Field(default_factory=list)
+    # """List of NPCs that buy this item."""
     awarded_in: list[QuestReward] = Field(default_factory=list)
     """List of quests that give this item as reward."""
     sounds: list[ItemSound] = Field(default_factory=list)

@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import ConnCursor, RowModel, WithStatus, WithVersion
+from tibiawikisql.models.base import ConnCursor, RowModel, WithImage, WithStatus, WithVersion
 from tibiawikisql.schema import NpcBuyingTable, NpcDestinationTable, NpcJobTable, NpcRaceTable, NpcSellingTable, \
     NpcSpellTable, NpcTable
 
@@ -127,7 +127,7 @@ class RashidPosition(BaseModel):
     """The location where Rashid is that day."""
 
 
-class Npc(WikiEntry, WithVersion, WithStatus, RowModel, table=NpcTable):
+class Npc(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=NpcTable):
     """Represents a non-playable character."""
 
     name: str
@@ -150,8 +150,6 @@ class Npc(WikiEntry, WithVersion, WithStatus, RowModel, table=NpcTable):
     """The y coordinates of the NPC."""
     z: int | None
     """The z coordinates of the NPC."""
-    image: bytes | None = None
-    """The NPC's image in bytes."""
     sell_offers: list[NpcOffer] = Field(default_factory=list)
     """Items sold by the NPC."""
     buy_offers: list[NpcOffer] = Field(default_factory=list)

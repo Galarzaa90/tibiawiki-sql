@@ -1,10 +1,11 @@
 """Defines the SQL schemas to use."""
 import sqlite3
 from sqlite3 import Connection, Cursor
-from typing import ClassVar
+from typing import Any, ClassVar
 from pypika import Query, Table as PikaTable
 
-from tibiawikisql.database import Blob, Boolean, Column, Date, ForeignKey, Integer, Real, Table, Text, Timestamp
+from tibiawikisql.database import Blob, Boolean, Column, ConnCursor, Date, ForeignKey, Integer, Real, Table, Text, \
+    Timestamp
 
 
 class AchievementTable(Table):
@@ -160,6 +161,23 @@ class CreatureDropTable(Table, table_name="creature_drop"):
     chance = Column(Real)
     min = Column(Integer, nullable=False)
     max = Column(Integer, nullable=False)
+
+    @classmethod
+    def get_by_creature_id(cls, conn: Connection | Cursor, creature_id: int):
+        this = PikaTable(cls.__tablename__)
+        item = PikaTable(ItemTable.__tablename__)
+        base_query = (
+            Query.from_(this)
+            .select(
+                item.article_id.as_("item_id"),
+                item.title.as_("item_title"),
+                this.min,
+                this.max,
+                this.chance,
+            )
+            .join(item).on(this.item_id == item.article_id)
+        )
+        return cls.get_list_by_field(conn, "creature_id", creature_id, base_query=base_query)
 
 
 class ItemAttributeTable(Table, table_name="item_attribute"):
@@ -323,7 +341,6 @@ class NpcBuyingTable(Table, table_name="npc_offer_buy"):
 
     @classmethod
     def get_by_npc_id(cls, conn: Connection | Cursor, npc_id: int):
-        base_query = cls.get_base_select_query()
         this = PikaTable(cls.__tablename__)
         item = PikaTable(ItemTable.__tablename__)
         currency = item.as_("currency")
@@ -350,7 +367,6 @@ class NpcSellingTable(Table, table_name="npc_offer_sell"):
 
     @classmethod
     def get_by_npc_id(cls, conn: Connection | Cursor, npc_id: int):
-        base_query = cls.get_base_select_query()
         this = PikaTable(cls.__tablename__)
         item = PikaTable(ItemTable.__tablename__)
         currency = item.as_("currency")

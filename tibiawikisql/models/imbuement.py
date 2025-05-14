@@ -5,7 +5,7 @@ import pydantic
 from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
+from tibiawikisql.models.base import RowModel, WithImage, WithStatus, WithVersion
 from tibiawikisql.schema import ImbuementMaterialTable, ImbuementTable, ItemTable
 
 
@@ -54,7 +54,7 @@ class ImbuementMaterial(RowModel, table=ImbuementMaterialTable):
 
 
 
-class Imbuement(WikiEntry, WithStatus, WithVersion, RowModel, table=ImbuementTable):
+class Imbuement(WikiEntry, WithStatus, WithVersion, WithImage, RowModel, table=ImbuementTable):
     """Represents an imbuement type."""
 
     name: str
@@ -69,8 +69,6 @@ class Imbuement(WikiEntry, WithStatus, WithVersion, RowModel, table=ImbuementTab
     """The effect given by the imbuement."""
     slots: str
     """The type of items this imbuement may be applied on."""
-    image: bytes | None = None
-    """The bytes of the imbuement's image."""
     materials: list[ImbuementMaterial]
     """The materials needed for the imbuement."""
 
