@@ -250,6 +250,11 @@ class Table(metaclass=TableMeta):
         return f"SELECT * FROM {cls.__tablename__}"
 
     @classmethod
+    def get_base_select_query(cls) -> Query:
+        table = pikaTable(cls.__tablename__)
+        return Query.from_(table).select("*")
+
+    @classmethod
     def get_by_field(
             cls,
             conn: ConnCursor,
@@ -291,6 +296,8 @@ class Table(metaclass=TableMeta):
             sort_by: str | None = None,
             ascending: bool = True,
             limit: int | None = None,
+            *,
+            base_query: Query | None = None,
     ) -> list[Row]:
         """Get a list of rows matching the specified field's value.
 
@@ -317,8 +324,9 @@ class Table(metaclass=TableMeta):
         if sort_by and sort_by not in cls.column_map:
             msg = f"Column {sort_by!r} doesn't exist"
             raise ValueError(msg)
+        base_query = base_query or cls.get_base_select_query()
         table = pikaTable(cls.__tablename__)
-        q = Query.from_(table).select("*").where(table[column].like(value) if use_like else table[column].eq(value))
+        q = base_query.where(table[column].like(value) if use_like else table[column].eq(value))
         if sort_by is not None:
             q = q.orderby(sort_by, order=Order.asc if ascending else Order.desc)
         if limit is not None:

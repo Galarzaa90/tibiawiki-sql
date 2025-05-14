@@ -1,23 +1,19 @@
 import contextlib
 import sqlite3
+from typing import Any, Self
 
-import pydantic
+from pydantic import BaseModel, Field
 from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
-from tibiawikisql.schema import NpcDestinationTable, NpcJobTable, NpcRaceTable, NpcSpellTable, NpcTable
+from tibiawikisql.models.base import ConnCursor, RowModel, WithStatus, WithVersion
+from tibiawikisql.schema import NpcBuyingTable, NpcDestinationTable, NpcJobTable, NpcRaceTable, NpcSellingTable, \
+    NpcSpellTable, NpcTable
 
 
-class NpcOffer(pydantic.BaseModel):
+class NpcOffer(BaseModel):
     """Represents an NPC buy or sell offer."""
 
-    npc_id: int
-    """The article id of the npc that offers the item."""
-    npc_title: str
-    """The title of the npc that offers the item."""
-    npc_city: str | None = None
-    """The city of the npc that offers the item."""
     item_id: int
     """The article ID of the item being offered."""
     item_title: str
@@ -30,102 +26,32 @@ class NpcOffer(pydantic.BaseModel):
     """The value of the item being offered."""
 
 
-class NpcSellOffer(NpcOffer):
-    """Represents an item sellable by an NPC."""
 
-    def insert(self, c):
-        try:
-            if getattr(self, "item_id", None) and getattr(self, "value", None) and getattr(self, "currency_id", None):
-                super().insert(c)
-            elif getattr(self, "value", 0):
-                query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
-                            VALUES(
-                            ?,
-                            (SELECT article_id from item WHERE title = ?),
-                            ?,
-                            (SELECT article_id from item WHERE title = ?))"""
-                c.execute(query, (self.npc_id, self.item_title, self.value, self.currency_title))
-            else:
-                query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
-                                        VALUES(
-                                        ?,
-                                        (SELECT article_id from item WHERE title = ?),
-                                        (SELECT value_buy from item WHERE title = ?),
-                                        (SELECT article_id from item WHERE title = ?))"""
-                c.execute(query, (self.npc_id, self.item_title, self.item_title, self.currency_title))
-        except sqlite3.IntegrityError:
-            pass
-
-    @classmethod
-    def _is_column(cls, name):
-        return name in cls.__slots__
-
-    @classmethod
-    def _get_base_query(cls):
-        return f"""SELECT {cls.table.__tablename__}.*, item.title as item_title, npc.title as npc_title,
-                  npc.city as npc_city, currency.title as currency_title
-                  FROM {cls.table.__tablename__}
-                  LEFT JOIN npc ON npc.article_id = npc_id
-                  LEFT JOIN item ON item.article_id = item_id
-                  LEFT JOIN item currency on currency.article_id = currency_id
-                  """
-
-
-class NpcBuyOffer(NpcOffer):
-    """Represents an item buyable by an NPC."""
-
-    def insert(self, c):
-        try:
-            if getattr(self, "item_id", None) and getattr(self, "value", None) and getattr(self, "currency_id", None):
-                super().insert(c)
-            elif getattr(self, "value", 0):
-                query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
-                            VALUES(
-                            ?,
-                            (SELECT article_id from item WHERE title = ?),
-                            ?,
-                            (SELECT article_id from item WHERE title = ?))"""
-                c.execute(query, (self.npc_id, self.item_title, self.value, self.currency_title))
-            else:
-                query = f"""INSERT INTO {self.table.__tablename__}({','.join(col.name for col in self.table.columns)})
-                                        VALUES(
-                                        ?,
-                                        (SELECT article_id from item WHERE title = ?),
-                                        (SELECT value_sell from item WHERE title = ?),
-                                        (SELECT article_id from item WHERE title = ?))"""
-                c.execute(query, (self.npc_id, self.item_title, self.item_title, self.currency_title))
-        except sqlite3.IntegrityError:
-            pass
-
-    @classmethod
-    def _is_column(cls, name):
-        return name in cls.__slots__
-
-    @classmethod
-    def _get_base_query(cls):
-        return f"""SELECT {cls.table.__tablename__}.*, item.title as item_title, npc.title as npc_title,
-                   npc.city as npc_city, currency.title as currency_title FROM {cls.table.__tablename__}
-                   LEFT JOIN npc ON npc.article_id = npc_id
-                   LEFT JOIN item ON item.article_id = item_id
-                   LEFT JOIN item currency on currency.article_id = currency_id
-                   """
-
+class TaughtSpell(BaseModel):
+    """A spell taught by an NPC."""
+    spell_title: str
+    """The title of the article containing the spell's details."""
+    spell_id: int
+    """The article ID of the spell."""
+    knight: bool
+    """If the spell is taught to knights."""
+    paladin: bool
+    """If the spell is taught to paladins."""
+    druid: bool
+    """If the spell is taught to druids."""
+    sorcerer: bool
+    """If the spell is taught to sorcerers."""
+    monk: bool
+    """If the spell is taught to monks."""
+    price: int
 
 class NpcSpell(RowModel, table=NpcSpellTable):
     """Represents a spell that a NPC can teach."""
 
     npc_id: int
     """The article id of the npc that teaches the spell."""
-    npc_title: str
-    """The title of the npc that teaches the spell."""
     spell_id: int
     """The article id of the spell taught by the npc."""
-    spell_title: str
-    """The title of the spell taught by the npc."""
-    price: int
-    """The price paid to have this spell taught."""
-    npc_city: str
-    """The city where the NPC is located."""
     knight: bool
     """If the spell is taught to knights."""
     paladin: bool
@@ -148,7 +74,6 @@ class NpcSpell(RowModel, table=NpcSpellTable):
             .columns(
                 "npc_id",
                 "spell_id",
-                "price",
                 "knight",
                 "paladin",
                 "druid",
@@ -162,7 +87,6 @@ class NpcSpell(RowModel, table=NpcSpellTable):
                     .select(spell_table.article_id)
                     .where(spell_table.title == Parameter(":spell_title"))
                 ),
-                Parameter(":price"),
                 Parameter(":knight"),
                 Parameter(":paladin"),
                 Parameter(":druid"),
@@ -175,11 +99,9 @@ class NpcSpell(RowModel, table=NpcSpellTable):
             conn.execute(query_str, self.model_dump(mode="json"))
 
 
-class NpcDestination(RowModel, table=NpcDestinationTable):
+class NpcDestination(BaseModel):
     """Represents a NPC's travel destination."""
 
-    npc_id: int
-    """The article id of the NPC."""
     name: str
     """The name of the destination"""
     price: int
@@ -188,8 +110,7 @@ class NpcDestination(RowModel, table=NpcDestinationTable):
     """Notes about the destination, such as requirements."""
 
 
-
-class RashidPosition(pydantic.BaseModel):
+class RashidPosition(BaseModel):
     """Represents a Rashid position."""
 
     day: int
@@ -213,9 +134,9 @@ class Npc(WikiEntry, WithVersion, WithStatus, RowModel, table=NpcTable):
     """The in-game name of the NPC."""
     gender: str | None
     """The gender of the NPC."""
-    races: list[str]
+    races: list[str] = Field(default_factory=list)
     """The races of the NPC."""
-    jobs: list[str]
+    jobs: list[str] = Field(default_factory=list)
     """The jobs of the NPC."""
     location: str | None
     """The location of the NPC."""
@@ -231,54 +152,83 @@ class Npc(WikiEntry, WithVersion, WithStatus, RowModel, table=NpcTable):
     """The z coordinates of the NPC."""
     image: bytes | None = None
     """The NPC's image in bytes."""
-    sell_offers: list[NpcSellOffer] = []
+    sell_offers: list[NpcOffer] = Field(default_factory=list)
     """Items sold by the NPC."""
-    buy_offers: list[NpcBuyOffer] = []
+    buy_offers: list[NpcOffer] = Field(default_factory=list)
     """Items bought by the NPC."""
-    destinations: list[NpcDestination] = []
+    destinations: list[NpcDestination] = Field(default_factory=list)
     """Places where the NPC can travel to."""
-    teaches: list[NpcSpell] = []
+    teaches: list[TaughtSpell] = Field(default_factory=list)
     """Spells this NPC can teach."""
 
     @property
-    def job(self):
-        """:class:`str`: Get the first listed job of the NPC, if any."""
+    def job(self) -> str | None:
+        """Get the first listed job of the NPC, if any."""
         return self.jobs[0] if self.jobs else None
 
     @property
-    def race(self):
-        """:class:`str`: Get the first listed race of the NPC, if any."""
+    def race(self) -> str | None:
+        """Get the first listed race of the NPC, if any."""
         return self.races[0] if self.races else None
 
 
-    def insert(self, c):
-        super().insert(c)
-        # for offer in getattr(self, "buy_offers", []):
-        #     offer.insert(c)
-        # for offer in getattr(self, "sell_offers", []):
-        #     offer.insert(c)
-        for spell in self.teaches:
-            spell.insert(c)
+    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor):
+        super().insert(conn)
         for destination in self.destinations:
-            destination.insert(c)
+            NpcDestinationTable.insert(
+                conn,
+                npc_id=self.article_id,
+                name=destination.name,
+                price=destination.price,
+                notes=destination.notes,
+            )
         for job in self.jobs:
-            NpcJobTable.insert(c, npc_id=self.article_id, name=job)
+            NpcJobTable.insert(conn, npc_id=self.article_id, name=job)
         for race in self.races:
-            NpcRaceTable.insert(c, npc_id=self.article_id, name=race)
+            NpcRaceTable.insert(conn, npc_id=self.article_id, name=race)
 
     @classmethod
-    def get_by_field(cls, c, field, value, use_like=False):
-        npc: cls = super().get_by_field(c, field, value, use_like)
+    def get_by_field(cls, conn: ConnCursor, field: str, value: Any, use_like: bool = False) -> Self | None:
+        npc: Self = super().get_by_field(conn, field, value, use_like)
         if npc is None:
             return None
-        npc.sell_offers = NpcSellOffer.search(c, "npc_id", npc.article_id, sort_by="value", ascending=True)
-        npc.buy_offers = NpcBuyOffer.search(c, "npc_id", npc.article_id, sort_by="value", ascending=False)
-        npc.teaches = NpcSpell.search(c, "npc_id", npc.article_id)
-        npc.destinations = NpcDestination.search(c, "npc_id", npc.article_id)
-        npc.jobs = [j.name for j in NpcJob.search(c, "npc_id", npc.article_id)]
-        npc.races = [r.name for r in NpcRace.search(c, "npc_id", npc.article_id)]
+        npc.jobs = [j["name"] for j in NpcJobTable.get_list_by_field(conn, "npc_id", npc.article_id)]
+        npc.races = [j["name"] for j in NpcRaceTable.get_list_by_field(conn, "npc_id", npc.article_id)]
+        npc.teaches = [
+            TaughtSpell(
+                spell_title=r["title"],
+                spell_id=r["article_id"],
+                price=r["price"],
+                knight=r["knight"],
+                paladin=r["paladin"],
+                sorcerer=r["sorcerer"],
+                druid=r["druid"],
+                monk=r["monk"],
+            ) for r in NpcSpellTable.get_by_npc_id(conn, npc.article_id)
+        ]
+        npc.buy_offers = [
+            NpcOffer(
+                item_id=r["item_id"],
+                item_title=r["item_title"],
+                currency_id=r["currency_id"],
+                currency_title=r["currency_title"],
+                value=r["value"],
+            ) for r in NpcBuyingTable.get_by_npc_id(conn, npc.article_id)
+        ]
+        npc.sell_offers = [
+            NpcOffer(
+                item_id=r["item_id"],
+                item_title=r["item_title"],
+                currency_id=r["currency_id"],
+                currency_title=r["currency_title"],
+                value=r["value"],
+            ) for r in NpcSellingTable.get_by_npc_id(conn, npc.article_id)
+        ]
+        npc.destinations = [
+            NpcDestination.model_validate(dict(r))
+            for r in NpcDestinationTable.get_list_by_field(conn, "npc_id", npc.article_id)
+        ]
         return npc
-
 
 
 rashid_positions = [

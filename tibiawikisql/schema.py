@@ -1,6 +1,8 @@
 """Defines the SQL schemas to use."""
 import sqlite3
+from sqlite3 import Connection, Cursor
 from typing import ClassVar
+from pypika import Query, Table as PikaTable
 
 from tibiawikisql.database import Blob, Boolean, Column, Date, ForeignKey, Integer, Real, Table, Text, Timestamp
 
@@ -319,12 +321,52 @@ class NpcBuyingTable(Table, table_name="npc_offer_buy"):
     value = Column(Integer, nullable=False)
     currency_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
 
+    @classmethod
+    def get_by_npc_id(cls, conn: Connection | Cursor, npc_id: int):
+        base_query = cls.get_base_select_query()
+        this = PikaTable(cls.__tablename__)
+        item = PikaTable(ItemTable.__tablename__)
+        currency = item.as_("currency")
+        base_query = (
+            Query.from_(this)
+            .select(
+                this.item_id,
+                item.title.as_("item_title"),
+                currency.title.as_("currency_title"),
+                currency.article_id.as_("currency_id"),
+                this.value,
+            )
+            .join(item).on(this.item_id == item.article_id)
+            .join(currency).on(this.currency_id == currency.article_id)
+        )
+        return cls.get_list_by_field(conn, "npc_id", npc_id, base_query=base_query)
+
 
 class NpcSellingTable(Table, table_name="npc_offer_sell"):
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
     item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False, index=True)
     value = Column(Integer, nullable=False)
     currency_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False)
+
+    @classmethod
+    def get_by_npc_id(cls, conn: Connection | Cursor, npc_id: int):
+        base_query = cls.get_base_select_query()
+        this = PikaTable(cls.__tablename__)
+        item = PikaTable(ItemTable.__tablename__)
+        currency = item.as_("currency")
+        base_query = (
+            Query.from_(this)
+            .select(
+                this.item_id,
+                item.title.as_("item_title"),
+                currency.title.as_("currency_title"),
+                currency.article_id.as_("currency_id"),
+                this.value,
+            )
+            .join(item).on(this.item_id == item.article_id)
+            .join(currency).on(this.currency_id == currency.article_id)
+        )
+        return cls.get_list_by_field(conn, "npc_id", npc_id, base_query=base_query)
 
 
 class NpcDestinationTable(Table, table_name="npc_destination"):
@@ -342,6 +384,14 @@ class NpcSpellTable(Table, table_name="npc_spell"):
     paladin = Column(Boolean, nullable=False, default=False)
     druid = Column(Boolean, nullable=False, default=False)
     monk = Column(Boolean, nullable=False, default=False)
+
+    @classmethod
+    def get_by_npc_id(cls, conn: Connection | Cursor, npc_id: int):
+        base_query = cls.get_base_select_query()
+        this = PikaTable(cls.__tablename__)
+        spell = PikaTable(SpellTable.__tablename__)
+        base_query = base_query.join(spell).on(this.spell_id == spell.article_id)
+        return cls.get_list_by_field(conn, "npc_id", npc_id, base_query=base_query)
 
 
 class OutfitTable(Table):

@@ -1,7 +1,7 @@
 import html
 import re
 import sqlite3
-from typing import Any
+from typing import Any, ClassVar
 
 from tibiawikisql.api import Article
 from tibiawikisql.models.quest import Quest, QuestDanger, QuestReward
@@ -34,7 +34,7 @@ class QuestParser(BaseParser):
     model = Quest
     table = tibiawikisql.schema.QuestTable
     template_name = "Infobox_Quest"
-    attribute_map = {
+    attribute_map: ClassVar = {
         "name": AttributeParser.required("name", html.unescape),
         "location": AttributeParser.optional("location", clean_links),
         "rookgaard": AttributeParser.optional("rookgaardquest", parse_boolean, False),
@@ -62,7 +62,7 @@ class QuestParser(BaseParser):
     # region Auxiliary Functions
 
     @classmethod
-    def _parse_quest_rewards(cls, row: dict[str, Any]):
+    def _parse_quest_rewards(cls, row: dict[str, Any]) -> None:
         raw_attributes = row["_raw_attributes"]
         if not raw_attributes.get("reward"):
             return
@@ -76,7 +76,7 @@ class QuestParser(BaseParser):
             ))
 
     @classmethod
-    def _parse_quest_dangers(cls, row: dict[str, Any]):
+    def _parse_quest_dangers(cls, row: dict[str, Any]) -> None:
         raw_attributes = row["_raw_attributes"]
         if not raw_attributes.get("dangers"):
             return

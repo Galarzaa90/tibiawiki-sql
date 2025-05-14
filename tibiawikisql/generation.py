@@ -431,6 +431,31 @@ def fetch_images(conn: sqlite3.Connection) -> None:
         save_maps(conn)
 
 
+def parse_spell_data(lua_content: str) -> list[tuple[str, str, bool, bool, bool, bool, bool]]:
+    data = lua.execute(lua_content)
+    offers = []
+    for name, table in list(data.items()):
+        spell_title = name
+        spell_vocations = list(table["vocation"].values())
+        for npc, vocation in table["sellers"].items():
+            if isinstance(vocation, bool):
+                npc_vocations = spell_vocations[:]
+            elif isinstance(vocation, str):
+                npc_vocations = [vocation]
+            else:
+                npc_vocations = list(vocation.values())
+            offers.append((
+                npc,
+                spell_title,
+                "Knight" in npc_vocations,
+                "Paladin" in npc_vocations,
+                "Druid" in npc_vocations,
+                "Sorcerer" in npc_vocations,
+                "Monk" in npc_vocations,
+            ))
+    return offers
+
+
 def generate_spell_offers(conn: sqlite3.Connection, data_store: dict[str, Any]) -> None:
     """Fetch and save the spell offers from the spell data module.
 
@@ -442,46 +467,36 @@ def generate_spell_offers(conn: sqlite3.Connection, data_store: dict[str, Any]) 
     if "npcs_map" not in data_store or "spells_map" not in data_store:
         return
     article = WikiClient.get_article("Module:ItemPrices/spelldata")
-    data = lua.execute(article.content)
-
-    spell_offers = []
+    spell_offers = parse_spell_data(article.content)
+    rows = []
     not_found_store = defaultdict(set)
-    spells = list(data.items())
     with (
         timed() as t,
-        progress_bar(spells, len(spells), "Fetching spell offers") as bar,
+        progress_bar(spell_offers, len(spell_offers), "Processing spell offers") as bar,
     ):
-        for name, table in bar:
-            spell_id = data_store["spells_map"].get(name.lower())
+        for npc, spell, knight, paladin, druid, sorcerer, monk in bar:
+            spell_id = data_store["spells_map"].get(spell.lower())
             if spell_id is None:
-                not_found_store["spell"].add(name)
+                not_found_store["spell"].add(spell)
                 continue
-            spell_vocations = list(table["vocation"].values())
-            for npc, vocation in table["sellers"].items():
-                npc_id = data_store["npcs_map"].get(npc.lower())
-                if npc_id is None:
-                    not_found_store["item"].add(npc)
-                    continue
-                if isinstance(vocation, bool):
-                    npc_vocations = spell_vocations
-                elif isinstance(vocation, str):
-                    npc_vocations = [vocation]
-                else:
-                    npc_vocations = list(vocation.values())
-                spell_offers.append((
-                    npc_id,
-                    spell_id,
-                    "Knight" in npc_vocations,
-                    "Sorcerer" in npc_vocations,
-                    "Druid" in npc_vocations,
-                    "Paladin" in npc_vocations,
-                    "Monk" in npc_vocations,
-                ))
+            npc_id = data_store["npcs_map"].get(npc.lower())
+            if npc_id is None:
+                not_found_store["npc"].add(npc)
+                continue
+            rows.append((
+                npc_id,
+                spell_id,
+                knight,
+                sorcerer,
+                paladin,
+                druid,
+                monk,
+            ))
         with conn:
             conn.execute("DELETE FROM npc_spell")
             conn.executemany(
                 "INSERT INTO npc_spell(npc_id, spell_id, knight, sorcerer, paladin, druid, monk) VALUES(?, ?, ?, ?, ?, ?, ?)",
-                spell_offers)
+                rows)
         if not_found_store["spell"]:
             unknonw_spells = not_found_store["spell"]
             click.echo(f"{Fore.RED}Could not parse offers for {len(unknonw_spells):,} spell.{Style.RESET_ALL}")
