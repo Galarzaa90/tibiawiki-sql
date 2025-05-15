@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.13">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
     
     
       
@@ -977,29 +977,29 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/schema.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-466">466</a></span>
-<span class="normal"><a href="#__codelineno-0-467">467</a></span>
-<span class="normal"><a href="#__codelineno-0-468">468</a></span>
-<span class="normal"><a href="#__codelineno-0-469">469</a></span>
-<span class="normal"><a href="#__codelineno-0-470">470</a></span>
-<span class="normal"><a href="#__codelineno-0-471">471</a></span>
-<span class="normal"><a href="#__codelineno-0-472">472</a></span>
-<span class="normal"><a href="#__codelineno-0-473">473</a></span>
-<span class="normal"><a href="#__codelineno-0-474">474</a></span>
-<span class="normal"><a href="#__codelineno-0-475">475</a></span>
-<span class="normal"><a href="#__codelineno-0-476">476</a></span>
-<span class="normal"><a href="#__codelineno-0-477">477</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-466" name="__codelineno-0-466"></a><span class="k">def</span><span class="w"> </span><span class="nf">create_tables</span><span class="p">(</span><span class="n">conn</span><span class="p">):</span>
-<a id="__codelineno-0-467" name="__codelineno-0-467"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create all the tables in the database.</span>
-<a id="__codelineno-0-468" name="__codelineno-0-468"></a>
-<a id="__codelineno-0-469" name="__codelineno-0-469"></a><span class="sd">    Parameters</span>
-<a id="__codelineno-0-470" name="__codelineno-0-470"></a><span class="sd">    ----------</span>
-<a id="__codelineno-0-471" name="__codelineno-0-471"></a><span class="sd">    conn: sqlite3.Connection, sqlite3.Cursor</span>
-<a id="__codelineno-0-472" name="__codelineno-0-472"></a><span class="sd">        A connection to the database.</span>
-<a id="__codelineno-0-473" name="__codelineno-0-473"></a>
-<a id="__codelineno-0-474" name="__codelineno-0-474"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-475" name="__codelineno-0-475"></a>    <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">Table</span><span class="o">.</span><span class="n">all_tables</span><span class="p">():</span>
-<a id="__codelineno-0-476" name="__codelineno-0-476"></a>        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">get_drop_statement</span><span class="p">())</span>
-<a id="__codelineno-0-477" name="__codelineno-0-477"></a>        <span class="n">conn</span><span class="o">.</span><span class="n">executescript</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">get_create_table_statement</span><span class="p">())</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-532">532</a></span>
+<span class="normal"><a href="#__codelineno-0-533">533</a></span>
+<span class="normal"><a href="#__codelineno-0-534">534</a></span>
+<span class="normal"><a href="#__codelineno-0-535">535</a></span>
+<span class="normal"><a href="#__codelineno-0-536">536</a></span>
+<span class="normal"><a href="#__codelineno-0-537">537</a></span>
+<span class="normal"><a href="#__codelineno-0-538">538</a></span>
+<span class="normal"><a href="#__codelineno-0-539">539</a></span>
+<span class="normal"><a href="#__codelineno-0-540">540</a></span>
+<span class="normal"><a href="#__codelineno-0-541">541</a></span>
+<span class="normal"><a href="#__codelineno-0-542">542</a></span>
+<span class="normal"><a href="#__codelineno-0-543">543</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-532" name="__codelineno-0-532"></a><span class="k">def</span><span class="w"> </span><span class="nf">create_tables</span><span class="p">(</span><span class="n">conn</span><span class="p">):</span>
+<a id="__codelineno-0-533" name="__codelineno-0-533"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create all the tables in the database.</span>
+<a id="__codelineno-0-534" name="__codelineno-0-534"></a>
+<a id="__codelineno-0-535" name="__codelineno-0-535"></a><span class="sd">    Parameters</span>
+<a id="__codelineno-0-536" name="__codelineno-0-536"></a><span class="sd">    ----------</span>
+<a id="__codelineno-0-537" name="__codelineno-0-537"></a><span class="sd">    conn: sqlite3.Connection, sqlite3.Cursor</span>
+<a id="__codelineno-0-538" name="__codelineno-0-538"></a><span class="sd">        A connection to the database.</span>
+<a id="__codelineno-0-539" name="__codelineno-0-539"></a>
+<a id="__codelineno-0-540" name="__codelineno-0-540"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-541" name="__codelineno-0-541"></a>    <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">Table</span><span class="o">.</span><span class="n">all_tables</span><span class="p">():</span>
+<a id="__codelineno-0-542" name="__codelineno-0-542"></a>        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">get_drop_statement</span><span class="p">())</span>
+<a id="__codelineno-0-543" name="__codelineno-0-543"></a>        <span class="n">conn</span><span class="o">.</span><span class="n">executescript</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">get_create_table_statement</span><span class="p">())</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

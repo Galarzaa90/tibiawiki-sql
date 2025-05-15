@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.13">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
     
     
       
@@ -3485,32 +3485,7 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/generation.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-434">434</a></span>
-<span class="normal"><a href="#__codelineno-0-435">435</a></span>
-<span class="normal"><a href="#__codelineno-0-436">436</a></span>
-<span class="normal"><a href="#__codelineno-0-437">437</a></span>
-<span class="normal"><a href="#__codelineno-0-438">438</a></span>
-<span class="normal"><a href="#__codelineno-0-439">439</a></span>
-<span class="normal"><a href="#__codelineno-0-440">440</a></span>
-<span class="normal"><a href="#__codelineno-0-441">441</a></span>
-<span class="normal"><a href="#__codelineno-0-442">442</a></span>
-<span class="normal"><a href="#__codelineno-0-443">443</a></span>
-<span class="normal"><a href="#__codelineno-0-444">444</a></span>
-<span class="normal"><a href="#__codelineno-0-445">445</a></span>
-<span class="normal"><a href="#__codelineno-0-446">446</a></span>
-<span class="normal"><a href="#__codelineno-0-447">447</a></span>
-<span class="normal"><a href="#__codelineno-0-448">448</a></span>
-<span class="normal"><a href="#__codelineno-0-449">449</a></span>
-<span class="normal"><a href="#__codelineno-0-450">450</a></span>
-<span class="normal"><a href="#__codelineno-0-451">451</a></span>
-<span class="normal"><a href="#__codelineno-0-452">452</a></span>
-<span class="normal"><a href="#__codelineno-0-453">453</a></span>
-<span class="normal"><a href="#__codelineno-0-454">454</a></span>
-<span class="normal"><a href="#__codelineno-0-455">455</a></span>
-<span class="normal"><a href="#__codelineno-0-456">456</a></span>
-<span class="normal"><a href="#__codelineno-0-457">457</a></span>
-<span class="normal"><a href="#__codelineno-0-458">458</a></span>
-<span class="normal"><a href="#__codelineno-0-459">459</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-459">459</a></span>
 <span class="normal"><a href="#__codelineno-0-460">460</a></span>
 <span class="normal"><a href="#__codelineno-0-461">461</a></span>
 <span class="normal"><a href="#__codelineno-0-462">462</a></span>
@@ -3543,65 +3518,70 @@
 <span class="normal"><a href="#__codelineno-0-489">489</a></span>
 <span class="normal"><a href="#__codelineno-0-490">490</a></span>
 <span class="normal"><a href="#__codelineno-0-491">491</a></span>
-<span class="normal"><a href="#__codelineno-0-492">492</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-434" name="__codelineno-0-434"></a><span class="k">def</span><span class="w"> </span><span class="nf">generate_spell_offers</span><span class="p">(</span><span class="n">conn</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">,</span> <span class="n">data_store</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-435" name="__codelineno-0-435"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch and save the spell offers from the spell data module.</span>
-<a id="__codelineno-0-436" name="__codelineno-0-436"></a>
-<a id="__codelineno-0-437" name="__codelineno-0-437"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-438" name="__codelineno-0-438"></a><span class="sd">        conn: A connection to the database.</span>
-<a id="__codelineno-0-439" name="__codelineno-0-439"></a><span class="sd">        data_store: The data store containing information about generated articles.</span>
-<a id="__codelineno-0-440" name="__codelineno-0-440"></a>
-<a id="__codelineno-0-441" name="__codelineno-0-441"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-442" name="__codelineno-0-442"></a>    <span class="k">if</span> <span class="s2">&quot;npcs_map&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data_store</span> <span class="ow">or</span> <span class="s2">&quot;spells_map&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data_store</span><span class="p">:</span>
-<a id="__codelineno-0-443" name="__codelineno-0-443"></a>        <span class="k">return</span>
-<a id="__codelineno-0-444" name="__codelineno-0-444"></a>    <span class="n">article</span> <span class="o">=</span> <span class="n">WikiClient</span><span class="o">.</span><span class="n">get_article</span><span class="p">(</span><span class="s2">&quot;Module:ItemPrices/spelldata&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-445" name="__codelineno-0-445"></a>    <span class="n">data</span> <span class="o">=</span> <span class="n">lua</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">article</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-<a id="__codelineno-0-446" name="__codelineno-0-446"></a>
-<a id="__codelineno-0-447" name="__codelineno-0-447"></a>    <span class="n">spell_offers</span> <span class="o">=</span> <span class="p">[]</span>
-<a id="__codelineno-0-448" name="__codelineno-0-448"></a>    <span class="n">not_found_store</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
-<a id="__codelineno-0-449" name="__codelineno-0-449"></a>    <span class="n">spells</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-<a id="__codelineno-0-450" name="__codelineno-0-450"></a>    <span class="k">with</span> <span class="p">(</span>
-<a id="__codelineno-0-451" name="__codelineno-0-451"></a>        <span class="n">timed</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">,</span>
-<a id="__codelineno-0-452" name="__codelineno-0-452"></a>        <span class="n">progress_bar</span><span class="p">(</span><span class="n">spells</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">spells</span><span class="p">),</span> <span class="s2">&quot;Fetching spell offers&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">bar</span><span class="p">,</span>
-<a id="__codelineno-0-453" name="__codelineno-0-453"></a>    <span class="p">):</span>
-<a id="__codelineno-0-454" name="__codelineno-0-454"></a>        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">bar</span><span class="p">:</span>
-<a id="__codelineno-0-455" name="__codelineno-0-455"></a>            <span class="n">spell_id</span> <span class="o">=</span> <span class="n">data_store</span><span class="p">[</span><span class="s2">&quot;spells_map&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
-<a id="__codelineno-0-456" name="__codelineno-0-456"></a>            <span class="k">if</span> <span class="n">spell_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-457" name="__codelineno-0-457"></a>                <span class="n">not_found_store</span><span class="p">[</span><span class="s2">&quot;spell&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-<a id="__codelineno-0-458" name="__codelineno-0-458"></a>                <span class="k">continue</span>
-<a id="__codelineno-0-459" name="__codelineno-0-459"></a>            <span class="n">spell_vocations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="s2">&quot;vocation&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-<a id="__codelineno-0-460" name="__codelineno-0-460"></a>            <span class="k">for</span> <span class="n">npc</span><span class="p">,</span> <span class="n">vocation</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="s2">&quot;sellers&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-0-461" name="__codelineno-0-461"></a>                <span class="n">npc_id</span> <span class="o">=</span> <span class="n">data_store</span><span class="p">[</span><span class="s2">&quot;npcs_map&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">npc</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
-<a id="__codelineno-0-462" name="__codelineno-0-462"></a>                <span class="k">if</span> <span class="n">npc_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-463" name="__codelineno-0-463"></a>                    <span class="n">not_found_store</span><span class="p">[</span><span class="s2">&quot;item&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">npc</span><span class="p">)</span>
-<a id="__codelineno-0-464" name="__codelineno-0-464"></a>                    <span class="k">continue</span>
-<a id="__codelineno-0-465" name="__codelineno-0-465"></a>                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vocation</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-<a id="__codelineno-0-466" name="__codelineno-0-466"></a>                    <span class="n">npc_vocations</span> <span class="o">=</span> <span class="n">spell_vocations</span>
-<a id="__codelineno-0-467" name="__codelineno-0-467"></a>                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vocation</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-<a id="__codelineno-0-468" name="__codelineno-0-468"></a>                    <span class="n">npc_vocations</span> <span class="o">=</span> <span class="p">[</span><span class="n">vocation</span><span class="p">]</span>
-<a id="__codelineno-0-469" name="__codelineno-0-469"></a>                <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-470" name="__codelineno-0-470"></a>                    <span class="n">npc_vocations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">vocation</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-<a id="__codelineno-0-471" name="__codelineno-0-471"></a>                <span class="n">spell_offers</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
-<a id="__codelineno-0-472" name="__codelineno-0-472"></a>                    <span class="n">npc_id</span><span class="p">,</span>
-<a id="__codelineno-0-473" name="__codelineno-0-473"></a>                    <span class="n">spell_id</span><span class="p">,</span>
-<a id="__codelineno-0-474" name="__codelineno-0-474"></a>                    <span class="s2">&quot;Knight&quot;</span> <span class="ow">in</span> <span class="n">npc_vocations</span><span class="p">,</span>
-<a id="__codelineno-0-475" name="__codelineno-0-475"></a>                    <span class="s2">&quot;Sorcerer&quot;</span> <span class="ow">in</span> <span class="n">npc_vocations</span><span class="p">,</span>
-<a id="__codelineno-0-476" name="__codelineno-0-476"></a>                    <span class="s2">&quot;Druid&quot;</span> <span class="ow">in</span> <span class="n">npc_vocations</span><span class="p">,</span>
-<a id="__codelineno-0-477" name="__codelineno-0-477"></a>                    <span class="s2">&quot;Paladin&quot;</span> <span class="ow">in</span> <span class="n">npc_vocations</span><span class="p">,</span>
-<a id="__codelineno-0-478" name="__codelineno-0-478"></a>                    <span class="s2">&quot;Monk&quot;</span> <span class="ow">in</span> <span class="n">npc_vocations</span><span class="p">,</span>
-<a id="__codelineno-0-479" name="__codelineno-0-479"></a>                <span class="p">))</span>
-<a id="__codelineno-0-480" name="__codelineno-0-480"></a>        <span class="k">with</span> <span class="n">conn</span><span class="p">:</span>
-<a id="__codelineno-0-481" name="__codelineno-0-481"></a>            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DELETE FROM npc_spell&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-482" name="__codelineno-0-482"></a>            <span class="n">conn</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span>
-<a id="__codelineno-0-483" name="__codelineno-0-483"></a>                <span class="s2">&quot;INSERT INTO npc_spell(npc_id, spell_id, knight, sorcerer, paladin, druid, monk) VALUES(?, ?, ?, ?, ?, ?, ?)&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-484" name="__codelineno-0-484"></a>                <span class="n">spell_offers</span><span class="p">)</span>
-<a id="__codelineno-0-485" name="__codelineno-0-485"></a>        <span class="k">if</span> <span class="n">not_found_store</span><span class="p">[</span><span class="s2">&quot;spell&quot;</span><span class="p">]:</span>
-<a id="__codelineno-0-486" name="__codelineno-0-486"></a>            <span class="n">unknonw_spells</span> <span class="o">=</span> <span class="n">not_found_store</span><span class="p">[</span><span class="s2">&quot;spell&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-487" name="__codelineno-0-487"></a>            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Fore</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s2">Could not parse offers for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">unknonw_spells</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> spell.</span><span class="si">{</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-488" name="__codelineno-0-488"></a>            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">-&gt; </span><span class="si">{</span><span class="n">Fore</span><span class="o">.</span><span class="n">RED</span><span class="si">}{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">Fore</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unknonw_spells</span><span class="p">)</span><span class="si">}{</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-489" name="__codelineno-0-489"></a>        <span class="k">if</span> <span class="n">not_found_store</span><span class="p">[</span><span class="s2">&quot;npc&quot;</span><span class="p">]:</span>
-<a id="__codelineno-0-490" name="__codelineno-0-490"></a>            <span class="n">unknown_npcs</span> <span class="o">=</span> <span class="n">not_found_store</span><span class="p">[</span><span class="s2">&quot;npc&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-491" name="__codelineno-0-491"></a>            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Fore</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s2">Could not parse offers of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">unknown_npcs</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> npcs.</span><span class="si">{</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-492" name="__codelineno-0-492"></a>            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">-&gt; </span><span class="si">{</span><span class="n">Fore</span><span class="o">.</span><span class="n">RED</span><span class="si">}{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">Fore</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unknown_npcs</span><span class="p">)</span><span class="si">}{</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-492">492</a></span>
+<span class="normal"><a href="#__codelineno-0-493">493</a></span>
+<span class="normal"><a href="#__codelineno-0-494">494</a></span>
+<span class="normal"><a href="#__codelineno-0-495">495</a></span>
+<span class="normal"><a href="#__codelineno-0-496">496</a></span>
+<span class="normal"><a href="#__codelineno-0-497">497</a></span>
+<span class="normal"><a href="#__codelineno-0-498">498</a></span>
+<span class="normal"><a href="#__codelineno-0-499">499</a></span>
+<span class="normal"><a href="#__codelineno-0-500">500</a></span>
+<span class="normal"><a href="#__codelineno-0-501">501</a></span>
+<span class="normal"><a href="#__codelineno-0-502">502</a></span>
+<span class="normal"><a href="#__codelineno-0-503">503</a></span>
+<span class="normal"><a href="#__codelineno-0-504">504</a></span>
+<span class="normal"><a href="#__codelineno-0-505">505</a></span>
+<span class="normal"><a href="#__codelineno-0-506">506</a></span>
+<span class="normal"><a href="#__codelineno-0-507">507</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-459" name="__codelineno-0-459"></a><span class="k">def</span><span class="w"> </span><span class="nf">generate_spell_offers</span><span class="p">(</span><span class="n">conn</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">,</span> <span class="n">data_store</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-460" name="__codelineno-0-460"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch and save the spell offers from the spell data module.</span>
+<a id="__codelineno-0-461" name="__codelineno-0-461"></a>
+<a id="__codelineno-0-462" name="__codelineno-0-462"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-463" name="__codelineno-0-463"></a><span class="sd">        conn: A connection to the database.</span>
+<a id="__codelineno-0-464" name="__codelineno-0-464"></a><span class="sd">        data_store: The data store containing information about generated articles.</span>
+<a id="__codelineno-0-465" name="__codelineno-0-465"></a>
+<a id="__codelineno-0-466" name="__codelineno-0-466"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-467" name="__codelineno-0-467"></a>    <span class="k">if</span> <span class="s2">&quot;npcs_map&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data_store</span> <span class="ow">or</span> <span class="s2">&quot;spells_map&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data_store</span><span class="p">:</span>
+<a id="__codelineno-0-468" name="__codelineno-0-468"></a>        <span class="k">return</span>
+<a id="__codelineno-0-469" name="__codelineno-0-469"></a>    <span class="n">article</span> <span class="o">=</span> <span class="n">WikiClient</span><span class="o">.</span><span class="n">get_article</span><span class="p">(</span><span class="s2">&quot;Module:ItemPrices/spelldata&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-470" name="__codelineno-0-470"></a>    <span class="n">spell_offers</span> <span class="o">=</span> <span class="n">parse_spell_data</span><span class="p">(</span><span class="n">article</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<a id="__codelineno-0-471" name="__codelineno-0-471"></a>    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-472" name="__codelineno-0-472"></a>    <span class="n">not_found_store</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+<a id="__codelineno-0-473" name="__codelineno-0-473"></a>    <span class="k">with</span> <span class="p">(</span>
+<a id="__codelineno-0-474" name="__codelineno-0-474"></a>        <span class="n">timed</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">,</span>
+<a id="__codelineno-0-475" name="__codelineno-0-475"></a>        <span class="n">progress_bar</span><span class="p">(</span><span class="n">spell_offers</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">spell_offers</span><span class="p">),</span> <span class="s2">&quot;Processing spell offers&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">bar</span><span class="p">,</span>
+<a id="__codelineno-0-476" name="__codelineno-0-476"></a>    <span class="p">):</span>
+<a id="__codelineno-0-477" name="__codelineno-0-477"></a>        <span class="k">for</span> <span class="n">npc</span><span class="p">,</span> <span class="n">spell</span><span class="p">,</span> <span class="n">knight</span><span class="p">,</span> <span class="n">paladin</span><span class="p">,</span> <span class="n">druid</span><span class="p">,</span> <span class="n">sorcerer</span><span class="p">,</span> <span class="n">monk</span> <span class="ow">in</span> <span class="n">bar</span><span class="p">:</span>
+<a id="__codelineno-0-478" name="__codelineno-0-478"></a>            <span class="n">spell_id</span> <span class="o">=</span> <span class="n">data_store</span><span class="p">[</span><span class="s2">&quot;spells_map&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">spell</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+<a id="__codelineno-0-479" name="__codelineno-0-479"></a>            <span class="k">if</span> <span class="n">spell_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-480" name="__codelineno-0-480"></a>                <span class="n">not_found_store</span><span class="p">[</span><span class="s2">&quot;spell&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">spell</span><span class="p">)</span>
+<a id="__codelineno-0-481" name="__codelineno-0-481"></a>                <span class="k">continue</span>
+<a id="__codelineno-0-482" name="__codelineno-0-482"></a>            <span class="n">npc_id</span> <span class="o">=</span> <span class="n">data_store</span><span class="p">[</span><span class="s2">&quot;npcs_map&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">npc</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+<a id="__codelineno-0-483" name="__codelineno-0-483"></a>            <span class="k">if</span> <span class="n">npc_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-484" name="__codelineno-0-484"></a>                <span class="n">not_found_store</span><span class="p">[</span><span class="s2">&quot;npc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">npc</span><span class="p">)</span>
+<a id="__codelineno-0-485" name="__codelineno-0-485"></a>                <span class="k">continue</span>
+<a id="__codelineno-0-486" name="__codelineno-0-486"></a>            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+<a id="__codelineno-0-487" name="__codelineno-0-487"></a>                <span class="n">npc_id</span><span class="p">,</span>
+<a id="__codelineno-0-488" name="__codelineno-0-488"></a>                <span class="n">spell_id</span><span class="p">,</span>
+<a id="__codelineno-0-489" name="__codelineno-0-489"></a>                <span class="n">knight</span><span class="p">,</span>
+<a id="__codelineno-0-490" name="__codelineno-0-490"></a>                <span class="n">sorcerer</span><span class="p">,</span>
+<a id="__codelineno-0-491" name="__codelineno-0-491"></a>                <span class="n">paladin</span><span class="p">,</span>
+<a id="__codelineno-0-492" name="__codelineno-0-492"></a>                <span class="n">druid</span><span class="p">,</span>
+<a id="__codelineno-0-493" name="__codelineno-0-493"></a>                <span class="n">monk</span><span class="p">,</span>
+<a id="__codelineno-0-494" name="__codelineno-0-494"></a>            <span class="p">))</span>
+<a id="__codelineno-0-495" name="__codelineno-0-495"></a>        <span class="k">with</span> <span class="n">conn</span><span class="p">:</span>
+<a id="__codelineno-0-496" name="__codelineno-0-496"></a>            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DELETE FROM npc_spell&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-497" name="__codelineno-0-497"></a>            <span class="n">conn</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span>
+<a id="__codelineno-0-498" name="__codelineno-0-498"></a>                <span class="s2">&quot;INSERT INTO npc_spell(npc_id, spell_id, knight, sorcerer, paladin, druid, monk) VALUES(?, ?, ?, ?, ?, ?, ?)&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-499" name="__codelineno-0-499"></a>                <span class="n">rows</span><span class="p">)</span>
+<a id="__codelineno-0-500" name="__codelineno-0-500"></a>        <span class="k">if</span> <span class="n">not_found_store</span><span class="p">[</span><span class="s2">&quot;spell&quot;</span><span class="p">]:</span>
+<a id="__codelineno-0-501" name="__codelineno-0-501"></a>            <span class="n">unknonw_spells</span> <span class="o">=</span> <span class="n">not_found_store</span><span class="p">[</span><span class="s2">&quot;spell&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-502" name="__codelineno-0-502"></a>            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Fore</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s2">Could not parse offers for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">unknonw_spells</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> spell.</span><span class="si">{</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-503" name="__codelineno-0-503"></a>            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">-&gt; </span><span class="si">{</span><span class="n">Fore</span><span class="o">.</span><span class="n">RED</span><span class="si">}{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">Fore</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unknonw_spells</span><span class="p">)</span><span class="si">}{</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-504" name="__codelineno-0-504"></a>        <span class="k">if</span> <span class="n">not_found_store</span><span class="p">[</span><span class="s2">&quot;npc&quot;</span><span class="p">]:</span>
+<a id="__codelineno-0-505" name="__codelineno-0-505"></a>            <span class="n">unknown_npcs</span> <span class="o">=</span> <span class="n">not_found_store</span><span class="p">[</span><span class="s2">&quot;npc&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-506" name="__codelineno-0-506"></a>            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Fore</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s2">Could not parse offers of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">unknown_npcs</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> npcs.</span><span class="si">{</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-507" name="__codelineno-0-507"></a>            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">-&gt; </span><span class="si">{</span><span class="n">Fore</span><span class="o">.</span><span class="n">RED</span><span class="si">}{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">Fore</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unknown_npcs</span><span class="p">)</span><span class="si">}{</span><span class="n">Style</span><span class="o">.</span><span class="n">RESET_ALL</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

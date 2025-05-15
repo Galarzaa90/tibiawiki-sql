@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.13">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
     
     
       
@@ -2952,12 +2952,7 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-252">252</a></span>
-<span class="normal"><a href="#__codelineno-0-253">253</a></span>
-<span class="normal"><a href="#__codelineno-0-254">254</a></span>
-<span class="normal"><a href="#__codelineno-0-255">255</a></span>
-<span class="normal"><a href="#__codelineno-0-256">256</a></span>
-<span class="normal"><a href="#__codelineno-0-257">257</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-257">257</a></span>
 <span class="normal"><a href="#__codelineno-0-258">258</a></span>
 <span class="normal"><a href="#__codelineno-0-259">259</a></span>
 <span class="normal"><a href="#__codelineno-0-260">260</a></span>
@@ -2982,37 +2977,42 @@
 <span class="normal"><a href="#__codelineno-0-279">279</a></span>
 <span class="normal"><a href="#__codelineno-0-280">280</a></span>
 <span class="normal"><a href="#__codelineno-0-281">281</a></span>
-<span class="normal"><a href="#__codelineno-0-282">282</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-252" name="__codelineno-0-252"></a><span class="nd">@classmethod</span>
-<a id="__codelineno-0-253" name="__codelineno-0-253"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_by_field</span><span class="p">(</span>
-<a id="__codelineno-0-254" name="__codelineno-0-254"></a>        <span class="bp">cls</span><span class="p">,</span>
-<a id="__codelineno-0-255" name="__codelineno-0-255"></a>        <span class="n">conn</span><span class="p">:</span> <span class="n">ConnCursor</span><span class="p">,</span>
-<a id="__codelineno-0-256" name="__codelineno-0-256"></a>        <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-0-257" name="__codelineno-0-257"></a>        <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-<a id="__codelineno-0-258" name="__codelineno-0-258"></a>        <span class="n">use_like</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-0-259" name="__codelineno-0-259"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Row</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-260" name="__codelineno-0-260"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a row by a specific column&#39;s value.</span>
-<a id="__codelineno-0-261" name="__codelineno-0-261"></a>
-<a id="__codelineno-0-262" name="__codelineno-0-262"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-263" name="__codelineno-0-263"></a><span class="sd">        conn: A SQL connection.</span>
-<a id="__codelineno-0-264" name="__codelineno-0-264"></a><span class="sd">        column: The name of the column.</span>
-<a id="__codelineno-0-265" name="__codelineno-0-265"></a><span class="sd">        value: The value to match it against.</span>
-<a id="__codelineno-0-266" name="__codelineno-0-266"></a><span class="sd">        use_like: Whether to use ``LIKE`` as an operator instead of ``=``.</span>
-<a id="__codelineno-0-267" name="__codelineno-0-267"></a>
-<a id="__codelineno-0-268" name="__codelineno-0-268"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-269" name="__codelineno-0-269"></a><span class="sd">        The matching row, or ``None``.</span>
-<a id="__codelineno-0-270" name="__codelineno-0-270"></a>
-<a id="__codelineno-0-271" name="__codelineno-0-271"></a><span class="sd">    Raises:</span>
-<a id="__codelineno-0-272" name="__codelineno-0-272"></a><span class="sd">        ValueError: The specified column doesn&#39;t exist in the table.</span>
-<a id="__codelineno-0-273" name="__codelineno-0-273"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-274" name="__codelineno-0-274"></a>    <span class="k">if</span> <span class="n">column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">column_map</span><span class="p">:</span>
-<a id="__codelineno-0-275" name="__codelineno-0-275"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Column </span><span class="si">{</span><span class="n">column</span><span class="si">!r}</span><span class="s2"> doesn&#39;t exist&quot;</span>
-<a id="__codelineno-0-276" name="__codelineno-0-276"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<a id="__codelineno-0-277" name="__codelineno-0-277"></a>    <span class="n">table</span> <span class="o">=</span> <span class="n">pikaTable</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
-<a id="__codelineno-0-278" name="__codelineno-0-278"></a>    <span class="n">q</span> <span class="o">=</span> <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">use_like</span> <span class="k">else</span> <span class="n">table</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-<a id="__codelineno-0-279" name="__codelineno-0-279"></a>    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">)</span> <span class="k">else</span> <span class="n">conn</span>
-<a id="__codelineno-0-280" name="__codelineno-0-280"></a>    <span class="n">cursor</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
-<a id="__codelineno-0-281" name="__codelineno-0-281"></a>    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">get_sql</span><span class="p">())</span>
-<a id="__codelineno-0-282" name="__codelineno-0-282"></a>    <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+<span class="normal"><a href="#__codelineno-0-282">282</a></span>
+<span class="normal"><a href="#__codelineno-0-283">283</a></span>
+<span class="normal"><a href="#__codelineno-0-284">284</a></span>
+<span class="normal"><a href="#__codelineno-0-285">285</a></span>
+<span class="normal"><a href="#__codelineno-0-286">286</a></span>
+<span class="normal"><a href="#__codelineno-0-287">287</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-257" name="__codelineno-0-257"></a><span class="nd">@classmethod</span>
+<a id="__codelineno-0-258" name="__codelineno-0-258"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_by_field</span><span class="p">(</span>
+<a id="__codelineno-0-259" name="__codelineno-0-259"></a>        <span class="bp">cls</span><span class="p">,</span>
+<a id="__codelineno-0-260" name="__codelineno-0-260"></a>        <span class="n">conn</span><span class="p">:</span> <span class="n">ConnCursor</span><span class="p">,</span>
+<a id="__codelineno-0-261" name="__codelineno-0-261"></a>        <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-262" name="__codelineno-0-262"></a>        <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<a id="__codelineno-0-263" name="__codelineno-0-263"></a>        <span class="n">use_like</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-264" name="__codelineno-0-264"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Row</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-265" name="__codelineno-0-265"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a row by a specific column&#39;s value.</span>
+<a id="__codelineno-0-266" name="__codelineno-0-266"></a>
+<a id="__codelineno-0-267" name="__codelineno-0-267"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-268" name="__codelineno-0-268"></a><span class="sd">        conn: A SQL connection.</span>
+<a id="__codelineno-0-269" name="__codelineno-0-269"></a><span class="sd">        column: The name of the column.</span>
+<a id="__codelineno-0-270" name="__codelineno-0-270"></a><span class="sd">        value: The value to match it against.</span>
+<a id="__codelineno-0-271" name="__codelineno-0-271"></a><span class="sd">        use_like: Whether to use ``LIKE`` as an operator instead of ``=``.</span>
+<a id="__codelineno-0-272" name="__codelineno-0-272"></a>
+<a id="__codelineno-0-273" name="__codelineno-0-273"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-274" name="__codelineno-0-274"></a><span class="sd">        The matching row, or ``None``.</span>
+<a id="__codelineno-0-275" name="__codelineno-0-275"></a>
+<a id="__codelineno-0-276" name="__codelineno-0-276"></a><span class="sd">    Raises:</span>
+<a id="__codelineno-0-277" name="__codelineno-0-277"></a><span class="sd">        ValueError: The specified column doesn&#39;t exist in the table.</span>
+<a id="__codelineno-0-278" name="__codelineno-0-278"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-279" name="__codelineno-0-279"></a>    <span class="k">if</span> <span class="n">column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">column_map</span><span class="p">:</span>
+<a id="__codelineno-0-280" name="__codelineno-0-280"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Column </span><span class="si">{</span><span class="n">column</span><span class="si">!r}</span><span class="s2"> doesn&#39;t exist&quot;</span>
+<a id="__codelineno-0-281" name="__codelineno-0-281"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<a id="__codelineno-0-282" name="__codelineno-0-282"></a>    <span class="n">table</span> <span class="o">=</span> <span class="n">pikaTable</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
+<a id="__codelineno-0-283" name="__codelineno-0-283"></a>    <span class="n">q</span> <span class="o">=</span> <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">use_like</span> <span class="k">else</span> <span class="n">table</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+<a id="__codelineno-0-284" name="__codelineno-0-284"></a>    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">)</span> <span class="k">else</span> <span class="n">conn</span>
+<a id="__codelineno-0-285" name="__codelineno-0-285"></a>    <span class="n">cursor</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+<a id="__codelineno-0-286" name="__codelineno-0-286"></a>    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">get_sql</span><span class="p">())</span>
+<a id="__codelineno-0-287" name="__codelineno-0-287"></a>    <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3039,7 +3039,9 @@
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">sort_by</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">ascending</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">limit</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="sqlite3.Row" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Row">Row</a></span><span class="p">]</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">base_query</span><span class="p">:</span> <span class="n"><span title="pypika.Query">Query</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="sqlite3.Row" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Row">Row</a></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3200,12 +3202,7 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-284">284</a></span>
-<span class="normal"><a href="#__codelineno-0-285">285</a></span>
-<span class="normal"><a href="#__codelineno-0-286">286</a></span>
-<span class="normal"><a href="#__codelineno-0-287">287</a></span>
-<span class="normal"><a href="#__codelineno-0-288">288</a></span>
-<span class="normal"><a href="#__codelineno-0-289">289</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-289">289</a></span>
 <span class="normal"><a href="#__codelineno-0-290">290</a></span>
 <span class="normal"><a href="#__codelineno-0-291">291</a></span>
 <span class="normal"><a href="#__codelineno-0-292">292</a></span>
@@ -3244,51 +3241,62 @@
 <span class="normal"><a href="#__codelineno-0-325">325</a></span>
 <span class="normal"><a href="#__codelineno-0-326">326</a></span>
 <span class="normal"><a href="#__codelineno-0-327">327</a></span>
-<span class="normal"><a href="#__codelineno-0-328">328</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-284" name="__codelineno-0-284"></a><span class="nd">@classmethod</span>
-<a id="__codelineno-0-285" name="__codelineno-0-285"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_list_by_field</span><span class="p">(</span>
-<a id="__codelineno-0-286" name="__codelineno-0-286"></a>        <span class="bp">cls</span><span class="p">,</span>
-<a id="__codelineno-0-287" name="__codelineno-0-287"></a>        <span class="n">conn</span><span class="p">:</span> <span class="n">ConnCursor</span><span class="p">,</span>
-<a id="__codelineno-0-288" name="__codelineno-0-288"></a>        <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-0-289" name="__codelineno-0-289"></a>        <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-<a id="__codelineno-0-290" name="__codelineno-0-290"></a>        <span class="n">use_like</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-0-291" name="__codelineno-0-291"></a>        <span class="n">sort_by</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-292" name="__codelineno-0-292"></a>        <span class="n">ascending</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-0-293" name="__codelineno-0-293"></a>        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-294" name="__codelineno-0-294"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Row</span><span class="p">]:</span>
-<a id="__codelineno-0-295" name="__codelineno-0-295"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a list of rows matching the specified field&#39;s value.</span>
-<a id="__codelineno-0-296" name="__codelineno-0-296"></a>
-<a id="__codelineno-0-297" name="__codelineno-0-297"></a><span class="sd">    Note that this won&#39;t get values found in child tables.</span>
-<a id="__codelineno-0-298" name="__codelineno-0-298"></a>
-<a id="__codelineno-0-299" name="__codelineno-0-299"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-300" name="__codelineno-0-300"></a><span class="sd">        conn: A SQL connection.</span>
-<a id="__codelineno-0-301" name="__codelineno-0-301"></a><span class="sd">        column: The name of the column.</span>
-<a id="__codelineno-0-302" name="__codelineno-0-302"></a><span class="sd">        value: The value to match it against.</span>
-<a id="__codelineno-0-303" name="__codelineno-0-303"></a><span class="sd">        use_like: Whether to use ``LIKE`` as an operator instead of ``=``.</span>
-<a id="__codelineno-0-304" name="__codelineno-0-304"></a><span class="sd">        sort_by: The name of the field to sort by.</span>
-<a id="__codelineno-0-305" name="__codelineno-0-305"></a><span class="sd">        ascending: Whether to sort ascending or descending.</span>
-<a id="__codelineno-0-306" name="__codelineno-0-306"></a><span class="sd">        limit: Only return up to this many rows.</span>
-<a id="__codelineno-0-307" name="__codelineno-0-307"></a>
-<a id="__codelineno-0-308" name="__codelineno-0-308"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-309" name="__codelineno-0-309"></a><span class="sd">        The matching row, or ``None``.</span>
-<a id="__codelineno-0-310" name="__codelineno-0-310"></a>
-<a id="__codelineno-0-311" name="__codelineno-0-311"></a><span class="sd">    Raises:</span>
-<a id="__codelineno-0-312" name="__codelineno-0-312"></a><span class="sd">        Value</span>
-<a id="__codelineno-0-313" name="__codelineno-0-313"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-314" name="__codelineno-0-314"></a>    <span class="k">if</span> <span class="n">column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">column_map</span><span class="p">:</span>
-<a id="__codelineno-0-315" name="__codelineno-0-315"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Column </span><span class="si">{</span><span class="n">column</span><span class="si">!r}</span><span class="s2"> doesn&#39;t exist&quot;</span>
-<a id="__codelineno-0-316" name="__codelineno-0-316"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<a id="__codelineno-0-317" name="__codelineno-0-317"></a>    <span class="k">if</span> <span class="n">sort_by</span> <span class="ow">and</span> <span class="n">sort_by</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">column_map</span><span class="p">:</span>
-<a id="__codelineno-0-318" name="__codelineno-0-318"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Column </span><span class="si">{</span><span class="n">sort_by</span><span class="si">!r}</span><span class="s2"> doesn&#39;t exist&quot;</span>
-<a id="__codelineno-0-319" name="__codelineno-0-319"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<a id="__codelineno-0-320" name="__codelineno-0-320"></a>    <span class="n">table</span> <span class="o">=</span> <span class="n">pikaTable</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
-<a id="__codelineno-0-321" name="__codelineno-0-321"></a>    <span class="n">q</span> <span class="o">=</span> <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">use_like</span> <span class="k">else</span> <span class="n">table</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-<a id="__codelineno-0-322" name="__codelineno-0-322"></a>    <span class="k">if</span> <span class="n">sort_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-323" name="__codelineno-0-323"></a>        <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">orderby</span><span class="p">(</span><span class="n">sort_by</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">Order</span><span class="o">.</span><span class="n">asc</span> <span class="k">if</span> <span class="n">ascending</span> <span class="k">else</span> <span class="n">Order</span><span class="o">.</span><span class="n">desc</span><span class="p">)</span>
-<a id="__codelineno-0-324" name="__codelineno-0-324"></a>    <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-325" name="__codelineno-0-325"></a>        <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
-<a id="__codelineno-0-326" name="__codelineno-0-326"></a>    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">)</span> <span class="k">else</span> <span class="n">conn</span>
-<a id="__codelineno-0-327" name="__codelineno-0-327"></a>    <span class="n">cursor</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
-<a id="__codelineno-0-328" name="__codelineno-0-328"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">get_sql</span><span class="p">()))</span>
+<span class="normal"><a href="#__codelineno-0-328">328</a></span>
+<span class="normal"><a href="#__codelineno-0-329">329</a></span>
+<span class="normal"><a href="#__codelineno-0-330">330</a></span>
+<span class="normal"><a href="#__codelineno-0-331">331</a></span>
+<span class="normal"><a href="#__codelineno-0-332">332</a></span>
+<span class="normal"><a href="#__codelineno-0-333">333</a></span>
+<span class="normal"><a href="#__codelineno-0-334">334</a></span>
+<span class="normal"><a href="#__codelineno-0-335">335</a></span>
+<span class="normal"><a href="#__codelineno-0-336">336</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-289" name="__codelineno-0-289"></a><span class="nd">@classmethod</span>
+<a id="__codelineno-0-290" name="__codelineno-0-290"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_list_by_field</span><span class="p">(</span>
+<a id="__codelineno-0-291" name="__codelineno-0-291"></a>        <span class="bp">cls</span><span class="p">,</span>
+<a id="__codelineno-0-292" name="__codelineno-0-292"></a>        <span class="n">conn</span><span class="p">:</span> <span class="n">ConnCursor</span><span class="p">,</span>
+<a id="__codelineno-0-293" name="__codelineno-0-293"></a>        <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-294" name="__codelineno-0-294"></a>        <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<a id="__codelineno-0-295" name="__codelineno-0-295"></a>        <span class="n">use_like</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-296" name="__codelineno-0-296"></a>        <span class="n">sort_by</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-297" name="__codelineno-0-297"></a>        <span class="n">ascending</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-298" name="__codelineno-0-298"></a>        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-299" name="__codelineno-0-299"></a>        <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-0-300" name="__codelineno-0-300"></a>        <span class="n">base_query</span><span class="p">:</span> <span class="n">Query</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-301" name="__codelineno-0-301"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Row</span><span class="p">]:</span>
+<a id="__codelineno-0-302" name="__codelineno-0-302"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a list of rows matching the specified field&#39;s value.</span>
+<a id="__codelineno-0-303" name="__codelineno-0-303"></a>
+<a id="__codelineno-0-304" name="__codelineno-0-304"></a><span class="sd">    Note that this won&#39;t get values found in child tables.</span>
+<a id="__codelineno-0-305" name="__codelineno-0-305"></a>
+<a id="__codelineno-0-306" name="__codelineno-0-306"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-307" name="__codelineno-0-307"></a><span class="sd">        conn: A SQL connection.</span>
+<a id="__codelineno-0-308" name="__codelineno-0-308"></a><span class="sd">        column: The name of the column.</span>
+<a id="__codelineno-0-309" name="__codelineno-0-309"></a><span class="sd">        value: The value to match it against.</span>
+<a id="__codelineno-0-310" name="__codelineno-0-310"></a><span class="sd">        use_like: Whether to use ``LIKE`` as an operator instead of ``=``.</span>
+<a id="__codelineno-0-311" name="__codelineno-0-311"></a><span class="sd">        sort_by: The name of the field to sort by.</span>
+<a id="__codelineno-0-312" name="__codelineno-0-312"></a><span class="sd">        ascending: Whether to sort ascending or descending.</span>
+<a id="__codelineno-0-313" name="__codelineno-0-313"></a><span class="sd">        limit: Only return up to this many rows.</span>
+<a id="__codelineno-0-314" name="__codelineno-0-314"></a>
+<a id="__codelineno-0-315" name="__codelineno-0-315"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-316" name="__codelineno-0-316"></a><span class="sd">        The matching row, or ``None``.</span>
+<a id="__codelineno-0-317" name="__codelineno-0-317"></a>
+<a id="__codelineno-0-318" name="__codelineno-0-318"></a><span class="sd">    Raises:</span>
+<a id="__codelineno-0-319" name="__codelineno-0-319"></a><span class="sd">        Value</span>
+<a id="__codelineno-0-320" name="__codelineno-0-320"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-321" name="__codelineno-0-321"></a>    <span class="k">if</span> <span class="n">column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">column_map</span><span class="p">:</span>
+<a id="__codelineno-0-322" name="__codelineno-0-322"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Column </span><span class="si">{</span><span class="n">column</span><span class="si">!r}</span><span class="s2"> doesn&#39;t exist&quot;</span>
+<a id="__codelineno-0-323" name="__codelineno-0-323"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<a id="__codelineno-0-324" name="__codelineno-0-324"></a>    <span class="k">if</span> <span class="n">sort_by</span> <span class="ow">and</span> <span class="n">sort_by</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">column_map</span><span class="p">:</span>
+<a id="__codelineno-0-325" name="__codelineno-0-325"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Column </span><span class="si">{</span><span class="n">sort_by</span><span class="si">!r}</span><span class="s2"> doesn&#39;t exist&quot;</span>
+<a id="__codelineno-0-326" name="__codelineno-0-326"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<a id="__codelineno-0-327" name="__codelineno-0-327"></a>    <span class="n">base_query</span> <span class="o">=</span> <span class="n">base_query</span> <span class="ow">or</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_base_select_query</span><span class="p">()</span>
+<a id="__codelineno-0-328" name="__codelineno-0-328"></a>    <span class="n">table</span> <span class="o">=</span> <span class="n">pikaTable</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
+<a id="__codelineno-0-329" name="__codelineno-0-329"></a>    <span class="n">q</span> <span class="o">=</span> <span class="n">base_query</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">use_like</span> <span class="k">else</span> <span class="n">table</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+<a id="__codelineno-0-330" name="__codelineno-0-330"></a>    <span class="k">if</span> <span class="n">sort_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-331" name="__codelineno-0-331"></a>        <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">orderby</span><span class="p">(</span><span class="n">sort_by</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">Order</span><span class="o">.</span><span class="n">asc</span> <span class="k">if</span> <span class="n">ascending</span> <span class="k">else</span> <span class="n">Order</span><span class="o">.</span><span class="n">desc</span><span class="p">)</span>
+<a id="__codelineno-0-332" name="__codelineno-0-332"></a>    <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-333" name="__codelineno-0-333"></a>        <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+<a id="__codelineno-0-334" name="__codelineno-0-334"></a>    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">)</span> <span class="k">else</span> <span class="n">conn</span>
+<a id="__codelineno-0-335" name="__codelineno-0-335"></a>    <span class="n">cursor</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+<a id="__codelineno-0-336" name="__codelineno-0-336"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">get_sql</span><span class="p">()))</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3466,21 +3474,21 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-346">346</a></span>
-<span class="normal"><a href="#__codelineno-0-347">347</a></span>
-<span class="normal"><a href="#__codelineno-0-348">348</a></span>
-<span class="normal"><a href="#__codelineno-0-349">349</a></span>
-<span class="normal"><a href="#__codelineno-0-350">350</a></span>
-<span class="normal"><a href="#__codelineno-0-351">351</a></span>
-<span class="normal"><a href="#__codelineno-0-352">352</a></span>
-<span class="normal"><a href="#__codelineno-0-353">353</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-346" name="__codelineno-0-346"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-347" name="__codelineno-0-347"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the name of the corresponding type in SQLite.</span>
-<a id="__codelineno-0-348" name="__codelineno-0-348"></a>
-<a id="__codelineno-0-349" name="__codelineno-0-349"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-350" name="__codelineno-0-350"></a><span class="sd">        A string containing the type&#39;s definition.</span>
-<a id="__codelineno-0-351" name="__codelineno-0-351"></a>
-<a id="__codelineno-0-352" name="__codelineno-0-352"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-353" name="__codelineno-0-353"></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-354">354</a></span>
+<span class="normal"><a href="#__codelineno-0-355">355</a></span>
+<span class="normal"><a href="#__codelineno-0-356">356</a></span>
+<span class="normal"><a href="#__codelineno-0-357">357</a></span>
+<span class="normal"><a href="#__codelineno-0-358">358</a></span>
+<span class="normal"><a href="#__codelineno-0-359">359</a></span>
+<span class="normal"><a href="#__codelineno-0-360">360</a></span>
+<span class="normal"><a href="#__codelineno-0-361">361</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-354" name="__codelineno-0-354"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-355" name="__codelineno-0-355"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the name of the corresponding type in SQLite.</span>
+<a id="__codelineno-0-356" name="__codelineno-0-356"></a>
+<a id="__codelineno-0-357" name="__codelineno-0-357"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-358" name="__codelineno-0-358"></a><span class="sd">        A string containing the type&#39;s definition.</span>
+<a id="__codelineno-0-359" name="__codelineno-0-359"></a>
+<a id="__codelineno-0-360" name="__codelineno-0-360"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-361" name="__codelineno-0-361"></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3527,21 +3535,21 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-358">358</a></span>
-<span class="normal"><a href="#__codelineno-0-359">359</a></span>
-<span class="normal"><a href="#__codelineno-0-360">360</a></span>
-<span class="normal"><a href="#__codelineno-0-361">361</a></span>
-<span class="normal"><a href="#__codelineno-0-362">362</a></span>
-<span class="normal"><a href="#__codelineno-0-363">363</a></span>
-<span class="normal"><a href="#__codelineno-0-364">364</a></span>
-<span class="normal"><a href="#__codelineno-0-365">365</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-358" name="__codelineno-0-358"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<a id="__codelineno-0-359" name="__codelineno-0-359"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a value to its corresponding SQL value.</span>
-<a id="__codelineno-0-360" name="__codelineno-0-360"></a>
-<a id="__codelineno-0-361" name="__codelineno-0-361"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-362" name="__codelineno-0-362"></a><span class="sd">        The corresponding value as expected by SQLite.</span>
-<a id="__codelineno-0-363" name="__codelineno-0-363"></a>
-<a id="__codelineno-0-364" name="__codelineno-0-364"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-365" name="__codelineno-0-365"></a>    <span class="k">return</span> <span class="n">value</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-366">366</a></span>
+<span class="normal"><a href="#__codelineno-0-367">367</a></span>
+<span class="normal"><a href="#__codelineno-0-368">368</a></span>
+<span class="normal"><a href="#__codelineno-0-369">369</a></span>
+<span class="normal"><a href="#__codelineno-0-370">370</a></span>
+<span class="normal"><a href="#__codelineno-0-371">371</a></span>
+<span class="normal"><a href="#__codelineno-0-372">372</a></span>
+<span class="normal"><a href="#__codelineno-0-373">373</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-366" name="__codelineno-0-366"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<a id="__codelineno-0-367" name="__codelineno-0-367"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a value to its corresponding SQL value.</span>
+<a id="__codelineno-0-368" name="__codelineno-0-368"></a>
+<a id="__codelineno-0-369" name="__codelineno-0-369"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-370" name="__codelineno-0-370"></a><span class="sd">        The corresponding value as expected by SQLite.</span>
+<a id="__codelineno-0-371" name="__codelineno-0-371"></a>
+<a id="__codelineno-0-372" name="__codelineno-0-372"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-373" name="__codelineno-0-373"></a>    <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3722,9 +3730,9 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-373">373</a></span>
-<span class="normal"><a href="#__codelineno-0-374">374</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-373" name="__codelineno-0-373"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-374" name="__codelineno-0-374"></a>    <span class="k">return</span> <span class="s2">&quot;TEXT&quot;</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-381">381</a></span>
+<span class="normal"><a href="#__codelineno-0-382">382</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-381" name="__codelineno-0-381"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-382" name="__codelineno-0-382"></a>    <span class="k">return</span> <span class="s2">&quot;TEXT&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3771,9 +3779,9 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-376">376</a></span>
-<span class="normal"><a href="#__codelineno-0-377">377</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-376" name="__codelineno-0-376"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-377" name="__codelineno-0-377"></a>    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-384">384</a></span>
+<span class="normal"><a href="#__codelineno-0-385">385</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-384" name="__codelineno-0-384"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-385" name="__codelineno-0-385"></a>    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3954,9 +3962,9 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-385">385</a></span>
-<span class="normal"><a href="#__codelineno-0-386">386</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-385" name="__codelineno-0-385"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-386" name="__codelineno-0-386"></a>    <span class="k">return</span> <span class="s2">&quot;TEXT&quot;</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-393">393</a></span>
+<span class="normal"><a href="#__codelineno-0-394">394</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-393" name="__codelineno-0-393"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-394" name="__codelineno-0-394"></a>    <span class="k">return</span> <span class="s2">&quot;TEXT&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4003,9 +4011,9 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-388">388</a></span>
-<span class="normal"><a href="#__codelineno-0-389">389</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-388" name="__codelineno-0-388"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-389" name="__codelineno-0-389"></a>    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-396">396</a></span>
+<span class="normal"><a href="#__codelineno-0-397">397</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-396" name="__codelineno-0-396"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-397" name="__codelineno-0-397"></a>    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4178,9 +4186,9 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-397">397</a></span>
-<span class="normal"><a href="#__codelineno-0-398">398</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-397" name="__codelineno-0-397"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-398" name="__codelineno-0-398"></a>    <span class="k">return</span> <span class="s2">&quot;INTEGER&quot;</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-405">405</a></span>
+<span class="normal"><a href="#__codelineno-0-406">406</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-405" name="__codelineno-0-405"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-406" name="__codelineno-0-406"></a>    <span class="k">return</span> <span class="s2">&quot;INTEGER&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4353,9 +4361,9 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-406">406</a></span>
-<span class="normal"><a href="#__codelineno-0-407">407</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-406" name="__codelineno-0-406"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-407" name="__codelineno-0-407"></a>    <span class="k">return</span> <span class="s2">&quot;REAL&quot;</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-414">414</a></span>
+<span class="normal"><a href="#__codelineno-0-415">415</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-414" name="__codelineno-0-414"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-415" name="__codelineno-0-415"></a>    <span class="k">return</span> <span class="s2">&quot;REAL&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4528,9 +4536,9 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-415">415</a></span>
-<span class="normal"><a href="#__codelineno-0-416">416</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-415" name="__codelineno-0-415"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-416" name="__codelineno-0-416"></a>    <span class="k">return</span> <span class="s2">&quot;TEXT&quot;</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-423">423</a></span>
+<span class="normal"><a href="#__codelineno-0-424">424</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-423" name="__codelineno-0-423"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-424" name="__codelineno-0-424"></a>    <span class="k">return</span> <span class="s2">&quot;TEXT&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4703,9 +4711,9 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-424">424</a></span>
-<span class="normal"><a href="#__codelineno-0-425">425</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-424" name="__codelineno-0-424"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-425" name="__codelineno-0-425"></a>    <span class="k">return</span> <span class="s2">&quot;BLOB&quot;</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-432">432</a></span>
+<span class="normal"><a href="#__codelineno-0-433">433</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-432" name="__codelineno-0-432"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-433" name="__codelineno-0-433"></a>    <span class="k">return</span> <span class="s2">&quot;BLOB&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4878,9 +4886,9 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-433">433</a></span>
-<span class="normal"><a href="#__codelineno-0-434">434</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-433" name="__codelineno-0-433"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-434" name="__codelineno-0-434"></a>    <span class="k">return</span> <span class="s2">&quot;BOOLEAN&quot;</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-441">441</a></span>
+<span class="normal"><a href="#__codelineno-0-442">442</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-441" name="__codelineno-0-441"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-442" name="__codelineno-0-442"></a>    <span class="k">return</span> <span class="s2">&quot;BOOLEAN&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5039,15 +5047,7 @@
 
                   <details class="quote">
                     <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-440">440</a></span>
-<span class="normal"><a href="#__codelineno-0-441">441</a></span>
-<span class="normal"><a href="#__codelineno-0-442">442</a></span>
-<span class="normal"><a href="#__codelineno-0-443">443</a></span>
-<span class="normal"><a href="#__codelineno-0-444">444</a></span>
-<span class="normal"><a href="#__codelineno-0-445">445</a></span>
-<span class="normal"><a href="#__codelineno-0-446">446</a></span>
-<span class="normal"><a href="#__codelineno-0-447">447</a></span>
-<span class="normal"><a href="#__codelineno-0-448">448</a></span>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-448">448</a></span>
 <span class="normal"><a href="#__codelineno-0-449">449</a></span>
 <span class="normal"><a href="#__codelineno-0-450">450</a></span>
 <span class="normal"><a href="#__codelineno-0-451">451</a></span>
@@ -5070,38 +5070,46 @@
 <span class="normal"><a href="#__codelineno-0-468">468</a></span>
 <span class="normal"><a href="#__codelineno-0-469">469</a></span>
 <span class="normal"><a href="#__codelineno-0-470">470</a></span>
-<span class="normal"><a href="#__codelineno-0-471">471</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-440" name="__codelineno-0-440"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql_type</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-441" name="__codelineno-0-441"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an instance of the class.</span>
-<a id="__codelineno-0-442" name="__codelineno-0-442"></a>
-<a id="__codelineno-0-443" name="__codelineno-0-443"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-444" name="__codelineno-0-444"></a><span class="sd">        sql_type: The SQL type of the column.</span>
-<a id="__codelineno-0-445" name="__codelineno-0-445"></a><span class="sd">        table: The name of the table that is referenced.</span>
-<a id="__codelineno-0-446" name="__codelineno-0-446"></a><span class="sd">        column: The name of the column from the reference table.</span>
-<a id="__codelineno-0-447" name="__codelineno-0-447"></a>
-<a id="__codelineno-0-448" name="__codelineno-0-448"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-449" name="__codelineno-0-449"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">table</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-<a id="__codelineno-0-450" name="__codelineno-0-450"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Missing table to reference (must be string)&quot;</span>
-<a id="__codelineno-0-451" name="__codelineno-0-451"></a>        <span class="k">raise</span> <span class="n">SchemaError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<a id="__codelineno-0-452" name="__codelineno-0-452"></a>
-<a id="__codelineno-0-453" name="__codelineno-0-453"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">table</span>
-<a id="__codelineno-0-454" name="__codelineno-0-454"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="o">=</span> <span class="n">column</span>
+<span class="normal"><a href="#__codelineno-0-471">471</a></span>
+<span class="normal"><a href="#__codelineno-0-472">472</a></span>
+<span class="normal"><a href="#__codelineno-0-473">473</a></span>
+<span class="normal"><a href="#__codelineno-0-474">474</a></span>
+<span class="normal"><a href="#__codelineno-0-475">475</a></span>
+<span class="normal"><a href="#__codelineno-0-476">476</a></span>
+<span class="normal"><a href="#__codelineno-0-477">477</a></span>
+<span class="normal"><a href="#__codelineno-0-478">478</a></span>
+<span class="normal"><a href="#__codelineno-0-479">479</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-448" name="__codelineno-0-448"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql_type</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-449" name="__codelineno-0-449"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an instance of the class.</span>
+<a id="__codelineno-0-450" name="__codelineno-0-450"></a>
+<a id="__codelineno-0-451" name="__codelineno-0-451"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-452" name="__codelineno-0-452"></a><span class="sd">        sql_type: The SQL type of the column.</span>
+<a id="__codelineno-0-453" name="__codelineno-0-453"></a><span class="sd">        table: The name of the table that is referenced.</span>
+<a id="__codelineno-0-454" name="__codelineno-0-454"></a><span class="sd">        column: The name of the column from the reference table.</span>
 <a id="__codelineno-0-455" name="__codelineno-0-455"></a>
-<a id="__codelineno-0-456" name="__codelineno-0-456"></a>    <span class="k">if</span> <span class="n">sql_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-457" name="__codelineno-0-457"></a>        <span class="n">sql_type</span> <span class="o">=</span> <span class="n">Integer</span>
-<a id="__codelineno-0-458" name="__codelineno-0-458"></a>
-<a id="__codelineno-0-459" name="__codelineno-0-459"></a>    <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">sql_type</span><span class="p">):</span>
-<a id="__codelineno-0-460" name="__codelineno-0-460"></a>        <span class="n">sql_type</span> <span class="o">=</span> <span class="n">sql_type</span><span class="p">()</span>
-<a id="__codelineno-0-461" name="__codelineno-0-461"></a>
-<a id="__codelineno-0-462" name="__codelineno-0-462"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sql_type</span><span class="p">,</span> <span class="n">SQLType</span><span class="p">):</span>
-<a id="__codelineno-0-463" name="__codelineno-0-463"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Cannot have non-SQLType derived sql_type&quot;</span>
-<a id="__codelineno-0-464" name="__codelineno-0-464"></a>        <span class="k">raise</span> <span class="n">SchemaError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<a id="__codelineno-0-465" name="__codelineno-0-465"></a>
-<a id="__codelineno-0-466" name="__codelineno-0-466"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">sql_type</span><span class="o">.</span><span class="n">is_real_type</span><span class="p">():</span>
-<a id="__codelineno-0-467" name="__codelineno-0-467"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;`sql_type` must be an actual type&quot;</span>
-<a id="__codelineno-0-468" name="__codelineno-0-468"></a>        <span class="k">raise</span> <span class="n">SchemaError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<a id="__codelineno-0-456" name="__codelineno-0-456"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-457" name="__codelineno-0-457"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">table</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-0-458" name="__codelineno-0-458"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Missing table to reference (must be string)&quot;</span>
+<a id="__codelineno-0-459" name="__codelineno-0-459"></a>        <span class="k">raise</span> <span class="n">SchemaError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<a id="__codelineno-0-460" name="__codelineno-0-460"></a>
+<a id="__codelineno-0-461" name="__codelineno-0-461"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">table</span>
+<a id="__codelineno-0-462" name="__codelineno-0-462"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="o">=</span> <span class="n">column</span>
+<a id="__codelineno-0-463" name="__codelineno-0-463"></a>
+<a id="__codelineno-0-464" name="__codelineno-0-464"></a>    <span class="k">if</span> <span class="n">sql_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-465" name="__codelineno-0-465"></a>        <span class="n">sql_type</span> <span class="o">=</span> <span class="n">Integer</span>
+<a id="__codelineno-0-466" name="__codelineno-0-466"></a>
+<a id="__codelineno-0-467" name="__codelineno-0-467"></a>    <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">sql_type</span><span class="p">):</span>
+<a id="__codelineno-0-468" name="__codelineno-0-468"></a>        <span class="n">sql_type</span> <span class="o">=</span> <span class="n">sql_type</span><span class="p">()</span>
 <a id="__codelineno-0-469" name="__codelineno-0-469"></a>
-<a id="__codelineno-0-470" name="__codelineno-0-470"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">python</span> <span class="o">=</span> <span class="n">sql_type</span><span class="o">.</span><span class="n">python</span>
-<a id="__codelineno-0-471" name="__codelineno-0-471"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">sql_type</span> <span class="o">=</span> <span class="n">sql_type</span><span class="o">.</span><span class="n">to_sql</span><span class="p">()</span>
+<a id="__codelineno-0-470" name="__codelineno-0-470"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sql_type</span><span class="p">,</span> <span class="n">SQLType</span><span class="p">):</span>
+<a id="__codelineno-0-471" name="__codelineno-0-471"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Cannot have non-SQLType derived sql_type&quot;</span>
+<a id="__codelineno-0-472" name="__codelineno-0-472"></a>        <span class="k">raise</span> <span class="n">SchemaError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<a id="__codelineno-0-473" name="__codelineno-0-473"></a>
+<a id="__codelineno-0-474" name="__codelineno-0-474"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">sql_type</span><span class="o">.</span><span class="n">is_real_type</span><span class="p">():</span>
+<a id="__codelineno-0-475" name="__codelineno-0-475"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;`sql_type` must be an actual type&quot;</span>
+<a id="__codelineno-0-476" name="__codelineno-0-476"></a>        <span class="k">raise</span> <span class="n">SchemaError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<a id="__codelineno-0-477" name="__codelineno-0-477"></a>
+<a id="__codelineno-0-478" name="__codelineno-0-478"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">python</span> <span class="o">=</span> <span class="n">sql_type</span><span class="o">.</span><span class="n">python</span>
+<a id="__codelineno-0-479" name="__codelineno-0-479"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">sql_type</span> <span class="o">=</span> <span class="n">sql_type</span><span class="o">.</span><span class="n">to_sql</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
                   </details>
 
@@ -5182,11 +5190,11 @@
 
             <details class="quote">
               <summary>Source code in <code>tibiawikisql/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-476">476</a></span>
-<span class="normal"><a href="#__codelineno-0-477">477</a></span>
-<span class="normal"><a href="#__codelineno-0-478">478</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-476" name="__codelineno-0-476"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-0-477" name="__codelineno-0-477"></a>    <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0.sql_type}</span><span class="s2"> REFERENCES </span><span class="si">{0.table}</span><span class="s2"> (</span><span class="si">{0.column}</span><span class="s2">)&quot;</span>
-<a id="__codelineno-0-478" name="__codelineno-0-478"></a>    <span class="k">return</span> <span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-484">484</a></span>
+<span class="normal"><a href="#__codelineno-0-485">485</a></span>
+<span class="normal"><a href="#__codelineno-0-486">486</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-484" name="__codelineno-0-484"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-485" name="__codelineno-0-485"></a>    <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0.sql_type}</span><span class="s2"> REFERENCES </span><span class="si">{0.table}</span><span class="s2"> (</span><span class="si">{0.column}</span><span class="s2">)&quot;</span>
+<a id="__codelineno-0-486" name="__codelineno-0-486"></a>    <span class="k">return</span> <span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
