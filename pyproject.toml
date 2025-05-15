@@ -54,7 +54,7 @@ dependencies = { file = ["requirements.txt"] }
 [tool.setuptools.dynamic.optional-dependencies]
 docs = { file = ["requirements-docs.txt"] }
 testing = { file = ["requirements-testing.txt"] }
-server = ["fastapi"]
+server = { file = ["requirements-server.txt"] }
 
 [tool.ruff]
 exclude = [
