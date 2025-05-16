@@ -2,7 +2,6 @@
 site_name: TibiaWikiSQL
 site_author: Allan Galarza
 site_description: TibiaWikiSQL is a script that generates a SQLite database from TibiaWiki articles by using its API.
-docs_dir: mkdocs # TODO: Remove whe documentation is moved back to `docs` folder.
 repo_url: https://github.com/Galarzaa90/tibiawiki-sql
 repo_name: Galarzaa90/tibiawiki-sql
 copyright: >
@@ -103,11 +102,12 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.highlight:
       anchor_linenums: true
+  - pymdownx.snippets
   - toc:
       permalink: true
 
 watch:
-  - mkdocs
+  - docs
   - mkdocs.yaml
   - tibiawikisql
 
@@ -115,6 +115,7 @@ nav:
   - Home:
       - Home: index.md
       - Introduction: intro.md
+      - Changelog: changelog.md
   - API Reference:
       - TibiaWiki API: api/api.md
       - Database: api/database.md

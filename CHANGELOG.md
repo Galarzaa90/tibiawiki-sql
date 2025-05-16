@@ -1,12 +1,11 @@
-=========
-Changelog
-=========
+# Changelog
 
-7.0.0 (Unreleased)
-==================
+## 7.0.0 (Unreleased)
+
 - `WikiClient` is no longer a "static class", an instance must now be created in order to better reuse HTTP sessions.
 - General model changes:
-    - All ``timestamp`` properties are now ``datetime.datetime`` objects. Their database counterparts are IS08601 strings.
+    - All ``timestamp`` properties are now
+      ``datetime.datetime`` objects. Their database counterparts are IS08601 strings.
     - Added many model classes that simplify the data displayed.
 - Achievement changes
     - Spoiler properly handles quest links.
@@ -15,7 +14,7 @@ Changelog
     - Links now cleaned from ``description``.
 - Spell changes
     - Added `monk` attribute.
-    - Rename ``type```to ``spell_type``
+    - Rename ``type`` to ``spell_type``
     - Added ``cooldown2`` and ``cooldown3`` for reduced cooldowns by the Wheel of Destiny.
     - Rename ``premium`` to ``is_premium``.
     - Rename ``promotion`` to ``is_promotion``.
@@ -59,53 +58,39 @@ Changelog
     - Renamed ``buyable`` to ``is_buyable```.
 - Update changes:
     - Renamed ``date`` to ``release_date``.
-.. 6.2.1
 
-6.2.1 (2024-06-27)
-==================
+## 6.2.1 (2024-06-27)
+
 - Fix database generation failing due to invalid date format.
 
+## 6.2.0 (2022-07-23)
 
-.. 6.2.0
-
-6.2.0 (2022-07-23)
-==================
 - Added `bosstiary_class` to creatures.
 - NPC Offers are read from the ItemPrices data list.
 - NPC Spell offers are read from the ItemPrices spell list.
 - Performance improvements.
 
-.. 6.1.0
-
-6.1.0 (2022-01-04)
-==================
+## 6.1.0 (2022-01-04)
 
 - Added ``upgrade_classification`` to item attributes.
 - Fixed empty creature and item sounds being saved.
 - Fixed empty creature abilities being saved.
 - Marked more SQLite columns as ``NOT NULL``.
 
-.. 6.0.2
-
-6.0.2 (2021-09-10)
-==================
+## 6.0.2 (2021-09-10)
 
 - Fixed spell effects including file names.
 
-.. v6.0.1
-
-6.0.1 (2021-08-18)
-==================
+## 6.0.1 (2021-08-18)
 
 - Fixed some creature drops not being parsed properly, resulting in incomplete data.
 
-.. v6.0.0
+## 6.0.0 (2021-08-17)
 
-6.0.0 (2021-08-17)
-==================
 - Books are now parsed.
 - Changes to creature's max damage and abilities parsing:
-    - Added ``creature_max_damage`` and ``creature_ability`` tables to parse more detailed information about creature's max damage and abilities.
+    - Added ``creature_max_damage`` and
+      ``creature_ability`` tables to parse more detailed information about creature's max damage and abilities.
     - Added the respective classes ``CreatureMaxDamage`` and ``CreatureAbility``.
     - Removed ``max_damage`` and ``abilities`` columns from ``creature`` table.
     - ``Creature`` class attributes `max_damage` and ``abilities`` were updated to new types.
@@ -120,7 +105,8 @@ Changelog
 - Item's store information is now parsed.
     - Added ``item_store_offer`` table and ``ItemStoreOffer`` class.
     - Added ``store_offers`` attribute to ``Item`` class.
-- Renamed ``type`` attributes and columns to more specific names to avoid conflict with Python's builtin ``type`` function.
+- Renamed ``type`` attributes and columns to more specific names to avoid conflict with Python's builtin
+  ``type`` function.
     - Renamed to ``item_type`` in ``item`` table and ``Item`` class.
     - Renamed to ``creature_type`` in ``creature`` table and ``Creature`` class.
 - Parsing relies more on `mwparserfromhell <https://mwparserfromhell.readthedocs.io/>`_ and less on regular expressions.
@@ -128,64 +114,46 @@ Changelog
     - More attributes related to "objects" are now added to the ``item_attribute`` table.
 - Added support for attributes added in the Summer Update 2020 and some other missing attributes.
 
-.. v5.0.1
-
-5.0.1 (2021-05-17)
-==================
+## 5.0.1 (2021-05-17)
 
 - Fixed wrong attribute definition for ``Spell`` model.
 
-.. v5.0.0
-
-5.0.0 (2021-05-17)
-==================
+## 5.0.0 (2021-05-17)
 
 - Added ``Updates`` model and ``game_update`` table.
 - Added ``infobox_attributes`` to ``WikiEntry`` class to easily extract any infobox attribute.
 - Added missing ``premium`` attribute to ``Achievement`` model. Column was already saved.
 - Added ``battleye_type`` class and column to ``World`` model and ``world`` table.
-- Added ``library_race``, ``runs_at``, ``modifier_healing``, and ``location`` to ``Creature`` model and ``creature`` table.
+- Added ``library_race``, ``runs_at``, ``modifier_healing``, and ``location`` to ``Creature`` model and
+  ``creature`` table.
 - Added ``slots`` class and column to ``Imbuement`` model and ``imbuement`` table.
 - Added ``group_secondary``, ``group_rune``, ``premium``, ``promotion``, ``cooldown_group``, and
   ``cooldown_group_secondary`` attributes and columns to ``Spell`` class and ``spell`` table.
 - Added ``job_additionals`` to ``Npc`` model and ``npc`` table.
 - **Breaking change**: Renamed ``classz`` column to ``group_spell`` in ``spell`` table.
 
-.. v4.1.2
-
-4.1.2 (2021-04-16)
-==================
+## 4.1.2 (2021-04-16)
 
 - Added missing ``bestiary_kills`` and ``charm_points`` values for creatures in the **Challenging** class.
 
-.. v4.1.1
-
-4.1.1 (2021-03-11)
-==================
+## 4.1.1 (2021-03-11)
 
 - Added missing ``version`` attribute to ``Spell``.
 
-.. v4.1.0
-
-4.1.0 (2021-01-18)
-==================
+## 4.1.0 (2021-01-18)
 
 - Improved image cache, the timestamp of images are now saved and checked on subsequent calls.
 - By default, all articles are parsed, including deprecated, they can be skipped using ``--skip-deprecated``.
-- Added ``status`` column and field to main tables and models. Indicates the status of the entity (active, deprecated, event, ts-only).
+- Added
+  ``status`` column and field to main tables and models. Indicates the status of the entity (active, deprecated, event, ts-only).
 - Fixed Worlds not being parsed due to the corresponding category being renamed on TibiaWiki.
 
-.. v4.0.1
-
-4.0.1 (2020-11-23)
-==================
+## 4.0.1 (2020-11-23)
 
 - Updated API to consider the changes on Fandom's API for pagination.
 
-.. v4.0.0
+## 4.0.0 (2019-12-13)
 
-4.0.0 (2019-12-13)
-==================
 - Fixed database generation failing for images with redirects
 - Added indexes to various columns and various tables, this should increase search performance.
 - Made title and name columns case insensitive.
@@ -197,20 +165,15 @@ Changelog
 - Added ``look_text`` property to ``Item``, renders the item's look text.
 - Added ``reistances`` property to ``Item``, gets a dictionary of the item's resistances.
 - **Breaking change**: Renamed ``class`` columns and fields in ``item`` table and ``Item`` class to  ``item_class``.
-- **Breaking change**: Renamed ``class`` columns and fields in ``creature`` table and ``Creature`` class to  ``creature_class``.
+- **Breaking change**: Renamed ``class`` columns and fields in ``creature`` table and ``Creature`` class to
+  ``creature_class``.
 
+## 3.0.1 (2019-05-16)
 
-.. v3.0.1
-
-3.0.1 (2019-05-16)
-==================
 - ``Item.attribute_dict`` returns empty dictionary instead of ``None`` if ``Item.attributes`` is empty.
 
+## 3.0.0 (2019-05-15)
 
-.. v3.0.0
-
-3.0.0 (2019-05-15)
-==================
 - Charms are now read from their TibiaWiki articles instead of a static json file.
 - ``Charm`` class and ``charm`` table changes:
     - Added ``article_id``, ``title``, ``timestamp`` and ``version``
@@ -232,51 +195,36 @@ Changelog
     - ``consumable``
     - ``writable_chars``
 
+## 2.2.0 (2019-05-03)
 
-.. v2.2.0:
-
-2.2.0 (2019-05-03)
-==================
 - New table ``mount``, containing all mounts and their information.
 - Fixed incorrect potions entries due to NPC Minzy.
 
-.. v2.1.1:
+## 2.1.1 (2019-03-25)
 
-2.1.1 (2019-03-25)
-==================
-- Fixed physical and earth modifiers not showing up in ``weak_to``, ``immune_to`` and ``resistant_to`` ``Creature`` properties.
+- Fixed physical and earth modifiers not showing up in ``weak_to``, ``immune_to`` and ``resistant_to``
+  ``Creature`` properties.
 - Fixed incorrect ``weak_to`` property.
 - Fixed missing ``modifier_hpdrain`` ``Creature`` attribute.
 
-.. _v2.1.0:
+## 2.1.0 (2019-03-19)
 
-2.1.0 (2019-03-19)
-==================
-
-- `elemental_attack` Item Attribute split into ``fire_attack``, ``ice_attack``, ``energy_attack`` and ``earth_attack`` to
+- `elemental_attack` Item Attribute split into ``fire_attack``, ``ice_attack``, ``energy_attack`` and
+  ``earth_attack`` to
   reflect changes in TibiaWiki's template.
 - Added ``bestiary_kills`` and ``charm_points`` properties to ``Creature``.
 - Added ``elemental_modifiers``, ``weak_to``, ``immune_to`` and ``resistant_to`` properties to ``Creature``.
 - New table ``world`` and model ``World``. Contains information of Game worlds, including now offline worlds.
 
-.. _v2.0.2:
-
-2.0.2 (2019-01-14)
-==================
+## 2.0.2 (2019-01-14)
 
 - Elemental protection and required vocation item attributes were not getting set.
 
-.. _v2.0.1:
-
-2.0.1 (2018-11-26)
-==================
+## 2.0.1 (2018-11-26)
 
 - Fixed imbuement materials not getting saved in the database.
 
-.. _v2.0.0:
-
-2.0.0 (2018-11-22)
-==================
+## 2.0.0 (2018-11-22)
 
 - New model classes, to unify the generation process.
 - Live fetching is now possible, obtain data directly from the Wiki.
@@ -329,105 +277,78 @@ Changelog
     - Removed columns:
         - ``day_name`` from ``rashid_position``
 
-.. _v1.2.0:
+## 1.2.0 (2018-10-16)
 
-1.2.0 (2018-10-16)
-==================
+- New ``charm`` table, contains information about all charms.
 
--  New ``charm`` table, contains information about all charms.
+## 1.1.1 (2018-09-23)
 
-.. _v1.1.1:
+- Improved parsing of ``walksaround`` and ``walksthrough``
 
-1.1.1 (2018-09-23)
-==================
+## 1.1.0 (2018-09-22)
 
--  Improved parsing of ``walksaround`` and ``walksthrough``
+- Added new columns to creatures table:
 
-.. _v1.1.0:
+    - ``walksaround``
+    - ``walksthrough``
 
-1.1.0 (2018-09-22)
-==================
+## 1.0.1 (2018-07-02)
 
--  Added new columns to creatures table:
+- Fixed bug caused when a category had a number of articles that was exactly a multiple of 50.
 
-   -  ``walksaround``
-   -  ``walksthrough``
+## 1.0.0 (2018-07-01)
 
-.. _v1.0.1:
+- ``id`` is now TibiaWiki’s article id for the element, making them more reliable than autoincremented ids.
+- Fixed bug with potion’s prices.
+- Fixed bug with paralysable being inverted.
+- New tables ``imbuements`` and ``imbuements_materials``.
+- Unknown creature attributes are no longer parsed as ``False``, but ``None``.
+- New columns in creatures table:
 
-1.0.1 (2018-07-02)
-==================
+    - ``bestiary_class``
+    - ``bestiary_level``
+    - ``occurrence``
+    - ``armor``
+    - ``speed``
 
--  Fixed bug caused when a category had a number of articles that was exactly a multiple of 50.
+## 0.3.0 (2017-12-18)
 
-.. _v1.0.0:
+- New ``items_keys`` table, contains key numbers with their uses and
+  locations.
+- New ``rashid_positions`` database, contains Rashid’s coordinates for each weekday.
+- Added ``article``, ``class`` and ``type`` to ``creatures`` table.
+- Added ``article``, ``class`` and ``client_id`` to ``items`` table.
+- Added ``last_edit`` column to most tables.
 
-1.0.0 (2018-07-01)
-==================
+## 0.2.0 (2017-11-14)
 
--  ``id`` is now TibiaWiki’s article id for the element, making them more reliable than autoincremented ids.
--  Fixed bug with potion’s prices.
--  Fixed bug with paralysable being inverted.
--  New tables ``imbuements`` and ``imbuements_materials``.
--  Unknown creature attributes are no longer parsed as ``False``, but ``None``.
--  New columns in creatures table:
+- Improved the parsing of all data tables, resulting in more
+  consistency in values, less empty strings (not ``NULL``) and better
+  handling of default values.
+- New ``database_info`` table, it contains two rows, “version” and
+  “generated_date”, containing the script vused and the date the
+  database was generated respectively.
+- Added a new ``currency`` column to ``npcs_buying`` and
+  ``npcs_selling``, it contains the id of the item used as currency for
+  that transaction (e.g. gold coins, gold tokens, silver tokens, etc).
+- Better parsing for item npc offers, a lot more offers are saved now,
+  including item trades (e.g. 1 fighting spirit for 2 royal helmets).
+- More item attributes are saved to ``item_attributes``.
 
-   -  ``bestiary_class``
-   -  ``bestiary_level``
-   -  ``occurrence``
-   -  ``armor``
-   -  ``speed``
+## 0.1.1 (2017-11-12)
 
-.. _v0.3.0:
+- Better attribute parsing, this means values should me more consistent
+  and there are no entries without the ``name`` column
+- No changes were made to the schema.
 
-0.3.0 (2017-12-18)
-==================
+## 0.1.0 (2017-11-09)
 
--  New ``items_keys`` table, contains key numbers with their uses and
-   locations.
--  New ``rashid_positions`` database, contains Rashid’s coordinates for each weekday.
--  Added ``article``, ``class`` and ``type`` to ``creatures`` table.
--  Added ``article``, ``class`` and ``client_id`` to ``items`` table.
--  Added ``last_edit`` column to most tables.
-
-.. _v0.2.0:
-
-0.2.0 (2017-11-14)
-==================
-
--  Improved the parsing of all data tables, resulting in more
-   consistency in values, less empty strings (not ``NULL``) and better
-   handling of default values.
--  New ``database_info`` table, it contains two rows, “version” and
-   “generated_date”, containing the script vused and the date the
-   database was generated respectively.
--  Added a new ``currency`` column to ``npcs_buying`` and
-   ``npcs_selling``, it contains the id of the item used as currency for
-   that transaction (e.g. gold coins, gold tokens, silver tokens, etc).
--  Better parsing for item npc offers, a lot more offers are saved now,
-   including item trades (e.g. 1 fighting spirit for 2 royal helmets).
--  More item attributes are saved to ``item_attributes``.
-
-.. _v0.1.1:
-
-0.1.1 (2017-11-12)
-==================
-
--  Better attribute parsing, this means values should me more consistent
-   and there are no entries without the ``name`` column
--  No changes were made to the schema.
-
-.. _v0.1.0:
-
-0.1.0 (2017-11-09)
-==================
-
--  Creatures table, with all their attributes, including a separate
-   table for all their loot.
--  Loot drop percentage are calculated from loot statistics
--  Item table, with their basic attributes, and their separate
-   attributes on a separate table
--  NPCs table with their information, including spawn location.
--  NPCs sell and buy offers
--  Achievements, with their spoiler info
--  Quests basic infor
+- Creatures table, with all their attributes, including a separate
+  table for all their loot.
+- Loot drop percentage are calculated from loot statistics
+- Item table, with their basic attributes, and their separate
+  attributes on a separate table
+- NPCs table with their information, including spawn location.
+- NPCs sell and buy offers
+- Achievements, with their spoiler info
+- Quests basic infor
