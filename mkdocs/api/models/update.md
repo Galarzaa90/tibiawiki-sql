@@ -1,0 +1,1 @@
+::: tibiawikisql.models.update

@@ -4,6 +4,7 @@ Changelog
 
 7.0.0 (Unreleased)
 ==================
+- `WikiClient` is no longer a "static class", an instance must now be created in order to better reuse HTTP sessions.
 - General model changes:
     - All ``timestamp`` properties are now ``datetime.datetime`` objects. Their database counterparts are IS08601 strings.
     - Added many model classes that simplify the data displayed.

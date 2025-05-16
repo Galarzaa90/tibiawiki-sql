@@ -53,6 +53,7 @@ V = TypeVar("V")
 lua = LuaRuntime()
 link_pattern = re.compile(r"(?P<price>\d+)?\s?\[\[([^]|]+)")
 
+wiki_client = WikiClient()
 
 class Category:
     """Defines the article groups to be fetched.
@@ -251,7 +252,7 @@ def save_images(conn: sqlite3.Connection, key: str, value: Category) -> None:
     cache_count = 0
     fetch_count = 0
     failed = []
-    generator = WikiClient.get_images_info(titles)
+    generator = wiki_client.get_images_info(titles)
     session = requests.Session()
     with (
         timed() as t,
@@ -352,7 +353,7 @@ def save_outfit_images(conn: ConnCursor) -> None:
     titles, image_info = generate_outfit_image_names(results)
 
     session = requests.Session()
-    generator = WikiClient.get_images_info(titles)
+    generator = wiki_client.get_images_info(titles)
     cache_count = 0
     fetch_count = 0
     failed = []
@@ -405,7 +406,7 @@ def fetch_category_entries(category: str, exclude_titles: set[str] | None = None
     click.echo(f"Fetching articles in {Fore.BLUE}Category:{category}{Style.RESET_ALL}...")
     entries = []
     with timed() as t:
-        for entry in WikiClient.get_category_members(category):
+        for entry in wiki_client.get_category_members(category):
             if exclude_titles and entry.title in exclude_titles:
                 continue
             if entry.title.startswith("User:") or entry.title.startswith("TibiaWiki:"):
@@ -466,7 +467,7 @@ def generate_spell_offers(conn: sqlite3.Connection, data_store: dict[str, Any]) 
     """
     if "npcs_map" not in data_store or "spells_map" not in data_store:
         return
-    article = WikiClient.get_article("Module:ItemPrices/spelldata")
+    article = wiki_client.get_article("Module:ItemPrices/spelldata")
     spell_offers = parse_spell_data(article.content)
     rows = []
     not_found_store = defaultdict(set)
@@ -510,7 +511,7 @@ def generate_spell_offers(conn: sqlite3.Connection, data_store: dict[str, Any]) 
 def generate_item_offers(conn: sqlite3.Connection, data_store):
     if "npcs_map" not in data_store or "items_map" not in data_store:
         return
-    article = WikiClient.get_article("Module:ItemPrices/data")
+    article = wiki_client.get_article("Module:ItemPrices/data")
     data = lua.execute(article.content)
 
     sell_offers = []
@@ -581,7 +582,7 @@ def generate_loot_statistics(conn: sqlite3.Connection, data_store):
     try:
         results = conn.execute("SELECT title FROM creature")
         titles = [f"Loot Statistics:{t[0]}" for t in results]
-        generator = WikiClient.get_articles(titles)
+        generator = wiki_client.get_articles(titles)
         unknown_items = set()
         with (
             timed() as t,
@@ -644,7 +645,7 @@ def generate(conn, skip_images, skip_deprecated):
         if value.generate_map:
             data_store[f"{key}_map"] = {}
         unparsed = []
-        generator = WikiClient.get_articles(titles)
+        generator = wiki_client.get_articles(titles)
         with (
             timed() as t,
             conn,

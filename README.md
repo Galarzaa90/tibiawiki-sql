@@ -20,10 +20,7 @@ If you integrate this into your project or use the generated data, make sure to 
 ![PyPI - License](https://img.shields.io/pypi/l/tibiawikisql.svg)
 
 ## Requirements
-* Python 3.6 or higher
-    * **requests** module
-    * **click** module
-    * **colorama** module
+* Python 3.10 or higher
     
 ## Installing
 To install the latest version on PyPi:

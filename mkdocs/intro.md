@@ -2,7 +2,7 @@
 TibiaWikiSQL works as a command-line interface, allowing passing parameters to customize the behaviour of the script.
 
 ## Prerequisites
-TibiaWikiSQL requires Python 3.6 or higher.
+TibiaWikiSQL requires Python 3.10 or higher.
 
 ## Installation
 This module can be installed from PyPi using:

@@ -1,14 +1,20 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 site_name: TibiaWikiSQL
+site_author: Allan Galarza
+site_description: TibiaWikiSQL is a script that generates a SQLite database from TibiaWiki articles by using its API.
 docs_dir: mkdocs # TODO: Remove whe documentation is moved back to `docs` folder.
 repo_url: https://github.com/Galarzaa90/tibiawiki-sql
 repo_name: Galarzaa90/tibiawiki-sql
+copyright: >
+  &copy; 2025 Allan Galarza<br>
+  <a href="https://www.tibia.com">Tibia</a> is made by <a href="https://www.cipsoft.com/">CipSoft</a>, all Tibia content is copyrighted by <a href="https://www.cipsoft.com/">CipSoft GmbH</a>.<br>
+  The data collected by this library is provided by <a href="https://tibia.fandom.com/">TibiaWiki</a>.
 
 theme:
   name: material
   language: en
+  logo: images/logo.gif
   palette:
-
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
       toggle:
@@ -18,6 +24,7 @@ theme:
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
+      primary: brown
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
@@ -25,6 +32,7 @@ theme:
     # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
+      primary: brown
       toggle:
         icon: material/brightness-4
         name: Switch to system preference
@@ -47,7 +55,11 @@ theme:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/galarzaa90/tibiawiki-sql
+      link: https://github.com/Galarzaa90/tibiawiki-sql
+    - icon: simple/pypi
+      link: https://pypi.org/project/tibiawikisql/
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/r/galarzaa90/tibiawiki-sql
 
 plugins:
   - search
@@ -91,6 +103,8 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.highlight:
       anchor_linenums: true
+  - toc:
+      permalink: true
 
 watch:
   - mkdocs
@@ -106,7 +120,22 @@ nav:
       - Database: api/database.md
       - Generation: api/generation.md
       - Errors: api/errors.md
-      - Models: api/models.md
+      - Models:
+        - Package Index: api/models/index.md
+        - Base: api/models/base.md
+        - Achievement: api/models/achievement.md
+        - Charm: api/models/charm.md
+        - Creature: api/models/creature.md
+        - House: api/models/house.md
+        - Imbuement: api/models/imbuement.md
+        - Item: api/models/item.md
+        - Mount: api/models/mount.md
+        - Npc: api/models/npc.md
+        - Outfit: api/models/outfit.md
+        - Quest: api/models/quest.md
+        - Spell: api/models/spell.md
+        - Update: api/models/update.md
+        - World: api/models/world.md
       - Parsers: api/parsers.md
       - Schema: api/schema.md
       - Utilities: api/utils.md

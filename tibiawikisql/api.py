@@ -40,7 +40,7 @@ class WikiEntry(BaseModel):
     @property
     def url(self) -> str:
         """The URL to the article's display page."""
-        return f"{BASE_URL}/wiki/{urllib.parse.quote(self.title.replace(" ","_"))}"
+        return f"{BASE_URL}/wiki/{urllib.parse.quote(self.title.replace(' ','_'))}"
 
 
 class Article(WikiEntry):
@@ -86,11 +86,14 @@ class WikiClient:
     ENDPOINT: ClassVar[str] = f"{BASE_URL}/api.php"
 
     headers: ClassVar[dict[str, str]]= {
-        "User-Agent": f'tibiawikisql {__version__}',  # noqa: Q000
+        "User-Agent": f'tibiawikisql/{__version__}',  # noqa: Q000
     }
 
-    @classmethod
-    def get_category_members(cls, name: str, skip_index: bool = True) -> Generator[WikiEntry]:
+    def __init__(self) -> None:
+        """Creates a new instance of the client."""
+        self.session = requests.Session()
+
+    def get_category_members(self, name: str, skip_index: bool = True) -> Generator[WikiEntry]:
         """Create a generator that obtains entries in a certain category.
 
         Args:
@@ -101,8 +104,6 @@ class WikiClient:
             Articles in this category.
 
         """
-        s = requests.Session()
-        s.headers.update(cls.headers)
         cmcontinue = None
         params = {
             "action": "query",
@@ -115,7 +116,7 @@ class WikiClient:
         }
         while True:
             params["cmcontinue"] = cmcontinue
-            r = s.get(cls.ENDPOINT, params=params)
+            r = self.session.get(self.ENDPOINT, params=params)
             data = json.loads(r.text)
             for member in data["query"]["categorymembers"]:
                 if member["sortkeyprefix"] == "*" and skip_index:
@@ -131,8 +132,7 @@ class WikiClient:
                 # If there's no "cmcontinue", means we reached the end of the list.
                 break
 
-    @classmethod
-    def get_category_members_titles(cls, name: str, skip_index: bool =True) -> Generator[str]:
+    def get_category_members_titles(self, name: str, skip_index: bool =True) -> Generator[str]:
         """Create a generator that obtains a list of article titles in a category.
 
         Args:
@@ -143,11 +143,11 @@ class WikiClient:
             Titles of articles in this category.
 
         """
-        for member in cls.get_category_members(name, skip_index):
+        for member in self.get_category_members(name, skip_index):
             yield member.title
 
-    @classmethod
-    def get_image_info(cls, name: str) -> Image:
+
+    def get_image_info(self, name: str) -> Image:
         """Get an image's info.
 
         It is not required to prefix the name with ``File:``, but the extension is required.
@@ -159,11 +159,10 @@ class WikiClient:
             The image's information.
 
         """
-        gen = cls.get_images_info([name])
+        gen = self.get_images_info([name])
         return next(gen)
 
-    @classmethod
-    def get_images_info(cls, names: list[str]) -> Generator[Image | None]:
+    def get_images_info(self, names: list[str]) -> Generator[Image | None]:
         """Get the information of a list of image names.
 
         It is not required to prefix the name with ``File:``, but the extension is required.
@@ -179,8 +178,6 @@ class WikiClient:
 
         """
         i = 0
-        s = requests.Session()
-        s.headers.update(cls.headers)
         params = {
             "action": "query",
             "prop": "imageinfo",
@@ -192,28 +189,26 @@ class WikiClient:
                 break
             params["titles"] = "|".join(f"File:{n}" for n in names[i:min(i + 50, len(names))])
 
-            r = s.get(cls.ENDPOINT, params=params)
+            r = self.session.get(self.ENDPOINT, params=params)
             if r.status_code >= 400:
                 continue
             data = json.loads(r.text)
             i += 50
-            for image in data["query"]["pages"].values():
-                if "missing" in image:
+            for image_data in data["query"]["pages"].values():
+                if "missing" in image_data:
                     yield None
                     continue
                 try:
-                    image = Image(
-                        article_id=image["pageid"],
-                        title=image["title"],
-                        timestamp=image["imageinfo"][0]["timestamp"],
-                        file_url=image["imageinfo"][0]["url"],
+                    yield Image(
+                        article_id=image_data["pageid"],
+                        title=image_data["title"],
+                        timestamp=image_data["imageinfo"][0]["timestamp"],
+                        file_url=image_data["imageinfo"][0]["url"],
                     )
-                    yield image
                 except KeyError:
                     continue
 
-    @classmethod
-    def get_articles(cls, names: list[str]) -> Generator[Article | None]:
+    def get_articles(self, names: list[str]) -> Generator[Article | None]:
         """Create a generator that obtains a list of articles given their titles.
 
         Warning:
@@ -227,8 +222,6 @@ class WikiClient:
 
         """
         i = 0
-        s = requests.Session()
-        s.headers.update(cls.headers)
         params = {
             "action": "query",
             "prop": "revisions",
@@ -240,7 +233,7 @@ class WikiClient:
                 break
             params["titles"] = "|".join(names[i:min(i + 50, len(names))])
             i += 50
-            r = s.get(cls.ENDPOINT, params=params)
+            r = self.session.get(self.ENDPOINT, params=params)
             data = json.loads(r.text)
             for article in data["query"]["pages"].values():
                 if "missing" in article:
@@ -253,8 +246,7 @@ class WikiClient:
                     content=article["revisions"][0]["*"],
                 )
 
-    @classmethod
-    def get_article(cls, name: str) -> Article:
+    def get_article(self, name: str) -> Article:
         """Get an article's info.
 
         Args:
@@ -264,5 +256,5 @@ class WikiClient:
             The article matching the title.
 
         """
-        gen = cls.get_articles([name])
+        gen = self.get_articles([name])
         return next(gen)
