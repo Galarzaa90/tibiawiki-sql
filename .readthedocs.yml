@@ -13,4 +13,4 @@ python:
         - docs
 
 mkdocs:
-  configuration: mkdocs.yml
+  configuration: mkdocs.yaml
