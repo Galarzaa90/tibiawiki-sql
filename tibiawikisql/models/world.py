@@ -19,9 +19,9 @@ class World(WikiEntry, RowModel, table=WorldTable):
     is_experimental: bool
     """Whether the world is a experimental world or not."""
     online_since: datetime.date
-    """Date when the world became online for the first time, in ISO 8601 format."""
+    """Date when the world became online for the first time."""
     offline_since: datetime.date | None
-    """Date when the world went offline, in ISO 8601 format."""
+    """Date when the world went offline."""
     merged_into: str | None
     """The name of the world this world got merged into, if applicable."""
     battleye: bool
@@ -29,7 +29,7 @@ class World(WikiEntry, RowModel, table=WorldTable):
     battleye_type: str | None
     """The type of BattlEye protection the world has. Can be either green or yellow."""
     protected_since: datetime.date | None
-    """Date when the world started being protected by BattlEye, in ISO 8601 format."""
+    """Date when the world started being protected by BattlEye."""
     world_board: int | None
     """The board ID for the world's board."""
     trade_board: int | None

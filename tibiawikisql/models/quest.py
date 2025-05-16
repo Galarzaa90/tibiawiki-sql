@@ -1,14 +1,53 @@
 import contextlib
 import sqlite3
+from sqlite3 import Connection, Cursor
+from typing import Any
 
-import pydantic
-from pydantic import Field
-from pypika import Parameter, Query, Table
+from pydantic import BaseModel, Field
+from pypika import Parameter, Query
+from typing_extensions import Self
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import RowModel, WithStatus, WithVersion
-from tibiawikisql.schema import CreatureTable, ItemTable, QuestDangerTable, QuestRewardTable, QuestTable
+from tibiawikisql.schema import (
+    CreatureTable,
+    ItemTable,
+    QuestDangerTable,
+    QuestRewardTable,
+    QuestTable,
+)
 
+
+class ItemReward(BaseModel):
+    """An item awarded in the quest."""
+    item_id: int = 0
+    """The article id of the rewarded item."""
+    item_title: str
+    """The title of the rewarded item."""
+
+    def insert(self, conn: Connection | Cursor, quest_id: int) -> None:
+        quest_table = QuestRewardTable.__table__
+        item_table = ItemTable.__table__
+        q = (
+            Query.into(quest_table)
+            .columns(
+                "quest_id",
+                "item_id",
+            )
+            .insert(
+                Parameter(":quest_id"),
+                (
+                    Query.from_(item_table)
+                    .select(item_table.article_id)
+                    .where(item_table.title == Parameter(":item_title"))
+                ),
+            )
+        )
+
+        query_str = q.get_sql()
+        parameters = {"quest_id": quest_id} | self.model_dump()
+        with contextlib.suppress(sqlite3.IntegrityError):
+            conn.execute(query_str, parameters)
 
 class QuestReward(RowModel, table=QuestRewardTable):
     """Represents an item obtained in the quest."""
@@ -26,8 +65,8 @@ class QuestReward(RowModel, table=QuestRewardTable):
         if self.item_id is not None:
             super().insert(conn)
             return
-        quest_table = Table(self.table.__tablename__)
-        item_table = Table(ItemTable.__tablename__)
+        quest_table = self.table.__table__
+        item_table = ItemTable.__table__
         q = (
             Query.into(quest_table)
             .columns(
@@ -49,6 +88,38 @@ class QuestReward(RowModel, table=QuestRewardTable):
             conn.execute(query_str, self.model_dump(mode="json"))
 
 
+class QuestCreature(BaseModel):
+    """Represents a creature found in the quest."""
+
+    creature_id: int = 0
+    """The article id of the found creature."""
+    creature_title: str
+    """The title of the found creature."""
+
+    def insert(self, conn: Connection | Cursor, quest_id: int) -> None:
+        quest_table = QuestDangerTable.__table__
+        creature_table = CreatureTable.__table__
+        q = (
+            Query.into(quest_table)
+            .columns(
+                "quest_id",
+                "creature_id",
+            )
+            .insert(
+                Parameter(":quest_id"),
+                (
+                    Query.from_(creature_table)
+                    .select(creature_table.article_id)
+                    .where(creature_table.title == Parameter(":creature_title"))
+                ),
+            )
+        )
+
+        query_str = q.get_sql()
+        parameters = {"quest_id": quest_id} | self.model_dump()
+        with contextlib.suppress(sqlite3.IntegrityError):
+            conn.execute(query_str, parameters)
+
 class QuestDanger(RowModel, table=QuestDangerTable):
     """Represents a creature found in the quest."""
 
@@ -65,8 +136,8 @@ class QuestDanger(RowModel, table=QuestDangerTable):
         if self.creature_id is not None:
             super().insert(conn)
             return
-        quest_table = Table(self.table.__tablename__)
-        creature_table = Table(CreatureTable.__tablename__)
+        quest_table = self.table.__table__
+        creature_table = CreatureTable.__table__
         q = (
             Query.into(quest_table)
             .columns(
@@ -86,17 +157,6 @@ class QuestDanger(RowModel, table=QuestDangerTable):
         query_str = q.get_sql()
         with contextlib.suppress(sqlite3.IntegrityError):
             conn.execute(query_str, self.model_dump(mode="json"))
-
-    @classmethod
-    def _is_column(cls, name):
-        return name in cls.__slots__
-
-    @classmethod
-    def _get_base_query(cls):
-        return f"""SELECT {cls.table.__tablename__}.*, creature.title as creature_title, quest.title as quest_title
-                   FROM {cls.table.__tablename__}
-                   LEFT JOIN creature ON creature.article_id = creature_id
-                   LEFT JOIN quest ON quest.article_id = quest_id"""
 
 
 
@@ -125,24 +185,24 @@ class Quest(WikiEntry, WithStatus, WithVersion, RowModel, table=QuestTable):
     """Times of the year when this quest is active."""
     estimated_time: str | None
     """Estimated time to finish this quest."""
-    dangers: list[QuestDanger]= Field(default_factory=list)
+    dangers: list[QuestCreature]= Field(default_factory=list)
     """Creatures found in the quest."""
-    rewards: list[QuestReward] = Field(default_factory=list)
+    rewards: list[ItemReward] = Field(default_factory=list)
     """Items rewarded in the quest."""
 
 
     def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
         super().insert(conn)
         for reward in self.rewards:
-            reward.insert(conn)
+            reward.insert(conn, self.article_id)
         for danger in self.dangers:
-            danger.insert(conn)
+            danger.insert(conn, self.article_id)
 
     @classmethod
-    def get_one_by_field(cls, c, field, value, use_like=False):
-        quest = super().get_one_by_field(c, field, value, use_like)
+    def get_one_by_field(cls, conn: Connection | Cursor, field: str, value: Any, use_like: bool = False) -> Self | None:
+        quest: Self = super().get_one_by_field(conn, field, value, use_like)
         if quest is None:
             return None
-        quest.dangers = QuestDanger.search(c, "quest_id", quest.article_id)
-        quest.rewards = QuestReward.search(c, "quest_id", quest.article_id)
+        quest.rewards = [ItemReward(**dict(r)) for r in QuestRewardTable.get_list_by_quest_id(conn, quest.article_id)]
+        quest.dangers = [QuestCreature(**dict(r)) for r in QuestDangerTable.get_list_by_quest_id(conn, quest.article_id)]
         return quest

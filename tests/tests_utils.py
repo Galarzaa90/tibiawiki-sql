@@ -14,6 +14,28 @@ class TestUtils(unittest.TestCase):
         # Comments
         self.assertEqual(clean_links("Hello <!-- world -->"), "Hello")
 
+    def test_clean_links_list(self):
+        content = """* The new ice islands [[Grimlund]], [[Helheim]], [[Hrodmir]], [[Nibelor]], [[Okolnir]] and [[Tyrsung]] were added
+** A new hometown, the city of [[Svargrond]], in [[Hrodmir]].
+* New creatures such as the [[Chakoyas]], [[Barbarians]] and more ice themed creatures.
+* The [[Svargrond Arena]] was added.
+* Many vocation balancing changes
+** Magic damage formula changes.
+** Added over 60 new weapons and ammunition.
+** Added vocation and level requirements to weapons."""
+
+        clean_content = clean_links(content)
+
+        expected = """- The new ice islands Grimlund, Helheim, Hrodmir, Nibelor, Okolnir and Tyrsung were added
+	- A new hometown, the city of Svargrond, in Hrodmir.
+- New creatures such as the Chakoyas, Barbarians and more ice themed creatures.
+- The Svargrond Arena was added.
+- Many vocation balancing changes
+	- Magic damage formula changes.
+	- Added over 60 new weapons and ammunition.
+	- Added vocation and level requirements to weapons."""
+        self.assertEqual(expected, clean_content)
+
     def test_parse_boolean(self):
         self.assertTrue(parse_boolean("yes"))
         self.assertFalse(parse_boolean("no"))

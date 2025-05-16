@@ -6,6 +6,7 @@ Changelog
 ==================
 - General model changes:
     - All ``timestamp`` properties are now ``datetime.datetime`` objects. Their database counterparts are IS08601 strings.
+    - Added many model classes that simplify the data displayed.
 - Achievement changes
     - Spoiler properly handles quest links.
     - Rename ``spoiler`` to ``is_spoiler``.

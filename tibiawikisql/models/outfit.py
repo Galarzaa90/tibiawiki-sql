@@ -1,13 +1,51 @@
 import contextlib
 import sqlite3
+from sqlite3 import Connection, Cursor, IntegrityError
+from sqlite3 import Connection, Cursor
+from typing import Any
 
 import pydantic
-from pydantic import Field
+from pydantic import BaseModel, Field
 from pypika import Parameter, Query, Table
+from typing_extensions import Self
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import RowModel, WithImage, WithStatus, WithVersion
 from tibiawikisql.schema import OutfitImageTable, OutfitQuestTable, OutfitTable, QuestTable
+
+class UnlockQuest(BaseModel):
+    """A quest that unlocks the outfit and/or its addons."""
+
+    quest_id: int = None
+    """The article id of the quest that gives the outfit or its addons."""
+    quest_title: str
+    """The title of the quest."""
+    unlock_type: str
+    """Whether the quest is for the outfit or addons."""
+
+    def insert(self, conn: Connection | Cursor, outfit_id: int):
+        quest_table = Table(QuestTable.__tablename__)
+        oufit_quest_table = Table(OutfitQuestTable.__tablename__)
+        q = (
+            Query.into(oufit_quest_table)
+            .columns(
+                "outfit_id",
+                "quest_id",
+                "unlock_type",
+            )
+            .insert(
+                Parameter(":outfit_id"),
+                (
+                    Query.from_(quest_table)
+                    .select(quest_table.article_id)
+                    .where(quest_table.title == Parameter(":quest_title"))
+                ),
+                Parameter(":unlock_type"),
+            )
+        )
+        query_str = q.get_sql()
+        with contextlib.suppress(IntegrityError):
+            conn.execute(query_str, {"outfit_id": outfit_id} | self.model_dump(mode="json"))
 
 
 class OutfitQuest(RowModel, table=OutfitQuestTable):
@@ -21,47 +59,8 @@ class OutfitQuest(RowModel, table=OutfitQuestTable):
     """The article id of the quest that gives the outfit or its addons."""
     quest_title: str
     """The title of the quest."""
-    type: str
+    unlock_type: str
     """Whether the quest is for the outfit or addons."""
-
-    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor):
-        if self.quest_id is not None:
-            super().insert(conn)
-            return
-
-        quest_table = Table(QuestTable.__tablename__)
-        oufit_quest_table = Table(self.table.__tablename__)
-        q = (
-            Query.into(oufit_quest_table)
-            .columns(
-                "outfit_id",
-                "quest_id",
-                "type",
-            )
-            .insert(
-                Parameter(":outfit_id"),
-                (
-                    Query.from_(quest_table)
-                    .select(quest_table.article_id)
-                    .where(quest_table.title == Parameter(":quest_title"))
-                ),
-                Parameter(":type"),
-            )
-        )
-        query_str = q.get_sql()
-        with contextlib.suppress(sqlite3.IntegrityError):
-            conn.execute(query_str, self.model_dump(mode="json"))
-
-    @classmethod
-    def _is_column(cls, name):
-        return name in cls.__slots__
-
-    @classmethod
-    def _get_base_query(cls):
-        return f"""SELECT {cls.table.__tablename__}.*, quest.title as quest_title, outfit.title as outfit_title
-                   FROM {cls.table.__tablename__}
-                   LEFT JOIN quest ON quest.article_id = quest_id
-                   LEFT JOIN outfit ON outfit.article_id = outfit_id"""
 
 
 class OutfitImage(RowModel, WithImage, table=OutfitImageTable):
@@ -76,14 +75,6 @@ class OutfitImage(RowModel, WithImage, table=OutfitImageTable):
     addon: int
     """The addons represented by the image.
     0 for no addons, 1 for first addon, 2 for second addon and 3 for both addons."""
-
-
-    @classmethod
-    def _get_base_query(cls):
-        return f"""SELECT {cls.table.__tablename__}.*, outfit.name as outfit_name
-                   FROM {cls.table.__tablename__}
-                   LEFT JOIN outfit on outfit.article_id = outfit_id"""
-
 
 
 class Outfit(WikiEntry, WithStatus, WithVersion, RowModel, table=OutfitTable):
@@ -103,22 +94,21 @@ class Outfit(WikiEntry, WithStatus, WithVersion, RowModel, table=OutfitTable):
     """The full price of this outfit in the Tibia Store."""
     achievement: str | None
     """The achievement obtained for acquiring this full outfit."""
-    images: list[OutfitImage] = Field(default_factory=list)
+    images: list[OutfitImage] = Field(default_factory=list, exclude=True)
     """The outfit's images."""
-    quests: list[OutfitQuest] = Field(default_factory=list)
+    quests: list[UnlockQuest] = Field(default_factory=list)
     """Quests that grant the outfit or its addons."""
 
-    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+    def insert(self, conn: Connection | Cursor) -> None:
         super().insert(conn)
         for quest in self.quests:
-            quest.insert(conn)
+            quest.insert(conn, self.article_id)
 
     @classmethod
-    def get_one_by_field(cls, c, field, value, use_like=False):
-        outfit = super().get_one_by_field(c, field, value, use_like)
+    def get_one_by_field(cls, conn: Connection | Cursor, field: str, value: Any, use_like: bool = False) -> Self | None:
+        outfit: Self = super().get_one_by_field(conn, field, value, use_like)
         if outfit is None:
             return None
-        outfit.quests = OutfitQuest.search(c, "outfit_id", outfit.article_id)
-        outfit.images = OutfitImage.search(c, "outfit_id", outfit.article_id)
+        outfit.quests = [UnlockQuest(**dict(r)) for r in OutfitQuestTable.get_list_by_outfit_id(conn, outfit.article_id)]
         return outfit
 

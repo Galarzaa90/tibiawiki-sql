@@ -139,3 +139,31 @@ class RowModel(BaseModel):
         """
         rows = cls.table.get_list_by_field(conn, field, value, use_like, sort_by, ascending)
         return [cls.from_row(r) for r in rows]
+
+    @classmethod
+    def get_by_id(cls, conn: Connection | Cursor, article_id: int) -> Self | None:
+        """Get an entry by its article ID.
+
+        Args:
+            conn: A connection to the database.
+            article_id: The article ID to search for.
+
+        Returns:
+            The model matching the article ID if found.
+
+        """
+        return cls.get_one_by_field(conn, "article_id", article_id)
+
+    @classmethod
+    def get_by_title(cls, conn: Connection | Cursor, title: str) -> Self | None:
+        """Get an entry by its title.
+
+        Args:
+            conn: A connection to the database.
+            title: The title of the article.
+
+        Returns:
+            The model matching the article title if found.
+
+        """
+        return cls.get_one_by_field(conn, "title", title)

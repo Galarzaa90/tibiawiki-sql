@@ -1,7 +1,8 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 site_name: TibiaWikiSQL
 docs_dir: mkdocs # TODO: Remove whe documentation is moved back to `docs` folder.
-repo_url: https://github.com/galarzaa90/tibiawiki-sql
+repo_url: https://github.com/Galarzaa90/tibiawiki-sql
+repo_name: Galarzaa90/tibiawiki-sql
 
 theme:
   name: material
@@ -27,7 +28,8 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to system preference
-
+  icon:
+    repo: fontawesome/brands/github
   features:
     - content.code.copy
     - navigation.footer

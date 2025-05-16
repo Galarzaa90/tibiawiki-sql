@@ -4,13 +4,14 @@ import sqlite3
 from typing import Any, ClassVar
 
 from tibiawikisql.api import Article
-from tibiawikisql.models.quest import Quest, QuestDanger, QuestReward
+from tibiawikisql.models.quest import ItemReward, Quest, QuestCreature, QuestDanger, QuestReward
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
 import tibiawikisql.schema
 from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
 
 link_pattern = re.compile(r"\[\[([^|\]]+)")
+
 
 def parse_links(value):
     """Find all the links in a string and returns a list of them.
@@ -27,6 +28,7 @@ def parse_links(value):
 
     """
     return list(link_pattern.findall(value))
+
 
 class QuestParser(BaseParser):
     """Parser for quests."""
@@ -67,13 +69,9 @@ class QuestParser(BaseParser):
         if not raw_attributes.get("reward"):
             return
         rewards = parse_links(raw_attributes["reward"])
-        row["rewards"] = []
-        for reward in rewards:
-            row["rewards"].append(QuestReward(
-                quest_id=row["article_id"],
-                item_title=reward.strip(),
-                quest_title=row["title"],
-            ))
+        row["rewards"] = [ItemReward(
+            item_title=reward.strip(),
+        ) for reward in rewards]
 
     @classmethod
     def _parse_quest_dangers(cls, row: dict[str, Any]) -> None:
@@ -81,14 +79,6 @@ class QuestParser(BaseParser):
         if not raw_attributes.get("dangers"):
             return
         dangers = parse_links(raw_attributes["dangers"])
-        row["dangers"] = []
-        for danger in dangers:
-            row["dangers"].append(QuestDanger(
-                quest_id=row["article_id"],
-                creature_title=danger.strip(),
-                quest_title=row["title"],
-            ))
-
+        row["dangers"] = [QuestCreature(creature_title=danger.strip()) for danger in dangers]
 
     # endregion
-

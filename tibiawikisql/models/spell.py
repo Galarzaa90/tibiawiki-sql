@@ -1,9 +1,35 @@
-from pydantic import Field
+from sqlite3 import Connection, Cursor
+from typing import Any, Self
+
+from pydantic import BaseModel, Field
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.npc import NpcSpell
 from tibiawikisql.models.base import RowModel, WithImage, WithStatus, WithVersion
-from tibiawikisql.schema import SpellTable
+from tibiawikisql.schema import NpcSpellTable, SpellTable
+
+
+class SpellTeacher(BaseModel):
+    """An NPC that teaches the spell.
+
+    Note that even if the spell can be learned by multiple vocations, an NPC might only teach it to a specific vocation.
+    """
+
+    npc_id: int
+    """The article ID of the NPC that teaches it."""
+    npc_title: str
+    """The title of the NPC that teaches it."""
+    npc_city: str
+    """The city where the NPC is located."""
+    knight: bool
+    """If the NPC teaches the spell to knights."""
+    paladin: bool
+    """If the NPC teaches the spell to paladins."""
+    druid: bool
+    """If the NPC teaches the spell to druids."""
+    sorcerer: bool
+    """If the NPC teaches the spell to sorcerers."""
+    monk: bool
+    """If the NPC teaches the spell to monks."""
 
 
 class Spell(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=SpellTable):
@@ -61,5 +87,13 @@ class Spell(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=Spell
     """Whether the spell can be used by sorcerers or not."""
     monk: bool = Field(False)
     """Whether the spell can be used by monks or not."""
-    taught_by: list[NpcSpell] = Field(default_factory=list)
+    taught_by: list[SpellTeacher] = Field(default_factory=list)
     """NPCs that teach this spell."""
+
+    @classmethod
+    def get_one_by_field(cls, conn: Connection | Cursor, field: str, value: Any, use_like: bool = False) -> Self | None:
+        spell: Self = super().get_one_by_field(conn, field, value, use_like)
+        if spell is None:
+            return spell
+        spell.taught_by = [SpellTeacher(**dict(r)) for r in NpcSpellTable.get_by_spell_id(conn, spell.article_id)]
+        return spell

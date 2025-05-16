@@ -165,7 +165,7 @@ class Table(metaclass=TableMeta):
 
     @classmethod
     def get_create_table_statement(cls, *, exists_ok: bool = True) -> str:
-        """Generate the CREATE TABLE statement.
+        """Generate the `CREATE TABLE` statement.
 
         Returns:
             A SQL statement to create the table.
@@ -271,7 +271,7 @@ class Table(metaclass=TableMeta):
             use_like: Whether to use ``LIKE`` as an operator instead of ``=``.
 
         Returns:
-            The matching row, or ``None``.
+            The matching row, or [None][].
 
         Raises:
             ValueError: The specified column doesn't exist in the table.
@@ -319,7 +319,7 @@ class Table(metaclass=TableMeta):
             The matching row, or ``None``.
 
         Raises:
-            Value
+            ValueError: Tg
         """
         if column not in cls.column_map:
             msg = f"Column {column!r} doesn't exist"
@@ -363,10 +363,10 @@ class SQLType:
         """
         raise NotImplementedError
 
-    def is_real_type(self):
+    def is_real_type(self) -> bool:
         return True
 
-    def to_sql_value(self, value):
+    def to_sql_value(self, value) -> Any:
         """Convert a value to its corresponding SQL value.
 
         Returns:
@@ -377,7 +377,7 @@ class SQLType:
 
 
 class Timestamp(SQLType):
-    """A timestamp, representing."""
+    """A timestamp, represented as a ISO 8601 string."""
 
     python = datetime.datetime
 
@@ -389,7 +389,7 @@ class Timestamp(SQLType):
 
 
 class Date(SQLType):
-    """Date type."""
+    """A date, represented as a ISO 8601 string."""
 
     python = datetime.date
 
@@ -448,7 +448,7 @@ class Boolean(SQLType):
 class ForeignKey(SQLType):
     """Defines a foreign key."""
 
-    def __init__(self, sql_type, table: str, column: str) -> None:
+    def __init__(self, sql_type: type[SQLType], table: str, column: str) -> None:
         """Create an instance of the class.
 
         Args:

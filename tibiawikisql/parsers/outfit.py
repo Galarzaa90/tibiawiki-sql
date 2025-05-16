@@ -2,7 +2,7 @@ from typing import Any, ClassVar
 
 import tibiawikisql.schema
 from tibiawikisql.api import Article
-from tibiawikisql.models.outfit import Outfit, OutfitQuest
+from tibiawikisql.models.outfit import Outfit, UnlockQuest
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers.quest import parse_links
@@ -33,25 +33,19 @@ class OutfitParser(BaseParser):
         if not row:
             return row
         raw_attributes = row["_raw_attributes"]
-        article_id = row["article_id"]
-        title = row["title"]
         row["quests"] = []
         if "outfit" in raw_attributes:
             quests = parse_links(raw_attributes["outfit"])
             for quest in quests:
-                row["quests"].append(OutfitQuest(
-                    outfit_id=article_id,
+                row["quests"].append(UnlockQuest(
                     quest_title=quest.strip(),
-                    type="outfit",
-                    outfit_title=title,
+                    unlock_type="outfit",
                 ))
         if "addons" in raw_attributes:
             quests = parse_links(raw_attributes["addons"])
             for quest in quests:
-                row["quests"].append(OutfitQuest(
-                    outfit_id=article_id,
+                row["quests"].append(UnlockQuest(
                     quest_title=quest.strip(),
-                    type="addons",
-                    outfit_title=title,
+                    unlock_type="addons",
                 ))
         return row

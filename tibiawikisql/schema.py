@@ -267,6 +267,21 @@ class ImbuementMaterialTable(Table, table_name="imbuement_material"):
     item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True, nullable=False)
     amount = Column(Integer, nullable=False)
 
+    @classmethod
+    def get_by_imbuement_id(cls, conn: Connection | Cursor, imbuement_id: int):
+        this = cls.__table__
+        item = ItemTable.__table__
+        base_query = (
+            Query.from_(this)
+            .select(
+                this.item_id,
+                item.title.as_("item_title"),
+                this.amount,
+            )
+            .join(item).on(this.item_id == item.article_id)
+        )
+        return cls.get_list_by_field(conn, "imbuement_id", imbuement_id, base_query=base_query)
+
 
 class ItemKeyTable(Table, table_name="item_key"):
     article_id = Column(Integer, primary_key=True)
@@ -448,6 +463,17 @@ class NpcDestinationTable(Table, table_name="npc_destination"):
 
 
 class NpcSpellTable(Table, table_name="npc_spell"):
+    """Stores spells taught by NPCs.
+
+    Attributes:
+        npc_id: Foreign key to NPC's article ID.
+        spell_id: Foreign key to spell's article ID.
+        knight: Whether the NPC teaches the spell to knights.
+        sorcerer: Whether the NPC teaches the spell to sorcerers.
+        paladin: Whether the NPC teaches the spell to paladins.
+        druid: Whether the NPC teaches the spell to druids.
+        monk: Whether the NPC teaches the spell to monks.
+    """
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
     spell_id = Column(ForeignKey(Integer, "spell", "article_id"), index=True)
     knight = Column(Boolean, nullable=False, default=False)
@@ -463,6 +489,36 @@ class NpcSpellTable(Table, table_name="npc_spell"):
         spell = PTable(SpellTable.__tablename__)
         base_query = base_query.join(spell).on(this.spell_id == spell.article_id)
         return cls.get_list_by_field(conn, "npc_id", npc_id, base_query=base_query)
+
+    @classmethod
+    def get_by_spell_id(cls, conn: Connection | Cursor, spell_id: int) -> list[Row]:
+        """Get entries matching the spell's article ID, joining additional data about the NPC.
+
+        The schema returned is compatible with the [SpellTeacher][] model.
+
+        Args:
+            conn: A connection to the database.
+            spell_id: The article ID of the spell.
+
+        Returns:
+            The rows containing the NPCs that teach the spell.
+        """
+        npc = PTable(NpcTable.__tablename__)
+        query = (
+            Query.from_(cls.__table__)
+            .select(
+                cls.__table__.npc_id,
+                npc.title.as_("npc_title"),
+                npc.city.as_("npc_city"),
+                cls.__table__.knight,
+                cls.__table__.paladin,
+                cls.__table__.sorcerer,
+                cls.__table__.druid,
+                cls.__table__.monk,
+            )
+            .join(npc).on(cls.__table__.npc_id == npc.article_id)
+        )
+        return cls.get_list_by_field(conn, "spell_id", spell_id, base_query=query)
 
 
 class OutfitTable(Table):
@@ -509,12 +565,57 @@ class QuestTable(Table):
 class OutfitQuestTable(Table, table_name="outfit_quest"):
     outfit_id = Column(ForeignKey(Integer, "outfit", "article_id"), index=True, nullable=False)
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True, nullable=False)
-    type = Column(Text)
+    unlock_type = Column(Text)
+
+    @classmethod
+    def get_list_by_outfit_id(cls, conn: Connection | Cursor, outfit_id: int) -> list[Row] | list[dict[str, Any]]:
+        """Get all entries related to a specific outfit, joining quest titles.
+
+        Args:
+            conn: A connection to the database.
+            outfit_id: The article ID of the outfit.
+
+        Returns:
+            The rows matching the criteria.
+        """
+        quest = QuestTable.__table__
+        query = (
+            Query.from_(cls.__table__)
+            .select(
+                cls.__table__.quest_id,
+                quest.title.as_("quest_title"),
+                cls.__table__.unlock_type,
+            )
+            .join(quest).on(quest.article_id == cls.__table__.quest_id)
+        )
+        return cls.get_list_by_field(conn, "outfit_id", outfit_id, base_query=query)
 
 
 class QuestDangerTable(Table, table_name="quest_danger"):
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True)
     creature_id = Column(ForeignKey(Integer, "creature", "article_id"), nullable=False, index=True)
+
+    @classmethod
+    def get_list_by_quest_id(cls, conn: Connection | Cursor, quest_id: int) -> list[Row] | list[dict[str, Any]]:
+        """Get all entries related to a specific quest, joining creature titles.
+
+        Args:
+            conn: A connection to the database.
+            quest_id: The article ID of the quest.
+
+        Returns:
+            The rows matching the criteria.
+        """
+        creature = PTable(CreatureTable.__tablename__)
+        query = (
+            Query.from_(cls.__table__)
+            .select(
+                cls.__table__.creature_id,
+                creature.title.as_("creature_title"),
+            )
+            .join(creature).on(creature.article_id == cls.__table__.creature_id)
+        )
+        return cls.get_list_by_field(conn, "quest_id", quest_id, base_query=query)
 
 
 class QuestRewardTable(Table, table_name="quest_reward"):
@@ -544,7 +645,27 @@ class QuestRewardTable(Table, table_name="quest_reward"):
         )
         return cls.get_list_by_field(conn, "item_id", item_id, base_query=query)
 
+    @classmethod
+    def get_list_by_quest_id(cls, conn: Connection | Cursor, quest_id: int) -> list[Row] | list[dict[str, Any]]:
+        """Get all entries related to a specific quest, joining item titles.
 
+        Args:
+            conn: A connection to the database.
+            quest_id: The article ID of the quest.
+
+        Returns:
+            The rows matching the criteria.
+        """
+        item = PTable(ItemTable.__tablename__)
+        query = (
+            Query.from_(cls.__table__)
+            .select(
+                cls.__table__.item_id,
+                item.title.as_("item_title"),
+            )
+            .join(item).on(item.article_id == cls.__table__.item_id)
+        )
+        return cls.get_list_by_field(conn, "quest_id", quest_id, base_query=query)
 
 class RashidPositionTable(Table, table_name="rashid_position"):
     day = Column(Integer, primary_key=True)

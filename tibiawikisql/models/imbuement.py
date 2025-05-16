@@ -1,35 +1,30 @@
 import contextlib
 import sqlite3
+from sqlite3 import Connection, Cursor, IntegrityError
+from sqlite3 import Connection, Cursor
+from typing import Any
 
+from pydantic import BaseModel, Field
 from pypika import Parameter, Query, Table
+from typing_extensions import Self
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import RowModel, WithImage, WithStatus, WithVersion
 from tibiawikisql.schema import ImbuementMaterialTable, ImbuementTable, ItemTable
 
+class Material(BaseModel):
+    """A material needed to use this imbuement."""
 
-class ImbuementMaterial(RowModel, table=ImbuementMaterialTable):
-    """Represents an item material for an imbuement."""
-
-    imbuement_id: int
-    """The article id of the imbuement this material belongs to."""
-    imbuement_title: str | None = None
-    """The title of the imbuement this material belongs to."""
-    item_id: int | None = None
-    """The article id of the item material."""
-    item_title: str | None = None
+    item_id: int = 0
+    """The article ID of the item material."""
+    item_title: str
     """The title of the item material."""
     amount: int
     """The amount of items required."""
 
-
-    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
-        if self.item_id is not None:
-            super().insert(conn)
-            return
-
-        item_table = Table(ItemTable.__tablename__)
-        imbuement_material_table = Table(self.table.__tablename__)
+    def insert(self, conn: Connection | Cursor, imbuement_id: int) -> None:
+        item_table = ItemTable.__table__
+        imbuement_material_table = ImbuementMaterialTable.__table__
         q = (
             Query.into(imbuement_material_table)
             .columns(
@@ -48,9 +43,22 @@ class ImbuementMaterial(RowModel, table=ImbuementMaterialTable):
             )
         )
         query_str = q.get_sql()
-        with contextlib.suppress(sqlite3.IntegrityError):
-            conn.execute(query_str, self.model_dump(mode="json"))
+        with contextlib.suppress(IntegrityError):
+            conn.execute(query_str, {"imbuement_id": imbuement_id} | self.model_dump(mode="json"))
 
+class ImbuementMaterial(RowModel, table=ImbuementMaterialTable):
+    """Represents an item material for an imbuement."""
+
+    imbuement_id: int
+    """The article id of the imbuement this material belongs to."""
+    imbuement_title: str | None = None
+    """The title of the imbuement this material belongs to."""
+    item_id: int | None = None
+    """The article id of the item material."""
+    item_title: str | None = None
+    """The title of the item material."""
+    amount: int
+    """The amount of items required."""
 
 
 class Imbuement(WikiEntry, WithStatus, WithVersion, WithImage, RowModel, table=ImbuementTable):
@@ -68,18 +76,18 @@ class Imbuement(WikiEntry, WithStatus, WithVersion, WithImage, RowModel, table=I
     """The effect given by the imbuement."""
     slots: str
     """The type of items this imbuement may be applied on."""
-    materials: list[ImbuementMaterial]
+    materials: list[Material] = Field(default_factory=list)
     """The materials needed for the imbuement."""
 
     def insert(self, conn):
         super().insert(conn)
         for material in self.materials:
-            material.insert(conn)
+            material.insert(conn, self.article_id)
 
     @classmethod
-    def get_one_by_field(cls, c, field, value, use_like=False):
-        imbuement = super().get_one_by_field(c, field, value, use_like)
+    def get_one_by_field(cls, conn: Connection | Cursor, field: str, value: Any, use_like: bool = False) -> Self | None:
+        imbuement: Self = super().get_one_by_field(conn, field, value, use_like)
         if imbuement is None:
             return None
-        imbuement.materials = ImbuementMaterial.search(c, "imbuement_id", imbuement.article_id)
+        imbuement.materials = [Material(**dict(r)) for r in ImbuementMaterialTable.get_by_imbuement_id(conn, imbuement.article_id)]
         return imbuement

@@ -90,8 +90,24 @@ def clean_links(content: str, strip_question_mark: bool = False) -> str | None:
 
     """
     img = re.compile("(File|Image):", re.IGNORECASE)
-    content = re.sub(r"</?[bB][rR] ?/?>", "\n", content)
-    parsed = mwparserfromhell.parse(content)
+    clean_content = re.sub(r"</?[bB][rR] ?/?>", "\n", content)
+
+    # Convert lists to Markdown lists so they are not removed  by `strip_code`.
+
+    lines = clean_content.splitlines()
+    converted_lines = []
+    for line in lines:
+        stripped = line.lstrip()
+        match = re.match(r"^(\*+)\s*(.*)", stripped)
+        if match:
+            indent = "\t" * (len(match.group(1)) - 1)
+            content_line = match.group(2).strip()
+            converted_lines.append(f"{indent}- {content_line}")
+        else:
+            converted_lines.append(line)
+    clean_content = "\n".join(converted_lines)
+
+    parsed = mwparserfromhell.parse(clean_content)
     # Remove image links as well
     remove_img = [f for f in parsed.ifilter_wikilinks() if img.match(str(f.title))]
     for f in remove_img:
@@ -99,10 +115,10 @@ def clean_links(content: str, strip_question_mark: bool = False) -> str | None:
     for template in parsed.ifilter_templates():
         if template.name:
             parsed.replace(template, template.params[0])
-    content = parsed.strip_code().strip()
-    if strip_question_mark and content == "?":
+    clean_content = parsed.strip_code().strip()
+    if strip_question_mark and clean_content == "?":
         return None
-    return content
+    return clean_content
 
 
 def convert_tibiawiki_position(pos: str) -> int:

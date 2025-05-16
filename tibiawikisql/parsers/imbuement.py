@@ -3,7 +3,7 @@ import sqlite3
 from typing import Any, ClassVar
 
 from tibiawikisql.api import Article
-from tibiawikisql.models.imbuement import Imbuement, ImbuementMaterial
+from tibiawikisql.models.imbuement import Imbuement, ImbuementMaterial, Material
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.schema import ImbuementMaterialTable, ImbuementTable
 from tibiawikisql.parsers.base import AttributeParser
@@ -121,14 +121,7 @@ class ImbuementParser(BaseParser):
         if not row:
             return row
         raw_attributes = row["_raw_attributes"]
-        row["materials"] = []
         if "astralsources" in raw_attributes:
             materials = parse_astral_sources(raw_attributes["astralsources"])
-            for name, amount in materials.items():
-                row["materials"].append(
-                    ImbuementMaterial(
-                        item_title=name,
-                        amount=amount,
-                        imbuement_id=row["article_id"]),
-                )
+            row["materials"] = [Material(item_title=name, amount=amount) for name, amount in materials.items()]
         return row
