@@ -1,10 +1,10 @@
 """Defines the SQL schemas to use."""
 import sqlite3
-from sqlite3 import Connection, Cursor
+from sqlite3 import Connection, Cursor, Row
 from typing import Any, ClassVar
-from pypika import Query, Table as PikaTable
+from pypika import Query, Table as PTable
 
-from tibiawikisql.database import Blob, Boolean, Column, ConnCursor, Date, ForeignKey, Integer, Real, Table, Text, \
+from tibiawikisql.database import Blob, Boolean, Column, Date, ForeignKey, Integer, Real, Table, Text, \
     Timestamp
 
 
@@ -164,8 +164,8 @@ class CreatureDropTable(Table, table_name="creature_drop"):
 
     @classmethod
     def get_by_creature_id(cls, conn: Connection | Cursor, creature_id: int):
-        this = PikaTable(cls.__tablename__)
-        item = PikaTable(ItemTable.__tablename__)
+        this = PTable(cls.__tablename__)
+        item = PTable(ItemTable.__tablename__)
         base_query = (
             Query.from_(this)
             .select(
@@ -178,6 +178,23 @@ class CreatureDropTable(Table, table_name="creature_drop"):
             .join(item).on(this.item_id == item.article_id)
         )
         return cls.get_list_by_field(conn, "creature_id", creature_id, base_query=base_query)
+
+    @classmethod
+    def get_by_item_id(cls, conn: Connection | Cursor, item_id: int):
+        this = PTable(cls.__tablename__)
+        creature = PTable(CreatureTable.__tablename__)
+        base_query = (
+            Query.from_(this)
+            .select(
+                creature.article_id.as_("creature_id"),
+                creature.title.as_("creature_title"),
+                this.min,
+                this.max,
+                this.chance,
+            )
+            .join(creature).on(this.creature_id == creature.article_id)
+        )
+        return cls.get_list_by_field(conn, "item_id", item_id, base_query=base_query)
 
 
 class ItemAttributeTable(Table, table_name="item_attribute"):
@@ -341,8 +358,8 @@ class NpcBuyingTable(Table, table_name="npc_offer_buy"):
 
     @classmethod
     def get_by_npc_id(cls, conn: Connection | Cursor, npc_id: int):
-        this = PikaTable(cls.__tablename__)
-        item = PikaTable(ItemTable.__tablename__)
+        this = PTable(cls.__tablename__)
+        item = PTable(ItemTable.__tablename__)
         currency = item.as_("currency")
         base_query = (
             Query.from_(this)
@@ -357,6 +374,25 @@ class NpcBuyingTable(Table, table_name="npc_offer_buy"):
             .join(currency).on(this.currency_id == currency.article_id)
         )
         return cls.get_list_by_field(conn, "npc_id", npc_id, base_query=base_query)
+
+    @classmethod
+    def get_by_item_id(cls, conn: Connection | Cursor, item_id: int):
+        this = PTable(cls.__tablename__)
+        npc = PTable(NpcTable.__tablename__)
+        currency = PTable(ItemTable.__tablename__).as_("currency")
+        base_query = (
+            Query.from_(this)
+            .select(
+                this.npc_id,
+                npc.title.as_("npc_title"),
+                currency.title.as_("currency_title"),
+                currency.article_id.as_("currency_id"),
+                this.value,
+            )
+            .join(npc).on(this.npc_id == npc.article_id)
+            .join(currency).on(this.currency_id == currency.article_id)
+        )
+        return cls.get_list_by_field(conn, "item_id", item_id, base_query=base_query)
 
 
 class NpcSellingTable(Table, table_name="npc_offer_sell"):
@@ -367,9 +403,9 @@ class NpcSellingTable(Table, table_name="npc_offer_sell"):
 
     @classmethod
     def get_by_npc_id(cls, conn: Connection | Cursor, npc_id: int):
-        this = PikaTable(cls.__tablename__)
-        item = PikaTable(ItemTable.__tablename__)
-        currency = item.as_("currency")
+        this = PTable(cls.__tablename__)
+        item = PTable(ItemTable.__tablename__)
+        currency = PTable(ItemTable.__tablename__).as_("currency")
         base_query = (
             Query.from_(this)
             .select(
@@ -383,6 +419,25 @@ class NpcSellingTable(Table, table_name="npc_offer_sell"):
             .join(currency).on(this.currency_id == currency.article_id)
         )
         return cls.get_list_by_field(conn, "npc_id", npc_id, base_query=base_query)
+
+    @classmethod
+    def get_by_item_id(cls, conn: Connection | Cursor, item_id: int):
+        this = PTable(cls.__tablename__)
+        npc = PTable(NpcTable.__tablename__)
+        currency = PTable(ItemTable.__tablename__).as_("currency")
+        base_query = (
+            Query.from_(this)
+            .select(
+                this.npc_id,
+                npc.title.as_("npc_title"),
+                currency.title.as_("currency_title"),
+                currency.article_id.as_("currency_id"),
+                this.value,
+            )
+            .join(npc).on(this.npc_id == npc.article_id)
+            .join(currency).on(this.currency_id == currency.article_id)
+        )
+        return cls.get_list_by_field(conn, "item_id", item_id, base_query=base_query)
 
 
 class NpcDestinationTable(Table, table_name="npc_destination"):
@@ -404,8 +459,8 @@ class NpcSpellTable(Table, table_name="npc_spell"):
     @classmethod
     def get_by_npc_id(cls, conn: Connection | Cursor, npc_id: int):
         base_query = cls.get_base_select_query()
-        this = PikaTable(cls.__tablename__)
-        spell = PikaTable(SpellTable.__tablename__)
+        this = PTable(cls.__tablename__)
+        spell = PTable(SpellTable.__tablename__)
         base_query = base_query.join(spell).on(this.spell_id == spell.article_id)
         return cls.get_list_by_field(conn, "npc_id", npc_id, base_query=base_query)
 
@@ -463,8 +518,31 @@ class QuestDangerTable(Table, table_name="quest_danger"):
 
 
 class QuestRewardTable(Table, table_name="quest_reward"):
+    """Table containing the item rewards for a quest."""
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True)
     item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False, index=True)
+
+    @classmethod
+    def get_list_by_item_id(cls, conn: Connection | Cursor, item_id: int) -> list[Row] | list[dict[str, Any]]:
+        """Get all entries related to a specific item, joining quest titles.
+
+        Args:
+            conn: A connection to the database.
+            item_id: The article ID of the item.
+
+        Returns:
+            The rows matching the criteria.
+        """
+        quest = PTable(QuestTable.__tablename__)
+        query = (
+            Query.from_(cls.__table__)
+            .select(
+                cls.__table__.quest_id,
+                quest.title.as_("quest_title"),
+            )
+            .join(quest).on(quest.article_id == cls.__table__.quest_id)
+        )
+        return cls.get_list_by_field(conn, "item_id", item_id, base_query=query)
 
 
 

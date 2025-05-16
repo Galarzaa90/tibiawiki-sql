@@ -48,14 +48,14 @@ class TestAchievement(unittest.TestCase):
             achievement.insert(self.conn)
 
     def test_achievement_get_by_field_no_results(self):
-        achievement = Achievement.get_by_field(self.conn, "achievement_id", 57)
+        achievement = Achievement.get_one_by_field(self.conn, "achievement_id", 57)
 
         self.assertIsNone(achievement)
 
     def test_achievement_get_by_field_with_result(self):
         ACHIEVEMENT_ANNIHILATOR.insert(self.conn)
 
-        db_achievement = Achievement.get_by_field(self.conn, "achievement_id", 57)
+        db_achievement = Achievement.get_one_by_field(self.conn, "achievement_id", 57)
 
         self.assertIsInstance(db_achievement, Achievement)
         self.assertEqual(ACHIEVEMENT_ANNIHILATOR.timestamp, db_achievement.timestamp)

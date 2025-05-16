@@ -69,10 +69,11 @@ The following is an example of an article being obtained from the database.
 ```python
 import tibiawikisql
 import sqlite3
+
 # Path to the previously generated database
 conn = sqlite3.connect("tibiawiki.db")
 # creature now contains all the parsed information, including loot statistics.
-creature = Creature.get_by_field(conn, "title", "Demon")
+creature = Creature.get_one_by_field(conn, "title", "Demon")
 # This would return a list of Item objects.
 # Note that when multiple objects are obtained, their child rows are not fetched.
 swords = Item.search(conn, "type", "Sword Weapons")

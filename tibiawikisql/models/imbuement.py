@@ -1,7 +1,6 @@
 import contextlib
 import sqlite3
 
-import pydantic
 from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
@@ -78,8 +77,8 @@ class Imbuement(WikiEntry, WithStatus, WithVersion, WithImage, RowModel, table=I
             material.insert(conn)
 
     @classmethod
-    def get_by_field(cls, c, field, value, use_like=False):
-        imbuement = super().get_by_field(c, field, value, use_like)
+    def get_one_by_field(cls, c, field, value, use_like=False):
+        imbuement = super().get_one_by_field(c, field, value, use_like)
         if imbuement is None:
             return None
         imbuement.materials = ImbuementMaterial.search(c, "imbuement_id", imbuement.article_id)

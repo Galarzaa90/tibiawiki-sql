@@ -51,12 +51,12 @@ class TestSchema(unittest.TestCase):
 
     def test_achievement_table_get_by_field_wrong_column(self):
         with self.assertRaises(ValueError):
-            AchievementTable.get_by_field(self.conn, "unknown", True)
+            AchievementTable.get_one_by_field(self.conn, "unknown", True)
 
     def test_achievement_table_get_by_field_no_results(self):
         self.conn.executescript(AchievementTable.get_create_table_statement())
 
-        result = AchievementTable.get_by_field(self.conn, "title", "Annihilator")
+        result = AchievementTable.get_one_by_field(self.conn, "title", "Annihilator")
 
         self.assertIsNone(result)
 
@@ -64,7 +64,7 @@ class TestSchema(unittest.TestCase):
         self.conn.executescript(AchievementTable.get_create_table_statement())
         AchievementTable.insert(self.conn, **SAMPLE_ACHIEVEMENT_ROW)
 
-        result = AchievementTable.get_by_field(self.conn, "title", "Annihilator")
+        result = AchievementTable.get_one_by_field(self.conn, "title", "Annihilator")
 
         self.assertIsNotNone(result)
         self.assertEqual(5, result["points"])

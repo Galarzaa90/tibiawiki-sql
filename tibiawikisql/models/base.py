@@ -1,14 +1,15 @@
 """Module with base classes used by models."""
-import base64
-import sqlite3
-from typing import Any, ClassVar
+from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict, Field, field_serializer
-from typing_extensions import Self
+from sqlite3 import Connection, Cursor, Row
+from typing import Any, ClassVar, TYPE_CHECKING
+
+from pydantic import BaseModel, Field
 
 from tibiawikisql.database import Table
 
-ConnCursor = sqlite3.Connection | sqlite3.Cursor
+if TYPE_CHECKING:
+    from typing_extensions import Self
 
 
 class WithStatus(BaseModel):
@@ -55,7 +56,7 @@ class RowModel(BaseModel):
         cls.table = table
 
 
-    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+    def insert(self, conn: Connection | Cursor) -> None:
         """Insert the model into its respective database table.
 
         Args:
@@ -73,7 +74,7 @@ class RowModel(BaseModel):
         self.table.insert(conn, **rows)
 
     @classmethod
-    def from_row(cls, row: sqlite3.Row | dict[str, Any]) -> Self:
+    def from_row(cls, row: Row | dict[str, Any]) -> Self:
         """Return an instance of the model from a row or dictionary.
 
         Args:
@@ -83,13 +84,13 @@ class RowModel(BaseModel):
             An instance of the class, based on the row.
 
         """
-        if isinstance(row, sqlite3.Row):
+        if isinstance(row, Row):
             row = dict(row)
         return cls.model_validate(row)
 
     @classmethod
-    def get_by_field(cls, conn: ConnCursor, field: str, value: Any, use_like: bool = False) -> Self | None:
-        """Get an element by a specific field's value.
+    def get_one_by_field(cls, conn: Connection | Cursor, field: str, value: Any, use_like: bool = False) -> Self | None:
+        """Get a single element matching the field's value.
 
         Args:
             conn: A connection or cursor of the database.
@@ -98,24 +99,31 @@ class RowModel(BaseModel):
             use_like: Whether to use ``LIKE`` as a comparator instead of ``=``.
 
         Returns:
-            The object found, or ``None``.
+            The object found, or ``None`` if no entries match.
 
         Raises:
             ValueError: The specified field doesn't exist in the table.
 
         """
-        row = cls.table.get_by_field(conn, field, value, use_like)
+        row = cls.table.get_one_by_field(conn, field, value, use_like)
         return cls.from_row(row) if row else None
 
     @classmethod
-    def get_list_by_field(cls, c: ConnCursor, field: str, value: Any | None = None, use_like: bool = False,
-               sort_by: str | None = None, ascending: bool = True) -> list[Self]:
+    def get_list_by_field(
+            cls,
+            conn: Connection | Cursor,
+            field: str,
+            value: Any | None = None,
+            use_like: bool = False,
+            sort_by: str | None = None,
+            ascending: bool = True,
+    ) -> list[Self]:
         """Get a list of elements matching the specified field's value.
 
         Note that this won't get values found in child tables.
 
         Args:
-            c:  A connection or cursor of the database.
+            conn:  A connection or cursor of the database.
             field: The name of the field to filter by.
             value: The value to filter by.
             use_like: Whether to use ``LIKE`` as a comparator instead of ``=``.
@@ -129,5 +137,5 @@ class RowModel(BaseModel):
             ValueError: The specified field doesn't exist in the table.
 
         """
-        rows = cls.table.get_list_by_field(c, field, value, use_like, sort_by, ascending)
+        rows = cls.table.get_list_by_field(conn, field, value, use_like, sort_by, ascending)
         return [cls.from_row(r) for r in rows]

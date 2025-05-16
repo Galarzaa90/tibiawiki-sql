@@ -3,7 +3,7 @@ import sqlite3
 from typing import Any, ClassVar
 
 from tibiawikisql.api import Article
-from tibiawikisql.models.item import Item, ItemAttribute, ItemSound, ItemStoreOffer
+from tibiawikisql.models.item import Item, ItemAttribute, ItemStoreOffer
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.schema import ItemTable
@@ -105,7 +105,6 @@ class ItemParser(BaseParser):
         for name, attribute in cls.item_attributes.items():
             if attribute in row["_raw_attributes"] and row["_raw_attributes"][attribute]:
                 row["attributes"].append(ItemAttribute(
-                    item_id=row["article_id"],
                     name=name,
                     value=clean_links(row["_raw_attributes"][attribute]),
                 ))
@@ -119,7 +118,6 @@ class ItemParser(BaseParser):
     def parse_item_attributes(cls, row: dict[str, Any]):
         raw_attributes = row["_raw_attributes"]
         attributes = row["attributes"]
-        item_id = row["article_id"]
         if "attrib" not in raw_attributes:
             return
         attribs = raw_attributes["attrib"].split(",")
@@ -130,37 +128,35 @@ class ItemParser(BaseParser):
                 numbers = re.findall(r"(\d+)", attr)
                 if len(numbers) == 2:
                     attributes.extend([
-                        ItemAttribute(item_id=item_id, name="perfect_shot", value=f"+{numbers[0]}"),
-                        ItemAttribute(item_id=item_id, name="perfect_shot_range", value=numbers[1]),
+                        ItemAttribute(name="perfect_shot", value=f"+{numbers[0]}"),
+                        ItemAttribute(name="perfect_shot_range", value=numbers[1]),
                     ])
                     continue
             if "damage reflection" in attr.lower():
                 value = parse_integer(attr)
-                attributes.append(ItemAttribute(item_id=item_id, name="damage_reflection", value=str(value)))
+                attributes.append(ItemAttribute(name="damage_reflection", value=str(value)))
             if "damage reflection" in attr.lower():
                 value = parse_integer(attr)
-                attributes.append(ItemAttribute(item_id=item_id, name="damage_reflection", value=str(value)))
+                attributes.append(ItemAttribute(name="damage_reflection", value=str(value)))
             if "magic shield capacity" in attr.lower():
                 numbers = re.findall(r"(\d+)", attr)
                 if len(numbers) == 2:
                     attributes.extend([
-                        ItemAttribute(item_id=item_id, name="magic_shield_capacity", value=f"+{numbers[0]}"),
-                        ItemAttribute(item_id=item_id, name="magic_shield_capacity%", value=f"{numbers[1]}%"),
+                        ItemAttribute(name="magic_shield_capacity", value=f"+{numbers[0]}"),
+                        ItemAttribute(name="magic_shield_capacity%", value=f"{numbers[1]}%"),
                     ])
                     continue
             if m:
                 attribute = m.group(1).replace("fighting", "").replace("level", "").strip().replace(" ", "_").lower()
                 value = m.group(2)
-                attributes.append(ItemAttribute(item_id=item_id, name=attribute.lower(), value=value))
+                attributes.append(ItemAttribute(name=attribute.lower(), value=value))
             if "regeneration" in attr:
-                attributes.append(ItemAttribute(item_id=item_id, name="regeneration",
-                                                value="faster regeneration"))
+                attributes.append(ItemAttribute(name="regeneration", value="faster regeneration"))
 
     @classmethod
     def parse_resistances(cls, row):
         raw_attributes = row["_raw_attributes"]
         attributes = row["attributes"]
-        item_id = row["article_id"]
         if "resist" not in raw_attributes:
             return
         resistances = raw_attributes["resist"].split(",")
@@ -174,14 +170,13 @@ class ItemParser(BaseParser):
                 value = int(m.group(2))
             except ValueError:
                 value = 0
-            attributes.append(ItemAttribute(item_id=item_id, name=attribute, value=str(value)))
+            attributes.append(ItemAttribute(name=attribute, value=str(value)))
 
     @classmethod
     def parse_sounds(cls, row):
         if "sounds" not in row["_raw_attributes"]:
             return
-        sounds = parse_sounds(row["_raw_attributes"]["sounds"])
-        row["sounds"] = [ItemSound(item_id=row["article_id"], content=sound) for sound in sounds] if sounds else []
+        row["sounds"] = parse_sounds(row["_raw_attributes"]["sounds"])
 
     @classmethod
     def parse_store_value(self, row):
@@ -194,5 +189,5 @@ class ItemParser(BaseParser):
             currency = strip_code(template.get(2, "Tibia Coin"))
             amount = int(strip_code(template.get("amount", 1)))
             row["store_offers"].append(
-                ItemStoreOffer(item_id=row["article_id"], price=price, currency=currency, amount=amount),
+                ItemStoreOffer(price=price, currency=currency, amount=amount),
             )

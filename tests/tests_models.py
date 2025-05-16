@@ -20,12 +20,12 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(achievement, models.Achievement)
 
         achievement.insert(self.conn)
-        db_achievement = models.Achievement.get_by_field(self.conn, "article_id", 1)
+        db_achievement = models.Achievement.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_achievement, models.Achievement)
         self.assertEqual(db_achievement.name, achievement.name)
 
-        db_achievement = models.Achievement.get_by_field(self.conn, "name", "demonic barkeeper", use_like=True)
+        db_achievement = models.Achievement.get_one_by_field(self.conn, "name", "demonic barkeeper", use_like=True)
         self.assertIsInstance(db_achievement, models.Achievement)
 
     def test_creature(self):
@@ -35,7 +35,7 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(creature, models.Creature)
 
         creature.insert(self.conn)
-        db_creature: models.Creature = models.Creature.get_by_field(self.conn, "article_id", 1)
+        db_creature: models.Creature = models.Creature.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_creature, models.Creature)
         self.assertEqual(db_creature.name, creature.name)
@@ -52,7 +52,7 @@ class TestModels(unittest.TestCase):
         self.assertEqual(50, db_creature.charm_points)
         self.assertIsNotNone(db_creature.max_damage)
 
-        db_creature = models.Creature.get_by_field(self.conn, "name", "demon", use_like=True)
+        db_creature = models.Creature.get_one_by_field(self.conn, "name", "demon", use_like=True)
         self.assertIsInstance(db_creature, models.Creature)
 
     def test_house(self):
@@ -62,12 +62,12 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(house, models.House)
 
         house.insert(self.conn)
-        db_house = models.House.get_by_field(self.conn, "article_id", 1)
+        db_house = models.House.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_house, models.House)
         self.assertEqual(db_house.name, house.name)
 
-        models.House.get_by_field(self.conn, "house_id", 55302)
+        models.House.get_one_by_field(self.conn, "house_id", 55302)
         self.assertIsInstance(db_house, models.House)
 
     def test_imbuement(self):
@@ -77,14 +77,14 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(imbuement, models.Imbuement)
 
         imbuement.insert(self.conn)
-        db_imbuement = models.Imbuement.get_by_field(self.conn, "article_id", 1)
+        db_imbuement = models.Imbuement.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_imbuement, models.Imbuement)
         self.assertEqual(db_imbuement.name, imbuement.name)
         self.assertEqual(db_imbuement.tier, imbuement.tier)
         self.assertGreater(len(db_imbuement.materials), 0)
 
-        db_imbuement = models.Imbuement.get_by_field(self.conn, "name", "powerful strike", use_like=True)
+        db_imbuement = models.Imbuement.get_one_by_field(self.conn, "name", "powerful strike", use_like=True)
         self.assertIsInstance(db_imbuement, models.Imbuement)
 
     def test_item(self):
@@ -94,7 +94,7 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(item, models.Item)
 
         item.insert(self.conn)
-        db_item = models.Item.get_by_field(self.conn, "article_id", 1)
+        db_item = models.Item.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_item, models.Item)
         self.assertEqual(db_item.name, item.name)
@@ -108,7 +108,7 @@ class TestModels(unittest.TestCase):
                                 "The blade is a magic flame.")
         self.assertEqual(fire_sword_look_text, item.look_text)
 
-        db_item = models.Item.get_by_field(self.conn, "name", "fire sword", use_like=True)
+        db_item = models.Item.get_one_by_field(self.conn, "name", "fire sword", use_like=True)
         self.assertIsInstance(db_item, models.Item)
 
     def test_item_resist(self):
@@ -127,13 +127,13 @@ class TestModels(unittest.TestCase):
         self.assertEqual(item.resistances["energy"], 10)
 
         item.insert(self.conn)
-        db_item = models.Item.get_by_field(self.conn, "article_id", 1)
+        db_item = models.Item.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_item, models.Item)
         self.assertEqual(db_item.name, item.name)
         self.assertGreater(len(db_item.attributes), 0)
 
-        db_item = models.Item.get_by_field(self.conn, "name", "dream shroud", use_like=True)
+        db_item = models.Item.get_one_by_field(self.conn, "name", "dream shroud", use_like=True)
         self.assertIsInstance(db_item, models.Item)
 
     def test_item_sounds(self):
@@ -144,12 +144,12 @@ class TestModels(unittest.TestCase):
         self.assertEqual(len(item.sounds), 5)
 
         item.insert(self.conn)
-        db_item = models.Item.get_by_field(self.conn, "article_id", 1)
+        db_item = models.Item.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_item, models.Item)
         self.assertEqual(db_item.name, item.name)
 
-        db_item = models.Item.get_by_field(self.conn, "name", "mini nabbot", use_like=True)
+        db_item = models.Item.get_one_by_field(self.conn, "name", "mini nabbot", use_like=True)
         self.assertEqual(len(item.sounds), len(db_item.sounds))
         self.assertIsInstance(db_item, models.Item)
 
@@ -176,12 +176,12 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(key, models.Key)
 
         key.insert(self.conn)
-        db_key = models.Key.get_by_field(self.conn, "article_id", 1)
+        db_key = models.Key.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_key, models.Key)
         self.assertEqual(db_key.name, key.name)
 
-        db_key = models.Key.get_by_field(self.conn, "number", 3940)
+        db_key = models.Key.get_one_by_field(self.conn, "number", 3940)
         self.assertIsInstance(db_key, models.Key)
 
     def test_book(self):
@@ -191,7 +191,7 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(book, models.Book)
 
         book.insert(self.conn)
-        db_book = models.Book.get_by_field(self.conn, "article_id", 1)
+        db_book = models.Book.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_book, models.Book)
         self.assertEqual(db_book.name, book.name)
@@ -208,7 +208,7 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(npc, models.Npc)
 
         npc.insert(self.conn)
-        db_npc = models.Npc.get_by_field(self.conn, "article_id", 1)
+        db_npc = models.Npc.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_npc, models.Npc)
         self.assertEqual(db_npc.name, npc.name)
@@ -231,7 +231,7 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(quest, models.Quest)
 
         quest.insert(self.conn)
-        db_quest = models.Quest.get_by_field(self.conn, "article_id", 1)
+        db_quest = models.Quest.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_quest, models.Quest)
         self.assertEqual(db_quest.name, quest.name)
@@ -243,7 +243,7 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(spell, models.Spell)
 
         spell.insert(self.conn)
-        db_spell = models.Spell.get_by_field(self.conn, "article_id", 1)
+        db_spell = models.Spell.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_spell, models.Spell)
         self.assertEqual(db_spell.name, spell.name)
@@ -256,7 +256,7 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(world.trade_board, int)
 
         world.insert(self.conn)
-        db_world = models.World.get_by_field(self.conn, "article_id", 1)
+        db_world = models.World.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_world, models.World)
         self.assertEqual(db_world.name, world.name)
@@ -271,7 +271,7 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(mount.buyable, int)
 
         mount.insert(self.conn)
-        db_mount = models.Mount.get_by_field(self.conn, "article_id", 1)
+        db_mount = models.Mount.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_mount, models.Mount)
         self.assertEqual(db_mount.name, mount.name)
@@ -287,7 +287,7 @@ class TestModels(unittest.TestCase):
         self.assertEqual("11.50.6055", charm.version)
 
         charm.insert(self.conn)
-        db_charm = models.Charm.get_by_field(self.conn, "article_id", 1)
+        db_charm = models.Charm.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_charm, models.Charm)
         self.assertEqual(db_charm.name, charm.name)
@@ -301,7 +301,7 @@ class TestModels(unittest.TestCase):
         self.assertEqual(outfit.achievement, "Brutal Politeness")
 
         outfit.insert(self.conn)
-        db_outfit = models.Outfit.get_by_field(self.conn, "article_id", 1)
+        db_outfit = models.Outfit.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_outfit, models.Outfit)
         self.assertEqual(db_outfit.name, outfit.name)

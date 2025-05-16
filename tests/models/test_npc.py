@@ -2,8 +2,11 @@ import datetime
 import sqlite3
 import unittest
 
-from tibiawikisql.models import Npc
-from tibiawikisql.schema import NpcJobTable, NpcRaceTable, NpcSpellTable, NpcTable, SpellTable
+from tibiawikisql.models import Npc, NpcDestination, NpcOffer
+from tibiawikisql.schema import ItemTable, NpcBuyingTable, NpcDestinationTable, NpcJobTable, NpcRaceTable, \
+    NpcSellingTable, NpcSpellTable, \
+    NpcTable, \
+    SpellTable
 
 
 class TestNpc(unittest.TestCase):
@@ -13,6 +16,10 @@ class TestNpc(unittest.TestCase):
         self.conn.executescript(NpcSpellTable.get_create_table_statement())
         self.conn.executescript(NpcJobTable.get_create_table_statement())
         self.conn.executescript(NpcRaceTable.get_create_table_statement())
+        self.conn.executescript(NpcBuyingTable.get_create_table_statement())
+        self.conn.executescript(NpcSellingTable.get_create_table_statement())
+        self.conn.executescript(ItemTable.get_create_table_statement())
+        self.conn.executescript(NpcDestinationTable.get_create_table_statement())
 
     def test_npc_with_spells(self):
         # Arrange
@@ -59,10 +66,10 @@ class TestNpc(unittest.TestCase):
         )
         NpcSpellTable.insert(self.conn, npc_id=1, spell_id=1, druid=True)
 
-        npc = Npc.get_by_field(self.conn, "name", "Azalea")
+        npc = Npc.get_one_by_field(self.conn, "name", "Azalea")
 
         self.assertIsInstance(npc, Npc)
         self.assertEqual(5, len(npc.jobs))
         self.assertEqual("Human", npc.race)
         self.assertEqual(1, len(npc.teaches))
-        self.assertEqual("Food (Spell)", npc.teaches[0].spell)
+        self.assertEqual("Food (Spell)", npc.teaches[0].spell_title)

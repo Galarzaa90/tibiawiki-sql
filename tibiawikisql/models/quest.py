@@ -139,8 +139,8 @@ class Quest(WikiEntry, WithStatus, WithVersion, RowModel, table=QuestTable):
             danger.insert(conn)
 
     @classmethod
-    def get_by_field(cls, c, field, value, use_like=False):
-        quest = super().get_by_field(c, field, value, use_like)
+    def get_one_by_field(cls, c, field, value, use_like=False):
+        quest = super().get_one_by_field(c, field, value, use_like)
         if quest is None:
             return None
         quest.dangers = QuestDanger.search(c, "quest_id", quest.article_id)

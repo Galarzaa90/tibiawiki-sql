@@ -1,4 +1,3 @@
-from typing import ClassVar
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import RowModel, WithStatus, WithVersion

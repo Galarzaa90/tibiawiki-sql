@@ -1,15 +1,24 @@
-import sqlite3
+from sqlite3 import Connection, Cursor
+from typing import Any, Self
 
 import pydantic
 from pydantic import BaseModel, Field
 from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.quest import QuestReward
 from tibiawikisql.models.base import RowModel, WithImage, WithStatus, WithVersion
-from tibiawikisql.models.creature import CreatureDrop
-from tibiawikisql.schema import BookTable, ItemAttributeTable, ItemKeyTable, ItemSoundTable, ItemStoreOfferTable, \
-    ItemTable
+from tibiawikisql.schema import (
+    BookTable,
+    CreatureDropTable,
+    ItemAttributeTable,
+    ItemKeyTable,
+    ItemSoundTable,
+    ItemStoreOfferTable,
+    ItemTable,
+    NpcBuyingTable,
+    NpcSellingTable,
+    QuestRewardTable,
+)
 
 ELEMENTAL_RESISTANCES = ["physical%", "earth%", "fire%", "energy%", "ice%", "holy%", "death%", "drowning%"]
 
@@ -24,31 +33,32 @@ SKILL_ATTRIBUTES_MAPPING = {
 }
 
 
-class ItemAttribute(RowModel, table=ItemAttributeTable):
+class ItemAttribute(pydantic.BaseModel):
     """Represents an Item's attribute."""
 
-    item_id: int
-    """The id of the item the attribute belongs to."""
     name: str
     """The name of the attribute."""
     value: str
     """The value of the attribute."""
 
+class ItemOffer(BaseModel):
+    """Represents an offer to buy or sell the item."""
 
-class ItemSound(RowModel, table=ItemSoundTable):
-    """Represents a sound made by an item."""
+    npc_id: int
+    """The article ID of the npc offering the item"""
+    npc_title: str
+    """The title of the npc offering the item."""
+    currency_id: int
+    """The article ID of the currency used."""
+    currency_title: str
+    """The title of the currency used."""
+    value: int
+    """The value of the item."""
 
-    item_id: int
-    """The article id of the item that does this sound."""
-    content: str
-    """The content of the sound."""
 
-
-class ItemStoreOffer(RowModel, table=ItemStoreOfferTable):
+class ItemStoreOffer(BaseModel):
     """Represents an offer for an item on the Tibia Store."""
 
-    item_id: int
-    """The ID of the item this offer is for."""
     price: int
     """The price of the item."""
     amount: int
@@ -56,6 +66,27 @@ class ItemStoreOffer(RowModel, table=ItemStoreOfferTable):
     currency: str
     """The currency used. In most of the times it is Tibia Coins."""
 
+
+class ItemDrop(BaseModel):
+    """Represents a creature that drops the item."""
+
+    creature_id: int | None = None
+    """The article id of the creature."""
+    creature_title: str
+    """The title of the creature that drops the item."""
+    min: int
+    """The minimum possible amount of the dropped item."""
+    max: int
+    """The maximum possible amount of the dropped item."""
+    chance: float | None = None
+    """The chance percentage of getting this item dropped by this creature."""
+
+class ItemQuestReward(BaseModel):
+    """A quest where the item is awarded."""
+    quest_id: int
+    """The article ID of the quest."""
+    quest_title: str
+    """The title of the quest."""
 
 class Item(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=ItemTable):
     """Represents an Item."""
@@ -98,15 +129,15 @@ class Item(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=ItemTa
     """The internal id of the item in the client."""
     attributes: list[ItemAttribute] = Field(default_factory=list)
     """The item's attributes."""
-    dropped_by: list[CreatureDrop] = Field(default_factory=list)
+    dropped_by: list[ItemDrop] = Field(default_factory=list)
     """List of creatures that drop this item, with the chances."""
-    # sold_by: list[NpcSellOffer] = Field(default_factory=list)
-    # """List of NPCs that sell this item."""
-    # bought_by: list[NpcBuyOffer] = Field(default_factory=list)
-    # """List of NPCs that buy this item."""
-    awarded_in: list[QuestReward] = Field(default_factory=list)
+    sold_by: list[ItemOffer] = Field(default_factory=list)
+    """List of NPCs that sell this item."""
+    bought_by: list[ItemOffer] = Field(default_factory=list)
+    """List of NPCs that buy this item."""
+    awarded_in: list[ItemQuestReward] = Field(default_factory=list)
     """List of quests that give this item as reward."""
-    sounds: list[ItemSound] = Field(default_factory=list)
+    sounds: list[str] = Field(default_factory=list)
     """List of sounds made when using the item."""
     store_offers: list[ItemStoreOffer] = Field(default_factory=list)
 
@@ -219,14 +250,54 @@ class Item(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=ItemTa
             if attribute in attributes:
                 attributes_rep.append(template.format(attributes[attribute]))
 
-    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+    def insert(self, conn: Connection | Cursor) -> None:
         super().insert(conn)
         for attribute in self.attributes:
-            attribute.insert(conn)
+            ItemAttributeTable.insert(conn, item_id=self.article_id, **attribute.model_dump())
         for sound in self.sounds:
-            sound.insert(conn)
+            ItemSoundTable.insert(conn, item_id=self.article_id, content=sound)
         for offer in self.store_offers:
-            offer.insert(conn)
+            ItemStoreOfferTable.insert(conn, item_id=self.article_id, **offer.model_dump())
+
+    @classmethod
+    def get_one_by_field(cls, conn: Connection | Cursor, field: str, value: Any, use_like: bool = False) -> Self | None:
+        item: Self = super().get_one_by_field(conn, field, value, use_like)
+        if not item:
+            return None
+        attributes = ItemAttributeTable.get_list_by_field(conn, "item_id", item.article_id)
+        item.attributes = [ItemAttribute(**(dict(row))) for row in attributes]
+
+        dropped_by = CreatureDropTable.get_by_item_id(conn, item.article_id)
+        item.dropped_by = [ItemDrop(**dict(r)) for r in dropped_by]
+
+        store_offers = ItemStoreOfferTable.get_list_by_field(conn, "item_id", item.article_id)
+        item.store_offers = [ItemStoreOffer(**dict(r)) for r in store_offers]
+
+        sounds = ItemSoundTable.get_list_by_field(conn, "item_id", item.article_id)
+        item.sounds = [r["content"] for r in sounds]
+
+        item.bought_by = [
+            ItemOffer(
+                npc_id=r["npc_id"],
+                npc_title=r["npc_title"],
+                currency_id=r["currency_id"],
+                currency_title=r["currency_title"],
+                value=r["value"],
+            ) for r in NpcBuyingTable.get_by_item_id(conn, item.article_id)
+        ]
+        item.sold_by = [
+            ItemOffer(
+                npc_id=r["npc_id"],
+                npc_title=r["npc_title"],
+                currency_id=r["currency_id"],
+                currency_title=r["currency_title"],
+                value=r["value"],
+            ) for r in NpcSellingTable.get_by_item_id(conn, item.article_id)
+        ]
+
+        awarded_in = QuestRewardTable.get_list_by_item_id(conn, item.article_id)
+        item.awarded_in = [ItemQuestReward(**(dict(row))) for row in awarded_in]
+        return item
 
 
 class Book(WikiEntry, WithStatus, WithVersion, RowModel, table=BookTable):
@@ -251,7 +322,7 @@ class Book(WikiEntry, WithStatus, WithVersion, RowModel, table=BookTable):
     text: str
     """The content of the book."""
 
-    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+    def insert(self, conn: Connection | Cursor) -> None:
         if self.item_id is not None:
             super().insert(conn)
             return
@@ -321,7 +392,7 @@ class Key(WikiEntry, WithStatus, WithVersion, RowModel, table=ItemKeyTable):
     origin: str | None
     """Notes about the origin of the key."""
 
-    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+    def insert(self, conn: Connection | Cursor) -> None:
         if self.item_id is not None:
             super().insert(conn)
             return

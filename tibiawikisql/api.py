@@ -40,7 +40,7 @@ class WikiEntry(BaseModel):
     @property
     def url(self) -> str:
         """The URL to the article's display page."""
-        return f"{BASE_URL}/wiki/{urllib.parse.quote(self.title)}"
+        return f"{BASE_URL}/wiki/{urllib.parse.quote(self.title.replace(" ","_"))}"
 
 
 class Article(WikiEntry):

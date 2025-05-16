@@ -4,14 +4,13 @@ from __future__ import annotations
 import datetime
 import inspect
 import sqlite3
-from sqlite3 import Row
+from sqlite3 import Connection, Cursor, Row
 from typing import Any, ClassVar, TypeVar
 
-from pypika import Order, Query, Table as pikaTable
+from pypika import Order, Query, Table as PTable
 
 from tibiawikisql.errors import InvalidColumnValueError, SchemaError
 
-ConnCursor = sqlite3.Connection | sqlite3.Cursor
 
 T = TypeVar("T", bound="TableMeta")
 
@@ -139,6 +138,7 @@ class TableMeta(type):
             table_name = name.replace("Table", "").lower()
 
         dct["__tablename__"] = table_name
+        dct["__table__"] = PTable(table_name)
 
         for elem, value in dct.items():
             if isinstance(value, Column):
@@ -160,7 +160,8 @@ class TableMeta(type):
 class Table(metaclass=TableMeta):
     """Represents a SQL table."""
 
-    __tablename__ = None
+    __tablename__: ClassVar[str]
+    __table__: ClassVar[PTable]
 
     @classmethod
     def get_create_table_statement(cls, *, exists_ok: bool = True) -> str:
@@ -207,7 +208,7 @@ class Table(metaclass=TableMeta):
         return cls.__subclasses__()
 
     @classmethod
-    def insert(cls, conn: ConnCursor, **kwargs: Any) -> None:
+    def insert(cls, conn: Connection | Cursor, **kwargs: Any) -> None:
         """Insert a row into this table.
 
         Args:
@@ -251,13 +252,12 @@ class Table(metaclass=TableMeta):
 
     @classmethod
     def get_base_select_query(cls) -> Query:
-        table = pikaTable(cls.__tablename__)
-        return Query.from_(table).select("*")
+        return Query.from_(cls.__table__).select("*")
 
     @classmethod
-    def get_by_field(
+    def get_one_by_field(
             cls,
-            conn: ConnCursor,
+            conn: Connection | Cursor,
             column: str,
             value: Any,
             use_like: bool = False,
@@ -279,17 +279,20 @@ class Table(metaclass=TableMeta):
         if column not in cls.column_map:
             msg = f"Column {column!r} doesn't exist"
             raise ValueError(msg)
-        table = pikaTable(cls.__tablename__)
-        q = Query.from_(table).select("*").where(table[column].like(value) if use_like else table[column].eq(value))
+        q = (
+            Query.from_(cls.__table__)
+            .select("*")
+            .where(cls.__table__[column].like(value) if use_like else cls.__table__[column].eq(value))
+        )
         cursor = conn.cursor() if isinstance(conn, sqlite3.Connection) else conn
-        cursor.row_factory = sqlite3.Row
+        cursor.row_factory = Row
         cursor.execute(q.get_sql())
         return cursor.fetchone()
 
     @classmethod
     def get_list_by_field(
             cls,
-            conn: ConnCursor,
+            conn: Connection | Cursor,
             column: str,
             value: Any,
             use_like: bool = False,
@@ -325,7 +328,7 @@ class Table(metaclass=TableMeta):
             msg = f"Column {sort_by!r} doesn't exist"
             raise ValueError(msg)
         base_query = base_query or cls.get_base_select_query()
-        table = pikaTable(cls.__tablename__)
+        table = PTable(cls.__tablename__)
         q = base_query.where(table[column].like(value) if use_like else table[column].eq(value))
         if sort_by is not None:
             q = q.orderby(sort_by, order=Order.asc if ascending else Order.desc)

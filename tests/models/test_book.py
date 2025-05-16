@@ -4,7 +4,6 @@ import unittest
 from polyfactory.factories.pydantic_factory import ModelFactory
 
 from tibiawikisql.models import Book, Item, ItemStoreOffer
-from tibiawikisql.models.item import ItemSound
 from tibiawikisql.schema import BookTable, ItemAttributeTable, ItemSoundTable, ItemStoreOfferTable, ItemTable
 
 
@@ -44,6 +43,6 @@ class TestBook(unittest.TestCase):
         item.insert(self.conn)
 
         book.insert(self.conn)
-        inserted_book = book.table.get_by_field(self.conn, "article_id", book.article_id)
+        inserted_book = book.table.get_one_by_field(self.conn, "article_id", book.article_id)
 
         self.assertEqual(item.article_id, inserted_book["article_id"])

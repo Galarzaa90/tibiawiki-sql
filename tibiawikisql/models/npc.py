@@ -1,12 +1,13 @@
 import contextlib
 import sqlite3
+from sqlite3 import Connection, Cursor
 from typing import Any, Self
 
 from pydantic import BaseModel, Field
 from pypika import Parameter, Query, Table
 
 from tibiawikisql.api import WikiEntry
-from tibiawikisql.models.base import ConnCursor, RowModel, WithImage, WithStatus, WithVersion
+from tibiawikisql.models.base import RowModel, WithImage, WithStatus, WithVersion
 from tibiawikisql.schema import NpcBuyingTable, NpcDestinationTable, NpcJobTable, NpcRaceTable, NpcSellingTable, \
     NpcSpellTable, NpcTable
 
@@ -186,8 +187,8 @@ class Npc(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=NpcTabl
             NpcRaceTable.insert(conn, npc_id=self.article_id, name=race)
 
     @classmethod
-    def get_by_field(cls, conn: ConnCursor, field: str, value: Any, use_like: bool = False) -> Self | None:
-        npc: Self = super().get_by_field(conn, field, value, use_like)
+    def get_one_by_field(cls, conn: Connection | Cursor, field: str, value: Any, use_like: bool = False) -> Self | None:
+        npc: Self = super().get_one_by_field(conn, field, value, use_like)
         if npc is None:
             return None
         npc.jobs = [j["name"] for j in NpcJobTable.get_list_by_field(conn, "npc_id", npc.article_id)]
@@ -204,7 +205,7 @@ class Npc(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=NpcTabl
                 monk=r["monk"],
             ) for r in NpcSpellTable.get_by_npc_id(conn, npc.article_id)
         ]
-        npc.buy_offers = [
+        npc.sell_offers = [
             NpcOffer(
                 item_id=r["item_id"],
                 item_title=r["item_title"],
@@ -213,7 +214,7 @@ class Npc(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=NpcTabl
                 value=r["value"],
             ) for r in NpcBuyingTable.get_by_npc_id(conn, npc.article_id)
         ]
-        npc.sell_offers = [
+        npc.buy_offers = [
             NpcOffer(
                 item_id=r["item_id"],
                 item_title=r["item_title"],

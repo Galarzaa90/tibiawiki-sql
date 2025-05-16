@@ -114,8 +114,8 @@ class Outfit(WikiEntry, WithStatus, WithVersion, RowModel, table=OutfitTable):
             quest.insert(conn)
 
     @classmethod
-    def get_by_field(cls, c, field, value, use_like=False):
-        outfit = super().get_by_field(c, field, value, use_like)
+    def get_one_by_field(cls, c, field, value, use_like=False):
+        outfit = super().get_one_by_field(c, field, value, use_like)
         if outfit is None:
             return None
         outfit.quests = OutfitQuest.search(c, "outfit_id", outfit.article_id)

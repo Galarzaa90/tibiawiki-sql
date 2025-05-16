@@ -1,5 +1,6 @@
 import contextlib
 import sqlite3
+from sqlite3 import Connection, Cursor
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -8,7 +9,6 @@ from typing_extensions import Self
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import (
-    ConnCursor,
     RowModel,
     WithImage,
     WithStatus,
@@ -281,7 +281,7 @@ class Creature(WikiEntry, WithStatus, WithVersion, WithImage, RowModel, table=Cr
         """Get a dictionary containing the elements the creature is resistant to and modifier."""
         return {k: v for k, v in self.elemental_modifiers.items() if 100 > v > 0}
 
-    def insert(self, conn: sqlite3.Connection | sqlite3.Cursor) -> None:
+    def insert(self, conn: Connection | Cursor) -> None:
         super().insert(conn)
 
         for drop in self.loot:
@@ -294,11 +294,11 @@ class Creature(WikiEntry, WithStatus, WithVersion, WithImage, RowModel, table=Cr
             CreatureMaxDamageTable.insert(conn, creature_id=self.article_id, **self.max_damage.model_dump())
 
     @classmethod
-    def get_by_field(cls, conn: ConnCursor, field: str, value: Any, use_like: bool = False) -> Self | None:
-        creature: Self = super().get_by_field(conn, field, value, use_like)
+    def get_one_by_field(cls, conn: Connection | Cursor, field: str, value: Any, use_like: bool = False) -> Self | None:
+        creature: Self = super().get_one_by_field(conn, field, value, use_like)
         if creature is None:
             return None
-        max_damage = CreatureMaxDamageTable.get_by_field(conn, "creature_id", creature.article_id)
+        max_damage = CreatureMaxDamageTable.get_one_by_field(conn, "creature_id", creature.article_id)
         if max_damage:
             creature.max_damage = CreatureMaxDamage(**dict(max_damage))
 
