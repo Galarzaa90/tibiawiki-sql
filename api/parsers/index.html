@@ -6,10 +6,14 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="TibiaWikiSQL is a script that generates a SQLite database from TibiaWiki articles by using its API.">
+      
+      
+        <meta name="author" content="Allan Galarza">
       
       
       
-        <link rel="prev" href="../models/">
+        <link rel="prev" href="../models/world/">
       
       
         <link rel="next" href="../schema/">
@@ -92,8 +96,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="TibiaWikiSQL" class="md-header__button md-logo" aria-label="TibiaWikiSQL" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../../images/logo.gif" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -133,7 +136,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="brown" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -143,7 +146,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="brown" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
     
       <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -298,8 +301,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="TibiaWikiSQL" class="md-nav__button md-logo" aria-label="TibiaWikiSQL" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="../../images/logo.gif" alt="logo">
 
     </a>
     TibiaWikiSQL
@@ -557,9 +559,23 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../models/" class="md-nav__link">
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -568,7 +584,364 @@
   </span>
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Models
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Package Index
+    
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Base
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/achievement/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Achievement
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/charm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Charm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/creature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Creature
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/house/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    House
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/imbuement/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Imbuement
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/item/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Item
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/mount/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mount
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/npc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Npc
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/outfit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Outfit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/quest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quest
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/spell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spell
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/update/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Update
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    World
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -3639,7 +4012,7 @@
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.base</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.base" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -3709,7 +4082,7 @@
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">AttributeParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.base.AttributeParser" class="headerlink" title="Permanent link">&para;</a></h4>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">AttributeParser</span><span class="p">(</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">func</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="collections.abc.Callable" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable">Callable</a></span><span class="p">[[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]],</span> <span class="n"><span title="tibiawikisql.parsers.base.T">T</span></span><span class="p">],</span> <span class="n">fallback</span><span class="p">:</span> <span class="n"><span title="tibiawikisql.parsers.base.D">D</span></span> <span class="o">=</span> <span class="o">...</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span>
@@ -3896,7 +4269,7 @@
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">__call__</span>
 
 
-</h5>
+<a href="#tibiawikisql.parsers.base.AttributeParser.__call__" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__call__</span><span class="p">(</span><span class="nf">attributes</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n"><span title="tibiawikisql.parsers.base.T">T</span></span> <span class="o">|</span> <span class="n"><span title="tibiawikisql.parsers.base.D">D</span></span>
 </code></pre></div>
 
@@ -4036,7 +4409,7 @@
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.base.AttributeParser.required" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">required</span><span class="p">(</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">field_name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">post_process</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="collections.abc.Callable" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable">Callable</a></span><span class="p">[[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">],</span> <span class="n"><span title="tibiawikisql.parsers.base.T">T</span></span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" title="str.strip" href="https://docs.python.org/3/library/stdtypes.html#str.strip">strip</a></span><span class="p">,</span>
@@ -4162,7 +4535,7 @@
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.base.AttributeParser.optional" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">optional</span><span class="p">(</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">field_name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">post_process</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="collections.abc.Callable" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable">Callable</a></span><span class="p">[[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">],</span> <span class="n"><span title="tibiawikisql.parsers.base.T">T</span></span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" title="str.strip" href="https://docs.python.org/3/library/stdtypes.html#str.strip">strip</a></span><span class="p">,</span>
@@ -4307,7 +4680,7 @@
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.base.AttributeParser.status" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">status</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
 </code></pre></div>
 
@@ -4375,7 +4748,7 @@
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.base.AttributeParser.version" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">version</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
 </code></pre></div>
 
@@ -4448,7 +4821,7 @@
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">ParserMeta</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.base.ParserMeta" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -4497,7 +4870,7 @@
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">BaseParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.base.BaseParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -4594,7 +4967,7 @@
 
   
       pydantic-model
-   (tibiawikisql.models.base.RowModel)" href="../models/#tibiawikisql.models.base.RowModel">RowModel</a>]</code>
+   (tibiawikisql.models.base.RowModel)" href="../models/base/#tibiawikisql.models.base.RowModel">RowModel</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4660,7 +5033,7 @@
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.base.BaseParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/constants.html#NotImplemented">NotImplemented</a></span>
 </code></pre></div>
 
@@ -4684,13 +5057,13 @@
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.base.BaseParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            RowModel
 
 
   
       pydantic-model
-   (tibiawikisql.models.base.RowModel)" href="../models/#tibiawikisql.models.base.RowModel">RowModel</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/constants.html#NotImplemented">NotImplemented</a></span>
+   (tibiawikisql.models.base.RowModel)" href="../models/base/#tibiawikisql.models.base.RowModel">RowModel</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/constants.html#NotImplemented">NotImplemented</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -4713,7 +5086,7 @@
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.base.BaseParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#type">type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            Table (tibiawikisql.database.Table)" href="../database/#tibiawikisql.database.Table">Table</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/constants.html#NotImplemented">NotImplemented</a></span>
 </code></pre></div>
 
@@ -4737,7 +5110,7 @@
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.base.BaseParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="            AttributeParser (tibiawikisql.parsers.base.AttributeParser)" href="#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/constants.html#NotImplemented">NotImplemented</a></span>
 </code></pre></div>
 
@@ -4762,7 +5135,7 @@
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.base.BaseParser.parse_attributes" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Article
 
 
@@ -4944,7 +5317,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.base.BaseParser.from_article" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">from_article</span><span class="p">(</span><span class="n">article</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Article
 
 
@@ -5081,7 +5454,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.achievement</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.achievement" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -5135,7 +5508,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">AchievementParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.achievement.AchievementParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -5258,13 +5631,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.achievement.AchievementParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            Achievement
 
 
   
       pydantic-model
-   (tibiawikisql.models.achievement.Achievement)" href="../models/#tibiawikisql.models.achievement.Achievement">Achievement</a></span>
+   (tibiawikisql.models.achievement.Achievement)" href="../models/achievement/#tibiawikisql.models.achievement.Achievement">Achievement</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -5288,7 +5661,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.achievement.AchievementParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            AchievementTable (tibiawikisql.schema.AchievementTable)" href="../schema/#tibiawikisql.schema.AchievementTable">AchievementTable</a></span>
 </code></pre></div>
 
@@ -5313,7 +5686,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.achievement.AchievementParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_Achievement&#39;</span>
 </code></pre></div>
 
@@ -5338,7 +5711,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.achievement.AchievementParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            AttributeParser (tibiawikisql.parsers.base.AttributeParser)" href="#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s2">&quot;actualname&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
@@ -5437,7 +5810,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.book</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.book" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -5491,7 +5864,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">BookParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.book.BookParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -5614,13 +5987,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.book.BookParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            Book
 
 
   
       pydantic-model
-   (tibiawikisql.models.item.Book)" href="../models/#tibiawikisql.models.item.Book">Book</a></span>
+   (tibiawikisql.models.item.Book)" href="../models/item/#tibiawikisql.models.item.Book">Book</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -5644,7 +6017,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.book.BookParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.BookTable">BookTable</span></span>
 </code></pre></div>
 
@@ -5669,7 +6042,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.book.BookParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_Book&#39;</span>
 </code></pre></div>
 
@@ -5694,7 +6067,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.book.BookParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            required
 
@@ -5800,7 +6173,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.charm</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.charm" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -5854,7 +6227,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">CharmParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.charm.CharmParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -5977,13 +6350,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.charm.CharmParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            Charm
 
 
   
       pydantic-model
-   (tibiawikisql.models.charm.Charm)" href="../models/#tibiawikisql.models.charm.Charm">Charm</a></span>
+   (tibiawikisql.models.charm.Charm)" href="../models/charm/#tibiawikisql.models.charm.Charm">Charm</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6007,7 +6380,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.charm.CharmParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.CharmTable">CharmTable</span></span>
 </code></pre></div>
 
@@ -6032,7 +6405,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.charm.CharmParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_Charm&#39;</span>
 </code></pre></div>
 
@@ -6057,7 +6430,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.charm.CharmParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            AttributeParser (tibiawikisql.parsers.base.AttributeParser)" href="#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s2">&quot;actualname&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
@@ -6116,7 +6489,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.creature</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.creature" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -6223,7 +6596,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">CreatureParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.creature.CreatureParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -6372,13 +6745,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.creature.CreatureParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            Creature
 
 
   
       pydantic-model
-   (tibiawikisql.models.creature.Creature)" href="../models/#tibiawikisql.models.creature.Creature">Creature</a></span>
+   (tibiawikisql.models.creature.Creature)" href="../models/creature/#tibiawikisql.models.creature.Creature">Creature</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6402,7 +6775,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.creature.CreatureParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_Creature&#39;</span>
 </code></pre></div>
 
@@ -6427,7 +6800,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.creature.CreatureParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.CreatureTable">CreatureTable</span></span>
 </code></pre></div>
 
@@ -6452,7 +6825,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.creature.CreatureParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            AttributeParser (tibiawikisql.parsers.base.AttributeParser)" href="#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s2">&quot;actualname&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
@@ -6741,7 +7114,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.creature.CreatureParser.parse_attributes" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Article
 
 
@@ -6926,7 +7299,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">parse_maximum_damage</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.creature.parse_maximum_damage" class="headerlink" title="Permanent link">&para;</a></h4>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_maximum_damage</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">]</span>
 </code></pre></div>
 
@@ -7058,7 +7431,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">parse_maximum_integer</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.creature.parse_maximum_integer" class="headerlink" title="Permanent link">&para;</a></h4>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_maximum_integer</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
@@ -7165,7 +7538,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">parse_loot</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.creature.parse_loot" class="headerlink" title="Permanent link">&para;</a></h4>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_loot</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]]</span>
 </code></pre></div>
 
@@ -7280,17 +7653,17 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">parse_abilities</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.creature.parse_abilities" class="headerlink" title="Permanent link">&para;</a></h4>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_abilities</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
 
         <p>Parse the abilities of a creature.</p>
-<h6 id="tibiawikisql.parsers.creature.parse_abilities--parameters">Parameters</h6>
+<h6 id="tibiawikisql.parsers.creature.parse_abilities--parameters">Parameters<a class="headerlink" href="#tibiawikisql.parsers.creature.parse_abilities--parameters" title="Permanent link">&para;</a></h6>
 <p>value: :class:<code>str</code>
     A string containing the creature's abilities definition.</p>
-<h6 id="tibiawikisql.parsers.creature.parse_abilities--returns">Returns</h6>
+<h6 id="tibiawikisql.parsers.creature.parse_abilities--returns">Returns<a class="headerlink" href="#tibiawikisql.parsers.creature.parse_abilities--returns" title="Permanent link">&para;</a></h6>
 <p>:class:<code>list</code> of :class:<code>dict</code>
     A list of dictionaries with the ability data.</p>
 
@@ -7441,7 +7814,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">parse_monster_walks</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.creature.parse_monster_walks" class="headerlink" title="Permanent link">&para;</a></h4>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_monster_walks</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </code></pre></div>
 
@@ -7449,16 +7822,16 @@ It is called by <code>parse_article</code>.</p>
 
         <p>Match the values against a regex to filter typos or bad data on the wiki.</p>
 <p>Element names followed by any character that is not a comma will be considered unknown and will not be returned.</p>
-<h6 id="tibiawikisql.parsers.creature.parse_monster_walks--examples">Examples</h6>
+<h6 id="tibiawikisql.parsers.creature.parse_monster_walks--examples">Examples<a class="headerlink" href="#tibiawikisql.parsers.creature.parse_monster_walks--examples" title="Permanent link">&para;</a></h6>
 <div class="highlight"><pre><span></span><code>- ``Poison?, fire`` will return ``fire``.
 - ``Poison?, fire.`` will return neither.
 - ``Poison, earth, fire?, [[ice]]`` will return ``poison,earth``.
 - ``No``, ``--``, ``&gt;``, or ``None`` will return ``None``.
 </code></pre></div>
-<h6 id="tibiawikisql.parsers.creature.parse_monster_walks--parameters">Parameters</h6>
+<h6 id="tibiawikisql.parsers.creature.parse_monster_walks--parameters">Parameters<a class="headerlink" href="#tibiawikisql.parsers.creature.parse_monster_walks--parameters" title="Permanent link">&para;</a></h6>
 <p>value: :class:<code>str</code>
     The string containing possible field types.</p>
-<h6 id="tibiawikisql.parsers.creature.parse_monster_walks--returns">Returns</h6>
+<h6 id="tibiawikisql.parsers.creature.parse_monster_walks--returns">Returns<a class="headerlink" href="#tibiawikisql.parsers.creature.parse_monster_walks--returns" title="Permanent link">&para;</a></h6>
 <p>:class:<code>str</code>, optional
     A list of field types, separated by commas.</p>
 
@@ -7550,7 +7923,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.house</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.house" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -7604,7 +7977,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">HouseParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.house.HouseParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -7727,13 +8100,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.house.HouseParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            House
 
 
   
       pydantic-model
-   (tibiawikisql.models.house.House)" href="../models/#tibiawikisql.models.house.House">House</a></span>
+   (tibiawikisql.models.house.House)" href="../models/house/#tibiawikisql.models.house.House">House</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -7757,7 +8130,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.house.HouseParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.HouseTable">HouseTable</span></span>
 </code></pre></div>
 
@@ -7782,7 +8155,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.house.HouseParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_Building&#39;</span>
 </code></pre></div>
 
@@ -7807,7 +8180,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.house.HouseParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;house_id&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            required
 
@@ -7946,7 +8319,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.imbuement</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.imbuement" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -8037,7 +8410,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">ImbuementParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.imbuement.ImbuementParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -8186,13 +8559,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.imbuement.ImbuementParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            Imbuement
 
 
   
       pydantic-model
-   (tibiawikisql.models.imbuement.Imbuement)" href="../models/#tibiawikisql.models.imbuement.Imbuement">Imbuement</a></span>
+   (tibiawikisql.models.imbuement.Imbuement)" href="../models/imbuement/#tibiawikisql.models.imbuement.Imbuement">Imbuement</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -8216,7 +8589,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.imbuement.ImbuementParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.ImbuementTable">ImbuementTable</span></span>
 </code></pre></div>
 
@@ -8241,7 +8614,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.imbuement.ImbuementParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_Imbuement&#39;</span>
 </code></pre></div>
 
@@ -8266,7 +8639,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.imbuement.ImbuementParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            required
 
@@ -8340,7 +8713,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.imbuement.ImbuementParser.parse_attributes" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Article
 
 
@@ -8481,16 +8854,16 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">parse_astral_sources</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.imbuement.parse_astral_sources" class="headerlink" title="Permanent link">&para;</a></h4>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_astral_sources</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
 
         <p>Parse the astral sources of an imbuement.</p>
-<h6 id="tibiawikisql.parsers.imbuement.parse_astral_sources--parameters">Parameters</h6>
+<h6 id="tibiawikisql.parsers.imbuement.parse_astral_sources--parameters">Parameters<a class="headerlink" href="#tibiawikisql.parsers.imbuement.parse_astral_sources--parameters" title="Permanent link">&para;</a></h6>
 <p>content: A string containing astral sources.</p>
-<h6 id="tibiawikisql.parsers.imbuement.parse_astral_sources--returns">Returns</h6>
+<h6 id="tibiawikisql.parsers.imbuement.parse_astral_sources--returns">Returns<a class="headerlink" href="#tibiawikisql.parsers.imbuement.parse_astral_sources--returns" title="Permanent link">&para;</a></h6>
 <p>:class:<code>dict[str,int]</code>:
     A dictionary containing the material name and te amount required.</p>
 
@@ -8543,17 +8916,17 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">parse_effect</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.imbuement.parse_effect" class="headerlink" title="Permanent link">&para;</a></h4>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_effect</span><span class="p">(</span><span class="n">effect</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
 
         <p>Parse TibiaWiki's effect template into a string effect.</p>
-<h6 id="tibiawikisql.parsers.imbuement.parse_effect--parameters">Parameters</h6>
+<h6 id="tibiawikisql.parsers.imbuement.parse_effect--parameters">Parameters<a class="headerlink" href="#tibiawikisql.parsers.imbuement.parse_effect--parameters" title="Permanent link">&para;</a></h6>
 <p>effect: :class:<code>str</code>
     The string containing the template.</p>
-<h6 id="tibiawikisql.parsers.imbuement.parse_effect--returns">Returns</h6>
+<h6 id="tibiawikisql.parsers.imbuement.parse_effect--returns">Returns<a class="headerlink" href="#tibiawikisql.parsers.imbuement.parse_effect--returns" title="Permanent link">&para;</a></h6>
 <p>:class:<code>str</code>:
     The effect string.</p>
 
@@ -8612,7 +8985,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">parse_slots</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.imbuement.parse_slots" class="headerlink" title="Permanent link">&para;</a></h4>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_slots</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
 </code></pre></div>
 
@@ -8620,10 +8993,10 @@ It is called by <code>parse_article</code>.</p>
 
         <p>Parse the list of slots.</p>
 <p>Cleans up spaces between items.</p>
-<h6 id="tibiawikisql.parsers.imbuement.parse_slots--parameters">Parameters</h6>
+<h6 id="tibiawikisql.parsers.imbuement.parse_slots--parameters">Parameters<a class="headerlink" href="#tibiawikisql.parsers.imbuement.parse_slots--parameters" title="Permanent link">&para;</a></h6>
 <p>content: :class:<code>str</code>
     A string containing comma separated values.</p>
-<h6 id="tibiawikisql.parsers.imbuement.parse_slots--returns">Returns</h6>
+<h6 id="tibiawikisql.parsers.imbuement.parse_slots--returns">Returns<a class="headerlink" href="#tibiawikisql.parsers.imbuement.parse_slots--returns" title="Permanent link">&para;</a></h6>
 <p>:class:<code>str</code>:
     The slots string.</p>
 
@@ -8687,7 +9060,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.item</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.item" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -8741,7 +9114,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">ItemParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.item.ItemParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -8890,13 +9263,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.item.ItemParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            Item
 
 
   
       pydantic-model
-   (tibiawikisql.models.item.Item)" href="../models/#tibiawikisql.models.item.Item">Item</a></span>
+   (tibiawikisql.models.item.Item)" href="../models/item/#tibiawikisql.models.item.Item">Item</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -8920,7 +9293,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.item.ItemParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.ItemTable">ItemTable</span></span>
 </code></pre></div>
 
@@ -8945,7 +9318,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.item.ItemParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_Object&#39;</span>
 </code></pre></div>
 
@@ -8970,7 +9343,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.item.ItemParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            required
 
@@ -9127,7 +9500,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.item.ItemParser.parse_attributes" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Article
 
 
@@ -9287,7 +9660,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.key</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.key" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -9341,7 +9714,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">KeyParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.key.KeyParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -9464,13 +9837,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.key.KeyParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            Key
 
 
   
       pydantic-model
-   (tibiawikisql.models.item.Key)" href="../models/#tibiawikisql.models.item.Key">Key</a></span>
+   (tibiawikisql.models.item.Key)" href="../models/item/#tibiawikisql.models.item.Key">Key</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -9494,7 +9867,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.key.KeyParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.ItemKeyTable">ItemKeyTable</span></span>
 </code></pre></div>
 
@@ -9519,7 +9892,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.key.KeyParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_Key&#39;</span>
 </code></pre></div>
 
@@ -9544,7 +9917,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.key.KeyParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            optional
 
@@ -9632,7 +10005,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.mount</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.mount" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -9707,7 +10080,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">MountParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.mount.MountParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -9830,13 +10203,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.mount.MountParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            Mount
 
 
   
       pydantic-model
-   (tibiawikisql.models.mount.Mount)" href="../models/#tibiawikisql.models.mount.Mount">Mount</a></span>
+   (tibiawikisql.models.mount.Mount)" href="../models/mount/#tibiawikisql.models.mount.Mount">Mount</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -9860,7 +10233,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.mount.MountParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.MountTable">MountTable</span></span>
 </code></pre></div>
 
@@ -9885,7 +10258,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.mount.MountParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_Mount&#39;</span>
 </code></pre></div>
 
@@ -9910,7 +10283,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.mount.MountParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            required
 
@@ -10004,7 +10377,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">remove_mount</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.mount.remove_mount" class="headerlink" title="Permanent link">&para;</a></h4>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">remove_mount</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
 </code></pre></div>
 
@@ -10112,7 +10485,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.npc</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.npc" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -10166,7 +10539,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">NpcParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.npc.NpcParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -10315,7 +10688,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.npc.NpcParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.NpcTable">NpcTable</span></span>
 </code></pre></div>
 
@@ -10340,13 +10713,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.npc.NpcParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            Npc
 
 
   
       pydantic-model
-   (tibiawikisql.models.npc.Npc)" href="../models/#tibiawikisql.models.npc.Npc">Npc</a></span>
+   (tibiawikisql.models.npc.Npc)" href="../models/npc/#tibiawikisql.models.npc.Npc">Npc</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -10370,7 +10743,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.npc.NpcParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_NPC&#39;</span>
 </code></pre></div>
 
@@ -10395,7 +10768,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.npc.NpcParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            AttributeParser (tibiawikisql.parsers.base.AttributeParser)" href="#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s2">&quot;actualname&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
@@ -10478,7 +10851,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.npc.NpcParser.parse_attributes" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Article
 
 
@@ -10652,7 +11025,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.outfit</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.outfit" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -10706,7 +11079,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">OutfitParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.outfit.OutfitParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -10855,13 +11228,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.outfit.OutfitParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            Outfit
 
 
   
       pydantic-model
-   (tibiawikisql.models.outfit.Outfit)" href="../models/#tibiawikisql.models.outfit.Outfit">Outfit</a></span>
+   (tibiawikisql.models.outfit.Outfit)" href="../models/outfit/#tibiawikisql.models.outfit.Outfit">Outfit</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -10885,7 +11258,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.outfit.OutfitParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.OutfitTable">OutfitTable</span></span>
 </code></pre></div>
 
@@ -10910,7 +11283,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.outfit.OutfitParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_Outfit&#39;</span>
 </code></pre></div>
 
@@ -10935,7 +11308,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.outfit.OutfitParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            required
 
@@ -11019,7 +11392,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.outfit.OutfitParser.parse_attributes" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Article
 
 
@@ -11193,7 +11566,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.quest</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.quest" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -11268,7 +11641,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">QuestParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.quest.QuestParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -11417,13 +11790,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.quest.QuestParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            Quest
 
 
   
       pydantic-model
-   (tibiawikisql.models.quest.Quest)" href="../models/#tibiawikisql.models.quest.Quest">Quest</a></span>
+   (tibiawikisql.models.quest.Quest)" href="../models/quest/#tibiawikisql.models.quest.Quest">Quest</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -11447,7 +11820,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.quest.QuestParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.QuestTable">QuestTable</span></span>
 </code></pre></div>
 
@@ -11472,7 +11845,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.quest.QuestParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_Quest&#39;</span>
 </code></pre></div>
 
@@ -11497,7 +11870,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.quest.QuestParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            required
 
@@ -11603,7 +11976,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.quest.QuestParser.parse_attributes" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Article
 
 
@@ -11740,17 +12113,17 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">parse_links</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.quest.parse_links" class="headerlink" title="Permanent link">&para;</a></h4>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_links</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
 
         <p>Find all the links in a string and returns a list of them.</p>
-<h6 id="tibiawikisql.parsers.quest.parse_links--parameters">Parameters</h6>
+<h6 id="tibiawikisql.parsers.quest.parse_links--parameters">Parameters<a class="headerlink" href="#tibiawikisql.parsers.quest.parse_links--parameters" title="Permanent link">&para;</a></h6>
 <p>value: :class:<code>str</code>
     A string containing links.</p>
-<h6 id="tibiawikisql.parsers.quest.parse_links--returns">Returns</h6>
+<h6 id="tibiawikisql.parsers.quest.parse_links--returns">Returns<a class="headerlink" href="#tibiawikisql.parsers.quest.parse_links--returns" title="Permanent link">&para;</a></h6>
 <p>list(:class:<code>str</code>):
     The links found in the string.</p>
 
@@ -11808,7 +12181,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.spell</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.spell" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -11862,7 +12235,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">SpellParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.spell.SpellParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -12011,13 +12384,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.spell.SpellParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            Spell
 
 
   
       pydantic-model
-   (tibiawikisql.models.spell.Spell)" href="../models/#tibiawikisql.models.spell.Spell">Spell</a></span>
+   (tibiawikisql.models.spell.Spell)" href="../models/spell/#tibiawikisql.models.spell.Spell">Spell</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -12041,7 +12414,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.spell.SpellParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.SpellTable">SpellTable</span></span>
 </code></pre></div>
 
@@ -12066,7 +12439,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.spell.SpellParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_Spell&#39;</span>
 </code></pre></div>
 
@@ -12091,7 +12464,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.spell.SpellParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            required
 
@@ -12261,7 +12634,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.spell.SpellParser.parse_attributes" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            Article
 
 
@@ -12405,7 +12778,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.update</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.update" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -12459,7 +12832,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">UpdateParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.update.UpdateParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -12582,13 +12955,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.update.UpdateParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            Update
 
 
   
       pydantic-model
-   (tibiawikisql.models.update.Update)" href="../models/#tibiawikisql.models.update.Update">Update</a></span>
+   (tibiawikisql.models.update.Update)" href="../models/update/#tibiawikisql.models.update.Update">Update</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -12612,7 +12985,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.update.UpdateParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.UpdateTable">UpdateTable</span></span>
 </code></pre></div>
 
@@ -12637,7 +13010,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.update.UpdateParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_Update&#39;</span>
 </code></pre></div>
 
@@ -12662,7 +13035,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.update.UpdateParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            optional
 
@@ -12762,7 +13135,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">tibiawikisql.parsers.world</span>
 
 
-</h3>
+<a href="#tibiawikisql.parsers.world" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents first">
 
@@ -12816,7 +13189,7 @@ It is called by <code>parse_article</code>.</p>
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">WorldParser</span>
 
 
-</h4>
+<a href="#tibiawikisql.parsers.world.WorldParser" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
@@ -12939,7 +13312,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.world.WorldParser.table" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">table</span> <span class="o">=</span> <span class="n"><span title="tibiawikisql.schema.WorldTable">WorldTable</span></span>
 </code></pre></div>
 
@@ -12964,13 +13337,13 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.world.WorldParser.model" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            World
 
 
   
       pydantic-model
-   (tibiawikisql.models.world.World)" href="../models/#tibiawikisql.models.world.World">World</a></span>
+   (tibiawikisql.models.world.World)" href="../models/world/#tibiawikisql.models.world.World">World</a></span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -12994,7 +13367,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.world.WorldParser.template_name" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;Infobox_World&#39;</span>
 </code></pre></div>
 
@@ -13019,7 +13392,7 @@ It is called by <code>parse_article</code>.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-</h5>
+<a href="#tibiawikisql.parsers.world.WorldParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
 <div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            required
 
@@ -13167,7 +13540,7 @@ It is called by <code>parse_article</code>.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../models/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Models">
+          <a href="../models/world/" class="md-footer__link md-footer__link--prev" aria-label="Previous: World">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -13177,7 +13550,7 @@ It is called by <code>parse_article</code>.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Models
+                World
               </div>
             </div>
           </a>
@@ -13206,6 +13579,11 @@ It is called by <code>parse_article</code>.</p>
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      &copy; 2025 Allan Galarza<br> <a href="https://www.tibia.com">Tibia</a> is made by <a href="https://www.cipsoft.com/">CipSoft</a>, all Tibia content is copyrighted by <a href="https://www.cipsoft.com/">CipSoft GmbH</a>.<br> The data collected by this library is provided by <a href="https://tibia.fandom.com/">TibiaWiki</a>.
+
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -13223,8 +13601,30 @@ It is called by <code>parse_article</code>.</p>
       
       
     
-    <a href="https://github.com/galarzaa90/tibiawiki-sql" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+    <a href="https://github.com/Galarzaa90/tibiawiki-sql" target="_blank" rel="noopener" title="github.com" class="md-social__link">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://pypi.org/project/tibiawikisql/" target="_blank" rel="noopener" title="pypi.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.922 13.58v3.912L20.55 18.72l-.078.055.052.037 3.45-1.256.026-.036v-3.997l-.053-.036-.025.092zm-.301-7.962-3.04 1.107v3.912l3.339-1.215V5.509zm.299 7.839V9.544l-3.336 1.215v3.913zm-3.45 1.253V10.8l-3.3 1.2v3.913zm-3.436 5.286v-3.912l-3.313 1.206v3.912zm.136-3.939v3.868l3.314-1.206V14.85zm2.093 1.882c-.367.134-.663-.074-.663-.463s.296-.814.663-.947c.365-.133.662.075.662.464s-.297.814-.662.946m-6.038-8.624.365-.132-3.285-1.197-3.323 1.21.102.037 3.184 1.16zm7.282 1.349V6.751L17.17 7.965v3.913zm-3.449 1.254V8.005l-3.302 1.202v3.912zm-3.415-2.672-3.336 1.215v3.913l3.336-1.215zm-6.736 3.919 3.322 1.209v-3.913L6.907 9.252zm3.433-5.292 3.281 1.193V5.198l-3.28-1.193zm10.167-5.158L17.19 3.922v3.913l3.317-1.207zM16.95 3.903 13.724 2.73l-3.269 1.19 3.225 1.174zm-1.585.703-1.624.592v3.868l3.317-1.207V3.991zm-.391 2.778c-.367.134-.662-.074-.662-.464s.295-.813.662-.946c.366-.133.663.074.663.464s-.297.813-.663.946M10.229 18.41v-3.914l-3.322-1.209V17.2zm3.449-1.228v-3.913l-3.371 1.227v3.913zm.078-.028 3.3-1.2V12.04l-3.3 1.2zm-.078 4.063-3.371 1.227v-3.912h-.078v3.912l-3.322-1.209v-3.913l-.053-.058-.025-.06-3.336-1.21v-3.948l.034.013 3.287 1.196.015-.078-3.261-1.187 3.26-1.187v-.109L3.876 9.62l-.307-.112 3.26-1.188v.877l.079-.055V6.769l3.257 1.185.058-.061L7.084 6.75l-.102-.037 3.24-1.179v-.083L6.854 6.677v.018l-.025.018v1.523L3.44 9.47v.02l-.025.017v4.007l-3.39 1.233v.019L0 14.784v3.995l.025.037 3.4 1.237.008-.006.007.01 3.4 1.238.008-.006.006.01 3.4 1.237.014-.009.012.01 3.45-1.256.026-.037zM3.493 9.563l3.257 1.185-3.257 1.187V9.562zM3.4 19.96.078 18.752v-3.913l2.361.86.96.349zm.015-3.99-3.08-1.12-.182-.066 3.262-1.187zm3.399 5.231-3.321-1.209V16.08l3.321 1.209zM23.791 5.434l-3.21-1.17v2.338zm-3.404-2.791-3.24-1.18-3.27 1.19 3.247 1.182z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://hub.docker.com/r/galarzaa90/tibiawiki-sql" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
     </a>
   
 </div>
