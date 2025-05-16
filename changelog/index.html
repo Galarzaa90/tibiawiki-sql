@@ -1,0 +1,2263 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="TibiaWikiSQL is a script that generates a SQLite database from TibiaWiki articles by using its API.">
+      
+      
+        <meta name="author" content="Allan Galarza">
+      
+      
+      
+        <link rel="prev" href="../intro/">
+      
+      
+        <link rel="next" href="../api/api/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Changelog - TibiaWikiSQL</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#changelog" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="TibiaWikiSQL" class="md-header__button md-logo" aria-label="TibiaWikiSQL" data-md-component="logo">
+      
+  <img src="../images/logo.gif" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TibiaWikiSQL
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Changelog
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="brown" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="brown" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Galarzaa90/tibiawiki-sql" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Galarzaa90/tibiawiki-sql
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/api/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="TibiaWikiSQL" class="md-nav__button md-logo" aria-label="TibiaWikiSQL" data-md-component="logo">
+      
+  <img src="../images/logo.gif" alt="logo">
+
+    </a>
+    TibiaWikiSQL
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Galarzaa90/tibiawiki-sql" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Galarzaa90/tibiawiki-sql
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Home
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#700-unreleased" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.0.0 (Unreleased)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#621-2024-06-27" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2.1 (2024-06-27)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#620-2022-07-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2.0 (2022-07-23)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#610-2022-01-04" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1.0 (2022-01-04)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#602-2021-09-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.0.2 (2021-09-10)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#601-2021-08-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.0.1 (2021-08-18)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#600-2021-08-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.0.0 (2021-08-17)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#501-2021-05-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.0.1 (2021-05-17)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#500-2021-05-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.0.0 (2021-05-17)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#412-2021-04-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1.2 (2021-04-16)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#411-2021-03-11" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1.1 (2021-03-11)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#410-2021-01-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1.0 (2021-01-18)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#401-2020-11-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.0.1 (2020-11-23)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#400-2019-12-13" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.0.0 (2019-12-13)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#301-2019-05-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.0.1 (2019-05-16)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#300-2019-05-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.0.0 (2019-05-15)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#220-2019-05-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.0 (2019-05-03)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#211-2019-03-25" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.1 (2019-03-25)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#210-2019-03-19" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.0 (2019-03-19)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#202-2019-01-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.0.2 (2019-01-14)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#201-2018-11-26" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.0.1 (2018-11-26)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#200-2018-11-22" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.0.0 (2018-11-22)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#120-2018-10-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2.0 (2018-10-16)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#111-2018-09-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.1 (2018-09-23)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#110-2018-09-22" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.0 (2018-09-22)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#101-2018-07-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.0.1 (2018-07-02)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#100-2018-07-01" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.0.0 (2018-07-01)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#030-2017-12-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.3.0 (2017-12-18)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#020-2017-11-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.2.0 (2017-11-14)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#011-2017-11-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.1.1 (2017-11-12)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#010-2017-11-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.1.0 (2017-11-09)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    TibiaWiki API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Generation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Errors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Models
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Models
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Package Index
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Base
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/achievement/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Achievement
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/charm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Charm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/creature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Creature
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/house/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    House
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/imbuement/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Imbuement
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/item/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Item
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/mount/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mount
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/npc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Npc
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/outfit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Outfit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/quest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quest
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/spell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Spell
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/update/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Update
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/models/world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    World
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/parsers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Parsers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Utilities
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#700-unreleased" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.0.0 (Unreleased)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#621-2024-06-27" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2.1 (2024-06-27)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#620-2022-07-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2.0 (2022-07-23)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#610-2022-01-04" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1.0 (2022-01-04)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#602-2021-09-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.0.2 (2021-09-10)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#601-2021-08-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.0.1 (2021-08-18)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#600-2021-08-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.0.0 (2021-08-17)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#501-2021-05-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.0.1 (2021-05-17)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#500-2021-05-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.0.0 (2021-05-17)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#412-2021-04-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1.2 (2021-04-16)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#411-2021-03-11" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1.1 (2021-03-11)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#410-2021-01-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1.0 (2021-01-18)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#401-2020-11-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.0.1 (2020-11-23)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#400-2019-12-13" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.0.0 (2019-12-13)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#301-2019-05-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.0.1 (2019-05-16)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#300-2019-05-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.0.0 (2019-05-15)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#220-2019-05-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.0 (2019-05-03)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#211-2019-03-25" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.1 (2019-03-25)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#210-2019-03-19" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.0 (2019-03-19)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#202-2019-01-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.0.2 (2019-01-14)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#201-2018-11-26" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.0.1 (2018-11-26)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#200-2018-11-22" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.0.0 (2018-11-22)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#120-2018-10-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2.0 (2018-10-16)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#111-2018-09-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.1 (2018-09-23)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#110-2018-09-22" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.0 (2018-09-22)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#101-2018-07-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.0.1 (2018-07-02)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#100-2018-07-01" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.0.0 (2018-07-01)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#030-2017-12-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.3.0 (2017-12-18)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#020-2017-11-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.2.0 (2017-11-14)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#011-2017-11-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.1.1 (2017-11-12)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#010-2017-11-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.1.0 (2017-11-09)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
+<h2 id="700-unreleased">7.0.0 (Unreleased)<a class="headerlink" href="#700-unreleased" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>WikiClient</code> is no longer a "static class", an instance must now be created in order to better reuse HTTP sessions.</li>
+<li>General model changes:<ul>
+<li>All <code>timestamp</code> properties are now
+  <code>datetime.datetime</code> objects. Their database counterparts are IS08601 strings.</li>
+<li>Added many model classes that simplify the data displayed.</li>
+</ul>
+</li>
+<li>Achievement changes<ul>
+<li>Spoiler properly handles quest links.</li>
+<li>Rename <code>spoiler</code> to <code>is_spoiler</code>.</li>
+<li>Rename <code>premium</code> to <code>is_premium</code>.</li>
+<li>Links now cleaned from <code>description</code>.</li>
+</ul>
+</li>
+<li>Spell changes<ul>
+<li>Added <code>monk</code> attribute.</li>
+<li>Rename <code>type</code> to <code>spell_type</code></li>
+<li>Added <code>cooldown2</code> and <code>cooldown3</code> for reduced cooldowns by the Wheel of Destiny.</li>
+<li>Rename <code>premium</code> to <code>is_premium</code>.</li>
+<li>Rename <code>promotion</code> to <code>is_promotion</code>.</li>
+<li>Rename <code>promotion</code> to <code>is_promotion</code>.</li>
+<li>Rename <code>promotion</code> to <code>is_promotion</code>.</li>
+<li>Added <code>is_wheel_spell</code> attribute.</li>
+<li>Added <code>is_passive</code> attribute.</li>
+</ul>
+</li>
+<li>Item changes<ul>
+<li>Added <code>is_immobile</code> attribute.</li>
+<li>Rename <code>promotion</code> to <code>is_promotion</code>.</li>
+<li>Added parseable attributes:<ul>
+<li><code>is_rotatable</code></li>
+<li><code>augments</code></li>
+</ul>
+</li>
+<li>Renamed attributes:<ul>
+<li><code>hangable</code> to <code>is_hangable</code>.</li>
+<li><code>writable</code> to <code>is_writable</code>.</li>
+<li><code>rewritable</code> to <code>is_rewritable</code>.</li>
+<li><code>consumable</code> to <code>is_consumable</code>.</li>
+<li><code>unshootable</code> to <code>blocks_projectiles</code>.</li>
+<li><code>walkable</code> to <code>is_walkable</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Creature changes<ul>
+<li>Added <code>mitigation</code> attribute.</li>
+<li>Added <code>spawn_type</code> attribute.</li>
+<li>Added <code>cooldown</code> attribute.</li>
+<li>Renamed <code>boss</code> to <code>is_boss</code>.</li>
+</ul>
+</li>
+<li>Quest changes<ul>
+<li>Added missing <code>premium</code> attribute, renamed to <code>is_premium</code></li>
+</ul>
+</li>
+<li>House changes<ul>
+<li>Renamed <code>guildhall</code> to <code>is_guildhall</code></li>
+</ul>
+</li>
+<li>Outfit changes<ul>
+<li>Renamed <code>type</code> to <code>outfit_type</code>.</li>
+<li>Renamed <code>premium</code> to <code>is_premium</code>.</li>
+<li>Renamed <code>bought</code> to <code>is_bought</code>.</li>
+<li>Renamed <code>tournament</code> to <code>is_tournament</code>.</li>
+</ul>
+</li>
+<li>World changes<ul>
+<li><code>online_since</code>, <code>offline_since</code> and <code>protected_since</code> are now <code>datetime.date</code> objects.</li>
+<li>Renamed <code>experimental</code> to <code>is_experimental</code>.</li>
+<li>Renamed <code>preview</code> to <code>is_preview</code>.</li>
+<li>Renamed <code>experimental</code> to <code>is_experimental</code>.</li>
+</ul>
+</li>
+<li>Mount changes:<ul>
+<li>Renamed <code>buyable</code> to ``is_buyable```.</li>
+</ul>
+</li>
+<li>Update changes:<ul>
+<li>Renamed <code>date</code> to <code>release_date</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="621-2024-06-27">6.2.1 (2024-06-27)<a class="headerlink" href="#621-2024-06-27" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Fix database generation failing due to invalid date format.</li>
+</ul>
+<h2 id="620-2022-07-23">6.2.0 (2022-07-23)<a class="headerlink" href="#620-2022-07-23" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Added <code>bosstiary_class</code> to creatures.</li>
+<li>NPC Offers are read from the ItemPrices data list.</li>
+<li>NPC Spell offers are read from the ItemPrices spell list.</li>
+<li>Performance improvements.</li>
+</ul>
+<h2 id="610-2022-01-04">6.1.0 (2022-01-04)<a class="headerlink" href="#610-2022-01-04" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Added <code>upgrade_classification</code> to item attributes.</li>
+<li>Fixed empty creature and item sounds being saved.</li>
+<li>Fixed empty creature abilities being saved.</li>
+<li>Marked more SQLite columns as <code>NOT NULL</code>.</li>
+</ul>
+<h2 id="602-2021-09-10">6.0.2 (2021-09-10)<a class="headerlink" href="#602-2021-09-10" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Fixed spell effects including file names.</li>
+</ul>
+<h2 id="601-2021-08-18">6.0.1 (2021-08-18)<a class="headerlink" href="#601-2021-08-18" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Fixed some creature drops not being parsed properly, resulting in incomplete data.</li>
+</ul>
+<h2 id="600-2021-08-17">6.0.0 (2021-08-17)<a class="headerlink" href="#600-2021-08-17" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Books are now parsed.</li>
+<li>Changes to creature's max damage and abilities parsing:<ul>
+<li>Added <code>creature_max_damage</code> and
+  <code>creature_ability</code> tables to parse more detailed information about creature's max damage and abilities.</li>
+<li>Added the respective classes <code>CreatureMaxDamage</code> and <code>CreatureAbility</code>.</li>
+<li>Removed <code>max_damage</code> and <code>abilities</code> columns from <code>creature</code> table.</li>
+<li><code>Creature</code> class attributes <code>max_damage</code> and <code>abilities</code> were updated to new types.</li>
+</ul>
+</li>
+<li>Added <code>achievement_id</code> column and attribute to <code>achievement</code> table and <code>Achievement</code> class respectively.</li>
+<li>Changes to NPC jobs and races.<ul>
+<li>Jobs and races are now stored on a separate table as there are usually multiple entries per NPC.</li>
+<li>Removed <code>job</code> and <code>job_additionals</code> columns and attributes from <code>npc</code> table and <code>Npc</code> class respectively.</li>
+<li>Replaced <code>jobs</code> property on <code>Npc</code> model with an attribute.</li>
+<li>Removed <code>race</code> column and attribute from <code>npc</code> table and <code>Npc</code> class respectively.</li>
+<li>Added <code>races</code> attribute with the list of races of the NPC.</li>
+<li>Added <code>job</code></li>
+</ul>
+</li>
+<li>Item's store information is now parsed.<ul>
+<li>Added <code>item_store_offer</code> table and <code>ItemStoreOffer</code> class.</li>
+<li>Added <code>store_offers</code> attribute to <code>Item</code> class.</li>
+</ul>
+</li>
+<li>Renamed <code>type</code> attributes and columns to more specific names to avoid conflict with Python's builtin
+  <code>type</code> function.<ul>
+<li>Renamed to <code>item_type</code> in <code>item</code> table and <code>Item</code> class.</li>
+<li>Renamed to <code>creature_type</code> in <code>creature</code> table and <code>Creature</code> class.</li>
+</ul>
+</li>
+<li>Parsing relies more on <code>mwparserfromhell &lt;https://mwparserfromhell.readthedocs.io/&gt;</code>_ and less on regular expressions.</li>
+<li>TibiaWiki merged items into "objects" (non pickupable). So now the <code>item</code> table will contain a lot more records.<ul>
+<li>More attributes related to "objects" are now added to the <code>item_attribute</code> table.</li>
+</ul>
+</li>
+<li>Added support for attributes added in the Summer Update 2020 and some other missing attributes.</li>
+</ul>
+<h2 id="501-2021-05-17">5.0.1 (2021-05-17)<a class="headerlink" href="#501-2021-05-17" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Fixed wrong attribute definition for <code>Spell</code> model.</li>
+</ul>
+<h2 id="500-2021-05-17">5.0.0 (2021-05-17)<a class="headerlink" href="#500-2021-05-17" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Added <code>Updates</code> model and <code>game_update</code> table.</li>
+<li>Added <code>infobox_attributes</code> to <code>WikiEntry</code> class to easily extract any infobox attribute.</li>
+<li>Added missing <code>premium</code> attribute to <code>Achievement</code> model. Column was already saved.</li>
+<li>Added <code>battleye_type</code> class and column to <code>World</code> model and <code>world</code> table.</li>
+<li>Added <code>library_race</code>, <code>runs_at</code>, <code>modifier_healing</code>, and <code>location</code> to <code>Creature</code> model and
+  <code>creature</code> table.</li>
+<li>Added <code>slots</code> class and column to <code>Imbuement</code> model and <code>imbuement</code> table.</li>
+<li>Added <code>group_secondary</code>, <code>group_rune</code>, <code>premium</code>, <code>promotion</code>, <code>cooldown_group</code>, and
+  <code>cooldown_group_secondary</code> attributes and columns to <code>Spell</code> class and <code>spell</code> table.</li>
+<li>Added <code>job_additionals</code> to <code>Npc</code> model and <code>npc</code> table.</li>
+<li><strong>Breaking change</strong>: Renamed <code>classz</code> column to <code>group_spell</code> in <code>spell</code> table.</li>
+</ul>
+<h2 id="412-2021-04-16">4.1.2 (2021-04-16)<a class="headerlink" href="#412-2021-04-16" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Added missing <code>bestiary_kills</code> and <code>charm_points</code> values for creatures in the <strong>Challenging</strong> class.</li>
+</ul>
+<h2 id="411-2021-03-11">4.1.1 (2021-03-11)<a class="headerlink" href="#411-2021-03-11" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Added missing <code>version</code> attribute to <code>Spell</code>.</li>
+</ul>
+<h2 id="410-2021-01-18">4.1.0 (2021-01-18)<a class="headerlink" href="#410-2021-01-18" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Improved image cache, the timestamp of images are now saved and checked on subsequent calls.</li>
+<li>By default, all articles are parsed, including deprecated, they can be skipped using <code>--skip-deprecated</code>.</li>
+<li>Added
+  <code>status</code> column and field to main tables and models. Indicates the status of the entity (active, deprecated, event, ts-only).</li>
+<li>Fixed Worlds not being parsed due to the corresponding category being renamed on TibiaWiki.</li>
+</ul>
+<h2 id="401-2020-11-23">4.0.1 (2020-11-23)<a class="headerlink" href="#401-2020-11-23" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Updated API to consider the changes on Fandom's API for pagination.</li>
+</ul>
+<h2 id="400-2019-12-13">4.0.0 (2019-12-13)<a class="headerlink" href="#400-2019-12-13" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Fixed database generation failing for images with redirects</li>
+<li>Added indexes to various columns and various tables, this should increase search performance.</li>
+<li>Made title and name columns case insensitive.</li>
+<li>Added <code>location</code> column to <code>House</code> class and <code>house</code> table.</li>
+<li>Added  <code>Outfit</code> class and <code>outfit</code> table.<ul>
+<li>Added <code>OutfitImage</code> class and <code>outfit_image</code> table since outfits have multiple images.</li>
+<li>Added <code>OutfitQuest</code> class and <code>outfit_quest</code> table for quests required for outfits or its addons.</li>
+</ul>
+</li>
+<li>Added <code>type_secondary</code> column and field to <code>item</code> and <code>creature</code> tables and <code>Item</code> and <code>Creature</code> classes.</li>
+<li>Added <code>look_text</code> property to <code>Item</code>, renders the item's look text.</li>
+<li>Added <code>reistances</code> property to <code>Item</code>, gets a dictionary of the item's resistances.</li>
+<li><strong>Breaking change</strong>: Renamed <code>class</code> columns and fields in <code>item</code> table and <code>Item</code> class to  <code>item_class</code>.</li>
+<li><strong>Breaking change</strong>: Renamed <code>class</code> columns and fields in <code>creature</code> table and <code>Creature</code> class to
+  <code>creature_class</code>.</li>
+</ul>
+<h2 id="301-2019-05-16">3.0.1 (2019-05-16)<a class="headerlink" href="#301-2019-05-16" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>Item.attribute_dict</code> returns empty dictionary instead of <code>None</code> if <code>Item.attributes</code> is empty.</li>
+</ul>
+<h2 id="300-2019-05-15">3.0.0 (2019-05-15)<a class="headerlink" href="#300-2019-05-15" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Charms are now read from their TibiaWiki articles instead of a static json file.</li>
+<li><code>Charm</code> class and <code>charm</code> table changes:<ul>
+<li>Added <code>article_id</code>, <code>title</code>, <code>timestamp</code> and <code>version</code></li>
+<li>Renamed <code>description</code> to <code>effect</code>.</li>
+</ul>
+</li>
+<li>New <code>creature_sound</code> and <code>item_sound</code>, containing "sounds" made by creatures and items respectively.</li>
+<li><code>Creature</code> class and <code>creature</code> table changes:<ul>
+<li>Added <code>push_objects</code>.</li>
+<li>Added <code>sounds</code> to class.</li>
+</ul>
+</li>
+<li><code>Quest</code> class and <code>quest</code> table changes:<ul>
+<li>Added <code>rookgaard</code>, <code>type</code>, <code>quest_log</code>, <code>active_time</code> and <code>estimated_time</code>.</li>
+</ul>
+</li>
+<li><code>Item</code> class and <code>item</code>table changes:<ul>
+<li>Added <code>marketable</code>, <code>pickupable</code>, <code>light_color</code> and <code>light_radius</code>,</li>
+<li>Added <code>sounds</code> to class.</li>
+</ul>
+</li>
+<li>New tracked attributes in <code>item_attribute</code><ul>
+<li><code>destructible</code></li>
+<li><code>holds_liquid</code></li>
+<li><code>writeable</code></li>
+<li><code>rewriteable</code></li>
+<li><code>consumable</code></li>
+<li><code>writable_chars</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="220-2019-05-03">2.2.0 (2019-05-03)<a class="headerlink" href="#220-2019-05-03" title="Permanent link">&para;</a></h2>
+<ul>
+<li>New table <code>mount</code>, containing all mounts and their information.</li>
+<li>Fixed incorrect potions entries due to NPC Minzy.</li>
+</ul>
+<h2 id="211-2019-03-25">2.1.1 (2019-03-25)<a class="headerlink" href="#211-2019-03-25" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Fixed physical and earth modifiers not showing up in <code>weak_to</code>, <code>immune_to</code> and <code>resistant_to</code>
+  <code>Creature</code> properties.</li>
+<li>Fixed incorrect <code>weak_to</code> property.</li>
+<li>Fixed missing <code>modifier_hpdrain</code> <code>Creature</code> attribute.</li>
+</ul>
+<h2 id="210-2019-03-19">2.1.0 (2019-03-19)<a class="headerlink" href="#210-2019-03-19" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>elemental_attack</code> Item Attribute split into <code>fire_attack</code>, <code>ice_attack</code>, <code>energy_attack</code> and
+  <code>earth_attack</code> to
+  reflect changes in TibiaWiki's template.</li>
+<li>Added <code>bestiary_kills</code> and <code>charm_points</code> properties to <code>Creature</code>.</li>
+<li>Added <code>elemental_modifiers</code>, <code>weak_to</code>, <code>immune_to</code> and <code>resistant_to</code> properties to <code>Creature</code>.</li>
+<li>New table <code>world</code> and model <code>World</code>. Contains information of Game worlds, including now offline worlds.</li>
+</ul>
+<h2 id="202-2019-01-14">2.0.2 (2019-01-14)<a class="headerlink" href="#202-2019-01-14" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Elemental protection and required vocation item attributes were not getting set.</li>
+</ul>
+<h2 id="201-2018-11-26">2.0.1 (2018-11-26)<a class="headerlink" href="#201-2018-11-26" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Fixed imbuement materials not getting saved in the database.</li>
+</ul>
+<h2 id="200-2018-11-22">2.0.0 (2018-11-22)<a class="headerlink" href="#200-2018-11-22" title="Permanent link">&para;</a></h2>
+<ul>
+<li>New model classes, to unify the generation process.</li>
+<li>Live fetching is now possible, obtain data directly from the Wiki.</li>
+<li>Database generation now shows progress bars and time estimates.</li>
+<li>The database schema is now generated dynamically.</li>
+<li>The database structure has changed:<ul>
+<li>Renamed tables:<ul>
+<li><code>achievements</code> -&gt; <code>achievement</code></li>
+<li><code>creatures</code> -&gt; <code>creature</code></li>
+<li><code>creatures_drops</code> -&gt; <code>creature_drop</code></li>
+<li><code>houses</code> - <code>house</code></li>
+<li><code>imbuements</code> -&gt; <code>imbuement</code></li>
+<li><code>imbuements_materials</code> -&gt; <code>imbuement_material</code></li>
+<li><code>items</code> -&gt; <code>item</code></li>
+<li><code>items_attributes</code> -&gt; <code>item_attribute</code></li>
+<li><code>npcs</code> -&gt; <code>npc</code></li>
+<li><code>npcs_buying</code> -&gt; <code>npc_offer_buy</code></li>
+<li><code>npcs_selling</code> -&gt; <code>npc_offer_sell</code></li>
+<li><code>npcs_destinations</code> -&gt; <code>npc_destination</code></li>
+<li><code>npcs_spells</code> -&gt; <code>npc_spell</code></li>
+<li><code>quests</code> -&gt; <code>quest</code></li>
+<li><code>quests_dangers</code> -&gt; <code>quest_danger</code></li>
+<li><code>quests_rewards</code> -&gt; <code>quest_reward</code></li>
+<li><code>rashid_positions</code> -&gt; <code>rashid_position</code></li>
+<li><code>spells</code> -&gt; <code>spell</code></li>
+</ul>
+</li>
+<li>Renamed columns:<ul>
+<li>All tables:<ul>
+<li><code>id</code> -&gt; <code>article_id</code></li>
+<li><code>last_edit</code> -&gt; <code>timestamp</code></li>
+</ul>
+</li>
+<li>Table: <code>creature</code>:<ul>
+<li><code>summon</code> -&gt; <code>summon_cost</code></li>
+<li><code>convince</code> -&gt; <code>convince_cost</code></li>
+<li><code>occurrence</code> -&gt; <code>bestiary_occurrence</code></li>
+<li><code>see_invisible</code> -&gt; <code>sees_invisible</code></li>
+<li><code>walkthrough</code> -&gt; <code>walks_through</code></li>
+<li><code>walksaround</code> -&gt; <code>walks_around</code></li>
+<li>All element columns now have <code>modifier</code> at the beginning
+  (e.g. <code>phyisical</code> -&gt; <code>modifier_phyisical</code>)</li>
+</ul>
+</li>
+<li>Table: <code>item</code><ul>
+<li><code>value</code> -&gt; <code>value_sell</code></li>
+<li><code>price</code> -&gt; <code>value_buy</code></li>
+</ul>
+</li>
+<li><code>id</code> -&gt; <code>house_id</code> in table <code>house</code></li>
+<li><code>attribute</code> -&gt; <code>value</code> in table <code>item_attribute</code></li>
+<li><code>destination</code> -&gt; <code>name</code> in table <code>npc_destination</code></li>
+</ul>
+</li>
+<li>Added columns:<ul>
+<li><code>title</code> in all tables, except child tables and <code>charm</code>, <code>rashid_position</code> and <code>map</code>:</li>
+<li><code>client_id</code> in table <code>item</code></li>
+<li><code>location</code> in <code>npc</code> and <code>rashid_position</code> tables.</li>
+<li><code>effect</code> in table <code>spell</code>.</li>
+</ul>
+</li>
+<li>Removed columns:<ul>
+<li><code>day_name</code> from <code>rashid_position</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="120-2018-10-16">1.2.0 (2018-10-16)<a class="headerlink" href="#120-2018-10-16" title="Permanent link">&para;</a></h2>
+<ul>
+<li>New <code>charm</code> table, contains information about all charms.</li>
+</ul>
+<h2 id="111-2018-09-23">1.1.1 (2018-09-23)<a class="headerlink" href="#111-2018-09-23" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Improved parsing of <code>walksaround</code> and <code>walksthrough</code></li>
+</ul>
+<h2 id="110-2018-09-22">1.1.0 (2018-09-22)<a class="headerlink" href="#110-2018-09-22" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>Added new columns to creatures table:</p>
+<ul>
+<li><code>walksaround</code></li>
+<li><code>walksthrough</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="101-2018-07-02">1.0.1 (2018-07-02)<a class="headerlink" href="#101-2018-07-02" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Fixed bug caused when a category had a number of articles that was exactly a multiple of 50.</li>
+</ul>
+<h2 id="100-2018-07-01">1.0.0 (2018-07-01)<a class="headerlink" href="#100-2018-07-01" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>id</code> is now TibiaWiki’s article id for the element, making them more reliable than autoincremented ids.</li>
+<li>Fixed bug with potion’s prices.</li>
+<li>Fixed bug with paralysable being inverted.</li>
+<li>New tables <code>imbuements</code> and <code>imbuements_materials</code>.</li>
+<li>Unknown creature attributes are no longer parsed as <code>False</code>, but <code>None</code>.</li>
+<li>
+<p>New columns in creatures table:</p>
+<ul>
+<li><code>bestiary_class</code></li>
+<li><code>bestiary_level</code></li>
+<li><code>occurrence</code></li>
+<li><code>armor</code></li>
+<li><code>speed</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="030-2017-12-18">0.3.0 (2017-12-18)<a class="headerlink" href="#030-2017-12-18" title="Permanent link">&para;</a></h2>
+<ul>
+<li>New <code>items_keys</code> table, contains key numbers with their uses and
+  locations.</li>
+<li>New <code>rashid_positions</code> database, contains Rashid’s coordinates for each weekday.</li>
+<li>Added <code>article</code>, <code>class</code> and <code>type</code> to <code>creatures</code> table.</li>
+<li>Added <code>article</code>, <code>class</code> and <code>client_id</code> to <code>items</code> table.</li>
+<li>Added <code>last_edit</code> column to most tables.</li>
+</ul>
+<h2 id="020-2017-11-14">0.2.0 (2017-11-14)<a class="headerlink" href="#020-2017-11-14" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Improved the parsing of all data tables, resulting in more
+  consistency in values, less empty strings (not <code>NULL</code>) and better
+  handling of default values.</li>
+<li>New <code>database_info</code> table, it contains two rows, “version” and
+  “generated_date”, containing the script vused and the date the
+  database was generated respectively.</li>
+<li>Added a new <code>currency</code> column to <code>npcs_buying</code> and
+  <code>npcs_selling</code>, it contains the id of the item used as currency for
+  that transaction (e.g. gold coins, gold tokens, silver tokens, etc).</li>
+<li>Better parsing for item npc offers, a lot more offers are saved now,
+  including item trades (e.g. 1 fighting spirit for 2 royal helmets).</li>
+<li>More item attributes are saved to <code>item_attributes</code>.</li>
+</ul>
+<h2 id="011-2017-11-12">0.1.1 (2017-11-12)<a class="headerlink" href="#011-2017-11-12" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Better attribute parsing, this means values should me more consistent
+  and there are no entries without the <code>name</code> column</li>
+<li>No changes were made to the schema.</li>
+</ul>
+<h2 id="010-2017-11-09">0.1.0 (2017-11-09)<a class="headerlink" href="#010-2017-11-09" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Creatures table, with all their attributes, including a separate
+  table for all their loot.</li>
+<li>Loot drop percentage are calculated from loot statistics</li>
+<li>Item table, with their basic attributes, and their separate
+  attributes on a separate table</li>
+<li>NPCs table with their information, including spawn location.</li>
+<li>NPCs sell and buy offers</li>
+<li>Achievements, with their spoiler info</li>
+<li>Quests basic infor</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../intro/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Introduction">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Introduction
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../api/api/" class="md-footer__link md-footer__link--next" aria-label="Next: TibiaWiki API">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                TibiaWiki API
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 Allan Galarza<br> <a href="https://www.tibia.com">Tibia</a> is made by <a href="https://www.cipsoft.com/">CipSoft</a>, all Tibia content is copyrighted by <a href="https://www.cipsoft.com/">CipSoft GmbH</a>.<br> The data collected by this library is provided by <a href="https://tibia.fandom.com/">TibiaWiki</a>.
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/Galarzaa90/tibiawiki-sql" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://pypi.org/project/tibiawikisql/" target="_blank" rel="noopener" title="pypi.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.922 13.58v3.912L20.55 18.72l-.078.055.052.037 3.45-1.256.026-.036v-3.997l-.053-.036-.025.092zm-.301-7.962-3.04 1.107v3.912l3.339-1.215V5.509zm.299 7.839V9.544l-3.336 1.215v3.913zm-3.45 1.253V10.8l-3.3 1.2v3.913zm-3.436 5.286v-3.912l-3.313 1.206v3.912zm.136-3.939v3.868l3.314-1.206V14.85zm2.093 1.882c-.367.134-.663-.074-.663-.463s.296-.814.663-.947c.365-.133.662.075.662.464s-.297.814-.662.946m-6.038-8.624.365-.132-3.285-1.197-3.323 1.21.102.037 3.184 1.16zm7.282 1.349V6.751L17.17 7.965v3.913zm-3.449 1.254V8.005l-3.302 1.202v3.912zm-3.415-2.672-3.336 1.215v3.913l3.336-1.215zm-6.736 3.919 3.322 1.209v-3.913L6.907 9.252zm3.433-5.292 3.281 1.193V5.198l-3.28-1.193zm10.167-5.158L17.19 3.922v3.913l3.317-1.207zM16.95 3.903 13.724 2.73l-3.269 1.19 3.225 1.174zm-1.585.703-1.624.592v3.868l3.317-1.207V3.991zm-.391 2.778c-.367.134-.662-.074-.662-.464s.295-.813.662-.946c.366-.133.663.074.663.464s-.297.813-.663.946M10.229 18.41v-3.914l-3.322-1.209V17.2zm3.449-1.228v-3.913l-3.371 1.227v3.913zm.078-.028 3.3-1.2V12.04l-3.3 1.2zm-.078 4.063-3.371 1.227v-3.912h-.078v3.912l-3.322-1.209v-3.913l-.053-.058-.025-.06-3.336-1.21v-3.948l.034.013 3.287 1.196.015-.078-3.261-1.187 3.26-1.187v-.109L3.876 9.62l-.307-.112 3.26-1.188v.877l.079-.055V6.769l3.257 1.185.058-.061L7.084 6.75l-.102-.037 3.24-1.179v-.083L6.854 6.677v.018l-.025.018v1.523L3.44 9.47v.02l-.025.017v4.007l-3.39 1.233v.019L0 14.784v3.995l.025.037 3.4 1.237.008-.006.007.01 3.4 1.238.008-.006.006.01 3.4 1.237.014-.009.012.01 3.45-1.256.026-.037zM3.493 9.563l3.257 1.185-3.257 1.187V9.562zM3.4 19.96.078 18.752v-3.913l2.361.86.96.349zm.015-3.99-3.08-1.12-.182-.066 3.262-1.187zm3.399 5.231-3.321-1.209V16.08l3.321 1.209zM23.791 5.434l-3.21-1.17v2.338zm-3.404-2.791-3.24-1.18-3.27 1.19 3.247 1.182z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://hub.docker.com/r/galarzaa90/tibiawiki-sql" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "navigation.footer", "navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "search.share", "toc.follow"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
