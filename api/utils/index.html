@@ -691,6 +691,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../models/book.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Book
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../models/charm/" class="md-nav__link">
         
   
@@ -1077,6 +1100,24 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#tibiawikisql.utils.Elapsed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Elapsed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tibiawikisql.utils.timed" class="md-nav__link">
+    <span class="md-ellipsis">
+      timed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tibiawikisql.utils.clean_question_mark" class="md-nav__link">
     <span class="md-ellipsis">
       clean_question_mark
@@ -1267,6 +1308,24 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#tibiawikisql.utils.Elapsed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Elapsed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tibiawikisql.utils.timed" class="md-nav__link">
+    <span class="md-ellipsis">
+      timed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tibiawikisql.utils.clean_question_mark" class="md-nav__link">
     <span class="md-ellipsis">
       clean_question_mark
@@ -1439,11 +1498,34 @@
 
     <div class="doc doc-contents first">
 
+        <p>Utility functions used for parsing information.</p>
 
 
 
 
 
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="            Elapsed (tibiawikisql.utils.Elapsed)" href="#tibiawikisql.utils.Elapsed">Elapsed</a></code></td>
+            <td>
+              <div class="doc-md-description">
+                <p>Holds the elapsed time measured by the [tibiawikisql.utils.timed][timed] context manager.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
 
@@ -1457,6 +1539,14 @@
         </tr>
       </thead>
       <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            timed (tibiawikisql.utils.timed)" href="#tibiawikisql.utils.timed">timed</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Context manager that measures the time taken to execute a block of code.</p>
+                </div>
+              </td>
+            </tr>
             <tr class="doc-section-item">
               <td><code><a class="autorefs autorefs-internal" title="            clean_question_mark (tibiawikisql.utils.clean_question_mark)" href="#tibiawikisql.utils.clean_question_mark">clean_question_mark</a></code></td>
               <td>
@@ -1593,6 +1683,156 @@
 
 
 
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="tibiawikisql.utils.Elapsed" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">Elapsed</span>
+
+
+<a href="#tibiawikisql.utils.Elapsed" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">Elapsed</span><span class="p">()</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>Holds the elapsed time measured by the [tibiawikisql.utils.timed][timed] context manager.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="tibiawikisql.utils.Elapsed.elapsed">elapsed</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Time duration in seconds. Initially 0.0, set after the context ends.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+
+
+                  <details class="quote">
+                    <summary>Source code in <code>tibiawikisql/utils.py</code></summary>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-31">31</a></span>
+<span class="normal"><a href="#__codelineno-0-32">32</a></span>
+<span class="normal"><a href="#__codelineno-0-33">33</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an instance of the class.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">elapsed</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+</code></pre></div></td></tr></table></div>
+                  </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="tibiawikisql.utils.timed" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">timed</span>
+
+
+<a href="#tibiawikisql.utils.timed" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">timed</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="collections.abc.Generator" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Generator">Generator</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            Elapsed (tibiawikisql.utils.Elapsed)" href="#tibiawikisql.utils.Elapsed">Elapsed</a></span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Context manager that measures the time taken to execute a block of code.</p>
+
+
+    <p><span class="doc-section-title">Yields:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>Elapsed</code></td>            <td>
+                  <code><a class="autorefs autorefs-internal" title="            Elapsed (tibiawikisql.utils.Elapsed)" href="#tibiawikisql.utils.Elapsed">Elapsed</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An object where the <code>elapsed</code> attribute is set to the duration after exiting the block.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>tibiawikisql/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-36">36</a></span>
+<span class="normal"><a href="#__codelineno-0-37">37</a></span>
+<span class="normal"><a href="#__codelineno-0-38">38</a></span>
+<span class="normal"><a href="#__codelineno-0-39">39</a></span>
+<span class="normal"><a href="#__codelineno-0-40">40</a></span>
+<span class="normal"><a href="#__codelineno-0-41">41</a></span>
+<span class="normal"><a href="#__codelineno-0-42">42</a></span>
+<span class="normal"><a href="#__codelineno-0-43">43</a></span>
+<span class="normal"><a href="#__codelineno-0-44">44</a></span>
+<span class="normal"><a href="#__codelineno-0-45">45</a></span>
+<span class="normal"><a href="#__codelineno-0-46">46</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="nd">@contextmanager</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="k">def</span><span class="w"> </span><span class="nf">timed</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Elapsed</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager that measures the time taken to execute a block of code.</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39"></a>
+<a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="sd">    Yields:</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="sd">        Elapsed: An object where the `elapsed` attribute is set to the duration after exiting the block.</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43"></a>    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44"></a>    <span class="n">e</span> <span class="o">=</span> <span class="n">Elapsed</span><span class="p">()</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45"></a>    <span class="k">yield</span> <span class="n">e</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46"></a>    <span class="n">e</span><span class="o">.</span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-function">
 
@@ -2631,8 +2871,8 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 <a id="__codelineno-0-233" name="__codelineno-0-233"></a>    <span class="p">]</span>
 <a id="__codelineno-0-234" name="__codelineno-0-234"></a>    <span class="k">for</span> <span class="n">date_format</span> <span class="ow">in</span> <span class="n">date_formats</span><span class="p">:</span>
 <a id="__codelineno-0-235" name="__codelineno-0-235"></a>        <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-236" name="__codelineno-0-236"></a>            <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">date_format</span><span class="p">)</span>
-<a id="__codelineno-0-237" name="__codelineno-0-237"></a>            <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+<a id="__codelineno-0-236" name="__codelineno-0-236"></a>            <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">date_format</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+<a id="__codelineno-0-237" name="__codelineno-0-237"></a>            <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
 <a id="__codelineno-0-238" name="__codelineno-0-238"></a>        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
 <a id="__codelineno-0-239" name="__codelineno-0-239"></a>            <span class="k">continue</span>
 <a id="__codelineno-0-240" name="__codelineno-0-240"></a>
