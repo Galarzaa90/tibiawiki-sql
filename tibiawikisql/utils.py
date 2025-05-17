@@ -1,16 +1,4 @@
-#  Copyright 2021 Allan Galarza
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
+"""Utility functions used for parsing information."""
 from __future__ import annotations
 
 import datetime
@@ -34,12 +22,24 @@ float_pattern = re.compile(r"[+-]?(\d*[.])?\d+")
 
 
 class Elapsed:
-    def __init__(self):
-        self.elapsed = 0.0
+    """Holds the elapsed time measured by the [tibiawikisql.utils.timed][timed] context manager.
+
+    Attributes:
+        elapsed: Time duration in seconds. Initially 0.0, set after the context ends.
+    """
+
+    def __init__(self) -> None:
+        """Create an instance of the class."""
+        self.elapsed: float = 0.0
 
 
 @contextmanager
 def timed() -> Generator[Elapsed, None, None]:
+    """Context manager that measures the time taken to execute a block of code.
+
+    Yields:
+        Elapsed: An object where the `elapsed` attribute is set to the duration after exiting the block.
+    """
     start = time.perf_counter()
     e = Elapsed()
     yield e
@@ -233,8 +233,8 @@ def parse_date(value: str) -> datetime.date:
     ]
     for date_format in date_formats:
         try:
-            dt = datetime.datetime.strptime(value, date_format)
-            return dt.date().isoformat()
+            dt = datetime.datetime.strptime(value, date_format).replace(tzinfo=datetime.timezone.utc)
+            return dt.date()
         except ValueError:
             continue
 
@@ -294,7 +294,7 @@ def parse_loot_statistics(value: str) -> tuple[int, list[Any]]:
     return kills, entries
 
 
-def _parse_loot_entry(entry: str):
+def _parse_loot_entry(entry: str) -> dict[str, str]:
     """Parse a single parameter of the loot statistics template.
 
     Args:

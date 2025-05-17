@@ -27,6 +27,7 @@ class AchievementTable(Table):
 
 
 class CharmTable(Table):
+    """Contains information about charms."""
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
@@ -40,6 +41,7 @@ class CharmTable(Table):
 
 
 class CreatureTable(Table):
+    """Contains information about creatures."""
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
@@ -89,6 +91,7 @@ class CreatureTable(Table):
 
 
 class CreatureAbilityTable(Table, table_name="creature_ability"):
+    """Contains the abilities a creature can do."""
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
     name = Column(Text, nullable=False)
     effect = Column(Text)
@@ -96,6 +99,7 @@ class CreatureAbilityTable(Table, table_name="creature_ability"):
 
 
 class CreatureMaxDamageTable(Table, table_name="creature_max_damage"):
+    """Contains information about the max damage a creature can deal."""
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
     physical = Column(Integer)
     earth = Column(Integer)
@@ -112,11 +116,13 @@ class CreatureMaxDamageTable(Table, table_name="creature_max_damage"):
 
 
 class CreatureSoundTable(Table, table_name="creature_sound"):
+    """Contains the "sounds" a creature can do."""
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True)
     content = Column(Text, nullable=False)
 
 
 class ItemTable(Table):
+    """Contains information about items and objects."""
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
@@ -144,11 +150,13 @@ class ItemTable(Table):
 
 
 class ItemSoundTable(Table, table_name="item_sound"):
+    """Contains the "sounds" an item can do when used."""
     item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True)
     content = Column(Text, nullable=False)
 
 
 class ItemStoreOfferTable(Table, table_name="item_store_offer"):
+    """Contains the Tibia store offers for an item."""
     item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True)
     price = Column(Integer, nullable=False)
     amount = Column(Integer, nullable=False)
@@ -156,6 +164,7 @@ class ItemStoreOfferTable(Table, table_name="item_store_offer"):
 
 
 class CreatureDropTable(Table, table_name="creature_drop"):
+    """Contains the items that a creature can drop."""
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True, nullable=False)
     item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True, nullable=False)
     chance = Column(Real)
@@ -198,12 +207,14 @@ class CreatureDropTable(Table, table_name="creature_drop"):
 
 
 class ItemAttributeTable(Table, table_name="item_attribute"):
+    """Contains additional attributes for an item."""
     item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True)
     name = Column(Text, index=True)
     value = Column(Text)
 
 
 class BookTable(Table):
+    """Table to store information about books."""
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     name = Column(Text)
@@ -221,11 +232,13 @@ class BookTable(Table):
 
 
 class DatabaseInfoTable(Table, table_name="database_info"):
+    """Contains information about the database."""
     key = Column(Text, primary_key=True)
     value = Column(Text)
 
 
 class HouseTable(Table):
+    """Contains information about houses and guildhalls."""
     article_id = Column(Integer, primary_key=True)
     house_id = Column(Integer, index=True)
     title = Column(Text, unique=True, no_case=True, nullable=False)
@@ -248,6 +261,7 @@ class HouseTable(Table):
 
 
 class ImbuementTable(Table):
+    """Contains information about imbuements."""
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, index=True)
     name = Column(Text, unique=True, index=True)
@@ -263,6 +277,7 @@ class ImbuementTable(Table):
 
 
 class ImbuementMaterialTable(Table, table_name="imbuement_material"):
+    """Contains the materials needed for imbuements."""
     imbuement_id = Column(ForeignKey(Integer, "imbuement", "article_id"), index=True)
     item_id = Column(ForeignKey(Integer, "item", "article_id"), index=True, nullable=False)
     amount = Column(Integer, nullable=False)
@@ -284,6 +299,7 @@ class ImbuementMaterialTable(Table, table_name="imbuement_material"):
 
 
 class ItemKeyTable(Table, table_name="item_key"):
+    """Contains information about keys."""
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     number = Column(Integer, unique=True)
@@ -299,11 +315,13 @@ class ItemKeyTable(Table, table_name="item_key"):
 
 
 class MapTable(Table):
+    """Contains map images."""
     z = Column(Integer, primary_key=True)
     image = Column(Blob)
 
 
 class SpellTable(Table):
+    """Contains information about spells."""
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True)
     name = Column(Text, no_case=True, index=True)
@@ -339,6 +357,7 @@ class SpellTable(Table):
 
 
 class NpcTable(Table):
+    """Contains information about NPCs."""
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
@@ -356,16 +375,19 @@ class NpcTable(Table):
 
 
 class NpcJobTable(Table, table_name="npc_job"):
+    """Contains NPC jobs."""
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
     name = Column(Text, nullable=False)
 
 
 class NpcRaceTable(Table, table_name="npc_race"):
+    """Contains NPC races."""
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
     name = Column(Text, nullable=False)
 
 
 class NpcBuyingTable(Table, table_name="npc_offer_buy"):
+    """Table storing the sitems an NPC buys."""
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
     item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False, index=True)
     value = Column(Integer, nullable=False)
@@ -411,6 +433,7 @@ class NpcBuyingTable(Table, table_name="npc_offer_buy"):
 
 
 class NpcSellingTable(Table, table_name="npc_offer_sell"):
+    """Table storing the sitems an NPC sells."""
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
     item_id = Column(ForeignKey(Integer, "item", "article_id"), nullable=False, index=True)
     value = Column(Integer, nullable=False)
@@ -456,6 +479,7 @@ class NpcSellingTable(Table, table_name="npc_offer_sell"):
 
 
 class NpcDestinationTable(Table, table_name="npc_destination"):
+    """Table containing the destinations an NPC can take the player to."""
     npc_id = Column(ForeignKey(Integer, "npc", "article_id"), index=True)
     name = Column(Text, index=True, nullable=False)
     price = Column(Integer, nullable=False)
@@ -483,7 +507,16 @@ class NpcSpellTable(Table, table_name="npc_spell"):
     monk = Column(Boolean, nullable=False, default=False)
 
     @classmethod
-    def get_by_npc_id(cls, conn: Connection | Cursor, npc_id: int):
+    def get_by_npc_id(cls, conn: Connection | Cursor, npc_id: int) -> list[Row]:
+        """Get the entries corresponding to a given NPC, with additional information about the spell.
+
+        Args:
+            conn: Connection to the database.
+            npc_id: The article ID of the NPC.
+
+        Returns:
+            A list of rows matching the parameters.
+        """
         base_query = cls.get_base_select_query()
         this = PTable(cls.__tablename__)
         spell = PTable(SpellTable.__tablename__)
@@ -522,6 +555,7 @@ class NpcSpellTable(Table, table_name="npc_spell"):
 
 
 class OutfitTable(Table):
+    """Table containing information about outfits."""
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, no_case=True, unique=True)
     name = Column(Text, no_case=True, index=True)
@@ -537,6 +571,7 @@ class OutfitTable(Table):
 
 
 class OutfitImageTable(Table, table_name="outfit_image"):
+    """Table containing the different images to represent an outfit and its addon."""
     outfit_id = Column(ForeignKey(Integer, "outfit", "article_id"), index=True)
     sex = Column(Text)
     addon = Column(Integer)
@@ -544,6 +579,7 @@ class OutfitImageTable(Table, table_name="outfit_image"):
 
 
 class QuestTable(Table):
+    """Table to store information about quests."""
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, no_case=True, unique=True)
     name = Column(Text, index=True, no_case=True)
@@ -563,6 +599,7 @@ class QuestTable(Table):
 
 
 class OutfitQuestTable(Table, table_name="outfit_quest"):
+    """Table that stores the outfits unlocked by a quest."""
     outfit_id = Column(ForeignKey(Integer, "outfit", "article_id"), index=True, nullable=False)
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True, nullable=False)
     unlock_type = Column(Text)
@@ -592,6 +629,7 @@ class OutfitQuestTable(Table, table_name="outfit_quest"):
 
 
 class QuestDangerTable(Table, table_name="quest_danger"):
+    """Table that stores the creatures faced in a quest."""
     quest_id = Column(ForeignKey(Integer, "quest", "article_id"), index=True)
     creature_id = Column(ForeignKey(Integer, "creature", "article_id"), nullable=False, index=True)
 
@@ -668,15 +706,17 @@ class QuestRewardTable(Table, table_name="quest_reward"):
         return cls.get_list_by_field(conn, "quest_id", quest_id, base_query=query)
 
 class RashidPositionTable(Table, table_name="rashid_position"):
+    """Stores information about the location of the NPC rashid on each day."""
     day = Column(Integer, primary_key=True)
-    city = Column(Text)
-    location = Column(Text)
-    x = Column(Integer)
-    y = Column(Integer)
-    z = Column(Integer)
+    city = Column(Text, nullable=False)
+    location = Column(Text, nullable=False)
+    x = Column(Integer, nullable=False)
+    y = Column(Integer, nullable=False)
+    z = Column(Integer, nullable=False)
 
 
 class WorldTable(Table):
+    """Stores information about game worlds."""
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
@@ -696,6 +736,7 @@ class WorldTable(Table):
 
 
 class MountTable(Table):
+    """Stores information about mounts."""
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
@@ -713,6 +754,7 @@ class MountTable(Table):
 
 
 class UpdateTable(Table, table_name="game_update"):
+    """Stores information about game updates."""
     article_id = Column(Integer, primary_key=True)
     title = Column(Text, unique=True, no_case=True, nullable=False)
     name = Column(Text, no_case=True, index=True)
@@ -728,13 +770,11 @@ class UpdateTable(Table, table_name="game_update"):
     timestamp = Column(Timestamp, nullable=False)
 
 
-def create_tables(conn):
+def create_tables(conn: Connection | Cursor) -> None:
     """Create all the tables in the database.
 
-    Parameters
-    ----------
-    conn: sqlite3.Connection, sqlite3.Cursor
-        A connection to the database.
+    Args:
+        conn: A connection to the database.
 
     """
     for table in Table.all_tables():

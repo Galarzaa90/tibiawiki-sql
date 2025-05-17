@@ -1,1 +1,0 @@
-::: tibiawikisql.models.book

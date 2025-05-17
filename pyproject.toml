@@ -67,7 +67,8 @@ exclude = [
     "docs/",
     "images/",
     "logs/",
-    "tibiawikisql/__main__.py"
+    "tibiawikisql/__main__.py",
+    "tibiawikisql/server.py",
 ]
 
 
@@ -119,6 +120,7 @@ ignore = [
     "PLR2004", # Magic value used in comparison, consider replacing {value} with a constant variable
     "PLR0913", # Too many arguments in function definition ({c_args} > {max_args})
     "D105", # Missing docstring in magic method
+    "PERF203", # `try`-`except` within a loop incurs performance overhead
 ]
 
 [tool.ruff.lint.per-file-ignores]

@@ -1,6 +1,6 @@
 # Changelog
 
-## 7.0.0 (Unreleased)
+## 7.0.0 (2025-05-17)
 
 - `WikiClient` is no longer a "static class", an instance must now be created in order to better reuse HTTP sessions.
 - General model changes:
