@@ -125,6 +125,7 @@ nav:
         - Package Index: api/models/index.md
         - Base: api/models/base.md
         - Achievement: api/models/achievement.md
+        - Book: api/models/book.md
         - Charm: api/models/charm.md
         - Creature: api/models/creature.md
         - House: api/models/house.md

@@ -305,7 +305,7 @@ class Book(WikiEntry, WithStatus, WithVersion, RowModel, table=BookTable):
 
     name: str
     """The name of the book."""
-    book_type: str | None = None
+    book_type: str
     """The type of item this book can be found in."""
     item_id: int | None = None
     """The ID of the item this book is written in."""
@@ -327,8 +327,8 @@ class Book(WikiEntry, WithStatus, WithVersion, RowModel, table=BookTable):
             super().insert(conn)
             return
 
-        book_table = Table(self.table.__tablename__)
-        item_table = Table(ItemTable.__tablename__)
+        book_table = self.table.__table__
+        item_table = ItemTable.__table__
 
         q = (
             Query.into(book_table)

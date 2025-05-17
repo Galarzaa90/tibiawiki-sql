@@ -7,23 +7,19 @@ from tibiawikisql.api import Article
 from tibiawikisql.models.quest import ItemReward, Quest, QuestCreature, QuestDanger, QuestReward
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
-import tibiawikisql.schema
+from tibiawikisql.schema import QuestTable
 from tibiawikisql.utils import clean_links, parse_boolean, parse_integer
 
 link_pattern = re.compile(r"\[\[([^|\]]+)")
 
 
-def parse_links(value):
+def parse_links(value: str) -> list[str]:
     """Find all the links in a string and returns a list of them.
 
-    Parameters
-    ----------
-    value: :class:`str`
-        A string containing links.
+    Args:
+        value: A string containing links.
 
-    Returns
-    -------
-    list(:class:`str`):
+    Returns:
         The links found in the string.
 
     """
@@ -34,12 +30,12 @@ class QuestParser(BaseParser):
     """Parser for quests."""
 
     model = Quest
-    table = tibiawikisql.schema.QuestTable
+    table = QuestTable
     template_name = "Infobox_Quest"
     attribute_map: ClassVar = {
         "name": AttributeParser.required("name", html.unescape),
         "location": AttributeParser.optional("location", clean_links),
-        "rookgaard": AttributeParser.optional("rookgaardquest", parse_boolean, False),
+        "is_rookgaard_quest": AttributeParser.optional("rookgaardquest", parse_boolean, False),
         "type": AttributeParser.optional("type"),
         "quest_log": AttributeParser.optional("log", parse_boolean),
         "legend": AttributeParser.optional("legend", clean_links),

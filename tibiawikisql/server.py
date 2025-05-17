@@ -9,7 +9,8 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from tibiawikisql.api import WikiClient
-from tibiawikisql.models import Achievement, Charm, Creature, House, Imbuement, Item, Key, Mount, Npc, Outfit, Quest, \
+from tibiawikisql.models import Achievement, Book, Charm, Creature, House, Imbuement, Item, Key, Mount, Npc, Outfit, \
+    Quest, \
     Spell, \
     Update, \
     World
@@ -81,6 +82,14 @@ def get_wiki_achievement(
     if not article:
         return None
     return AchievementParser.from_article(article)
+
+@db_router.get("/books/{title}")
+def get_book(
+        conn: Conn,
+        title: str,
+) -> Book | None:
+    return Book.get_by_title(conn, title)
+
 
 
 @db_router.get("/charms/{title}")

@@ -167,7 +167,7 @@ class Quest(WikiEntry, WithStatus, WithVersion, RowModel, table=QuestTable):
     """The name of the quest."""
     location: str | None
     """The location of the quest."""
-    rookgaard: bool
+    is_rookgaard_quest: bool
     """Whether this quest is in Rookgaard or not."""
     is_premium: bool
     """Whether this quest requires a Premium account or not."""

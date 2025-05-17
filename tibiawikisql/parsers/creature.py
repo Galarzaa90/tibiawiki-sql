@@ -1,8 +1,7 @@
 import re
-from typing import Any, ClassVar
+from typing import Any, ClassVar, TYPE_CHECKING
 
 import mwparserfromhell
-from mwparserfromhell.nodes import Template
 
 import tibiawikisql.schema
 from tibiawikisql.api import Article
@@ -25,6 +24,9 @@ from tibiawikisql.utils import (
     parse_sounds,
     strip_code,
 )
+
+if TYPE_CHECKING:
+    from mwparserfromhell.nodes import Template
 
 
 def parse_maximum_damage(value: str) -> dict[str, int]:
