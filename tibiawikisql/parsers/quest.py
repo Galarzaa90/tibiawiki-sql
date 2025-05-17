@@ -1,10 +1,9 @@
 import html
 import re
-import sqlite3
 from typing import Any, ClassVar
 
 from tibiawikisql.api import Article
-from tibiawikisql.models.quest import ItemReward, Quest, QuestCreature, QuestDanger, QuestReward
+from tibiawikisql.models.quest import ItemReward, Quest, QuestCreature
 from tibiawikisql.parsers.base import AttributeParser
 from tibiawikisql.parsers import BaseParser
 from tibiawikisql.schema import QuestTable

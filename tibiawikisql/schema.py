@@ -1,5 +1,4 @@
 """Defines the SQL schemas to use."""
-import sqlite3
 from sqlite3 import Connection, Cursor, Row
 from typing import Any, ClassVar
 from pypika import Query, Table as PTable

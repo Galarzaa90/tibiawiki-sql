@@ -1,11 +1,9 @@
 import contextlib
-import sqlite3
 from sqlite3 import Connection, Cursor, IntegrityError
-from sqlite3 import Connection, Cursor
 from typing import Any
 
 from pydantic import BaseModel, Field
-from pypika import Parameter, Query, Table
+from pypika import Parameter, Query
 from typing_extensions import Self
 
 from tibiawikisql.api import WikiEntry

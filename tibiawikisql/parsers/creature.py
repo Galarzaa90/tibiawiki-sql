@@ -105,17 +105,13 @@ def parse_loot(value: str) -> list[tuple[str, str]]:
     return loot
 
 
-def parse_abilities(value):
+def parse_abilities(value: str) -> list[dict[str, str]]:
     """Parse the abilities of a creature.
 
-    Parameters
-    ----------
-    value: :class:`str`
-        A string containing the creature's abilities definition.
+    Args:
+    value: A string containing the creature's abilities definition.
 
-    Returns
-    -------
-    :class:`list` of :class:`dict`
+    Returns:
         A list of dictionaries with the ability data.
 
     """
@@ -173,26 +169,21 @@ def parse_abilities(value):
     return abilities
 
 
-def parse_monster_walks(value):
+def parse_monster_walks(value: str) -> str | None:
     """Match the values against a regex to filter typos or bad data on the wiki.
 
     Element names followed by any character that is not a comma will be considered unknown and will not be returned.
 
-    Examples
-    --------
+    Examples:
         - ``Poison?, fire`` will return ``fire``.
-        - ``Poison?, fire.`` will return neither.
+        - ``Poison?, fire?.`` will return neither.
         - ``Poison, earth, fire?, [[ice]]`` will return ``poison,earth``.
         - ``No``, ``--``, ``>``, or ``None`` will return ``None``.
 
-    Parameters
-    ----------
-    value: :class:`str`
-        The string containing possible field types.
+    Args:
+        value: The string containing possible field types.
 
-    Returns
-    -------
-    :class:`str`, optional
+    Returns:
         A list of field types, separated by commas.
 
     """

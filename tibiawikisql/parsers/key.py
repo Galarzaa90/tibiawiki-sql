@@ -1,4 +1,3 @@
-import sqlite3
 from typing import ClassVar
 
 import tibiawikisql.schema

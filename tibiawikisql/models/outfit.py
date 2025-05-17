@@ -1,10 +1,7 @@
 import contextlib
-import sqlite3
 from sqlite3 import Connection, Cursor, IntegrityError
-from sqlite3 import Connection, Cursor
 from typing import Any
 
-import pydantic
 from pydantic import BaseModel, Field
 from pypika import Parameter, Query, Table
 from typing_extensions import Self

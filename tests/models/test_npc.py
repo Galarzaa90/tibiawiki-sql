@@ -2,7 +2,7 @@ import datetime
 import sqlite3
 import unittest
 
-from tibiawikisql.models import Npc, NpcDestination, NpcOffer
+from tibiawikisql.models import Npc
 from tibiawikisql.schema import ItemTable, NpcBuyingTable, NpcDestinationTable, NpcJobTable, NpcRaceTable, \
     NpcSellingTable, NpcSpellTable, \
     NpcTable, \

@@ -3,7 +3,7 @@ import unittest
 
 from polyfactory.factories.pydantic_factory import ModelFactory
 
-from tibiawikisql.models import Book, Item, ItemStoreOffer
+from tibiawikisql.models import Book, Item
 from tibiawikisql.schema import BookTable, ItemAttributeTable, ItemSoundTable, ItemStoreOfferTable, ItemTable
 
 

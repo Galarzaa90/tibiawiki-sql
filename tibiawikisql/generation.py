@@ -168,9 +168,9 @@ def progress_bar(
         iterable,
         length,
         label,
-        True,  # noqa: FBT003
-        True,  # noqa: FBT003
-        True,  # noqa: FBT003
+        True,
+        True,
+        True,
         item_show_func,
         "█",
         "░",

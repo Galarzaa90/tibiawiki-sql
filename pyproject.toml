@@ -112,7 +112,7 @@ select = [
     "T20", # flake8-print
     "TC", # refurb
     "TID", # flake8-tidy-imports
-    "UP", # pyupgrade,
+    "UP", # pyupgrade
     "YTT", # flake8-2020
 ]
 ignore = [
@@ -132,7 +132,6 @@ max-line-length = 120
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
-
 
 [tool.ruff.lint.pep8-naming]
 extend-ignore-names = ["assert*"]
@@ -158,3 +157,6 @@ exclude_lines = [
     "raise NotImplementedError",
     "if TYPE_CHECKING:"
 ]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"typing.Self".msg = "Use typing_extensions.Self instead."

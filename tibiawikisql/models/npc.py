@@ -1,10 +1,11 @@
 import contextlib
 import sqlite3
 from sqlite3 import Connection, Cursor
-from typing import Any, Self
+from typing import Any
 
 from pydantic import BaseModel, Field
 from pypika import Parameter, Query, Table
+from typing_extensions import Self
 
 from tibiawikisql.api import WikiEntry
 from tibiawikisql.models.base import RowModel, WithImage, WithStatus, WithVersion

@@ -1,38 +1,35 @@
 import re
-import sqlite3
 from typing import Any, ClassVar
 
 from tibiawikisql.api import Article
-from tibiawikisql.models.imbuement import Imbuement, ImbuementMaterial, Material
+from tibiawikisql.models.imbuement import Imbuement, Material
 from tibiawikisql.parsers import BaseParser
-from tibiawikisql.schema import ImbuementMaterialTable, ImbuementTable
+from tibiawikisql.schema import ImbuementTable
 from tibiawikisql.parsers.base import AttributeParser
 
 astral_pattern = re.compile(r"\s*([^:]+):\s*(\d+),*")
 effect_pattern = re.compile(r"Effect/([^|]+)\|([^}|]+)")
 
 
-def parse_astral_sources(content: str):
+def parse_astral_sources(content: str) -> dict[str, int]:
     """Parse the astral sources of an imbuement.
 
-    Parameters
-    ----------
-    content: A string containing astral sources.
+    Args:
+         content: A string containing astral sources.
 
-    Returns
-    -------
-    :class:`dict[str,int]`:
+    Returns:
         A dictionary containing the material name and te amount required.
 
     """
     materials = astral_pattern.findall(content)
     if materials:
         return {item: int(amount) for (item, amount) in materials}
-    return None
+    return {}
 
 
 effect_map = {
     "Bash": "Club fighting +{}",
+    "Punch": "Fist fighting +{}",
     "Chop": "Axe fighting +{}",
     "Slash": "Sword fighting +{}",
     "Precision": "Distance fighting +{}",
@@ -57,17 +54,14 @@ effect_map = {
     "Vibrancy": "Remove paralysis chance {}",
 }
 
-def parse_effect(effect):
+
+def parse_effect(effect: str) -> str:
     """Parse TibiaWiki's effect template into a string effect.
 
-    Parameters
-    ----------
-    effect: :class:`str`
-        The string containing the template.
+    Args:
+        effect: The string containing the template.
 
-    Returns
-    -------
-    :class:`str`:
+    Returns:
         The effect string.
 
     """
@@ -79,19 +73,15 @@ def parse_effect(effect):
         return f"{category} {amount}"
 
 
-def parse_slots(content):
+def parse_slots(content: str) -> str:
     """Parse the list of slots.
 
     Cleans up spaces between items.
 
-    Parameters
-    ----------
-    content: :class:`str`
-        A string containing comma separated values.
+    Args:
+        content: A string containing comma separated values.
 
-    Returns
-    -------
-    :class:`str`:
+    Returns:
         The slots string.
 
     """
