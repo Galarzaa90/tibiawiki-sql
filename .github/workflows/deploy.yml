@@ -1,4 +1,4 @@
-name: Deploy
+name: 🚀 Deploy
 
 on:
   push:
@@ -7,20 +7,21 @@ on:
 
 jobs:
   build-n-publish:
+    name: ⚙️🚀 Build and publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🚚
         uses: actions/checkout@master
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v1
+      - name: Set up Python 3.13 🐍
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: 3.13
       - name: Install dependencies ⚙️
         run: |
-          python -m pip install wheel twine
+          python -m pip install wheel twine build
       - name: Build Package 📦
         run: |
-          python setup.py bdist_wheel sdist
+          python -m build
       - name: Publish to PyPi 🚀
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
