@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.0.1 (2025-05-19)
+
+- Add `vocation` and `elemental_bond` to item attributes.
+
 ## 7.0.0 (2025-05-17)
 
 - `WikiClient` is no longer a "static class", an instance must now be created in order to better reuse HTTP sessions.
@@ -17,8 +21,6 @@
     - Rename `type` to `spell_type`
     - Added `cooldown2` and `cooldown3` for reduced cooldowns by the Wheel of Destiny.
     - Rename `premium` to `is_premium`.
-    - Rename `promotion` to `is_promotion`.
-    - Rename `promotion` to `is_promotion`.
     - Rename `promotion` to `is_promotion`.
     - Added `is_wheel_spell` attribute.
     - Added `is_passive` attribute.
@@ -56,7 +58,7 @@
     - Renamed `preview` to `is_preview`.
     - Renamed `experimental` to `is_experimental`.
 - Mount changes:
-    - Renamed `buyable` to `is_buyable``.
+    - Renamed `buyable` to `is_buyable`.
 - Update changes:
     - Renamed `date` to `release_date`.
 
@@ -110,7 +112,7 @@
   `type` function.
     - Renamed to `item_type` in `item` table and `Item` class.
     - Renamed to `creature_type` in `creature` table and `Creature` class.
-- Parsing relies more on `mwparserfromhell <https://mwparserfromhell.readthedocs.io/>`_ and less on regular expressions.
+- Parsing relies more on [mwparserfromhell](https://mwparserfromhell.readthedocs.io/) and less on regular expressions.
 - TibiaWiki merged items into "objects" (non pickupable). So now the `item` table will contain a lot more records.
     - More attributes related to "objects" are now added to the `item_attribute` table.
 - Added support for attributes added in the Summer Update 2020 and some other missing attributes.

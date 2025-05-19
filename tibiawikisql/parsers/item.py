@@ -49,6 +49,7 @@ class ItemParser(BaseParser):
 
     item_attributes: ClassVar = {
         "level": "levelrequired",
+        "vocation": "vocrequired",
         "attack": "attack",
         "defense": "defense",
         "defense_modifier": "defensemod",
@@ -95,6 +96,7 @@ class ItemParser(BaseParser):
         "upgrade_classification": "upgradeclass",
         "is_rotatable": "rotatable",
         "augments": "augments",
+        "elemental_bond": "elementalbond",
     }
 
     @classmethod
