@@ -13,11 +13,11 @@ externally.
 If you integrate this into your project or use the generated data, make sure to credit [TibiaWiki](https://tibia.fandom.com) and its contributors.
 
 
-[![Build Status](https://travis-ci.org/Galarzaa90/tibiawiki-sql.svg?branch=master)](https://travis-ci.org/Galarzaa90/tibiawiki-sql)
 [![GitHub (pre-)release](https://img.shields.io/github/release/Galarzaa90/tibiawiki-sql/all.svg)](https://github.com/Galarzaa90/tibiawiki-sql/releases)
 [![PyPI](https://img.shields.io/pypi/v/tibiawikisql.svg)](https://pypi.python.org/pypi/tibiawikisql/)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/tibiawikisql.svg)
 ![PyPI - License](https://img.shields.io/pypi/l/tibiawikisql.svg)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/tibiawikisql)
 
 ## Requirements
 * Python 3.10 or higher

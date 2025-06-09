@@ -42,7 +42,11 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/Galarzaa90/tibiawiki-sql"
+"Homepage" = "https://tibiawiki-sql.readthedocs.io/"
+"Documentation" = "https://tibiawiki-sql.readthedocs.io/"
+"Repository" = "https://github.com/Galarzaa90/tibiawiki-sql"
+"Changelog" = "https://tibiawiki-sql.readthedocs.io/en/stable/changelog/"
+"Docker Hub: Repo" = "https://hub.docker.com/repository/docker/galarzaa90/tibiawiki-sql"
 
 [project.scripts]
 tibiawikisql = "tibiawikisql.__main__:cli"

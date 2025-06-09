@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.0.2 (2025-06-09)
+
+- Fix key's `item_id` not being saved correctly.
+
 ## 7.0.1 (2025-05-19)
 
 - Add `vocation` and `elemental_bond` to item attributes.
