@@ -7,7 +7,7 @@ import sqlite3
 from sqlite3 import Connection, Cursor, Row
 from typing import Any, ClassVar, TypeVar
 
-from pypika import Order, Query, Table as PTable
+from pypika import Order, SQLLiteQuery as Query, Table as PTable
 
 from tibiawikisql.errors import InvalidColumnValueError, SchemaError
 

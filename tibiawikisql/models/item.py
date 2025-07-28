@@ -3,7 +3,9 @@ from typing import Any
 
 import pydantic
 from pydantic import BaseModel, Field
-from pypika import Parameter, Query, Table, functions as fn
+from pypika import Parameter, Table, SQLLiteQuery as Query
+from pypika.functions import Concat
+from pypika.terms import LiteralValue, ValueWrapper
 from typing_extensions import Self
 
 from tibiawikisql.api import WikiEntry
@@ -425,7 +427,7 @@ class Key(WikiEntry, WithStatus, WithVersion, RowModel, table=ItemKeyTable):
                 (
                     Query.from_(item_table)
                     .select(item_table.article_id)
-                    .where(item_table.title == fn.Concat(Parameter(":material"), ' Key'))
+                    .where(item_table.title == LiteralValue(":material || ' Key'"))
                 ),
                 Parameter(":material"),
                 Parameter(":location"),

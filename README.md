@@ -54,8 +54,8 @@ If a newer version of the image has been uploaded, it will be updated.
 When done, a database file called `tibiawiki.db` will be found on the folder.
 
 ## Docker
-![Docker Pulls](https://img.shields.io/docker/pulls/galarzaa90/tibiawiki-sql)
-![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/galarzaa90/tibiawiki-sql?sort=semver)
+[![Docker Pulls](https://img.shields.io/docker/pulls/galarzaa90/tibiawiki-sql)](https://hub.docker.com/r/galarzaa90/tibiawiki-sql)
+[![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/galarzaa90/tibiawiki-sql?sort=semver)](https://hub.docker.com/r/galarzaa90/tibiawiki-sql/tags)
 
 The database can also be generated without installing the project, it's dependencies, or Python, by using Docker.
 Make sure to have Docker installed, then simply run:
@@ -94,4 +94,4 @@ For questions, suggestions and bug reports, submit an issue.
 
 The best way to contribute to this project is by contributing to [TibiaWiki](https://tibia.fandom.com).
 
-![image](https://vignette.wikia.nocookie.net/tibia/images/d/d9/Tibiawiki_Small.gif/revision/latest?cb=20150129101832&path-prefix=en)
+[![image](https://vignette.wikia.nocookie.net/tibia/images/d/d9/Tibiawiki_Small.gif/revision/latest?cb=20150129101832&path-prefix=en)](https://tibia.fandom.com/)

@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.0.3 (2025-07-28)
+
+- Fix SQL generation not working on Docker due to not having the `CONCAT` SQLite extension.
+
 ## 7.0.2 (2025-06-09)
 
 - Fix key's `item_id` not being saved correctly.

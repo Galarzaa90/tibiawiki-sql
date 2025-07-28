@@ -1,7 +1,7 @@
 """Defines the SQL schemas to use."""
 from sqlite3 import Connection, Cursor, Row
 from typing import Any, ClassVar
-from pypika import Query, Table as PTable
+from pypika import SQLLiteQuery as Query, Table as PTable
 
 from tibiawikisql.database import Blob, Boolean, Column, Date, ForeignKey, Integer, Real, Table, Text, \
     Timestamp

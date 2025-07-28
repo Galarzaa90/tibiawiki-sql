@@ -3,7 +3,7 @@ from sqlite3 import Connection, Cursor, IntegrityError
 from typing import Any
 
 from pydantic import BaseModel, Field
-from pypika import Parameter, Query
+from pypika import Parameter, SQLLiteQuery as Query
 from typing_extensions import Self
 
 from tibiawikisql.api import WikiEntry
