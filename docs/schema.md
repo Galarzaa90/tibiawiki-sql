@@ -37,7 +37,6 @@ The generated database has the following tables.
 | `npcofferbuy`       | Contains all the NPCs’ buy offers.                                                  |
 | `npcoffersell`      | Contains all the NPCs’ sell offers.                                                 |
 | `npcrace`           | Contains all the NPCs’ races.                                                       |
-| `npcspell`          | Contains all the spells NPCs teach.                                                 |
 | `outfit`            | Contains information for all outfits.                                               |
 | `outfitimage`       | Contains images for all outfits.                                                    |
 | `outfitquest`       | Contains outfit and addon rewards for quests.                                       |
@@ -801,29 +800,6 @@ npc_race
 | name   | ``TEXT``    | The name of the race.               |
 +--------+-------------+-------------------------------------+
 
-npc_spell
-~~~~~~~~~
-+----------+-------------+--------------------------------------------+
-|  Column  |    Type     |                Description                 |
-+==========+=============+============================================+
-| npc_id   | ``INTEGER`` | The id of the NPC that teaches this spell. |
-+----------+-------------+--------------------------------------------+
-| spell_id | ``INTEGER`` | The id of the spell this NPC teaches.      |
-+----------+-------------+--------------------------------------------+
-| knight   | ``BOOLEAN`` | Whether this NPC teaches this spell to     |
-|          |             | knights.                                   |
-+----------+-------------+--------------------------------------------+
-| sorcerer | ``BOOLEAN`` | Whether this NPC teaches this spell to     |
-|          |             | sorcerers.                                 |
-+----------+-------------+--------------------------------------------+
-| druid    | ``BOOLEAN`` | Whether this NPC teaches this spell to     |
-|          |             | druids.                                    |
-+----------+-------------+--------------------------------------------+
-| paladin  | ``BOOLEAN`` | Whether this NPC teaches this spell to     |
-|          |             | paladins.                                  |
-+----------+-------------+--------------------------------------------+
-
-
 outfit
 ~~~~~~
 +-------------+-------------+------------------------------------------------------------+
@@ -1010,9 +986,6 @@ spell
 | promotion                | ``BOOLEAN`` | Whether this spell requires                           |
 |                          |             | a promotion or not. ``0`` or                          |
 |                          |             | ``1``.                                                |
-+--------------------------+-------------+-------------------------------------------------------+
-| price                    | ``INTEGER`` | Price in gold coins of this spell                     |
-|                          |             |                                                       |
 +--------------------------+-------------+-------------------------------------------------------+
 | cooldown                 | ``INTEGER`` | The individual cooldown in seconds of this spell      |
 |                          |             |                                                       |

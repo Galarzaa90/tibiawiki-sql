@@ -8,7 +8,7 @@ import re
 import sqlite3
 from collections import defaultdict
 import platform
-from typing import Any, TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 import click
 import requests
@@ -432,82 +432,6 @@ def fetch_images(conn: sqlite3.Connection) -> None:
         save_maps(conn)
 
 
-def parse_spell_data(lua_content: str) -> list[tuple[str, str, bool, bool, bool, bool, bool]]:
-    data = lua.execute(lua_content)
-    offers = []
-    for name, table in list(data.items()):
-        spell_title = name
-        spell_vocations = list(table["vocation"].values())
-        for npc, vocation in table["sellers"].items():
-            if isinstance(vocation, bool):
-                npc_vocations = spell_vocations[:]
-            elif isinstance(vocation, str):
-                npc_vocations = [vocation]
-            else:
-                npc_vocations = list(vocation.values())
-            offers.append((
-                npc,
-                spell_title,
-                "Knight" in npc_vocations,
-                "Paladin" in npc_vocations,
-                "Druid" in npc_vocations,
-                "Sorcerer" in npc_vocations,
-                "Monk" in npc_vocations,
-            ))
-    return offers
-
-
-def generate_spell_offers(conn: sqlite3.Connection, data_store: dict[str, Any]) -> None:
-    """Fetch and save the spell offers from the spell data module.
-
-    Args:
-        conn: A connection to the database.
-        data_store: The data store containing information about generated articles.
-
-    """
-    if "npcs_map" not in data_store or "spells_map" not in data_store:
-        return
-    article = wiki_client.get_article("Module:ItemPrices/spelldata")
-    spell_offers = parse_spell_data(article.content)
-    rows = []
-    not_found_store = defaultdict(set)
-    with (
-        timed() as t,
-        progress_bar(spell_offers, len(spell_offers), "Processing spell offers") as bar,
-    ):
-        for npc, spell, knight, paladin, druid, sorcerer, monk in bar:
-            spell_id = data_store["spells_map"].get(spell.lower())
-            if spell_id is None:
-                not_found_store["spell"].add(spell)
-                continue
-            npc_id = data_store["npcs_map"].get(npc.lower())
-            if npc_id is None:
-                not_found_store["npc"].add(npc)
-                continue
-            rows.append((
-                npc_id,
-                spell_id,
-                knight,
-                sorcerer,
-                paladin,
-                druid,
-                monk,
-            ))
-        with conn:
-            conn.execute("DELETE FROM npc_spell")
-            conn.executemany(
-                "INSERT INTO npc_spell(npc_id, spell_id, knight, sorcerer, paladin, druid, monk) VALUES(?, ?, ?, ?, ?, ?, ?)",
-                rows)
-        if not_found_store["spell"]:
-            unknonw_spells = not_found_store["spell"]
-            click.echo(f"{Fore.RED}Could not parse offers for {len(unknonw_spells):,} spell.{Style.RESET_ALL}")
-            click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unknonw_spells)}{Style.RESET_ALL}")
-        if not_found_store["npc"]:
-            unknown_npcs = not_found_store["npc"]
-            click.echo(f"{Fore.RED}Could not parse offers of {len(unknown_npcs):,} npcs.{Style.RESET_ALL}")
-            click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unknown_npcs)}{Style.RESET_ALL}")
-
-
 def generate_item_offers(conn: sqlite3.Connection, data_store):
     if "npcs_map" not in data_store or "items_map" not in data_store:
         return
@@ -670,7 +594,6 @@ def generate(conn, skip_images, skip_deprecated):
         RashidPositionTable.insert(conn, **position.model_dump())
 
     generate_item_offers(conn, data_store)
-    generate_spell_offers(conn, data_store)
     generate_loot_statistics(conn, data_store)
 
     if not skip_images:

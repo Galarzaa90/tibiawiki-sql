@@ -4,7 +4,7 @@ import unittest
 
 from tibiawikisql.models import Npc
 from tibiawikisql.schema import ItemTable, NpcBuyingTable, NpcDestinationTable, NpcJobTable, NpcRaceTable, \
-    NpcSellingTable, NpcSpellTable, \
+    NpcSellingTable, \
     NpcTable, \
     SpellTable
 
@@ -13,7 +13,6 @@ class TestNpc(unittest.TestCase):
     def setUp(self):
         self.conn = sqlite3.connect(":memory:")
         self.conn.executescript(NpcTable.get_create_table_statement())
-        self.conn.executescript(NpcSpellTable.get_create_table_statement())
         self.conn.executescript(NpcJobTable.get_create_table_statement())
         self.conn.executescript(NpcRaceTable.get_create_table_statement())
         self.conn.executescript(NpcBuyingTable.get_create_table_statement())
@@ -58,18 +57,14 @@ class TestNpc(unittest.TestCase):
             level=14,
             mana=120,
             soul=1,
-            price=300,
             is_premium=False,
             is_promotion=False,
             status="active",
             timestamp=datetime.datetime.fromisoformat("2024-07-29T16:37:09+00:00"),
         )
-        NpcSpellTable.insert(self.conn, npc_id=1, spell_id=1, druid=True)
 
         npc = Npc.get_one_by_field(self.conn, "name", "Azalea")
 
         self.assertIsInstance(npc, Npc)
         self.assertEqual(5, len(npc.jobs))
         self.assertEqual("Human", npc.race)
-        self.assertEqual(1, len(npc.teaches))
-        self.assertEqual("Food (Spell)", npc.teaches[0].spell_title)

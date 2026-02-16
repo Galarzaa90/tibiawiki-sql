@@ -1,5 +1,12 @@
 # Changelog
 
+## 8.0.0 (Unreleased)
+
+- Remove `npc_spell` table.
+- Remove spell teacher relations from API models (`Npc.teaches`, `Spell.taught_by`).
+- Remove spell purchase price (`spell.price`) from parser, schema and models.
+- Remove spell-offer generation from `Module:ItemPrices/spelldata`.
+
 ## 7.0.3 (2025-07-28)
 
 - Fix SQL generation not working on Docker due to not having the `CONCAT` SQLite extension.

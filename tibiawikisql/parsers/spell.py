@@ -25,7 +25,6 @@ class SpellParser(BaseParser):
         "element": AttributeParser.optional("damagetype"),
         "mana": AttributeParser.optional("mana", parse_integer),
         "soul": AttributeParser.optional("soul", parse_integer, 0),
-        "price": AttributeParser.optional("spellcost", parse_integer),
         "cooldown": AttributeParser.required("cooldown"),
         "cooldown2": AttributeParser.optional("cooldown2"),
         "cooldown3": AttributeParser.optional("cooldown3"),
@@ -47,5 +46,4 @@ class SpellParser(BaseParser):
             if vocation in row["_raw_attributes"].get("voc", "").lower():
                 row[vocation] = True
         return row
-
 
