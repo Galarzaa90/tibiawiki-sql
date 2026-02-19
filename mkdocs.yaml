@@ -116,6 +116,7 @@ nav:
       - Home: index.md
       - Introduction: intro.md
       - Changelog: changelog.md
+      - Database Schema: schema.md
   - API Reference:
       - TibiaWiki API: api/api.md
       - Database: api/database.md
