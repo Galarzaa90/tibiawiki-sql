@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🚚
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python 🐍
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.13"
 
@@ -23,7 +23,7 @@ jobs:
         run:  pip install -U -e .
 
       - name: Cache Images 📦
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: images/
           key: images
@@ -34,7 +34,7 @@ jobs:
         run: tibiawikisql generate --skip-deprecated
 
       - name: Upload database 🚀
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: tibiawiki-db
           path: |
