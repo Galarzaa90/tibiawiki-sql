@@ -7,6 +7,7 @@
 - Remove spell purchase price (`spell.price`) from parser, schema and models.
 - Remove spell-offer generation from `Module:ItemPrices/spelldata`.
 - Fix creature elemental modifier mapping: `energyDmgMod` now maps to `modifier_energy` and `iceDmgMod` to `modifier_ice`.
+- Add missing item infobox mapping for `death_attack`.
 
 ## 7.0.3 (2025-07-28)
 

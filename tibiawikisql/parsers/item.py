@@ -79,6 +79,7 @@ class ItemParser(BaseParser):
         "energy_attack": "energy_attack",
         "ice_attack": "ice_attack",
         "earth_attack": "earth_attack",
+        "death_attack": "death_attack",
         "weapon_type": "weapontype",
         "destructible": "destructible",
         "holds_liquid": "holdsliquid",
