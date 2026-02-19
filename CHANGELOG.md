@@ -6,6 +6,7 @@
 - Remove spell teacher relations from API models (`Npc.teaches`, `Spell.taught_by`).
 - Remove spell purchase price (`spell.price`) from parser, schema and models.
 - Remove spell-offer generation from `Module:ItemPrices/spelldata`.
+- Fix creature elemental modifier mapping: `energyDmgMod` now maps to `modifier_energy` and `iceDmgMod` to `modifier_ice`.
 
 ## 7.0.3 (2025-07-28)
 

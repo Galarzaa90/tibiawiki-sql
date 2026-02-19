@@ -235,8 +235,8 @@ class CreatureParser(BaseParser):
         "modifier_physical": AttributeParser.optional("physicalDmgMod", parse_integer),
         "modifier_earth": AttributeParser.optional("earthDmgMod", parse_integer),
         "modifier_fire": AttributeParser.optional("fireDmgMod", parse_integer),
-        "modifier_energy": AttributeParser.optional("iceDmgMod", parse_integer),
-        "modifier_ice": AttributeParser.optional("energyDmgMod", parse_integer),
+        "modifier_energy": AttributeParser.optional("energyDmgMod", parse_integer),
+        "modifier_ice": AttributeParser.optional("iceDmgMod", parse_integer),
         "modifier_death": AttributeParser.optional("deathDmgMod", parse_integer),
         "modifier_holy": AttributeParser.optional("holyDmgMod", parse_integer),
         "modifier_drown": AttributeParser.optional("drownDmgMod", parse_integer),
@@ -281,5 +281,4 @@ class CreatureParser(BaseParser):
             if max_damage:
                 row["max_damage"] = CreatureMaxDamage(**max_damage)
         return row
-
 
