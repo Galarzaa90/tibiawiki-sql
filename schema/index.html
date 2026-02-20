@@ -750,6 +750,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#item_proficiency_perk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        item_proficiency_perk
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#map" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1964,6 +1975,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#item_proficiency_perk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        item_proficiency_perk
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#map" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2255,6 +2277,10 @@
 <tr>
 <td><code>item_sound</code></td>
 <td>Contains all the sounds made by items.</td>
+</tr>
+<tr>
+<td><code>item_proficiency_perk</code></td>
+<td>Contains weapon proficiency perks for items.</td>
 </tr>
 <tr>
 <td><code>item_store_offer</code></td>
@@ -3561,6 +3587,43 @@
 <td>currency</td>
 <td><code>TEXT</code></td>
 <td>The currency used. Most of the time Tibia Coins.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="item_proficiency_perk">item_proficiency_perk<a class="headerlink" href="#item_proficiency_perk" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>item_id</td>
+<td><code>INTEGER</code></td>
+<td>The id of the item this perk belongs to.</td>
+</tr>
+<tr>
+<td>proficiency_level</td>
+<td><code>INTEGER</code></td>
+<td>The weapon proficiency level where this perk is unlocked.</td>
+</tr>
+<tr>
+<td>skill_image</td>
+<td><code>TEXT</code></td>
+<td>The name of the skill image shown for this perk.</td>
+</tr>
+<tr>
+<td>icon</td>
+<td><code>TEXT</code></td>
+<td>The optional icon name used in this perk.</td>
+</tr>
+<tr>
+<td>effect</td>
+<td><code>TEXT</code></td>
+<td>The effect text shown for this perk.</td>
 </tr>
 </tbody>
 </table>

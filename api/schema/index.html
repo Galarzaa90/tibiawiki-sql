@@ -1367,6 +1367,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tibiawikisql.schema.ItemProficiencyPerkTable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ItemProficiencyPerkTable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tibiawikisql.schema.CreatureDropTable" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1910,6 +1921,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tibiawikisql.schema.ItemProficiencyPerkTable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ItemProficiencyPerkTable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tibiawikisql.schema.CreatureDropTable" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2396,6 +2418,14 @@
             <td>
               <div class="doc-md-description">
                 <p>Contains the Tibia store offers for an item.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="            ItemProficiencyPerkTable (tibiawikisql.schema.ItemProficiencyPerkTable)" href="#tibiawikisql.schema.ItemProficiencyPerkTable">ItemProficiencyPerkTable</a></code></td>
+            <td>
+              <div class="doc-md-description">
+                <p>Contains weapon proficiency perks for an item.</p>
               </div>
             </td>
           </tr>
@@ -3089,6 +3119,59 @@
 
 
         <p>Contains the Tibia store offers for an item.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="tibiawikisql.schema.ItemProficiencyPerkTable" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">ItemProficiencyPerkTable</span>
+
+
+<a href="#tibiawikisql.schema.ItemProficiencyPerkTable" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            Table (tibiawikisql.database.Table)" href="../database/#tibiawikisql.database.Table">Table</a></code></p>
+
+
+
+        <p>Contains weapon proficiency perks for an item.</p>
 
 
 
@@ -4296,16 +4379,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/schema.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-537">537</a></span>
-<span class="normal"><a href="#__codelineno-0-538">538</a></span>
-<span class="normal"><a href="#__codelineno-0-539">539</a></span>
-<span class="normal"><a href="#__codelineno-0-540">540</a></span>
-<span class="normal"><a href="#__codelineno-0-541">541</a></span>
-<span class="normal"><a href="#__codelineno-0-542">542</a></span>
-<span class="normal"><a href="#__codelineno-0-543">543</a></span>
-<span class="normal"><a href="#__codelineno-0-544">544</a></span>
-<span class="normal"><a href="#__codelineno-0-545">545</a></span>
-<span class="normal"><a href="#__codelineno-0-546">546</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-546">546</a></span>
 <span class="normal"><a href="#__codelineno-0-547">547</a></span>
 <span class="normal"><a href="#__codelineno-0-548">548</a></span>
 <span class="normal"><a href="#__codelineno-0-549">549</a></span>
@@ -4317,28 +4391,37 @@
 <span class="normal"><a href="#__codelineno-0-555">555</a></span>
 <span class="normal"><a href="#__codelineno-0-556">556</a></span>
 <span class="normal"><a href="#__codelineno-0-557">557</a></span>
-<span class="normal"><a href="#__codelineno-0-558">558</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-537" name="__codelineno-0-537"></a><span class="nd">@classmethod</span>
-<a id="__codelineno-0-538" name="__codelineno-0-538"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_list_by_outfit_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">outfit_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Row</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<a id="__codelineno-0-539" name="__codelineno-0-539"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all entries related to a specific outfit, joining quest titles.</span>
-<a id="__codelineno-0-540" name="__codelineno-0-540"></a>
-<a id="__codelineno-0-541" name="__codelineno-0-541"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-542" name="__codelineno-0-542"></a><span class="sd">        conn: A connection to the database.</span>
-<a id="__codelineno-0-543" name="__codelineno-0-543"></a><span class="sd">        outfit_id: The article ID of the outfit.</span>
-<a id="__codelineno-0-544" name="__codelineno-0-544"></a>
-<a id="__codelineno-0-545" name="__codelineno-0-545"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-546" name="__codelineno-0-546"></a><span class="sd">        The rows matching the criteria.</span>
-<a id="__codelineno-0-547" name="__codelineno-0-547"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-548" name="__codelineno-0-548"></a>    <span class="n">quest</span> <span class="o">=</span> <span class="n">QuestTable</span><span class="o">.</span><span class="n">__table__</span>
-<a id="__codelineno-0-549" name="__codelineno-0-549"></a>    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-0-550" name="__codelineno-0-550"></a>        <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="p">)</span>
-<a id="__codelineno-0-551" name="__codelineno-0-551"></a>        <span class="o">.</span><span class="n">select</span><span class="p">(</span>
-<a id="__codelineno-0-552" name="__codelineno-0-552"></a>            <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">quest_id</span><span class="p">,</span>
-<a id="__codelineno-0-553" name="__codelineno-0-553"></a>            <span class="n">quest</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s2">&quot;quest_title&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-554" name="__codelineno-0-554"></a>            <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">unlock_type</span><span class="p">,</span>
-<a id="__codelineno-0-555" name="__codelineno-0-555"></a>        <span class="p">)</span>
-<a id="__codelineno-0-556" name="__codelineno-0-556"></a>        <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">quest</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">quest</span><span class="o">.</span><span class="n">article_id</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">quest_id</span><span class="p">)</span>
-<a id="__codelineno-0-557" name="__codelineno-0-557"></a>    <span class="p">)</span>
-<a id="__codelineno-0-558" name="__codelineno-0-558"></a>    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;outfit_id&quot;</span><span class="p">,</span> <span class="n">outfit_id</span><span class="p">,</span> <span class="n">base_query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-558">558</a></span>
+<span class="normal"><a href="#__codelineno-0-559">559</a></span>
+<span class="normal"><a href="#__codelineno-0-560">560</a></span>
+<span class="normal"><a href="#__codelineno-0-561">561</a></span>
+<span class="normal"><a href="#__codelineno-0-562">562</a></span>
+<span class="normal"><a href="#__codelineno-0-563">563</a></span>
+<span class="normal"><a href="#__codelineno-0-564">564</a></span>
+<span class="normal"><a href="#__codelineno-0-565">565</a></span>
+<span class="normal"><a href="#__codelineno-0-566">566</a></span>
+<span class="normal"><a href="#__codelineno-0-567">567</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-546" name="__codelineno-0-546"></a><span class="nd">@classmethod</span>
+<a id="__codelineno-0-547" name="__codelineno-0-547"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_list_by_outfit_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">outfit_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Row</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<a id="__codelineno-0-548" name="__codelineno-0-548"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all entries related to a specific outfit, joining quest titles.</span>
+<a id="__codelineno-0-549" name="__codelineno-0-549"></a>
+<a id="__codelineno-0-550" name="__codelineno-0-550"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-551" name="__codelineno-0-551"></a><span class="sd">        conn: A connection to the database.</span>
+<a id="__codelineno-0-552" name="__codelineno-0-552"></a><span class="sd">        outfit_id: The article ID of the outfit.</span>
+<a id="__codelineno-0-553" name="__codelineno-0-553"></a>
+<a id="__codelineno-0-554" name="__codelineno-0-554"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-555" name="__codelineno-0-555"></a><span class="sd">        The rows matching the criteria.</span>
+<a id="__codelineno-0-556" name="__codelineno-0-556"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-557" name="__codelineno-0-557"></a>    <span class="n">quest</span> <span class="o">=</span> <span class="n">QuestTable</span><span class="o">.</span><span class="n">__table__</span>
+<a id="__codelineno-0-558" name="__codelineno-0-558"></a>    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-559" name="__codelineno-0-559"></a>        <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="p">)</span>
+<a id="__codelineno-0-560" name="__codelineno-0-560"></a>        <span class="o">.</span><span class="n">select</span><span class="p">(</span>
+<a id="__codelineno-0-561" name="__codelineno-0-561"></a>            <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">quest_id</span><span class="p">,</span>
+<a id="__codelineno-0-562" name="__codelineno-0-562"></a>            <span class="n">quest</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s2">&quot;quest_title&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-563" name="__codelineno-0-563"></a>            <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">unlock_type</span><span class="p">,</span>
+<a id="__codelineno-0-564" name="__codelineno-0-564"></a>        <span class="p">)</span>
+<a id="__codelineno-0-565" name="__codelineno-0-565"></a>        <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">quest</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">quest</span><span class="o">.</span><span class="n">article_id</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">quest_id</span><span class="p">)</span>
+<a id="__codelineno-0-566" name="__codelineno-0-566"></a>    <span class="p">)</span>
+<a id="__codelineno-0-567" name="__codelineno-0-567"></a>    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;outfit_id&quot;</span><span class="p">,</span> <span class="n">outfit_id</span><span class="p">,</span> <span class="n">base_query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4518,16 +4601,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/schema.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-566">566</a></span>
-<span class="normal"><a href="#__codelineno-0-567">567</a></span>
-<span class="normal"><a href="#__codelineno-0-568">568</a></span>
-<span class="normal"><a href="#__codelineno-0-569">569</a></span>
-<span class="normal"><a href="#__codelineno-0-570">570</a></span>
-<span class="normal"><a href="#__codelineno-0-571">571</a></span>
-<span class="normal"><a href="#__codelineno-0-572">572</a></span>
-<span class="normal"><a href="#__codelineno-0-573">573</a></span>
-<span class="normal"><a href="#__codelineno-0-574">574</a></span>
-<span class="normal"><a href="#__codelineno-0-575">575</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-575">575</a></span>
 <span class="normal"><a href="#__codelineno-0-576">576</a></span>
 <span class="normal"><a href="#__codelineno-0-577">577</a></span>
 <span class="normal"><a href="#__codelineno-0-578">578</a></span>
@@ -4538,27 +4612,36 @@
 <span class="normal"><a href="#__codelineno-0-583">583</a></span>
 <span class="normal"><a href="#__codelineno-0-584">584</a></span>
 <span class="normal"><a href="#__codelineno-0-585">585</a></span>
-<span class="normal"><a href="#__codelineno-0-586">586</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-566" name="__codelineno-0-566"></a><span class="nd">@classmethod</span>
-<a id="__codelineno-0-567" name="__codelineno-0-567"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_list_by_quest_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">quest_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Row</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<a id="__codelineno-0-568" name="__codelineno-0-568"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all entries related to a specific quest, joining creature titles.</span>
-<a id="__codelineno-0-569" name="__codelineno-0-569"></a>
-<a id="__codelineno-0-570" name="__codelineno-0-570"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-571" name="__codelineno-0-571"></a><span class="sd">        conn: A connection to the database.</span>
-<a id="__codelineno-0-572" name="__codelineno-0-572"></a><span class="sd">        quest_id: The article ID of the quest.</span>
-<a id="__codelineno-0-573" name="__codelineno-0-573"></a>
-<a id="__codelineno-0-574" name="__codelineno-0-574"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-575" name="__codelineno-0-575"></a><span class="sd">        The rows matching the criteria.</span>
-<a id="__codelineno-0-576" name="__codelineno-0-576"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-577" name="__codelineno-0-577"></a>    <span class="n">creature</span> <span class="o">=</span> <span class="n">PTable</span><span class="p">(</span><span class="n">CreatureTable</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
-<a id="__codelineno-0-578" name="__codelineno-0-578"></a>    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-0-579" name="__codelineno-0-579"></a>        <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="p">)</span>
-<a id="__codelineno-0-580" name="__codelineno-0-580"></a>        <span class="o">.</span><span class="n">select</span><span class="p">(</span>
-<a id="__codelineno-0-581" name="__codelineno-0-581"></a>            <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">creature_id</span><span class="p">,</span>
-<a id="__codelineno-0-582" name="__codelineno-0-582"></a>            <span class="n">creature</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s2">&quot;creature_title&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-583" name="__codelineno-0-583"></a>        <span class="p">)</span>
-<a id="__codelineno-0-584" name="__codelineno-0-584"></a>        <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">creature</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">creature</span><span class="o">.</span><span class="n">article_id</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">creature_id</span><span class="p">)</span>
-<a id="__codelineno-0-585" name="__codelineno-0-585"></a>    <span class="p">)</span>
-<a id="__codelineno-0-586" name="__codelineno-0-586"></a>    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;quest_id&quot;</span><span class="p">,</span> <span class="n">quest_id</span><span class="p">,</span> <span class="n">base_query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-586">586</a></span>
+<span class="normal"><a href="#__codelineno-0-587">587</a></span>
+<span class="normal"><a href="#__codelineno-0-588">588</a></span>
+<span class="normal"><a href="#__codelineno-0-589">589</a></span>
+<span class="normal"><a href="#__codelineno-0-590">590</a></span>
+<span class="normal"><a href="#__codelineno-0-591">591</a></span>
+<span class="normal"><a href="#__codelineno-0-592">592</a></span>
+<span class="normal"><a href="#__codelineno-0-593">593</a></span>
+<span class="normal"><a href="#__codelineno-0-594">594</a></span>
+<span class="normal"><a href="#__codelineno-0-595">595</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-575" name="__codelineno-0-575"></a><span class="nd">@classmethod</span>
+<a id="__codelineno-0-576" name="__codelineno-0-576"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_list_by_quest_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">quest_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Row</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<a id="__codelineno-0-577" name="__codelineno-0-577"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all entries related to a specific quest, joining creature titles.</span>
+<a id="__codelineno-0-578" name="__codelineno-0-578"></a>
+<a id="__codelineno-0-579" name="__codelineno-0-579"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-580" name="__codelineno-0-580"></a><span class="sd">        conn: A connection to the database.</span>
+<a id="__codelineno-0-581" name="__codelineno-0-581"></a><span class="sd">        quest_id: The article ID of the quest.</span>
+<a id="__codelineno-0-582" name="__codelineno-0-582"></a>
+<a id="__codelineno-0-583" name="__codelineno-0-583"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-584" name="__codelineno-0-584"></a><span class="sd">        The rows matching the criteria.</span>
+<a id="__codelineno-0-585" name="__codelineno-0-585"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-586" name="__codelineno-0-586"></a>    <span class="n">creature</span> <span class="o">=</span> <span class="n">PTable</span><span class="p">(</span><span class="n">CreatureTable</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
+<a id="__codelineno-0-587" name="__codelineno-0-587"></a>    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-588" name="__codelineno-0-588"></a>        <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="p">)</span>
+<a id="__codelineno-0-589" name="__codelineno-0-589"></a>        <span class="o">.</span><span class="n">select</span><span class="p">(</span>
+<a id="__codelineno-0-590" name="__codelineno-0-590"></a>            <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">creature_id</span><span class="p">,</span>
+<a id="__codelineno-0-591" name="__codelineno-0-591"></a>            <span class="n">creature</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s2">&quot;creature_title&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-592" name="__codelineno-0-592"></a>        <span class="p">)</span>
+<a id="__codelineno-0-593" name="__codelineno-0-593"></a>        <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">creature</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">creature</span><span class="o">.</span><span class="n">article_id</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">creature_id</span><span class="p">)</span>
+<a id="__codelineno-0-594" name="__codelineno-0-594"></a>    <span class="p">)</span>
+<a id="__codelineno-0-595" name="__codelineno-0-595"></a>    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;quest_id&quot;</span><span class="p">,</span> <span class="n">quest_id</span><span class="p">,</span> <span class="n">base_query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4751,16 +4834,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/schema.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-594">594</a></span>
-<span class="normal"><a href="#__codelineno-0-595">595</a></span>
-<span class="normal"><a href="#__codelineno-0-596">596</a></span>
-<span class="normal"><a href="#__codelineno-0-597">597</a></span>
-<span class="normal"><a href="#__codelineno-0-598">598</a></span>
-<span class="normal"><a href="#__codelineno-0-599">599</a></span>
-<span class="normal"><a href="#__codelineno-0-600">600</a></span>
-<span class="normal"><a href="#__codelineno-0-601">601</a></span>
-<span class="normal"><a href="#__codelineno-0-602">602</a></span>
-<span class="normal"><a href="#__codelineno-0-603">603</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-603">603</a></span>
 <span class="normal"><a href="#__codelineno-0-604">604</a></span>
 <span class="normal"><a href="#__codelineno-0-605">605</a></span>
 <span class="normal"><a href="#__codelineno-0-606">606</a></span>
@@ -4771,27 +4845,36 @@
 <span class="normal"><a href="#__codelineno-0-611">611</a></span>
 <span class="normal"><a href="#__codelineno-0-612">612</a></span>
 <span class="normal"><a href="#__codelineno-0-613">613</a></span>
-<span class="normal"><a href="#__codelineno-0-614">614</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-594" name="__codelineno-0-594"></a><span class="nd">@classmethod</span>
-<a id="__codelineno-0-595" name="__codelineno-0-595"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_list_by_item_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">item_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Row</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<a id="__codelineno-0-596" name="__codelineno-0-596"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all entries related to a specific item, joining quest titles.</span>
-<a id="__codelineno-0-597" name="__codelineno-0-597"></a>
-<a id="__codelineno-0-598" name="__codelineno-0-598"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-599" name="__codelineno-0-599"></a><span class="sd">        conn: A connection to the database.</span>
-<a id="__codelineno-0-600" name="__codelineno-0-600"></a><span class="sd">        item_id: The article ID of the item.</span>
-<a id="__codelineno-0-601" name="__codelineno-0-601"></a>
-<a id="__codelineno-0-602" name="__codelineno-0-602"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-603" name="__codelineno-0-603"></a><span class="sd">        The rows matching the criteria.</span>
-<a id="__codelineno-0-604" name="__codelineno-0-604"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-605" name="__codelineno-0-605"></a>    <span class="n">quest</span> <span class="o">=</span> <span class="n">PTable</span><span class="p">(</span><span class="n">QuestTable</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
-<a id="__codelineno-0-606" name="__codelineno-0-606"></a>    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-0-607" name="__codelineno-0-607"></a>        <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="p">)</span>
-<a id="__codelineno-0-608" name="__codelineno-0-608"></a>        <span class="o">.</span><span class="n">select</span><span class="p">(</span>
-<a id="__codelineno-0-609" name="__codelineno-0-609"></a>            <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">quest_id</span><span class="p">,</span>
-<a id="__codelineno-0-610" name="__codelineno-0-610"></a>            <span class="n">quest</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s2">&quot;quest_title&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-611" name="__codelineno-0-611"></a>        <span class="p">)</span>
-<a id="__codelineno-0-612" name="__codelineno-0-612"></a>        <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">quest</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">quest</span><span class="o">.</span><span class="n">article_id</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">quest_id</span><span class="p">)</span>
-<a id="__codelineno-0-613" name="__codelineno-0-613"></a>    <span class="p">)</span>
-<a id="__codelineno-0-614" name="__codelineno-0-614"></a>    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item_id</span><span class="p">,</span> <span class="n">base_query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-614">614</a></span>
+<span class="normal"><a href="#__codelineno-0-615">615</a></span>
+<span class="normal"><a href="#__codelineno-0-616">616</a></span>
+<span class="normal"><a href="#__codelineno-0-617">617</a></span>
+<span class="normal"><a href="#__codelineno-0-618">618</a></span>
+<span class="normal"><a href="#__codelineno-0-619">619</a></span>
+<span class="normal"><a href="#__codelineno-0-620">620</a></span>
+<span class="normal"><a href="#__codelineno-0-621">621</a></span>
+<span class="normal"><a href="#__codelineno-0-622">622</a></span>
+<span class="normal"><a href="#__codelineno-0-623">623</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-603" name="__codelineno-0-603"></a><span class="nd">@classmethod</span>
+<a id="__codelineno-0-604" name="__codelineno-0-604"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_list_by_item_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">item_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Row</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<a id="__codelineno-0-605" name="__codelineno-0-605"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all entries related to a specific item, joining quest titles.</span>
+<a id="__codelineno-0-606" name="__codelineno-0-606"></a>
+<a id="__codelineno-0-607" name="__codelineno-0-607"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-608" name="__codelineno-0-608"></a><span class="sd">        conn: A connection to the database.</span>
+<a id="__codelineno-0-609" name="__codelineno-0-609"></a><span class="sd">        item_id: The article ID of the item.</span>
+<a id="__codelineno-0-610" name="__codelineno-0-610"></a>
+<a id="__codelineno-0-611" name="__codelineno-0-611"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-612" name="__codelineno-0-612"></a><span class="sd">        The rows matching the criteria.</span>
+<a id="__codelineno-0-613" name="__codelineno-0-613"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-614" name="__codelineno-0-614"></a>    <span class="n">quest</span> <span class="o">=</span> <span class="n">PTable</span><span class="p">(</span><span class="n">QuestTable</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
+<a id="__codelineno-0-615" name="__codelineno-0-615"></a>    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-616" name="__codelineno-0-616"></a>        <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="p">)</span>
+<a id="__codelineno-0-617" name="__codelineno-0-617"></a>        <span class="o">.</span><span class="n">select</span><span class="p">(</span>
+<a id="__codelineno-0-618" name="__codelineno-0-618"></a>            <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">quest_id</span><span class="p">,</span>
+<a id="__codelineno-0-619" name="__codelineno-0-619"></a>            <span class="n">quest</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s2">&quot;quest_title&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-620" name="__codelineno-0-620"></a>        <span class="p">)</span>
+<a id="__codelineno-0-621" name="__codelineno-0-621"></a>        <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">quest</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">quest</span><span class="o">.</span><span class="n">article_id</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">quest_id</span><span class="p">)</span>
+<a id="__codelineno-0-622" name="__codelineno-0-622"></a>    <span class="p">)</span>
+<a id="__codelineno-0-623" name="__codelineno-0-623"></a>    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item_id</span><span class="p">,</span> <span class="n">base_query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4892,16 +4975,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/schema.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-616">616</a></span>
-<span class="normal"><a href="#__codelineno-0-617">617</a></span>
-<span class="normal"><a href="#__codelineno-0-618">618</a></span>
-<span class="normal"><a href="#__codelineno-0-619">619</a></span>
-<span class="normal"><a href="#__codelineno-0-620">620</a></span>
-<span class="normal"><a href="#__codelineno-0-621">621</a></span>
-<span class="normal"><a href="#__codelineno-0-622">622</a></span>
-<span class="normal"><a href="#__codelineno-0-623">623</a></span>
-<span class="normal"><a href="#__codelineno-0-624">624</a></span>
-<span class="normal"><a href="#__codelineno-0-625">625</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-625">625</a></span>
 <span class="normal"><a href="#__codelineno-0-626">626</a></span>
 <span class="normal"><a href="#__codelineno-0-627">627</a></span>
 <span class="normal"><a href="#__codelineno-0-628">628</a></span>
@@ -4912,27 +4986,36 @@
 <span class="normal"><a href="#__codelineno-0-633">633</a></span>
 <span class="normal"><a href="#__codelineno-0-634">634</a></span>
 <span class="normal"><a href="#__codelineno-0-635">635</a></span>
-<span class="normal"><a href="#__codelineno-0-636">636</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-616" name="__codelineno-0-616"></a><span class="nd">@classmethod</span>
-<a id="__codelineno-0-617" name="__codelineno-0-617"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_list_by_quest_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">quest_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Row</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<a id="__codelineno-0-618" name="__codelineno-0-618"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all entries related to a specific quest, joining item titles.</span>
-<a id="__codelineno-0-619" name="__codelineno-0-619"></a>
-<a id="__codelineno-0-620" name="__codelineno-0-620"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-621" name="__codelineno-0-621"></a><span class="sd">        conn: A connection to the database.</span>
-<a id="__codelineno-0-622" name="__codelineno-0-622"></a><span class="sd">        quest_id: The article ID of the quest.</span>
-<a id="__codelineno-0-623" name="__codelineno-0-623"></a>
-<a id="__codelineno-0-624" name="__codelineno-0-624"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-625" name="__codelineno-0-625"></a><span class="sd">        The rows matching the criteria.</span>
-<a id="__codelineno-0-626" name="__codelineno-0-626"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-627" name="__codelineno-0-627"></a>    <span class="n">item</span> <span class="o">=</span> <span class="n">PTable</span><span class="p">(</span><span class="n">ItemTable</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
-<a id="__codelineno-0-628" name="__codelineno-0-628"></a>    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-0-629" name="__codelineno-0-629"></a>        <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="p">)</span>
-<a id="__codelineno-0-630" name="__codelineno-0-630"></a>        <span class="o">.</span><span class="n">select</span><span class="p">(</span>
-<a id="__codelineno-0-631" name="__codelineno-0-631"></a>            <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">item_id</span><span class="p">,</span>
-<a id="__codelineno-0-632" name="__codelineno-0-632"></a>            <span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s2">&quot;item_title&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-633" name="__codelineno-0-633"></a>        <span class="p">)</span>
-<a id="__codelineno-0-634" name="__codelineno-0-634"></a>        <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">article_id</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">item_id</span><span class="p">)</span>
-<a id="__codelineno-0-635" name="__codelineno-0-635"></a>    <span class="p">)</span>
-<a id="__codelineno-0-636" name="__codelineno-0-636"></a>    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;quest_id&quot;</span><span class="p">,</span> <span class="n">quest_id</span><span class="p">,</span> <span class="n">base_query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-636">636</a></span>
+<span class="normal"><a href="#__codelineno-0-637">637</a></span>
+<span class="normal"><a href="#__codelineno-0-638">638</a></span>
+<span class="normal"><a href="#__codelineno-0-639">639</a></span>
+<span class="normal"><a href="#__codelineno-0-640">640</a></span>
+<span class="normal"><a href="#__codelineno-0-641">641</a></span>
+<span class="normal"><a href="#__codelineno-0-642">642</a></span>
+<span class="normal"><a href="#__codelineno-0-643">643</a></span>
+<span class="normal"><a href="#__codelineno-0-644">644</a></span>
+<span class="normal"><a href="#__codelineno-0-645">645</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-625" name="__codelineno-0-625"></a><span class="nd">@classmethod</span>
+<a id="__codelineno-0-626" name="__codelineno-0-626"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_list_by_quest_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">quest_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Row</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<a id="__codelineno-0-627" name="__codelineno-0-627"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all entries related to a specific quest, joining item titles.</span>
+<a id="__codelineno-0-628" name="__codelineno-0-628"></a>
+<a id="__codelineno-0-629" name="__codelineno-0-629"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-630" name="__codelineno-0-630"></a><span class="sd">        conn: A connection to the database.</span>
+<a id="__codelineno-0-631" name="__codelineno-0-631"></a><span class="sd">        quest_id: The article ID of the quest.</span>
+<a id="__codelineno-0-632" name="__codelineno-0-632"></a>
+<a id="__codelineno-0-633" name="__codelineno-0-633"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-634" name="__codelineno-0-634"></a><span class="sd">        The rows matching the criteria.</span>
+<a id="__codelineno-0-635" name="__codelineno-0-635"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-636" name="__codelineno-0-636"></a>    <span class="n">item</span> <span class="o">=</span> <span class="n">PTable</span><span class="p">(</span><span class="n">ItemTable</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
+<a id="__codelineno-0-637" name="__codelineno-0-637"></a>    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-638" name="__codelineno-0-638"></a>        <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="p">)</span>
+<a id="__codelineno-0-639" name="__codelineno-0-639"></a>        <span class="o">.</span><span class="n">select</span><span class="p">(</span>
+<a id="__codelineno-0-640" name="__codelineno-0-640"></a>            <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">item_id</span><span class="p">,</span>
+<a id="__codelineno-0-641" name="__codelineno-0-641"></a>            <span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s2">&quot;item_title&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-642" name="__codelineno-0-642"></a>        <span class="p">)</span>
+<a id="__codelineno-0-643" name="__codelineno-0-643"></a>        <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">article_id</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">item_id</span><span class="p">)</span>
+<a id="__codelineno-0-644" name="__codelineno-0-644"></a>    <span class="p">)</span>
+<a id="__codelineno-0-645" name="__codelineno-0-645"></a>    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;quest_id&quot;</span><span class="p">,</span> <span class="n">quest_id</span><span class="p">,</span> <span class="n">base_query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5209,25 +5292,25 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/schema.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-703">703</a></span>
-<span class="normal"><a href="#__codelineno-0-704">704</a></span>
-<span class="normal"><a href="#__codelineno-0-705">705</a></span>
-<span class="normal"><a href="#__codelineno-0-706">706</a></span>
-<span class="normal"><a href="#__codelineno-0-707">707</a></span>
-<span class="normal"><a href="#__codelineno-0-708">708</a></span>
-<span class="normal"><a href="#__codelineno-0-709">709</a></span>
-<span class="normal"><a href="#__codelineno-0-710">710</a></span>
-<span class="normal"><a href="#__codelineno-0-711">711</a></span>
-<span class="normal"><a href="#__codelineno-0-712">712</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-703" name="__codelineno-0-703"></a><span class="k">def</span><span class="w"> </span><span class="nf">create_tables</span><span class="p">(</span><span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-704" name="__codelineno-0-704"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create all the tables in the database.</span>
-<a id="__codelineno-0-705" name="__codelineno-0-705"></a>
-<a id="__codelineno-0-706" name="__codelineno-0-706"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-707" name="__codelineno-0-707"></a><span class="sd">        conn: A connection to the database.</span>
-<a id="__codelineno-0-708" name="__codelineno-0-708"></a>
-<a id="__codelineno-0-709" name="__codelineno-0-709"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-710" name="__codelineno-0-710"></a>    <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">Table</span><span class="o">.</span><span class="n">all_tables</span><span class="p">():</span>
-<a id="__codelineno-0-711" name="__codelineno-0-711"></a>        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">get_drop_statement</span><span class="p">())</span>
-<a id="__codelineno-0-712" name="__codelineno-0-712"></a>        <span class="n">conn</span><span class="o">.</span><span class="n">executescript</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">get_create_table_statement</span><span class="p">())</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-712">712</a></span>
+<span class="normal"><a href="#__codelineno-0-713">713</a></span>
+<span class="normal"><a href="#__codelineno-0-714">714</a></span>
+<span class="normal"><a href="#__codelineno-0-715">715</a></span>
+<span class="normal"><a href="#__codelineno-0-716">716</a></span>
+<span class="normal"><a href="#__codelineno-0-717">717</a></span>
+<span class="normal"><a href="#__codelineno-0-718">718</a></span>
+<span class="normal"><a href="#__codelineno-0-719">719</a></span>
+<span class="normal"><a href="#__codelineno-0-720">720</a></span>
+<span class="normal"><a href="#__codelineno-0-721">721</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-712" name="__codelineno-0-712"></a><span class="k">def</span><span class="w"> </span><span class="nf">create_tables</span><span class="p">(</span><span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-713" name="__codelineno-0-713"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create all the tables in the database.</span>
+<a id="__codelineno-0-714" name="__codelineno-0-714"></a>
+<a id="__codelineno-0-715" name="__codelineno-0-715"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-716" name="__codelineno-0-716"></a><span class="sd">        conn: A connection to the database.</span>
+<a id="__codelineno-0-717" name="__codelineno-0-717"></a>
+<a id="__codelineno-0-718" name="__codelineno-0-718"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-719" name="__codelineno-0-719"></a>    <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">Table</span><span class="o">.</span><span class="n">all_tables</span><span class="p">():</span>
+<a id="__codelineno-0-720" name="__codelineno-0-720"></a>        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">get_drop_statement</span><span class="p">())</span>
+<a id="__codelineno-0-721" name="__codelineno-0-721"></a>        <span class="n">conn</span><span class="o">.</span><span class="n">executescript</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">get_create_table_statement</span><span class="p">())</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
