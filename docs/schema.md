@@ -9,43 +9,44 @@ The generated database has the following tables.
 ## Tables
 
 
-| Table                 | Description                                                                         |
-| --------------------- | ----------------------------------------------------------------------------------- |
-| `achievement`         | Contains information for all achievements.                                          |
-| `book`                | Contains information about books.                                                   |
-| `charm`               | Contains information for all charms.                                                |
-| `creature`            | Contains information for all creatures.                                             |
-| `creature_ability`    | Contains all the abilities done by creatures.                                       |
-| `creature_drop`       | Contains all the items dropped by creatures.                                        |
-| `creature_max_damage` | Contains the breakdown of max damage done by creatures.                             |
-| `creature_sound`      | Contains all the sounds made by creatures.                                          |
-| `database_info`       | Contains information about the database itself.                                     |
-| `game_update`         | Contains information about game updates.                                            |
-| `house`               | Contains all houses and guildhalls.                                                 |
-| `imbuement`           | Contains information for all imbuements.                                            |
-| `imbuement_material`  | Contains the item materials for imbuements.                                         |
-| `item`                | Contains information for all items.                                                 |
-| `item_attribute`      | Contains extra attributes and properties of items that only apply to certain types. |
-| `item_key`            | Contains the different key variations.                                              |
-| `item_sound`          | Contains all the sounds made by items.                                              |
-| `item_store_offer`    | Contains all offers for items in the Tibia store.                                   |
-| `map`                 | Contains the world map’s images.                                                    |
-| `mount`               | Contains information for all mounts.                                                |
-| `npc`                 | Contains information for all NPCs.                                                  |
-| `npc_destination`     | Contains all the NPCs’ travel destinations.                                         |
-| `npc_job`             | Contains all the NPCs’ jobs.                                                        |
-| `npc_offer_buy`       | Contains all the NPCs’ buy offers.                                                  |
-| `npc_offer_sell`      | Contains all the NPCs’ sell offers.                                                 |
-| `npc_race`            | Contains all the NPCs’ races.                                                       |
-| `outfit`              | Contains information for all outfits.                                               |
-| `outfit_image`        | Contains images for all outfits.                                                    |
-| `outfit_quest`        | Contains outfit and addon rewards for quests.                                       |
-| `quest`               | Contains information for all quests.                                                |
-| `quest_danger`        | Contains creatures that can be found in a quest.                                    |
-| `quest_reward`        | Contains item rewards for quests.                                                   |
-| `rashid_position`     | Contains the positions for the NPC Rashid every day of the week.                    |
-| `spell`               | Contains information for all spells.                                                |
-| `world`               | Contains information for all worlds.                                                |
+| Table                   | Description                                                                         |
+| ----------------------- | ----------------------------------------------------------------------------------- |
+| `achievement`           | Contains information for all achievements.                                          |
+| `book`                  | Contains information about books.                                                   |
+| `charm`                 | Contains information for all charms.                                                |
+| `creature`              | Contains information for all creatures.                                             |
+| `creature_ability`      | Contains all the abilities done by creatures.                                       |
+| `creature_drop`         | Contains all the items dropped by creatures.                                        |
+| `creature_max_damage`   | Contains the breakdown of max damage done by creatures.                             |
+| `creature_sound`        | Contains all the sounds made by creatures.                                          |
+| `database_info`         | Contains information about the database itself.                                     |
+| `game_update`           | Contains information about game updates.                                            |
+| `house`                 | Contains all houses and guildhalls.                                                 |
+| `imbuement`             | Contains information for all imbuements.                                            |
+| `imbuement_material`    | Contains the item materials for imbuements.                                         |
+| `item`                  | Contains information for all items.                                                 |
+| `item_attribute`        | Contains extra attributes and properties of items that only apply to certain types. |
+| `item_key`              | Contains the different key variations.                                              |
+| `item_sound`            | Contains all the sounds made by items.                                              |
+| `item_proficiency_perk` | Contains weapon proficiency perks for items.                                        |
+| `item_store_offer`      | Contains all offers for items in the Tibia store.                                   |
+| `map`                   | Contains the world map’s images.                                                    |
+| `mount`                 | Contains information for all mounts.                                                |
+| `npc`                   | Contains information for all NPCs.                                                  |
+| `npc_destination`       | Contains all the NPCs’ travel destinations.                                         |
+| `npc_job`               | Contains all the NPCs’ jobs.                                                        |
+| `npc_offer_buy`         | Contains all the NPCs’ buy offers.                                                  |
+| `npc_offer_sell`        | Contains all the NPCs’ sell offers.                                                 |
+| `npc_race`              | Contains all the NPCs’ races.                                                       |
+| `outfit`                | Contains information for all outfits.                                               |
+| `outfit_image`          | Contains images for all outfits.                                                    |
+| `outfit_quest`          | Contains outfit and addon rewards for quests.                                       |
+| `quest`                 | Contains information for all quests.                                                |
+| `quest_danger`          | Contains creatures that can be found in a quest.                                    |
+| `quest_reward`          | Contains item rewards for quests.                                                   |
+| `rashid_position`       | Contains the positions for the NPC Rashid every day of the week.                    |
+| `spell`                 | Contains information for all spells.                                                |
+| `world`                 | Contains information for all worlds.                                                |
 
 
 ## Table schemas
@@ -388,6 +389,17 @@ The generated database has the following tables.
 | amount   | `INTEGER` | The amount of the item offered.                  |
 | currency | `TEXT`    | The currency used. Most of the time Tibia Coins. |
 
+
+
+### item_proficiency_perk
+
+| Column            | Type      | Description                                               |
+| ----------------- | --------- | --------------------------------------------------------- |
+| item_id           | `INTEGER` | The id of the item this perk belongs to.                  |
+| proficiency_level | `INTEGER` | The weapon proficiency level where this perk is unlocked. |
+| skill_image       | `TEXT`    | The name of the skill image shown for this perk.          |
+| icon              | `TEXT`    | The optional icon name used in this perk.                 |
+| effect            | `TEXT`    | The effect text shown for this perk.                      |
 
 
 ### map

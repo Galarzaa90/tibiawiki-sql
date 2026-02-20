@@ -1,0 +1,14 @@
+===Sanguine 1H Axe===
+{{Weapon Proficiency Table
+|perk_1 =
+{{Weapon Proficiency Button |skill_image=Axe Skill Bonus|icon=|text=+1 Axe Fighting}}
+|perk_2 =
+{{Weapon Proficiency Button |skill_image=Auto-Attack Critical Extra Damage|icon=|text=+10% critical extra damage for auto-attacks}}
+{{Weapon Proficiency Button |skill_image=Axe Extra Damage Auto-Attack|icon=Special Icon|text=+5% of your Axe Fighting as extra damage for auto-attacks}}
+{{Weapon Proficiency Button |skill_image=Malformed Missing Text|icon=|}}
+}}
+===Sanguine 1H Club===
+{{Weapon Proficiency Table
+|perk_1 =
+{{Weapon Proficiency Button |skill_image=Club Skill Bonus|icon=|text=+1 Club Fighting}}
+}}

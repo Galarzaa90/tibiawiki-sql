@@ -8,6 +8,7 @@
 - Remove spell-offer generation from `Module:ItemPrices/spelldata`.
 - Fix creature elemental modifier mapping: `energyDmgMod` now maps to `modifier_energy` and `iceDmgMod` to `modifier_ice`.
 - Add missing item infobox mapping for `death_attack`.
+- Add weapon proficiency perk generation from `Weapon Proficiency Name` and `Weapon Proficiency Tables`, using hybrid heading/template parsing and case-insensitive section-name matching.
 
 ## 7.0.3 (2025-07-28)
 

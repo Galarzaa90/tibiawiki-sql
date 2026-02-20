@@ -8,7 +8,7 @@ import re
 import sqlite3
 from collections import defaultdict
 import platform
-from typing import TYPE_CHECKING, TypeVar
+from typing import Any, TYPE_CHECKING, TypeVar
 
 import click
 import requests
@@ -21,7 +21,13 @@ from tibiawikisql.errors import ArticleParsingError
 from tibiawikisql.models.npc import rashid_positions
 from tibiawikisql.parsers import BaseParser, OutfitParser
 from tibiawikisql.schema import RashidPositionTable
-from tibiawikisql.utils import parse_loot_statistics, parse_min_max, timed
+from tibiawikisql.utils import (
+    parse_loot_statistics,
+    parse_min_max,
+    parse_weapon_proficiency_name,
+    parse_weapon_proficiency_tables,
+    timed,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
@@ -54,6 +60,9 @@ lua = LuaRuntime()
 link_pattern = re.compile(r"(?P<price>\d+)?\s?\[\[([^]|]+)")
 
 wiki_client = WikiClient()
+
+WEAPON_PROFICIENCY_NAME_ARTICLE = "Weapon Proficiency Name"
+WEAPON_PROFICIENCY_TABLES_ARTICLE = "Weapon Proficiency Tables"
 
 class Category:
     """Defines the article groups to be fetched.
@@ -548,6 +557,80 @@ def generate_loot_statistics(conn: sqlite3.Connection, data_store):
         conn.commit()
 
 
+def generate_item_proficiency_perks(conn: sqlite3.Connection, data_store: dict[str, Any]) -> None:
+    """Generate item weapon proficiency perks from wiki template pages.
+
+    Args:
+        conn: Connection to the database.
+        data_store: Generated data store containing the item map.
+
+    """
+    if "items_map" not in data_store:
+        return
+
+    article_mapping = wiki_client.get_article(WEAPON_PROFICIENCY_NAME_ARTICLE)
+    article_tables = wiki_client.get_article(WEAPON_PROFICIENCY_TABLES_ARTICLE)
+
+    if article_mapping is None or article_tables is None:
+        click.echo(f"{Fore.RED}Could not fetch weapon proficiency pages.{Style.RESET_ALL}")
+        return
+
+    mapping = parse_weapon_proficiency_name(article_mapping.content)
+    proficiency_tables = parse_weapon_proficiency_tables(article_tables.content)
+    if not mapping:
+        click.echo(
+            f"{Fore.RED}No weapon proficiency item mappings were parsed "
+            f"from {article_mapping.title}.{Style.RESET_ALL}",
+        )
+    if not proficiency_tables:
+        click.echo(
+            f"{Fore.RED}No weapon proficiency table sections were parsed "
+            f"from {article_tables.title}.{Style.RESET_ALL}",
+        )
+
+    unknown_items = set()
+    missing_sections = set()
+    malformed_entries = 0
+    rows = []
+    proficiency_tables_by_name = {name.casefold(): perks for name, perks in proficiency_tables.items()}
+
+    with timed() as t:
+        for item_title, proficiency_name in mapping.items():
+            item_id = data_store["items_map"].get(item_title.lower())
+            if item_id is None:
+                unknown_items.add(item_title)
+                continue
+            perks_by_level = proficiency_tables_by_name.get(proficiency_name.casefold())
+            if perks_by_level is None:
+                missing_sections.add(proficiency_name)
+                continue
+            for proficiency_level in sorted(perks_by_level):
+                for perk in perks_by_level[proficiency_level]:
+                    skill_image = perk.get("skill_image")
+                    effect = perk.get("effect")
+                    if not skill_image or not effect:
+                        malformed_entries += 1
+                        continue
+                    rows.append((item_id, proficiency_level, skill_image, perk.get("icon"), effect))
+        with conn:
+            conn.execute("DELETE FROM item_proficiency_perk")
+            conn.executemany(
+                "INSERT INTO item_proficiency_perk(item_id, proficiency_level, skill_image, icon, effect)"
+                " VALUES(?,?,?,?,?)",
+                rows,
+            )
+
+    if unknown_items:
+        click.echo(f"{Fore.RED}Could not map {len(unknown_items):,} item names to IDs.{Style.RESET_ALL}")
+        click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unknown_items)}{Style.RESET_ALL}")
+    if missing_sections:
+        click.echo(f"{Fore.RED}Could not find {len(missing_sections):,} proficiency sections.{Style.RESET_ALL}")
+        click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(missing_sections)}{Style.RESET_ALL}")
+    if malformed_entries:
+        click.echo(f"{Fore.RED}Skipped {malformed_entries:,} malformed weapon proficiency perks.{Style.RESET_ALL}")
+    click.echo(f"{Fore.GREEN}\tParsed weapon proficiency perks in {t.elapsed:.2f} seconds.{Style.RESET_ALL}")
+
+
 def generate(conn, skip_images, skip_deprecated):
     click.echo("Creating schema...")
     schema.create_tables(conn)
@@ -595,6 +678,7 @@ def generate(conn, skip_images, skip_deprecated):
 
     generate_item_offers(conn, data_store)
     generate_loot_statistics(conn, data_store)
+    generate_item_proficiency_perks(conn, data_store)
 
     if not skip_images:
         fetch_images(conn)

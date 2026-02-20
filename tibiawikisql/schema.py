@@ -162,6 +162,15 @@ class ItemStoreOfferTable(Table, table_name="item_store_offer"):
     currency = Column(Text, nullable=False)
 
 
+class ItemProficiencyPerkTable(Table, table_name="item_proficiency_perk"):
+    """Contains weapon proficiency perks for an item."""
+    item_id = Column(ForeignKey(Integer, table="item", column="article_id"), index=True, nullable=False)
+    proficiency_level = Column(Integer, index=True, nullable=False)
+    skill_image = Column(Text, nullable=False)
+    icon = Column(Text)
+    effect = Column(Text, nullable=False)
+
+
 class CreatureDropTable(Table, table_name="creature_drop"):
     """Contains the items that a creature can drop."""
     creature_id = Column(ForeignKey(Integer, table="creature", column="article_id"), index=True, nullable=False)

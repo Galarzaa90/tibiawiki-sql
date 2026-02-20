@@ -1,0 +1,6 @@
+<noinclude>used by [[Template:Infobox Object]] for the Weapon Proficiency section</noinclude>{{#switch:{{{1|}}}
+| Amber Axe = Sanguine 1H Axe
+| Amber Cudgel = Sanguine 1H Club
+| Amber Rod =
+|#default =
+}}
