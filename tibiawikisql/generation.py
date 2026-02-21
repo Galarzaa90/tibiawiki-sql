@@ -2,67 +2,37 @@
 from __future__ import annotations
 
 import datetime
-import json
-import os
-import re
-import sqlite3
-from collections import defaultdict
 import platform
-from typing import Any, TYPE_CHECKING, TypeVar
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Any, TypeVar
 
 import click
-import requests
 from colorama import Fore, Style
-from lupa import LuaRuntime
 
 from tibiawikisql import __version__, parsers, schema
 from tibiawikisql.api import Article, Image, WikiClient, WikiEntry
 from tibiawikisql.errors import ArticleParsingError
 from tibiawikisql.models.npc import rashid_positions
-from tibiawikisql.parsers import BaseParser, OutfitParser
+from tibiawikisql.parsers import BaseParser
 from tibiawikisql.schema import RashidPositionTable
-from tibiawikisql.utils import (
-    parse_loot_statistics,
-    parse_min_max,
-    parse_weapon_proficiency_name,
-    parse_weapon_proficiency_tables,
-    timed,
-)
+from tibiawikisql.tasks import images as image_tasks
+from tibiawikisql.tasks import item_offers as item_offer_tasks
+from tibiawikisql.tasks import item_proficiency_perks as proficiency_tasks
+from tibiawikisql.tasks import loot_statistics as loot_tasks
+from tibiawikisql.utils import timed
 
 if TYPE_CHECKING:
+    import sqlite3
     from collections.abc import Callable, Iterable
     from click._termui_impl import ProgressBar
 
-ConnCursor = sqlite3.Cursor | sqlite3.Connection
-"""Type alias for both sqlite3 Cursor or Connection objects."""
-
-OUTFIT_NAME_TEMPLATES = [
-    "Outfit %s Male.gif",
-    "Outfit %s Male Addon 1.gif",
-    "Outfit %s Male Addon 2.gif",
-    "Outfit %s Male Addon 3.gif",
-    "Outfit %s Female.gif",
-    "Outfit %s Female Addon 1.gif",
-    "Outfit %s Female Addon 2.gif",
-    "Outfit %s Female Addon 3.gif",
-]
-"""The templates for image filenames for outfits."""
-
-OUTFIT_ADDON_SEQUENCE = (0, 1, 2, 3) * 2
-"""The sequence of addon types to iterate."""
-
-OUTFIT_SEX_SEQUENCE = ["Male"] * 4 + ["Female"] * 4
-"""The sequence of outfit sexes to iterate."""
-
 V = TypeVar("V")
-
-lua = LuaRuntime()
-link_pattern = re.compile(r"(?P<price>\d+)?\s?\[\[([^]|]+)")
 
 wiki_client = WikiClient()
 
-WEAPON_PROFICIENCY_NAME_ARTICLE = "Weapon Proficiency Name"
+WEAPON_PROFICIENCY_NAME_ARTICLE = "Template:Weapon Proficiency Name"
 WEAPON_PROFICIENCY_TABLES_ARTICLE = "Weapon Proficiency Tables"
+
 
 class Category:
     """Defines the article groups to be fetched.
@@ -71,14 +41,15 @@ class Category:
     """
 
     def __init__(
-            self,
-            name: str | None,
-            parser: type[BaseParser],
-            *,
-            no_images: bool = False,
-            extension: str = ".gif",
-            include_deprecated: bool = False,
-            generate_map: bool = False,
+        self,
+        name: str | None,
+        parser: type[BaseParser],
+        *,
+        no_images: bool = False,
+        extension: str = ".gif",
+        include_deprecated: bool = False,
+        generate_map: bool = False,
+        depends_on: tuple[str, ...] = (),
     ) -> None:
         """Create a new instance of the class.
 
@@ -89,6 +60,7 @@ class Category:
             extension: The filename extension for images.
             include_deprecated: Whether to always include deprecated articles from this category.
             generate_map: Whether to generate a mapping of article names to their article instance for later processing.
+            depends_on: Category keys required to safely process this category.
 
         """
         self.name = name
@@ -97,6 +69,7 @@ class Category:
         self.extension = extension
         self.include_deprecated = include_deprecated
         self.generate_map = generate_map
+        self.depends_on = depends_on
 
 
 CATEGORIES = {
@@ -105,12 +78,12 @@ CATEGORIES = {
     "items": Category("Objects", parsers.ItemParser, generate_map=True),
     "creatures": Category("Creatures", parsers.CreatureParser, generate_map=True),
     "books": Category("Book Texts", parsers.BookParser, no_images=True),
-    "keys": Category("Keys", parsers.KeyParser, no_images=True),
+    "keys": Category("Keys", parsers.KeyParser, no_images=True, depends_on=("items",)),
     "npcs": Category("NPCs", parsers.NpcParser, generate_map=True),
     "imbuements": Category("Imbuements", parsers.ImbuementParser, extension=".png"),
     "quests": Category("Quest Overview Pages", parsers.QuestParser, no_images=True),
-    "house": Category("Player-Ownable Buildings", parsers.HouseParser, no_images=True),
-    "charm": Category("Charms", parsers.CharmParser, extension=".png"),
+    "houses": Category("Player-Ownable Buildings", parsers.HouseParser, no_images=True),
+    "charms": Category("Charms", parsers.CharmParser, extension=".png"),
     "outfits": Category("Outfits", parsers.OutfitParser, no_images=True),
     "worlds": Category("Game Worlds", parsers.WorldParser, no_images=True, include_deprecated=True),
     "mounts": Category("Mounts", parsers.MountParser),
@@ -119,58 +92,43 @@ CATEGORIES = {
 """The categories to fetch and generate objects for."""
 
 
+@dataclass(frozen=True)
+class PostTask:
+    """Represents a post-processing task and its category dependencies."""
+
+    name: str
+    callback: Callable[[sqlite3.Connection, dict[str, Any], set[str]], None]
+    dependencies: tuple[str, ...] = ()
+
+
 def img_label(item: Image | None) -> str:
-    """Get the label to show in progress bars when iterating images.
-
-    Args:
-        item: The image being iterated.
-
-    Returns:
-        The name of the image's file or an empty string.
-
-    """
+    """Get the label to show in progress bars when iterating images."""
     if item is None:
         return ""
     return item.clean_name
 
 
 def article_label(item: Article | None) -> str:
-    """Get the label to show in progress bar when iterating articles.
-
-    Args:
-        item: The article being iterated.
-
-    Returns:
-        The name of the image's file or an empty string.
-
-    """
+    """Get the label to show in progress bar when iterating articles."""
     if item is None:
         return ""
     return constraint(item.title, 25)
 
 
 def constraint(value: str, limit: int) -> str:
-    """Limit a string to a certain length if exceeded.
-
-    Args:
-        value: The string to constraint the length of.
-        limit: The length limit.
-
-    Returns:
-        If the string exceeds the limit, the same string is returned, otherwise it is cropped.
-    """
+    """Limit a string to a certain length if exceeded."""
     if len(value) <= limit:
         return value
-    return value[:limit - 1] + "…"
+    return value[: limit - 1] + "…"
 
 
 def progress_bar(
-        iterable: Iterable[V] | None = None,
-        length: int | None = None,
-        label: str | None = None,
-        item_show_func: Callable[[V | None], str | None] | None = None,
-        info_sep: str = "  ",
-        width: int = 36,
+    iterable: Iterable[V] | None = None,
+    length: int | None = None,
+    label: str | None = None,
+    item_show_func: Callable[[V | None], str | None] | None = None,
+    info_sep: str = "  ",
+    width: int = 36,
 ) -> ProgressBar[V]:
     """Get a progress bar iterator."""
     return click.progressbar(
@@ -189,229 +147,8 @@ def progress_bar(
     )
 
 
-def get_cache_info(folder_name: str) -> dict[str, datetime.datetime]:
-    """Get a mapping of the last edit times of images stored in the cache.
-
-    Args:
-        folder_name: The name of the folder containing the stored images.
-
-    Returns:
-        A dictionary, where each key is an image filename and its value is its upload date to the wiki.
-
-    """
-    try:
-        with open(f"images/{folder_name}/cache_info.json") as f:
-            data = json.load(f)
-            return {k: datetime.datetime.fromisoformat(v) for k, v in data.items()}
-    except (FileNotFoundError, json.JSONDecodeError):
-        return {}
-
-
-def save_cache_info(folder_name: str, cache_info: dict[str, datetime.datetime]) -> None:
-    """Store the last edit times of images stored in the cache.
-
-    Args:
-        folder_name: The name of the folder containing the stored images.
-        cache_info: A mapping of file names to their last upload date.
-
-    """
-    with open(f"images/{folder_name}/cache_info.json", "w") as f:
-        json.dump({k: v.isoformat() for k, v in cache_info.items()}, f)
-
-
-def fetch_image(session: requests.Session, folder: str, image: Image) -> bytes:
-    """Fetch an image from TibiaWiki and saves it the disk.
-
-    Args:
-        session:
-            The request session to use to fetch the image.
-        folder:
-            The folder where the images will be stored locally.
-        image:
-            The image data.
-
-    Returns:
-        The bytes of the image.
-
-    """
-    r = session.get(image.file_url)
-    r.raise_for_status()
-    image_bytes = r.content
-    with open(f"images/{folder}/{image.file_name}", "wb") as f:
-        f.write(image_bytes)
-    return image_bytes
-
-
-def save_images(conn: sqlite3.Connection, key: str, value: Category) -> None:
-    """Fetch and save the images of articles of a certain category.
-
-    Args:
-        conn: Connection to the database.
-        key: The name of the data store key to use.
-        value: The category of the images.
-
-    """
-    extension = value.extension
-    table = value.parser.table.__tablename__
-    column = "title"
-    results = conn.execute(f"SELECT {column} FROM {table}")
-    titles = [f"{r[0]}{extension}" for r in results]
-    os.makedirs(f"images/{table}", exist_ok=True)
-    cache_info = get_cache_info(table)
-    cache_count = 0
-    fetch_count = 0
-    failed = []
-    generator = wiki_client.get_images_info(titles)
-    session = requests.Session()
-    with (
-        timed() as t,
-        progress_bar(generator, len(titles), f"Fetching {key} images", item_show_func=img_label) as bar,
-    ):
-        for image in bar:  # type: Image
-            if image is None:
-                continue
-            try:
-                last_update = cache_info.get(image.file_name)
-                if last_update is None or image.timestamp > last_update:
-                    image_bytes = fetch_image(session, table, image)
-                    fetch_count += 1
-                    cache_info[image.file_name] = image.timestamp
-                else:
-                    with open(f"images/{table}/{image.file_name}", "rb") as f:
-                        image_bytes = f.read()
-                    cache_count += 1
-            except FileNotFoundError:
-                image_bytes = fetch_image(session, table, image)
-                fetch_count += 1
-                cache_info[image.file_name] = image.timestamp
-            except requests.HTTPError:
-                failed.append(image.file_name)
-                continue
-            conn.execute(f"UPDATE {table} SET image = ? WHERE {column} = ?", (image_bytes, image.clean_name))
-        save_cache_info(table, cache_info)
-    if failed:
-        click.echo(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
-        click.echo(f"\t-> {Style.RESET_ALL}{f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed)}{Style.RESET_ALL}")
-    click.echo(f"{Fore.GREEN}\tSaved {key} images in {t.elapsed:.2f} seconds."
-               f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.{Style.RESET_ALL}")
-
-
-def save_maps(con: ConnCursor) -> None:
-    """Save the map files from TibiaMaps GitHub repository.
-
-    Args:
-        con: A connection or cursor to the database.
-
-    """
-    url = "https://tibiamaps.github.io/tibia-map-data/floor-{0:02d}-map.png"
-    os.makedirs("images/map", exist_ok=True)
-    for z in range(16):
-        try:
-            with open(f"images/map/{z}.png", "rb") as f:
-                image = f.read()
-        except FileNotFoundError:
-            r = requests.get(url.format(z))
-            r.raise_for_status()
-            image = r.content
-            with open(f"images/map/{z}.png", "wb") as f:
-                f.write(image)
-        except requests.HTTPError:
-            continue
-        con.execute("INSERT INTO map(z, image) VALUES(?,?)", (z, image))
-
-
-def generate_outfit_image_names(rows: list[tuple[int, str]]) -> tuple[list[str], dict[str, tuple[int, int, str]]]:
-    """Generate the list of image names to extract for outfits, as well as their parametrized information.
-
-    Args:
-        rows: A list of article ID and title pairs.
-
-    Returns:
-        titles: A list of filenames to download.
-        image_info: A mapping of file names to their article ID, addon type and outfit sex.
-
-    """
-    titles = []
-    image_info = {}
-    for article_id, name in rows:
-        for i, image_name in enumerate(OUTFIT_NAME_TEMPLATES):
-            file_name = image_name % name
-            image_info[file_name] = (article_id, OUTFIT_ADDON_SEQUENCE[i], OUTFIT_SEX_SEQUENCE[i])
-            titles.append(file_name)
-    return titles, image_info
-
-
-def save_outfit_images(conn: ConnCursor) -> None:
-    """Save outfit images into the database.
-
-    Args:
-        conn: A connection or cursor to the database.
-
-    """
-    parser = OutfitParser
-    table = parser.table.__tablename__
-    os.makedirs(f"images/{table}", exist_ok=True)
-    try:
-        results = conn.execute(f"SELECT article_id, name FROM {table}")
-    except sqlite3.Error:
-        results = []
-    if not results:
-        return
-
-    cache_info = get_cache_info(table)
-    titles, image_info = generate_outfit_image_names(results)
-
-    session = requests.Session()
-    generator = wiki_client.get_images_info(titles)
-    cache_count = 0
-    fetch_count = 0
-    failed = []
-    with (
-        timed() as t,
-        progress_bar(generator, len(titles), "Fetching outfit images", item_show_func=img_label) as bar,
-    ):
-        for image in bar:
-            if image is None:
-                continue
-            try:
-                last_update = cache_info.get(image.file_name)
-                if last_update is None or image.timestamp > last_update:
-                    image_bytes = fetch_image(session, table, image)
-                    fetch_count += 1
-                    cache_info[image.file_name] = image.timestamp
-                else:
-                    with open(f"images/{table}/{image.file_name}", "rb") as f:
-                        image_bytes = f.read()
-                    cache_count += 1
-            except FileNotFoundError:
-                image_bytes = fetch_image(session, table, image)
-                fetch_count += 1
-                cache_info[image.file_name] = image.timestamp
-            except requests.HTTPError:
-                failed.append(image.file_name)
-                continue
-            article_id, addons, sex = image_info[image.file_name]
-            conn.execute("INSERT INTO outfit_image(outfit_id, addon, sex, image) VALUES(?, ?, ?, ?)",
-                         (article_id, addons, sex, image_bytes))
-        save_cache_info(table, cache_info)
-    if failed:
-        click.echo(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
-        click.echo(f"\t-> {Style.RESET_ALL}{f'{Style.RESET_ALL},{Style.RESET_ALL}'.join(failed)}{Style.RESET_ALL}")
-    click.echo(f"{Fore.GREEN}\tSaved outfit images in {t.elapsed:.2f} seconds."
-               f"\n\t{fetch_count:,} fetched, {cache_count:,} from cache.{Style.RESET_ALL}")
-
-
 def fetch_category_entries(category: str, exclude_titles: set[str] | None = None) -> list[WikiEntry]:
-    """Fetch a list of wiki entries in a certain category.
-
-    Args:
-        category: The name of the TibiaWiki category.
-        exclude_titles: Exclude articles matching these titles.
-
-    Returns:
-        A list of entries contained in the category.
-
-    """
+    """Fetch a list of wiki entries in a certain category."""
     click.echo(f"Fetching articles in {Fore.BLUE}Category:{category}{Style.RESET_ALL}...")
     entries = []
     with timed() as t:
@@ -424,232 +161,159 @@ def fetch_category_entries(category: str, exclude_titles: set[str] | None = None
     click.echo(f"\t{Fore.GREEN}Found {len(entries):,} articles in {t.elapsed:.2f} seconds.{Style.RESET_ALL}")
     return entries
 
+def _run_item_offers(conn: sqlite3.Connection, data_store: dict[str, Any], _enabled_categories: set[str]) -> None:
+    item_offer_tasks.generate_item_offers(
+        conn,
+        data_store,
+        wiki_client=wiki_client,
+        progress_bar=progress_bar,
+        timed=timed,
+        echo=click.echo,
+    )
 
-def fetch_images(conn: sqlite3.Connection) -> None:
-    """Fetch all images for fetched articles.
 
-    Args:
-        conn: A connection to the database.
+def _run_loot_statistics(conn: sqlite3.Connection, data_store: dict[str, Any], _enabled_categories: set[str]) -> None:
+    loot_tasks.generate_loot_statistics(
+        conn,
+        data_store,
+        wiki_client=wiki_client,
+        progress_bar=progress_bar,
+        article_label=article_label,
+        timed=timed,
+        echo=click.echo,
+    )
 
-    """
-    with conn:
-        for key, value in CATEGORIES.items():
-            if value.no_images:
+
+def _run_item_proficiency_perks(
+    conn: sqlite3.Connection,
+    data_store: dict[str, Any],
+    _enabled_categories: set[str],
+) -> None:
+    proficiency_tasks.generate_item_proficiency_perks(
+        conn,
+        data_store,
+        wiki_client=wiki_client,
+        mapping_article_title=WEAPON_PROFICIENCY_NAME_ARTICLE,
+        tables_article_title=WEAPON_PROFICIENCY_TABLES_ARTICLE,
+        timed=timed,
+        echo=click.echo,
+    )
+
+
+def _run_images(conn: sqlite3.Connection, _data_store: dict[str, Any], enabled_categories: set[str]) -> None:
+    image_tasks.fetch_images(
+        conn,
+        categories=CATEGORIES,
+        enabled_categories=enabled_categories,
+        wiki_client=wiki_client,
+        progress_bar=progress_bar,
+        img_label=img_label,
+        timed=timed,
+        echo=click.echo,
+    )
+
+
+POST_TASKS = (
+    PostTask("item_offers", _run_item_offers, dependencies=("items", "npcs")),
+    PostTask("loot_statistics", _run_loot_statistics, dependencies=("items", "creatures")),
+    PostTask("item_proficiency_perks", _run_item_proficiency_perks, dependencies=("items",)),
+    PostTask("images", _run_images),
+)
+
+
+def resolve_enabled_categories(skip_categories: set[str]) -> tuple[set[str], dict[str, set[str]]]:
+    """Resolve enabled categories including dependency-based auto-skips."""
+    enabled_categories = set(CATEGORIES).difference(skip_categories)
+    auto_skipped: dict[str, set[str]] = {}
+    changed = True
+    while changed:
+        changed = False
+        for key, category in CATEGORIES.items():
+            if key not in enabled_categories:
                 continue
-            save_images(conn, key, value)
-        save_outfit_images(conn)
-        save_maps(conn)
-
-
-def generate_item_offers(conn: sqlite3.Connection, data_store):
-    if "npcs_map" not in data_store or "items_map" not in data_store:
-        return
-    article = wiki_client.get_article("Module:ItemPrices/data")
-    data = lua.execute(article.content)
-
-    sell_offers = []
-    buy_offers = []
-    not_found_store = defaultdict(set)
-    npc_offers = list(data.items())
-    with (
-        timed() as t,
-        progress_bar(npc_offers, len(npc_offers), "Fetching NPC offers") as bar,
-    ):
-        for name, table in bar:
-            npc_id = data_store["npcs_map"].get(name.lower())
-            if npc_id is None:
-                not_found_store["npc"].add(name)
+            missing_dependencies = {dep for dep in category.depends_on if dep not in enabled_categories}
+            if not missing_dependencies:
                 continue
-            if "sells" in table:
-                process_offer_list(npc_id, table["sells"], sell_offers, data_store, not_found_store)
-            if "buys" in table:
-                process_offer_list(npc_id, table["buys"], buy_offers, data_store, not_found_store)
-        with conn:
-            conn.execute("DELETE FROM npc_offer_sell")
-            conn.execute("DELETE FROM npc_offer_buy")
-            conn.executemany("INSERT INTO npc_offer_sell(npc_id, value, item_id, currency_id) VALUES(?, ?, ?, ?)",
-                             sell_offers)
-            conn.executemany("INSERT INTO npc_offer_buy(npc_id, value, item_id, currency_id) VALUES(?, ?, ?, ?)",
-                             buy_offers)
-    total_offers = len(sell_offers) + len(buy_offers)
-    if not_found_store["npc"]:
-        unknonw_npcs = not_found_store["npc"]
-        click.echo(f"{Fore.RED}Could not parse offers for {len(unknonw_npcs):,} npcs.{Style.RESET_ALL}")
-        click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unknonw_npcs)}{Style.RESET_ALL}")
-    if not_found_store["item"]:
-        unknonw_items = not_found_store["item"]
-        click.echo(f"{Fore.RED}Could not parse offers for {len(unknonw_items):,} items.{Style.RESET_ALL}")
-        click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unknonw_items)}{Style.RESET_ALL}")
-    click.echo(f"{Fore.GREEN}\tSaved {total_offers:,} NPC offers in {t.elapsed:.2f} seconds.")
+            enabled_categories.remove(key)
+            auto_skipped[key] = missing_dependencies
+            changed = True
+    return enabled_categories, auto_skipped
 
 
-def process_offer_list(npc_id, array, list_store, data_store, not_found):
-    for lua_item in array.values():
-        data = dict(lua_item.items())
-        price = data["price"]
-        currency = data.get("currency", "gold coin")
-        if not isinstance(price, int):
-            m = link_pattern.search(price)
-            price = int(m.group("price") or 1)
-            currency = m.group(2)
-        item_name = data["item"]
-        currency_name = currency
-        item_id = data_store["items_map"].get(item_name.lower())
-        currency_id = data_store["items_map"].get(currency_name.lower())
-        if currency_id is None:
-            not_found["item"].add(currency_name)
+def warn_auto_skipped_categories(auto_skipped_categories: dict[str, set[str]]) -> None:
+    """Emit warnings for categories that were disabled due to dependencies."""
+    for key in CATEGORIES:
+        if key not in auto_skipped_categories:
             continue
-        if item_id is None:
-            not_found["item"].add(item_name)
-            continue
-        list_store.append((
-            npc_id,
-            price,
-            item_id,
-            currency_id,
-        ))
-
-
-def generate_loot_statistics(conn: sqlite3.Connection, data_store):
-    c = conn.cursor()
-    try:
-        results = conn.execute("SELECT title FROM creature")
-        titles = [f"Loot Statistics:{t[0]}" for t in results]
-        generator = wiki_client.get_articles(titles)
-        unknown_items = set()
-        with (
-            timed() as t,
-            progress_bar(generator, len(titles), "Fetching loot statistics", item_show_func=article_label) as bar,
-        ):
-            for article in bar:
-                if article is None:
-                    continue
-                creature_title = article.title.replace("Loot Statistics:", "")
-                creature_id = data_store["creatures_map"].get(creature_title.lower())
-                if creature_id is None:
-                    # This could happen if a creature's article was deleted but its Loot Statistics weren't
-                    continue
-                # Most loot statistics contain stats for older versions too, we only care about the latest version.
-                kills, loot_stats = parse_loot_statistics(article.content)
-                loot_items = []
-                for entry in loot_stats:
-                    if entry:
-                        item = entry["item"]
-                        times = entry["times"]
-                        amount = entry.get("amount", 1)
-                        item_id = data_store["items_map"].get(item.lower())
-                        if item_id is None:
-                            unknown_items.add(item)
-                            continue
-                        percentage = min(int(times) / kills * 100, 100)
-                        _min, _max = parse_min_max(amount)
-                        loot_items.append((creature_id, item_id, percentage, _min, _max))
-                        # We delete any duplicate record that was added from the creature's article's loot if it exists
-                        c.execute("DELETE FROM creature_drop WHERE creature_id = ? AND item_id = ?",
-                                  (creature_id, item_id))
-                c.executemany("INSERT INTO creature_drop(creature_id, item_id, chance, min, max) VALUES(?,?,?,?,?)",
-                              loot_items)
-        if unknown_items:
-            click.echo(f"{Fore.RED}Could not find {len(unknown_items):,} items.{Style.RESET_ALL}")
-            click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unknown_items)}{Style.RESET_ALL}")
-        click.echo(f"{Fore.GREEN}\tParsed loot statistics in {t.elapsed:.2f} seconds.{Style.RESET_ALL}")
-    finally:
-        conn.commit()
-
-
-def generate_item_proficiency_perks(conn: sqlite3.Connection, data_store: dict[str, Any]) -> None:
-    """Generate item weapon proficiency perks from wiki template pages.
-
-    Args:
-        conn: Connection to the database.
-        data_store: Generated data store containing the item map.
-
-    """
-    if "items_map" not in data_store:
-        return
-
-    article_mapping = wiki_client.get_article(WEAPON_PROFICIENCY_NAME_ARTICLE)
-    article_tables = wiki_client.get_article(WEAPON_PROFICIENCY_TABLES_ARTICLE)
-
-    if article_mapping is None or article_tables is None:
-        click.echo(f"{Fore.RED}Could not fetch weapon proficiency pages.{Style.RESET_ALL}")
-        return
-
-    mapping = parse_weapon_proficiency_name(article_mapping.content)
-    proficiency_tables = parse_weapon_proficiency_tables(article_tables.content)
-    if not mapping:
+        dependencies = ", ".join(sorted(auto_skipped_categories[key]))
         click.echo(
-            f"{Fore.RED}No weapon proficiency item mappings were parsed "
-            f"from {article_mapping.title}.{Style.RESET_ALL}",
-        )
-    if not proficiency_tables:
-        click.echo(
-            f"{Fore.RED}No weapon proficiency table sections were parsed "
-            f"from {article_tables.title}.{Style.RESET_ALL}",
+            f"{Fore.YELLOW}Skipping category '{key}' because required categories are disabled: "
+            f"{dependencies}.{Style.RESET_ALL}",
         )
 
-    unknown_items = set()
-    missing_sections = set()
-    malformed_entries = 0
-    rows = []
-    proficiency_tables_by_name = {name.casefold(): perks for name, perks in proficiency_tables.items()}
 
-    with timed() as t:
-        for item_title, proficiency_name in mapping.items():
-            item_id = data_store["items_map"].get(item_title.lower())
-            if item_id is None:
-                unknown_items.add(item_title)
-                continue
-            perks_by_level = proficiency_tables_by_name.get(proficiency_name.casefold())
-            if perks_by_level is None:
-                missing_sections.add(proficiency_name)
-                continue
-            for proficiency_level in sorted(perks_by_level):
-                for perk in perks_by_level[proficiency_level]:
-                    skill_image = perk.get("skill_image")
-                    effect = perk.get("effect")
-                    if not skill_image or not effect:
-                        malformed_entries += 1
-                        continue
-                    rows.append((item_id, proficiency_level, skill_image, perk.get("icon"), effect))
-        with conn:
-            conn.execute("DELETE FROM item_proficiency_perk")
-            conn.executemany(
-                "INSERT INTO item_proficiency_perk(item_id, proficiency_level, skill_image, icon, effect)"
-                " VALUES(?,?,?,?,?)",
-                rows,
+def run_post_tasks(
+    conn: sqlite3.Connection,
+    data_store: dict[str, Any],
+    enabled_categories: set[str],
+    skip_images: bool,
+) -> None:
+    """Run post-processing tasks honoring dependency constraints."""
+    for post_task in POST_TASKS:
+        if post_task.name == "images" and skip_images:
+            continue
+        missing_dependencies = [dep for dep in post_task.dependencies if dep not in enabled_categories]
+        if missing_dependencies:
+            dependencies = ", ".join(sorted(missing_dependencies))
+            click.echo(
+                f"{Fore.YELLOW}Skipping task '{post_task.name}' because required categories are disabled: "
+                f"{dependencies}.{Style.RESET_ALL}",
             )
-
-    if unknown_items:
-        click.echo(f"{Fore.RED}Could not map {len(unknown_items):,} item names to IDs.{Style.RESET_ALL}")
-        click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unknown_items)}{Style.RESET_ALL}")
-    if missing_sections:
-        click.echo(f"{Fore.RED}Could not find {len(missing_sections):,} proficiency sections.{Style.RESET_ALL}")
-        click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(missing_sections)}{Style.RESET_ALL}")
-    if malformed_entries:
-        click.echo(f"{Fore.RED}Skipped {malformed_entries:,} malformed weapon proficiency perks.{Style.RESET_ALL}")
-    click.echo(f"{Fore.GREEN}\tParsed weapon proficiency perks in {t.elapsed:.2f} seconds.{Style.RESET_ALL}")
+            continue
+        post_task.callback(conn, data_store, enabled_categories)
 
 
-def generate(conn, skip_images, skip_deprecated):
+def generate(
+    conn: sqlite3.Connection,
+    skip_images: bool = False,
+    skip_deprecated: bool = False,
+    skip_categories: tuple[str, ...] = (),
+) -> None:
+    """Generate a complete TibiaWiki SQLite database."""
+    normalized_skip_categories = {category.casefold() for category in skip_categories}
+    unknown_categories = normalized_skip_categories - set(CATEGORIES)
+    if unknown_categories:
+        unknown_str = ", ".join(sorted(unknown_categories))
+        msg = f"Unknown categories in skip list: {unknown_str}."
+        raise ValueError(msg)
+
+    enabled_categories, auto_skipped_categories = resolve_enabled_categories(normalized_skip_categories)
+    warn_auto_skipped_categories(auto_skipped_categories)
+
     click.echo("Creating schema...")
     schema.create_tables(conn)
     conn.execute("PRAGMA synchronous = OFF")
-    data_store = {}
+    data_store: dict[str, Any] = {}
+
     if skip_deprecated:
-        deprecated = {e.title for e in fetch_category_entries("Deprecated")}
+        deprecated = {entry.title for entry in fetch_category_entries("Deprecated")}
     else:
         deprecated = set()
 
-    for key, value in CATEGORIES.items():
-        data_store[key] = fetch_category_entries(value.name, deprecated if not value.include_deprecated else None)
+    for key, category in CATEGORIES.items():
+        if key not in enabled_categories:
+            continue
+        excluded_titles = deprecated if not category.include_deprecated else None
+        data_store[key] = fetch_category_entries(category.name, excluded_titles)
 
     click.echo("Parsing articles...")
-    for key, value in CATEGORIES.items():
-        parser = value.parser
-        titles = [a.title for a in data_store[key]]
+    for key, category in CATEGORIES.items():
+        if key not in enabled_categories:
+            continue
 
-        if value.generate_map:
+        titles = [entry.title for entry in data_store[key]]
+        parser = category.parser
+        if category.generate_map:
             data_store[f"{key}_map"] = {}
         unparsed = []
         generator = wiki_client.get_articles(titles)
@@ -662,12 +326,10 @@ def generate(conn, skip_images, skip_deprecated):
                 try:
                     entry = parser.from_article(article)
                     entry.insert(conn)
-                    if value.generate_map:
+                    if category.generate_map:
                         data_store[f"{key}_map"][entry.title.lower()] = entry.article_id
                 except ArticleParsingError:
                     unparsed.append(article.title)
-                # except sqlite3.Error:
-                #     unparsed.append(article.title)
         if unparsed:
             click.echo(f"{Fore.RED}Could not parse {len(unparsed):,} articles.{Style.RESET_ALL}")
             click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed)}{Style.RESET_ALL}")
@@ -676,12 +338,8 @@ def generate(conn, skip_images, skip_deprecated):
     for position in rashid_positions:
         RashidPositionTable.insert(conn, **position.model_dump())
 
-    generate_item_offers(conn, data_store)
-    generate_loot_statistics(conn, data_store)
-    generate_item_proficiency_perks(conn, data_store)
+    run_post_tasks(conn, data_store, enabled_categories, skip_images)
 
-    if not skip_images:
-        fetch_images(conn)
     with conn:
         gen_time = datetime.datetime.now(tz=datetime.UTC)
         schema.DatabaseInfoTable.insert(conn, key="timestamp", value=str(gen_time.timestamp()))

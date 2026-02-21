@@ -34,9 +34,12 @@ This fetches all the relevant articles from TibiaWiki and stores them in the dat
 
 It accepts the following parameters:
 
-- `-s`/`--skip-images` Option to skip fetching and saving images.
-- `-db`/ `--db-name` The name of the generated database file. `tibiawiki.db` by default.
-- `-sd`/ `--skip-deprecated` Option to skip deprecated articles when parsing.
+- `-i`/`--skip-images` Option to skip fetching and saving images.
+- `-o`/ `--db-name` The name of the generated database file. `tibiawiki.db` by default.
+- `-d`/ `--skip-deprecated` Option to skip deprecated articles when parsing.
+- `-c`/ `--skip-category` Option to skip one or more categories (repeatable), using internal category keys such as `achievements`, `items`, `creatures`, `houses`, or `charms`.
+
+If skipping a category would break a hard dependency for another category, the dependent category is skipped automatically and a warning is shown.
 
 The generated database is saved in the current directory, as well as a folder called `images` with all the fetched images.
 
