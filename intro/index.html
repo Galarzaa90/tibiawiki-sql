@@ -1493,10 +1493,12 @@
 <p>This fetches all the relevant articles from TibiaWiki and stores them in the datatabase.</p>
 <p>It accepts the following parameters:</p>
 <ul>
-<li><code>-s</code>/<code>--skip-images</code> Option to skip fetching and saving images.</li>
-<li><code>-db</code>/ <code>--db-name</code> The name of the generated database file. <code>tibiawiki.db</code> by default.</li>
-<li><code>-sd</code>/ <code>--skip-deprecated</code> Option to skip deprecated articles when parsing.</li>
+<li><code>-i</code>/<code>--skip-images</code> Option to skip fetching and saving images.</li>
+<li><code>-o</code>/ <code>--db-name</code> The name of the generated database file. <code>tibiawiki.db</code> by default.</li>
+<li><code>-d</code>/ <code>--skip-deprecated</code> Option to skip deprecated articles when parsing.</li>
+<li><code>-c</code>/ <code>--skip-category</code> Option to skip one or more categories (repeatable), using internal category keys such as <code>achievements</code>, <code>items</code>, <code>creatures</code>, <code>houses</code>, or <code>charms</code>.</li>
 </ul>
+<p>If skipping a category would break a hard dependency for another category, the dependent category is skipped automatically and a warning is shown.</p>
 <p>The generated database is saved in the current directory, as well as a folder called <code>images</code> with all the fetched images.</p>
 <p>Subsequent calls will use the images in the directory instead of fetching them again, serving as an image cache.</p>
 <h3 id="as-a-module">As a module<a class="headerlink" href="#as-a-module" title="Permanent link">&para;</a></h3>
