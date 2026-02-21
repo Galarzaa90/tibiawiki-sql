@@ -2122,13 +2122,23 @@
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
 <h2 id="800-unreleased">8.0.0 (Unreleased)<a class="headerlink" href="#800-unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Spell changes<ul>
 <li>Remove <code>npc_spell</code> table.</li>
 <li>Remove spell teacher relations from API models (<code>Npc.teaches</code>, <code>Spell.taught_by</code>).</li>
 <li>Remove spell purchase price (<code>spell.price</code>) from parser, schema and models.</li>
 <li>Remove spell-offer generation from <code>Module:ItemPrices/spelldata</code>.</li>
-<li>Fix creature elemental modifier mapping: <code>energyDmgMod</code> now maps to <code>modifier_energy</code> and <code>iceDmgMod</code> to <code>modifier_ice</code>.</li>
+</ul>
+</li>
+<li>Creature changes<ul>
+<li>Fix elemental modifier mapping: <code>energyDmgMod</code> now maps to <code>modifier_energy</code> and <code>iceDmgMod</code> to <code>modifier_ice</code>.</li>
+</ul>
+</li>
+<li>Item changes<ul>
 <li>Add missing item infobox mapping for <code>death_attack</code>.</li>
-<li>Add weapon proficiency perk generation from <code>Weapon Proficiency Name</code> and <code>Weapon Proficiency Tables</code>, using hybrid heading/template parsing and case-insensitive section-name matching.</li>
+<li>Add weapon proficiency perks.</li>
+<li>Add <code>proficiency_perks</code> to <code>Item</code> (stored in <code>item_proficiency_perk</code>).</li>
+</ul>
+</li>
 </ul>
 <h2 id="703-2025-07-28">7.0.3 (2025-07-28)<a class="headerlink" href="#703-2025-07-28" title="Permanent link">&para;</a></h2>
 <ul>
