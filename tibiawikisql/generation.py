@@ -341,7 +341,7 @@ def generate(
     run_post_tasks(conn, data_store, enabled_categories, skip_images)
 
     with conn:
-        gen_time = datetime.datetime.now(tz=datetime.UTC)
+        gen_time = datetime.datetime.now(tz=datetime.timezone.utc)
         schema.DatabaseInfoTable.insert(conn, key="timestamp", value=str(gen_time.timestamp()))
         schema.DatabaseInfoTable.insert(conn, key="generate_time", value=gen_time.isoformat())
         schema.DatabaseInfoTable.insert(conn, key="version", value=__version__)
