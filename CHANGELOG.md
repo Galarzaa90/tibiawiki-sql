@@ -2,13 +2,17 @@
 
 ## 8.0.0 (Unreleased)
 
-- Remove `npc_spell` table.
-- Remove spell teacher relations from API models (`Npc.teaches`, `Spell.taught_by`).
-- Remove spell purchase price (`spell.price`) from parser, schema and models.
-- Remove spell-offer generation from `Module:ItemPrices/spelldata`.
-- Fix creature elemental modifier mapping: `energyDmgMod` now maps to `modifier_energy` and `iceDmgMod` to `modifier_ice`.
-- Add missing item infobox mapping for `death_attack`.
-- Add weapon proficiency perk generation from `Weapon Proficiency Name` and `Weapon Proficiency Tables`, using hybrid heading/template parsing and case-insensitive section-name matching.
+- Spell changes
+    - Remove `npc_spell` table.
+    - Remove spell teacher relations from API models (`Npc.teaches`, `Spell.taught_by`).
+    - Remove spell purchase price (`spell.price`) from parser, schema and models.
+    - Remove spell-offer generation from `Module:ItemPrices/spelldata`.
+- Creature changes
+    - Fix elemental modifier mapping: `energyDmgMod` now maps to `modifier_energy` and `iceDmgMod` to `modifier_ice`.
+- Item changes
+    - Add missing item infobox mapping for `death_attack`.
+    - Add weapon proficiency perks.
+    - Add `proficiency_perks` to `Item` (stored in `item_proficiency_perk`).
 
 ## 7.0.3 (2025-07-28)
 
