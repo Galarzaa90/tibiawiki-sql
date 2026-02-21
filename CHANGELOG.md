@@ -1,6 +1,6 @@
 # Changelog
 
-## 8.0.0 (Unreleased)
+## 8.0.0 (2026-02-21)
 
 - Spell changes
     - Remove `npc_spell` table.
