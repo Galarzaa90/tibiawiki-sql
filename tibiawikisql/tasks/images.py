@@ -9,6 +9,7 @@ from typing import Any
 
 import requests
 from colorama import Fore, Style
+from pypika import Parameter, SQLLiteQuery as Query, Table
 
 OUTFIT_NAME_TEMPLATES = [
     "Outfit %s Male.gif",
@@ -65,7 +66,9 @@ def save_images(
     """Fetch and save article images for a category."""
     extension = category.extension
     table = category.parser.table.__tablename__
-    results = conn.execute(f"SELECT title FROM {table}")
+    category_table = Table(table)
+    select_query = Query.from_(category_table).select(category_table.title)
+    results = conn.execute(select_query.get_sql())
     titles = [f"{row[0]}{extension}" for row in results]
     os.makedirs(f"images/{table}", exist_ok=True)
     cache_info = get_cache_info(table)
@@ -98,7 +101,12 @@ def save_images(
             except requests.HTTPError:
                 failed.append(image.file_name)
                 continue
-            conn.execute(f"UPDATE {table} SET image = ? WHERE title = ?", (image_bytes, image.clean_name))
+            update_query = (
+                Query.update(category_table)
+                .set(category_table.image, Parameter("?"))
+                .where(category_table.title == Parameter("?"))
+            )
+            conn.execute(update_query.get_sql(), (image_bytes, image.clean_name))
         save_cache_info(table, cache_info)
     if failed:
         echo(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
@@ -112,6 +120,12 @@ def save_images(
 def save_maps(conn: sqlite3.Connection | sqlite3.Cursor) -> None:
     """Save map floor image files from TibiaMaps."""
     url = "https://tibiamaps.github.io/tibia-map-data/floor-{0:02d}-map.png"
+    map_table = Table("map")
+    insert_query = (
+        Query.into(map_table)
+        .columns(map_table.z, map_table.image)
+        .insert(Parameter("?"), Parameter("?"))
+    )
     os.makedirs("images/map", exist_ok=True)
     for z in range(16):
         try:
@@ -126,7 +140,7 @@ def save_maps(conn: sqlite3.Connection | sqlite3.Cursor) -> None:
             image = response.content
             with open(f"images/map/{z}.png", "wb") as f:
                 f.write(image)
-        conn.execute("INSERT INTO map(z, image) VALUES(?,?)", (z, image))
+        conn.execute(insert_query.get_sql(), (z, image))
 
 
 def generate_outfit_image_names(rows: list[tuple[int, str]]) -> tuple[list[str], dict[str, tuple[int, int, str]]]:
@@ -152,9 +166,22 @@ def save_outfit_images(
 ) -> None:
     """Save outfit image variants into the database."""
     table = "outfit"
+    outfit_table = Table(table)
+    outfit_image_table = Table("outfit_image")
+    insert_query = (
+        Query.into(outfit_image_table)
+        .columns(
+            outfit_image_table.outfit_id,
+            outfit_image_table.addon,
+            outfit_image_table.sex,
+            outfit_image_table.image,
+        )
+        .insert(Parameter("?"), Parameter("?"), Parameter("?"), Parameter("?"))
+    )
     os.makedirs(f"images/{table}", exist_ok=True)
     try:
-        results = conn.execute(f"SELECT article_id, name FROM {table}")
+        query = Query.from_(outfit_table).select(outfit_table.article_id, outfit_table.name)
+        results = conn.execute(query.get_sql())
     except sqlite3.Error:
         results = []
     if not results:
@@ -192,10 +219,7 @@ def save_outfit_images(
                 failed.append(image.file_name)
                 continue
             article_id, addons, sex = image_info[image.file_name]
-            conn.execute(
-                "INSERT INTO outfit_image(outfit_id, addon, sex, image) VALUES(?, ?, ?, ?)",
-                (article_id, addons, sex, image_bytes),
-            )
+            conn.execute(insert_query.get_sql(), (article_id, addons, sex, image_bytes))
         save_cache_info(table, cache_info)
     if failed:
         echo(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
