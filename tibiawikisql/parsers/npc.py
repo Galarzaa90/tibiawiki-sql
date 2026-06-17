@@ -1,5 +1,6 @@
 from typing import Any, ClassVar
 
+import mwparserfromhell
 import tibiawikisql.schema
 from tibiawikisql.api import Article
 from tibiawikisql.models.npc import Npc, NpcDestination
@@ -87,7 +88,11 @@ class NpcParser(BaseParser):
         Returns:
             A list of tuples, where each element is the name of the destination, the price and additional notes.
         """
-        template = find_template(value, "Transport", partial=True)
+        result = cls._parse_transport_cells(value)
+        if result:
+            return result
+
+        template = find_template(value, "Transport")
         if not template:
             return []
         result = []
@@ -97,6 +102,25 @@ class NpcParser(BaseParser):
             data, *notes = strip_code(param).split(";", 1)
             notes = notes[0] if notes else ""
             destination, price_str = data.split(",")
+            try:
+                price = int(price_str)
+            except ValueError:
+                price = 0
+            result.append((destination, price, notes))
+        return result
+
+    @classmethod
+    def _parse_transport_cells(cls, value: str) -> list[tuple[str, int, str]]:
+        """Parse TransportCell entries from the NPC notes field."""
+        result = []
+        parsed = mwparserfromhell.parse(value)
+        for template in parsed.ifilter_templates(recursive=True):
+            template_name = strip_code(template.name).lower().replace("_", " ")
+            if template_name != "transportcell":
+                continue
+            destination = strip_code(template.get(1, ""))
+            price_str = strip_code(template.get(2, "0"))
+            notes = strip_code(template.get(3, ""))
             try:
                 price = int(price_str)
             except ValueError:
