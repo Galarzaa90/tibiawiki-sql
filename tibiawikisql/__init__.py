@@ -4,4 +4,4 @@ __author__ = "Allan Galarza"
 __copyright__ = "Copyright 2025 Allan Galarza"
 
 __license__ = "Apache 2.0"
-__version__ = "8.0.0"
+__version__ = "8.0.1"

@@ -1,5 +1,11 @@
 # Changelog
 
+## 8.0.1 (2026-06-16)
+
+- Add support for new NPC transport template.
+- Add support for new update date format.
+- Add argument to print parsing errors to file.
+
 ## 8.0.0 (2026-02-21)
 
 - Spell changes
