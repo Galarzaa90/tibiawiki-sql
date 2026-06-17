@@ -214,6 +214,7 @@ def parse_date(value: str) -> datetime.date:
     - June 28, 2019
     - Aug 21, 2014
     - May 14, 2024 17:45
+    - January 27, 2026, 16:00
 
     Args:
         value: The string containing the date.
@@ -229,6 +230,8 @@ def parse_date(value: str) -> datetime.date:
         "%Y",
         "%B %d, %Y %H:%M",
         "%b %d, %Y %H:%M",
+        "%B %d, %Y, %H:%M",
+        "%b %d, %Y, %H:%M",
         "%Y %H:%M",
     ]
     for date_format in date_formats:

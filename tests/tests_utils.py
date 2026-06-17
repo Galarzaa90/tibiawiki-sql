@@ -1,8 +1,10 @@
 import unittest
 
+import datetime
+
 from tests import load_resource
 from tibiawikisql.utils import (clean_links, client_color_to_rgb, parse_boolean, parse_float, parse_integer,
-                                parse_loot_statistics, parse_min_max, parse_sounds,
+                                parse_date, parse_loot_statistics, parse_min_max, parse_sounds,
                                 parse_weapon_proficiency_name, parse_weapon_proficiency_tables)
 
 
@@ -54,6 +56,9 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(parse_integer("100 tibia coins"), 100)
         self.assertEqual(parse_integer("10056"), 10056)
         self.assertEqual(parse_integer("--"), 0)
+
+    def test_parse_date_ignores_comma_separated_time(self):
+        self.assertEqual(datetime.date(2026, 1, 27), parse_date("January 27, 2026, 16:00"))
 
     def test_parse_min_max(self):
         self.assertEqual(parse_min_max("5-20"), (5, 20))
