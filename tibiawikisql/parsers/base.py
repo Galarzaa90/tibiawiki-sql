@@ -209,7 +209,12 @@ class BaseParser(metaclass=ParserMeta):
             An inherited model object for the current article.
 
         """
-        row = cls.parse_attributes(article)
+        try:
+            row = cls.parse_attributes(article)
+        except ArticleParsingError:
+            raise
+        except Exception as e:
+            raise ArticleParsingError(article, cause=e) from e
         try:
             return cls.model.model_validate(row)
         except ValidationError as e:

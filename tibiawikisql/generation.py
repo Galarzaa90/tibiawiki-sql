@@ -3,7 +3,9 @@ from __future__ import annotations
 
 import datetime
 import platform
+import traceback
 from dataclasses import dataclass
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, TypeVar
 
 import click
@@ -25,6 +27,7 @@ if TYPE_CHECKING:
     import sqlite3
     from collections.abc import Callable, Iterable
     from click._termui_impl import ProgressBar
+    from typing import TextIO
 
 V = TypeVar("V")
 
@@ -220,6 +223,67 @@ POST_TASKS = (
     PostTask("images", _run_images),
 )
 
+PARSING_ERROR_SEPARATOR = "-" * 80
+
+
+def write_parsing_error(
+    file: TextIO,
+    *,
+    category: str,
+    article: Article,
+    error: ArticleParsingError,
+) -> None:
+    """Write a parsing error entry to a log file."""
+    file.write(f"{PARSING_ERROR_SEPARATOR}\n")
+    file.write(f"Category: {category}\n")
+    file.write(f"Article: {article.title}\n")
+    file.write(f"URL: {article.url}\n")
+    file.write("Traceback:\n")
+    file.writelines(traceback.format_exception(type(error), error, error.__traceback__))
+    file.write("\n")
+
+
+def parse_articles(
+    conn: sqlite3.Connection,
+    data_store: dict[str, Any],
+    enabled_categories: set[str],
+    parsing_errors_log: TextIO | None = None,
+) -> int:
+    """Parse category articles into the database."""
+    click.echo("Parsing articles...")
+    parsing_errors_count = 0
+    for key, category in CATEGORIES.items():
+        if key not in enabled_categories:
+            continue
+
+        titles = [entry.title for entry in data_store[key]]
+        parser = category.parser
+        if category.generate_map:
+            data_store[f"{key}_map"] = {}
+        unparsed = []
+        generator = wiki_client.get_articles(titles)
+        with (
+            timed() as t,
+            conn,
+            progress_bar(generator, len(titles), f"Parsing {key}", item_show_func=article_label) as bar,
+        ):
+            for article in bar:
+                try:
+                    entry = parser.from_article(article)
+                    entry.insert(conn)
+                    if category.generate_map:
+                        data_store[f"{key}_map"][entry.title.lower()] = entry.article_id
+                except ArticleParsingError as e:
+                    unparsed.append(article.title)
+                    parsing_errors_count += 1
+                    if parsing_errors_log:
+                        write_parsing_error(parsing_errors_log, category=key, article=article, error=e)
+        if unparsed:
+            click.echo(f"{Fore.RED}Could not parse {len(unparsed):,} articles.{Style.RESET_ALL}")
+            click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed)}{Style.RESET_ALL}")
+        click.echo(f"\t{Fore.GREEN}Parsed articles in {t.elapsed:.2f} seconds.{Style.RESET_ALL}")
+    return parsing_errors_count
+
 
 def resolve_enabled_categories(skip_categories: set[str]) -> tuple[set[str], dict[str, set[str]]]:
     """Resolve enabled categories including dependency-based auto-skips."""
@@ -278,6 +342,7 @@ def generate(
     skip_images: bool = False,
     skip_deprecated: bool = False,
     skip_categories: tuple[str, ...] = (),
+    parsing_errors_file: str | None = None,
 ) -> None:
     """Generate a complete TibiaWiki SQLite database."""
     normalized_skip_categories = {category.casefold() for category in skip_categories}
@@ -306,34 +371,18 @@ def generate(
         excluded_titles = deprecated if not category.include_deprecated else None
         data_store[key] = fetch_category_entries(category.name, excluded_titles)
 
-    click.echo("Parsing articles...")
-    for key, category in CATEGORIES.items():
-        if key not in enabled_categories:
-            continue
-
-        titles = [entry.title for entry in data_store[key]]
-        parser = category.parser
-        if category.generate_map:
-            data_store[f"{key}_map"] = {}
-        unparsed = []
-        generator = wiki_client.get_articles(titles)
-        with (
-            timed() as t,
-            conn,
-            progress_bar(generator, len(titles), f"Parsing {key}", item_show_func=article_label) as bar,
-        ):
-            for article in bar:
-                try:
-                    entry = parser.from_article(article)
-                    entry.insert(conn)
-                    if category.generate_map:
-                        data_store[f"{key}_map"][entry.title.lower()] = entry.article_id
-                except ArticleParsingError:
-                    unparsed.append(article.title)
-        if unparsed:
-            click.echo(f"{Fore.RED}Could not parse {len(unparsed):,} articles.{Style.RESET_ALL}")
-            click.echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unparsed)}{Style.RESET_ALL}")
-        click.echo(f"\t{Fore.GREEN}Parsed articles in {t.elapsed:.2f} seconds.{Style.RESET_ALL}")
+    parsing_errors_path = Path(parsing_errors_file) if parsing_errors_file else None
+    if parsing_errors_path:
+        with parsing_errors_path.open("w", encoding="utf-8") as parsing_errors_log:
+            gen_time = datetime.datetime.now(datetime.timezone.utc)
+            parsing_errors_log.write(f"TibiaWikiSQL parsing errors - {gen_time.isoformat()}\n\n")
+            parsing_errors_count = parse_articles(conn, data_store, enabled_categories, parsing_errors_log)
+        click.echo(
+            f"{Fore.YELLOW}Wrote {parsing_errors_count:,} parsing errors to "
+            f"{parsing_errors_path}.{Style.RESET_ALL}",
+        )
+    else:
+        parse_articles(conn, data_store, enabled_categories)
 
     for position in rashid_positions:
         RashidPositionTable.insert(conn, **position.model_dump())
