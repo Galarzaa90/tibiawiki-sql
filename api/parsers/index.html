@@ -5843,7 +5843,12 @@ It is called by <code>parse_article</code>.</p>
 <span class="normal"><a href="#__codelineno-0-213">213</a></span>
 <span class="normal"><a href="#__codelineno-0-214">214</a></span>
 <span class="normal"><a href="#__codelineno-0-215">215</a></span>
-<span class="normal"><a href="#__codelineno-0-216">216</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-201" name="__codelineno-0-201"></a><span class="nd">@classmethod</span>
+<span class="normal"><a href="#__codelineno-0-216">216</a></span>
+<span class="normal"><a href="#__codelineno-0-217">217</a></span>
+<span class="normal"><a href="#__codelineno-0-218">218</a></span>
+<span class="normal"><a href="#__codelineno-0-219">219</a></span>
+<span class="normal"><a href="#__codelineno-0-220">220</a></span>
+<span class="normal"><a href="#__codelineno-0-221">221</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-201" name="__codelineno-0-201"></a><span class="nd">@classmethod</span>
 <a id="__codelineno-0-202" name="__codelineno-0-202"></a><span class="k">def</span><span class="w"> </span><span class="nf">from_article</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">article</span><span class="p">:</span> <span class="n">Article</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">M</span><span class="p">:</span>
 <a id="__codelineno-0-203" name="__codelineno-0-203"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse an article into a TibiaWiki model.</span>
 <a id="__codelineno-0-204" name="__codelineno-0-204"></a>
@@ -5854,11 +5859,16 @@ It is called by <code>parse_article</code>.</p>
 <a id="__codelineno-0-209" name="__codelineno-0-209"></a><span class="sd">        An inherited model object for the current article.</span>
 <a id="__codelineno-0-210" name="__codelineno-0-210"></a>
 <a id="__codelineno-0-211" name="__codelineno-0-211"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-212" name="__codelineno-0-212"></a>    <span class="n">row</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
-<a id="__codelineno-0-213" name="__codelineno-0-213"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-214" name="__codelineno-0-214"></a>        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-<a id="__codelineno-0-215" name="__codelineno-0-215"></a>    <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-0-216" name="__codelineno-0-216"></a>        <span class="k">raise</span> <span class="n">ArticleParsingError</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">cause</span><span class="o">=</span><span class="n">e</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+<a id="__codelineno-0-212" name="__codelineno-0-212"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-213" name="__codelineno-0-213"></a>        <span class="n">row</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+<a id="__codelineno-0-214" name="__codelineno-0-214"></a>    <span class="k">except</span> <span class="n">ArticleParsingError</span><span class="p">:</span>
+<a id="__codelineno-0-215" name="__codelineno-0-215"></a>        <span class="k">raise</span>
+<a id="__codelineno-0-216" name="__codelineno-0-216"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-0-217" name="__codelineno-0-217"></a>        <span class="k">raise</span> <span class="n">ArticleParsingError</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">cause</span><span class="o">=</span><span class="n">e</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+<a id="__codelineno-0-218" name="__codelineno-0-218"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-219" name="__codelineno-0-219"></a>        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<a id="__codelineno-0-220" name="__codelineno-0-220"></a>    <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-0-221" name="__codelineno-0-221"></a>        <span class="k">raise</span> <span class="n">ArticleParsingError</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">cause</span><span class="o">=</span><span class="n">e</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -11634,8 +11644,7 @@ It is called by <code>parse_article</code>.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/parsers/npc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-30">30</a></span>
-<span class="normal"><a href="#__codelineno-0-31">31</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-31">31</a></span>
 <span class="normal"><a href="#__codelineno-0-32">32</a></span>
 <span class="normal"><a href="#__codelineno-0-33">33</a></span>
 <span class="normal"><a href="#__codelineno-0-34">34</a></span>
@@ -11655,28 +11664,29 @@ It is called by <code>parse_article</code>.</p>
 <span class="normal"><a href="#__codelineno-0-48">48</a></span>
 <span class="normal"><a href="#__codelineno-0-49">49</a></span>
 <span class="normal"><a href="#__codelineno-0-50">50</a></span>
-<span class="normal"><a href="#__codelineno-0-51">51</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="nd">@classmethod</span>
-<a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_attributes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">article</span><span class="p">:</span> <span class="n">Article</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<a id="__codelineno-0-32" name="__codelineno-0-32"></a>    <span class="n">row</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
-<a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="n">raw_attributes</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;_raw_attributes&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-34" name="__codelineno-0-34"></a>    <span class="bp">cls</span><span class="o">.</span><span class="n">_parse_jobs</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-<a id="__codelineno-0-35" name="__codelineno-0-35"></a>    <span class="bp">cls</span><span class="o">.</span><span class="n">_parse_races</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-<a id="__codelineno-0-36" name="__codelineno-0-36"></a>
-<a id="__codelineno-0-37" name="__codelineno-0-37"></a>    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;destinations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-<a id="__codelineno-0-38" name="__codelineno-0-38"></a>    <span class="n">destinations</span> <span class="o">=</span> <span class="p">[]</span>
-<a id="__codelineno-0-39" name="__codelineno-0-39"></a>    <span class="k">if</span> <span class="s2">&quot;notes&quot;</span> <span class="ow">in</span> <span class="n">raw_attributes</span> <span class="ow">and</span> <span class="s2">&quot;{{Transport&quot;</span> <span class="ow">in</span> <span class="n">raw_attributes</span><span class="p">[</span><span class="s2">&quot;notes&quot;</span><span class="p">]:</span>
-<a id="__codelineno-0-40" name="__codelineno-0-40"></a>        <span class="n">destinations</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_parse_destinations</span><span class="p">(</span><span class="n">raw_attributes</span><span class="p">[</span><span class="s2">&quot;notes&quot;</span><span class="p">]))</span>
-<a id="__codelineno-0-41" name="__codelineno-0-41"></a>    <span class="k">for</span> <span class="n">destination</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">notes</span> <span class="ow">in</span> <span class="n">destinations</span><span class="p">:</span>
-<a id="__codelineno-0-42" name="__codelineno-0-42"></a>        <span class="n">name</span> <span class="o">=</span> <span class="n">destination</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-43" name="__codelineno-0-43"></a>        <span class="n">clean_notes</span> <span class="o">=</span> <span class="n">clean_links</span><span class="p">(</span><span class="n">notes</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-<a id="__codelineno-0-44" name="__codelineno-0-44"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">notes</span><span class="p">:</span>
-<a id="__codelineno-0-45" name="__codelineno-0-45"></a>            <span class="n">clean_notes</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-0-46" name="__codelineno-0-46"></a>        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;destinations&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NpcDestination</span><span class="p">(</span>
-<a id="__codelineno-0-47" name="__codelineno-0-47"></a>            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-<a id="__codelineno-0-48" name="__codelineno-0-48"></a>            <span class="n">price</span><span class="o">=</span><span class="n">price</span><span class="p">,</span>
-<a id="__codelineno-0-49" name="__codelineno-0-49"></a>            <span class="n">notes</span><span class="o">=</span><span class="n">clean_notes</span><span class="p">,</span>
-<a id="__codelineno-0-50" name="__codelineno-0-50"></a>        <span class="p">))</span>
-<a id="__codelineno-0-51" name="__codelineno-0-51"></a>    <span class="k">return</span> <span class="n">row</span>
+<span class="normal"><a href="#__codelineno-0-51">51</a></span>
+<span class="normal"><a href="#__codelineno-0-52">52</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="nd">@classmethod</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_attributes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">article</span><span class="p">:</span> <span class="n">Article</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="n">row</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">parse_attributes</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34"></a>    <span class="n">raw_attributes</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;_raw_attributes&quot;</span><span class="p">]</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35"></a>    <span class="bp">cls</span><span class="o">.</span><span class="n">_parse_jobs</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36"></a>    <span class="bp">cls</span><span class="o">.</span><span class="n">_parse_races</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37"></a>
+<a id="__codelineno-0-38" name="__codelineno-0-38"></a>    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;destinations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39"></a>    <span class="n">destinations</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40"></a>    <span class="k">if</span> <span class="s2">&quot;notes&quot;</span> <span class="ow">in</span> <span class="n">raw_attributes</span> <span class="ow">and</span> <span class="s2">&quot;{{Transport&quot;</span> <span class="ow">in</span> <span class="n">raw_attributes</span><span class="p">[</span><span class="s2">&quot;notes&quot;</span><span class="p">]:</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41"></a>        <span class="n">destinations</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_parse_destinations</span><span class="p">(</span><span class="n">raw_attributes</span><span class="p">[</span><span class="s2">&quot;notes&quot;</span><span class="p">]))</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42"></a>    <span class="k">for</span> <span class="n">destination</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">notes</span> <span class="ow">in</span> <span class="n">destinations</span><span class="p">:</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43"></a>        <span class="n">name</span> <span class="o">=</span> <span class="n">destination</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44"></a>        <span class="n">clean_notes</span> <span class="o">=</span> <span class="n">clean_links</span><span class="p">(</span><span class="n">notes</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">notes</span><span class="p">:</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46"></a>            <span class="n">clean_notes</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47"></a>        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;destinations&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NpcDestination</span><span class="p">(</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48"></a>            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+<a id="__codelineno-0-49" name="__codelineno-0-49"></a>            <span class="n">price</span><span class="o">=</span><span class="n">price</span><span class="p">,</span>
+<a id="__codelineno-0-50" name="__codelineno-0-50"></a>            <span class="n">notes</span><span class="o">=</span><span class="n">clean_notes</span><span class="p">,</span>
+<a id="__codelineno-0-51" name="__codelineno-0-51"></a>        <span class="p">))</span>
+<a id="__codelineno-0-52" name="__codelineno-0-52"></a>    <span class="k">return</span> <span class="n">row</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

@@ -3088,6 +3088,7 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 <li>June 28, 2019</li>
 <li>Aug 21, 2014</li>
 <li>May 14, 2024 17:45</li>
+<li>January 27, 2026, 16:00</li>
 </ul>
 
 
@@ -3178,38 +3179,44 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 <span class="normal"><a href="#__codelineno-0-239">239</a></span>
 <span class="normal"><a href="#__codelineno-0-240">240</a></span>
 <span class="normal"><a href="#__codelineno-0-241">241</a></span>
-<span class="normal"><a href="#__codelineno-0-242">242</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-211" name="__codelineno-0-211"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_date</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-242">242</a></span>
+<span class="normal"><a href="#__codelineno-0-243">243</a></span>
+<span class="normal"><a href="#__codelineno-0-244">244</a></span>
+<span class="normal"><a href="#__codelineno-0-245">245</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-211" name="__codelineno-0-211"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_date</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">:</span>
 <a id="__codelineno-0-212" name="__codelineno-0-212"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a date from the formats used in TibiaWiki.</span>
 <a id="__codelineno-0-213" name="__codelineno-0-213"></a>
 <a id="__codelineno-0-214" name="__codelineno-0-214"></a><span class="sd">    - June 28, 2019</span>
 <a id="__codelineno-0-215" name="__codelineno-0-215"></a><span class="sd">    - Aug 21, 2014</span>
 <a id="__codelineno-0-216" name="__codelineno-0-216"></a><span class="sd">    - May 14, 2024 17:45</span>
-<a id="__codelineno-0-217" name="__codelineno-0-217"></a>
-<a id="__codelineno-0-218" name="__codelineno-0-218"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-219" name="__codelineno-0-219"></a><span class="sd">        value: The string containing the date.</span>
-<a id="__codelineno-0-220" name="__codelineno-0-220"></a>
-<a id="__codelineno-0-221" name="__codelineno-0-221"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-222" name="__codelineno-0-222"></a><span class="sd">        The date represented by the string.</span>
-<a id="__codelineno-0-223" name="__codelineno-0-223"></a>
-<a id="__codelineno-0-224" name="__codelineno-0-224"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-225" name="__codelineno-0-225"></a>    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-226" name="__codelineno-0-226"></a>    <span class="n">date_formats</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-227" name="__codelineno-0-227"></a>        <span class="s2">&quot;%B </span><span class="si">%d</span><span class="s2">, %Y&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-228" name="__codelineno-0-228"></a>        <span class="s2">&quot;%b </span><span class="si">%d</span><span class="s2">, %Y&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-229" name="__codelineno-0-229"></a>        <span class="s2">&quot;%Y&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-230" name="__codelineno-0-230"></a>        <span class="s2">&quot;%B </span><span class="si">%d</span><span class="s2">, %Y %H:%M&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-231" name="__codelineno-0-231"></a>        <span class="s2">&quot;%b </span><span class="si">%d</span><span class="s2">, %Y %H:%M&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-232" name="__codelineno-0-232"></a>        <span class="s2">&quot;%Y %H:%M&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-233" name="__codelineno-0-233"></a>    <span class="p">]</span>
-<a id="__codelineno-0-234" name="__codelineno-0-234"></a>    <span class="k">for</span> <span class="n">date_format</span> <span class="ow">in</span> <span class="n">date_formats</span><span class="p">:</span>
-<a id="__codelineno-0-235" name="__codelineno-0-235"></a>        <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-236" name="__codelineno-0-236"></a>            <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">date_format</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-<a id="__codelineno-0-237" name="__codelineno-0-237"></a>            <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-<a id="__codelineno-0-238" name="__codelineno-0-238"></a>        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-<a id="__codelineno-0-239" name="__codelineno-0-239"></a>            <span class="k">continue</span>
-<a id="__codelineno-0-240" name="__codelineno-0-240"></a>
-<a id="__codelineno-0-241" name="__codelineno-0-241"></a>    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Date format for value &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39; not recognized&quot;</span>
-<a id="__codelineno-0-242" name="__codelineno-0-242"></a>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<a id="__codelineno-0-217" name="__codelineno-0-217"></a><span class="sd">    - January 27, 2026, 16:00</span>
+<a id="__codelineno-0-218" name="__codelineno-0-218"></a>
+<a id="__codelineno-0-219" name="__codelineno-0-219"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-220" name="__codelineno-0-220"></a><span class="sd">        value: The string containing the date.</span>
+<a id="__codelineno-0-221" name="__codelineno-0-221"></a>
+<a id="__codelineno-0-222" name="__codelineno-0-222"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-223" name="__codelineno-0-223"></a><span class="sd">        The date represented by the string.</span>
+<a id="__codelineno-0-224" name="__codelineno-0-224"></a>
+<a id="__codelineno-0-225" name="__codelineno-0-225"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-226" name="__codelineno-0-226"></a>    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-227" name="__codelineno-0-227"></a>    <span class="n">date_formats</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-0-228" name="__codelineno-0-228"></a>        <span class="s2">&quot;%B </span><span class="si">%d</span><span class="s2">, %Y&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-229" name="__codelineno-0-229"></a>        <span class="s2">&quot;%b </span><span class="si">%d</span><span class="s2">, %Y&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-230" name="__codelineno-0-230"></a>        <span class="s2">&quot;%Y&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-231" name="__codelineno-0-231"></a>        <span class="s2">&quot;%B </span><span class="si">%d</span><span class="s2">, %Y %H:%M&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-232" name="__codelineno-0-232"></a>        <span class="s2">&quot;%b </span><span class="si">%d</span><span class="s2">, %Y %H:%M&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-233" name="__codelineno-0-233"></a>        <span class="s2">&quot;%B </span><span class="si">%d</span><span class="s2">, %Y, %H:%M&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-234" name="__codelineno-0-234"></a>        <span class="s2">&quot;%b </span><span class="si">%d</span><span class="s2">, %Y, %H:%M&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-235" name="__codelineno-0-235"></a>        <span class="s2">&quot;%Y %H:%M&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-236" name="__codelineno-0-236"></a>    <span class="p">]</span>
+<a id="__codelineno-0-237" name="__codelineno-0-237"></a>    <span class="k">for</span> <span class="n">date_format</span> <span class="ow">in</span> <span class="n">date_formats</span><span class="p">:</span>
+<a id="__codelineno-0-238" name="__codelineno-0-238"></a>        <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-239" name="__codelineno-0-239"></a>            <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">date_format</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+<a id="__codelineno-0-240" name="__codelineno-0-240"></a>            <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+<a id="__codelineno-0-241" name="__codelineno-0-241"></a>        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+<a id="__codelineno-0-242" name="__codelineno-0-242"></a>            <span class="k">continue</span>
+<a id="__codelineno-0-243" name="__codelineno-0-243"></a>
+<a id="__codelineno-0-244" name="__codelineno-0-244"></a>    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Date format for value &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39; not recognized&quot;</span>
+<a id="__codelineno-0-245" name="__codelineno-0-245"></a>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3304,10 +3311,7 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-245">245</a></span>
-<span class="normal"><a href="#__codelineno-0-246">246</a></span>
-<span class="normal"><a href="#__codelineno-0-247">247</a></span>
-<span class="normal"><a href="#__codelineno-0-248">248</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-248">248</a></span>
 <span class="normal"><a href="#__codelineno-0-249">249</a></span>
 <span class="normal"><a href="#__codelineno-0-250">250</a></span>
 <span class="normal"><a href="#__codelineno-0-251">251</a></span>
@@ -3318,21 +3322,24 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 <span class="normal"><a href="#__codelineno-0-256">256</a></span>
 <span class="normal"><a href="#__codelineno-0-257">257</a></span>
 <span class="normal"><a href="#__codelineno-0-258">258</a></span>
-<span class="normal"><a href="#__codelineno-0-259">259</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-245" name="__codelineno-0-245"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_float</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<a id="__codelineno-0-246" name="__codelineno-0-246"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;From a string, parses a floating value.</span>
-<a id="__codelineno-0-247" name="__codelineno-0-247"></a>
-<a id="__codelineno-0-248" name="__codelineno-0-248"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-249" name="__codelineno-0-249"></a><span class="sd">        value: The string containing the floating number.</span>
-<a id="__codelineno-0-250" name="__codelineno-0-250"></a><span class="sd">        default: The value to return if no float is found.</span>
-<a id="__codelineno-0-251" name="__codelineno-0-251"></a>
-<a id="__codelineno-0-252" name="__codelineno-0-252"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-253" name="__codelineno-0-253"></a><span class="sd">        The floating number found, or the default value provided.</span>
+<span class="normal"><a href="#__codelineno-0-259">259</a></span>
+<span class="normal"><a href="#__codelineno-0-260">260</a></span>
+<span class="normal"><a href="#__codelineno-0-261">261</a></span>
+<span class="normal"><a href="#__codelineno-0-262">262</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-248" name="__codelineno-0-248"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_float</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<a id="__codelineno-0-249" name="__codelineno-0-249"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;From a string, parses a floating value.</span>
+<a id="__codelineno-0-250" name="__codelineno-0-250"></a>
+<a id="__codelineno-0-251" name="__codelineno-0-251"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-252" name="__codelineno-0-252"></a><span class="sd">        value: The string containing the floating number.</span>
+<a id="__codelineno-0-253" name="__codelineno-0-253"></a><span class="sd">        default: The value to return if no float is found.</span>
 <a id="__codelineno-0-254" name="__codelineno-0-254"></a>
-<a id="__codelineno-0-255" name="__codelineno-0-255"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-256" name="__codelineno-0-256"></a>    <span class="n">match</span> <span class="o">=</span> <span class="n">float_pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-<a id="__codelineno-0-257" name="__codelineno-0-257"></a>    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-<a id="__codelineno-0-258" name="__codelineno-0-258"></a>        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-<a id="__codelineno-0-259" name="__codelineno-0-259"></a>    <span class="k">return</span> <span class="n">default</span>
+<a id="__codelineno-0-255" name="__codelineno-0-255"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-256" name="__codelineno-0-256"></a><span class="sd">        The floating number found, or the default value provided.</span>
+<a id="__codelineno-0-257" name="__codelineno-0-257"></a>
+<a id="__codelineno-0-258" name="__codelineno-0-258"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-259" name="__codelineno-0-259"></a>    <span class="n">match</span> <span class="o">=</span> <span class="n">float_pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<a id="__codelineno-0-260" name="__codelineno-0-260"></a>    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+<a id="__codelineno-0-261" name="__codelineno-0-261"></a>        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<a id="__codelineno-0-262" name="__codelineno-0-262"></a>    <span class="k">return</span> <span class="n">default</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3427,10 +3434,7 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-262">262</a></span>
-<span class="normal"><a href="#__codelineno-0-263">263</a></span>
-<span class="normal"><a href="#__codelineno-0-264">264</a></span>
-<span class="normal"><a href="#__codelineno-0-265">265</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-265">265</a></span>
 <span class="normal"><a href="#__codelineno-0-266">266</a></span>
 <span class="normal"><a href="#__codelineno-0-267">267</a></span>
 <span class="normal"><a href="#__codelineno-0-268">268</a></span>
@@ -3441,21 +3445,24 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 <span class="normal"><a href="#__codelineno-0-273">273</a></span>
 <span class="normal"><a href="#__codelineno-0-274">274</a></span>
 <span class="normal"><a href="#__codelineno-0-275">275</a></span>
-<span class="normal"><a href="#__codelineno-0-276">276</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-262" name="__codelineno-0-262"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_integer</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<a id="__codelineno-0-263" name="__codelineno-0-263"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse an integer from a string. Extra characters are ignored.</span>
-<a id="__codelineno-0-264" name="__codelineno-0-264"></a>
-<a id="__codelineno-0-265" name="__codelineno-0-265"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-266" name="__codelineno-0-266"></a><span class="sd">        value: The string containing an integer.</span>
-<a id="__codelineno-0-267" name="__codelineno-0-267"></a><span class="sd">        default: The value to return if no integer is found.</span>
-<a id="__codelineno-0-268" name="__codelineno-0-268"></a>
-<a id="__codelineno-0-269" name="__codelineno-0-269"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-270" name="__codelineno-0-270"></a><span class="sd">        The numeric value found, or the default value provided.</span>
+<span class="normal"><a href="#__codelineno-0-276">276</a></span>
+<span class="normal"><a href="#__codelineno-0-277">277</a></span>
+<span class="normal"><a href="#__codelineno-0-278">278</a></span>
+<span class="normal"><a href="#__codelineno-0-279">279</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-265" name="__codelineno-0-265"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_integer</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<a id="__codelineno-0-266" name="__codelineno-0-266"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse an integer from a string. Extra characters are ignored.</span>
+<a id="__codelineno-0-267" name="__codelineno-0-267"></a>
+<a id="__codelineno-0-268" name="__codelineno-0-268"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-269" name="__codelineno-0-269"></a><span class="sd">        value: The string containing an integer.</span>
+<a id="__codelineno-0-270" name="__codelineno-0-270"></a><span class="sd">        default: The value to return if no integer is found.</span>
 <a id="__codelineno-0-271" name="__codelineno-0-271"></a>
-<a id="__codelineno-0-272" name="__codelineno-0-272"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-273" name="__codelineno-0-273"></a>    <span class="n">match</span> <span class="o">=</span> <span class="n">int_pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-<a id="__codelineno-0-274" name="__codelineno-0-274"></a>    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-<a id="__codelineno-0-275" name="__codelineno-0-275"></a>        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-<a id="__codelineno-0-276" name="__codelineno-0-276"></a>    <span class="k">return</span> <span class="n">default</span>
+<a id="__codelineno-0-272" name="__codelineno-0-272"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-273" name="__codelineno-0-273"></a><span class="sd">        The numeric value found, or the default value provided.</span>
+<a id="__codelineno-0-274" name="__codelineno-0-274"></a>
+<a id="__codelineno-0-275" name="__codelineno-0-275"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-276" name="__codelineno-0-276"></a>    <span class="n">match</span> <span class="o">=</span> <span class="n">int_pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<a id="__codelineno-0-277" name="__codelineno-0-277"></a>    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+<a id="__codelineno-0-278" name="__codelineno-0-278"></a>        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<a id="__codelineno-0-279" name="__codelineno-0-279"></a>    <span class="k">return</span> <span class="n">default</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3534,10 +3541,7 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-279">279</a></span>
-<span class="normal"><a href="#__codelineno-0-280">280</a></span>
-<span class="normal"><a href="#__codelineno-0-281">281</a></span>
-<span class="normal"><a href="#__codelineno-0-282">282</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-282">282</a></span>
 <span class="normal"><a href="#__codelineno-0-283">283</a></span>
 <span class="normal"><a href="#__codelineno-0-284">284</a></span>
 <span class="normal"><a href="#__codelineno-0-285">285</a></span>
@@ -3549,22 +3553,25 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 <span class="normal"><a href="#__codelineno-0-291">291</a></span>
 <span class="normal"><a href="#__codelineno-0-292">292</a></span>
 <span class="normal"><a href="#__codelineno-0-293">293</a></span>
-<span class="normal"><a href="#__codelineno-0-294">294</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-279" name="__codelineno-0-279"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_loot_statistics</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]:</span>
-<a id="__codelineno-0-280" name="__codelineno-0-280"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get every dropped item from a creature&#39;s loot statistics.</span>
-<a id="__codelineno-0-281" name="__codelineno-0-281"></a>
-<a id="__codelineno-0-282" name="__codelineno-0-282"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-283" name="__codelineno-0-283"></a><span class="sd">        value: A string containing a creature&#39;s loot statistics.</span>
+<span class="normal"><a href="#__codelineno-0-294">294</a></span>
+<span class="normal"><a href="#__codelineno-0-295">295</a></span>
+<span class="normal"><a href="#__codelineno-0-296">296</a></span>
+<span class="normal"><a href="#__codelineno-0-297">297</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-282" name="__codelineno-0-282"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_loot_statistics</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]:</span>
+<a id="__codelineno-0-283" name="__codelineno-0-283"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get every dropped item from a creature&#39;s loot statistics.</span>
 <a id="__codelineno-0-284" name="__codelineno-0-284"></a>
-<a id="__codelineno-0-285" name="__codelineno-0-285"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-286" name="__codelineno-0-286"></a><span class="sd">        A tuple containing the total kills and a list of entries.</span>
+<a id="__codelineno-0-285" name="__codelineno-0-285"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-286" name="__codelineno-0-286"></a><span class="sd">        value: A string containing a creature&#39;s loot statistics.</span>
 <a id="__codelineno-0-287" name="__codelineno-0-287"></a>
-<a id="__codelineno-0-288" name="__codelineno-0-288"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-289" name="__codelineno-0-289"></a>    <span class="n">template</span> <span class="o">=</span> <span class="n">find_template</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Loot2&quot;</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-0-290" name="__codelineno-0-290"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">template</span><span class="p">:</span>
-<a id="__codelineno-0-291" name="__codelineno-0-291"></a>        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[]</span>
-<a id="__codelineno-0-292" name="__codelineno-0-292"></a>    <span class="n">kills</span> <span class="o">=</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">strip_code</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;kills&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
-<a id="__codelineno-0-293" name="__codelineno-0-293"></a>    <span class="n">entries</span> <span class="o">=</span> <span class="p">[</span><span class="n">_parse_loot_entry</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip_code</span><span class="p">())</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">template</span><span class="o">.</span><span class="n">params</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">param</span><span class="o">.</span><span class="n">showkey</span><span class="p">]</span>
-<a id="__codelineno-0-294" name="__codelineno-0-294"></a>    <span class="k">return</span> <span class="n">kills</span><span class="p">,</span> <span class="n">entries</span>
+<a id="__codelineno-0-288" name="__codelineno-0-288"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-289" name="__codelineno-0-289"></a><span class="sd">        A tuple containing the total kills and a list of entries.</span>
+<a id="__codelineno-0-290" name="__codelineno-0-290"></a>
+<a id="__codelineno-0-291" name="__codelineno-0-291"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-292" name="__codelineno-0-292"></a>    <span class="n">template</span> <span class="o">=</span> <span class="n">find_template</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Loot2&quot;</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-0-293" name="__codelineno-0-293"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">template</span><span class="p">:</span>
+<a id="__codelineno-0-294" name="__codelineno-0-294"></a>        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[]</span>
+<a id="__codelineno-0-295" name="__codelineno-0-295"></a>    <span class="n">kills</span> <span class="o">=</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">strip_code</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;kills&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<a id="__codelineno-0-296" name="__codelineno-0-296"></a>    <span class="n">entries</span> <span class="o">=</span> <span class="p">[</span><span class="n">_parse_loot_entry</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip_code</span><span class="p">())</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">template</span><span class="o">.</span><span class="n">params</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">param</span><span class="o">.</span><span class="n">showkey</span><span class="p">]</span>
+<a id="__codelineno-0-297" name="__codelineno-0-297"></a>    <span class="k">return</span> <span class="n">kills</span><span class="p">,</span> <span class="n">entries</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3591,10 +3598,7 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-297">297</a></span>
-<span class="normal"><a href="#__codelineno-0-298">298</a></span>
-<span class="normal"><a href="#__codelineno-0-299">299</a></span>
-<span class="normal"><a href="#__codelineno-0-300">300</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-300">300</a></span>
 <span class="normal"><a href="#__codelineno-0-301">301</a></span>
 <span class="normal"><a href="#__codelineno-0-302">302</a></span>
 <span class="normal"><a href="#__codelineno-0-303">303</a></span>
@@ -3608,24 +3612,27 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 <span class="normal"><a href="#__codelineno-0-311">311</a></span>
 <span class="normal"><a href="#__codelineno-0-312">312</a></span>
 <span class="normal"><a href="#__codelineno-0-313">313</a></span>
-<span class="normal"><a href="#__codelineno-0-314">314</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-297" name="__codelineno-0-297"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_weapon_proficiency_name</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-<a id="__codelineno-0-298" name="__codelineno-0-298"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse item-to-proficiency mappings from Template:Weapon Proficiency Name.&quot;&quot;&quot;</span>
-<a id="__codelineno-0-299" name="__codelineno-0-299"></a>    <span class="n">switch</span> <span class="o">=</span> <span class="n">find_template</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="s2">&quot;#switch&quot;</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-0-300" name="__codelineno-0-300"></a>    <span class="k">if</span> <span class="n">switch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-301" name="__codelineno-0-301"></a>        <span class="k">return</span> <span class="p">{}</span>
-<a id="__codelineno-0-302" name="__codelineno-0-302"></a>
-<a id="__codelineno-0-303" name="__codelineno-0-303"></a>    <span class="n">mappings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-<a id="__codelineno-0-304" name="__codelineno-0-304"></a>    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">switch</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
-<a id="__codelineno-0-305" name="__codelineno-0-305"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">param</span><span class="o">.</span><span class="n">showkey</span><span class="p">:</span>
-<a id="__codelineno-0-306" name="__codelineno-0-306"></a>            <span class="k">continue</span>
-<a id="__codelineno-0-307" name="__codelineno-0-307"></a>        <span class="n">item_name</span> <span class="o">=</span> <span class="n">clean_links</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-308" name="__codelineno-0-308"></a>        <span class="n">proficiency_name</span> <span class="o">=</span> <span class="n">clean_links</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-309" name="__codelineno-0-309"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">item_name</span> <span class="ow">or</span> <span class="n">item_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#default&quot;</span><span class="p">):</span>
-<a id="__codelineno-0-310" name="__codelineno-0-310"></a>            <span class="k">continue</span>
-<a id="__codelineno-0-311" name="__codelineno-0-311"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">proficiency_name</span><span class="p">:</span>
-<a id="__codelineno-0-312" name="__codelineno-0-312"></a>            <span class="k">continue</span>
-<a id="__codelineno-0-313" name="__codelineno-0-313"></a>        <span class="n">mappings</span><span class="p">[</span><span class="n">item_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">proficiency_name</span>
-<a id="__codelineno-0-314" name="__codelineno-0-314"></a>    <span class="k">return</span> <span class="n">mappings</span>
+<span class="normal"><a href="#__codelineno-0-314">314</a></span>
+<span class="normal"><a href="#__codelineno-0-315">315</a></span>
+<span class="normal"><a href="#__codelineno-0-316">316</a></span>
+<span class="normal"><a href="#__codelineno-0-317">317</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-300" name="__codelineno-0-300"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_weapon_proficiency_name</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<a id="__codelineno-0-301" name="__codelineno-0-301"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse item-to-proficiency mappings from Template:Weapon Proficiency Name.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-302" name="__codelineno-0-302"></a>    <span class="n">switch</span> <span class="o">=</span> <span class="n">find_template</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="s2">&quot;#switch&quot;</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-0-303" name="__codelineno-0-303"></a>    <span class="k">if</span> <span class="n">switch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-304" name="__codelineno-0-304"></a>        <span class="k">return</span> <span class="p">{}</span>
+<a id="__codelineno-0-305" name="__codelineno-0-305"></a>
+<a id="__codelineno-0-306" name="__codelineno-0-306"></a>    <span class="n">mappings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<a id="__codelineno-0-307" name="__codelineno-0-307"></a>    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">switch</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+<a id="__codelineno-0-308" name="__codelineno-0-308"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">param</span><span class="o">.</span><span class="n">showkey</span><span class="p">:</span>
+<a id="__codelineno-0-309" name="__codelineno-0-309"></a>            <span class="k">continue</span>
+<a id="__codelineno-0-310" name="__codelineno-0-310"></a>        <span class="n">item_name</span> <span class="o">=</span> <span class="n">clean_links</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-311" name="__codelineno-0-311"></a>        <span class="n">proficiency_name</span> <span class="o">=</span> <span class="n">clean_links</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-312" name="__codelineno-0-312"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">item_name</span> <span class="ow">or</span> <span class="n">item_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#default&quot;</span><span class="p">):</span>
+<a id="__codelineno-0-313" name="__codelineno-0-313"></a>            <span class="k">continue</span>
+<a id="__codelineno-0-314" name="__codelineno-0-314"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">proficiency_name</span><span class="p">:</span>
+<a id="__codelineno-0-315" name="__codelineno-0-315"></a>            <span class="k">continue</span>
+<a id="__codelineno-0-316" name="__codelineno-0-316"></a>        <span class="n">mappings</span><span class="p">[</span><span class="n">item_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">proficiency_name</span>
+<a id="__codelineno-0-317" name="__codelineno-0-317"></a>    <span class="k">return</span> <span class="n">mappings</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3652,10 +3659,7 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-317">317</a></span>
-<span class="normal"><a href="#__codelineno-0-318">318</a></span>
-<span class="normal"><a href="#__codelineno-0-319">319</a></span>
-<span class="normal"><a href="#__codelineno-0-320">320</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-320">320</a></span>
 <span class="normal"><a href="#__codelineno-0-321">321</a></span>
 <span class="normal"><a href="#__codelineno-0-322">322</a></span>
 <span class="normal"><a href="#__codelineno-0-323">323</a></span>
@@ -3697,52 +3701,55 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 <span class="normal"><a href="#__codelineno-0-359">359</a></span>
 <span class="normal"><a href="#__codelineno-0-360">360</a></span>
 <span class="normal"><a href="#__codelineno-0-361">361</a></span>
-<span class="normal"><a href="#__codelineno-0-362">362</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-317" name="__codelineno-0-317"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_weapon_proficiency_tables</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]]]:</span>
-<a id="__codelineno-0-318" name="__codelineno-0-318"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse perks grouped by proficiency name and perk level from Weapon Proficiency Tables.&quot;&quot;&quot;</span>
-<a id="__codelineno-0-319" name="__codelineno-0-319"></a>    <span class="n">parsed_tables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]]]</span> <span class="o">=</span> <span class="p">{}</span>
-<a id="__codelineno-0-320" name="__codelineno-0-320"></a>    <span class="n">heading_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(={2,6})\s*(.+?)\s*\1\s*$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
-<a id="__codelineno-0-321" name="__codelineno-0-321"></a>    <span class="n">heading_matches</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">heading_pattern</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
-<a id="__codelineno-0-322" name="__codelineno-0-322"></a>    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">heading</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">heading_matches</span><span class="p">):</span>
-<a id="__codelineno-0-323" name="__codelineno-0-323"></a>        <span class="n">section_name</span> <span class="o">=</span> <span class="n">mwparserfromhell</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">heading</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">strip_code</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-324" name="__codelineno-0-324"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">section_name</span><span class="p">:</span>
-<a id="__codelineno-0-325" name="__codelineno-0-325"></a>            <span class="k">continue</span>
-<a id="__codelineno-0-326" name="__codelineno-0-326"></a>
-<a id="__codelineno-0-327" name="__codelineno-0-327"></a>        <span class="n">section_start</span> <span class="o">=</span> <span class="n">heading</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
-<a id="__codelineno-0-328" name="__codelineno-0-328"></a>        <span class="n">section_end</span> <span class="o">=</span> <span class="n">heading_matches</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">if</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">heading_matches</span><span class="p">)</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-<a id="__codelineno-0-329" name="__codelineno-0-329"></a>        <span class="n">section_content</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="n">section_start</span><span class="p">:</span><span class="n">section_end</span><span class="p">]</span>
-<a id="__codelineno-0-330" name="__codelineno-0-330"></a>        <span class="n">table_template</span> <span class="o">=</span> <span class="n">find_template</span><span class="p">(</span><span class="n">section_content</span><span class="p">,</span> <span class="s2">&quot;Weapon Proficiency Table&quot;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-0-331" name="__codelineno-0-331"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">table_template</span><span class="p">:</span>
-<a id="__codelineno-0-332" name="__codelineno-0-332"></a>            <span class="k">continue</span>
-<a id="__codelineno-0-333" name="__codelineno-0-333"></a>
-<a id="__codelineno-0-334" name="__codelineno-0-334"></a>        <span class="n">levels</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{}</span>
-<a id="__codelineno-0-335" name="__codelineno-0-335"></a>        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">table_template</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
-<a id="__codelineno-0-336" name="__codelineno-0-336"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">param</span><span class="o">.</span><span class="n">showkey</span><span class="p">:</span>
-<a id="__codelineno-0-337" name="__codelineno-0-337"></a>                <span class="k">continue</span>
-<a id="__codelineno-0-338" name="__codelineno-0-338"></a>            <span class="n">key</span> <span class="o">=</span> <span class="n">strip_code</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-339" name="__codelineno-0-339"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;perk_&quot;</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-362">362</a></span>
+<span class="normal"><a href="#__codelineno-0-363">363</a></span>
+<span class="normal"><a href="#__codelineno-0-364">364</a></span>
+<span class="normal"><a href="#__codelineno-0-365">365</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-320" name="__codelineno-0-320"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_weapon_proficiency_tables</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]]]:</span>
+<a id="__codelineno-0-321" name="__codelineno-0-321"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse perks grouped by proficiency name and perk level from Weapon Proficiency Tables.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-322" name="__codelineno-0-322"></a>    <span class="n">parsed_tables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]]]</span> <span class="o">=</span> <span class="p">{}</span>
+<a id="__codelineno-0-323" name="__codelineno-0-323"></a>    <span class="n">heading_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(={2,6})\s*(.+?)\s*\1\s*$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+<a id="__codelineno-0-324" name="__codelineno-0-324"></a>    <span class="n">heading_matches</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">heading_pattern</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
+<a id="__codelineno-0-325" name="__codelineno-0-325"></a>    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">heading</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">heading_matches</span><span class="p">):</span>
+<a id="__codelineno-0-326" name="__codelineno-0-326"></a>        <span class="n">section_name</span> <span class="o">=</span> <span class="n">mwparserfromhell</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">heading</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">strip_code</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-327" name="__codelineno-0-327"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">section_name</span><span class="p">:</span>
+<a id="__codelineno-0-328" name="__codelineno-0-328"></a>            <span class="k">continue</span>
+<a id="__codelineno-0-329" name="__codelineno-0-329"></a>
+<a id="__codelineno-0-330" name="__codelineno-0-330"></a>        <span class="n">section_start</span> <span class="o">=</span> <span class="n">heading</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+<a id="__codelineno-0-331" name="__codelineno-0-331"></a>        <span class="n">section_end</span> <span class="o">=</span> <span class="n">heading_matches</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">if</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">heading_matches</span><span class="p">)</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+<a id="__codelineno-0-332" name="__codelineno-0-332"></a>        <span class="n">section_content</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="n">section_start</span><span class="p">:</span><span class="n">section_end</span><span class="p">]</span>
+<a id="__codelineno-0-333" name="__codelineno-0-333"></a>        <span class="n">table_template</span> <span class="o">=</span> <span class="n">find_template</span><span class="p">(</span><span class="n">section_content</span><span class="p">,</span> <span class="s2">&quot;Weapon Proficiency Table&quot;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-0-334" name="__codelineno-0-334"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">table_template</span><span class="p">:</span>
+<a id="__codelineno-0-335" name="__codelineno-0-335"></a>            <span class="k">continue</span>
+<a id="__codelineno-0-336" name="__codelineno-0-336"></a>
+<a id="__codelineno-0-337" name="__codelineno-0-337"></a>        <span class="n">levels</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{}</span>
+<a id="__codelineno-0-338" name="__codelineno-0-338"></a>        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">table_template</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+<a id="__codelineno-0-339" name="__codelineno-0-339"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">param</span><span class="o">.</span><span class="n">showkey</span><span class="p">:</span>
 <a id="__codelineno-0-340" name="__codelineno-0-340"></a>                <span class="k">continue</span>
-<a id="__codelineno-0-341" name="__codelineno-0-341"></a>            <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-342" name="__codelineno-0-342"></a>                <span class="n">perk_level</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">5</span><span class="p">:])</span>
-<a id="__codelineno-0-343" name="__codelineno-0-343"></a>            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-<a id="__codelineno-0-344" name="__codelineno-0-344"></a>                <span class="k">continue</span>
-<a id="__codelineno-0-345" name="__codelineno-0-345"></a>            <span class="n">perks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-<a id="__codelineno-0-346" name="__codelineno-0-346"></a>            <span class="k">for</span> <span class="n">button</span> <span class="ow">in</span> <span class="n">mwparserfromhell</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">ifilter_templates</span><span class="p">(</span><span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<a id="__codelineno-0-347" name="__codelineno-0-347"></a>                <span class="n">name</span> <span class="o">=</span> <span class="n">strip_code</span><span class="p">(</span><span class="n">button</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
-<a id="__codelineno-0-348" name="__codelineno-0-348"></a>                <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;weapon proficiency button&quot;</span><span class="p">:</span>
-<a id="__codelineno-0-349" name="__codelineno-0-349"></a>                    <span class="k">continue</span>
-<a id="__codelineno-0-350" name="__codelineno-0-350"></a>                <span class="n">skill_image</span> <span class="o">=</span> <span class="n">_get_template_param</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s2">&quot;skill_image&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-351" name="__codelineno-0-351"></a>                <span class="n">icon</span> <span class="o">=</span> <span class="n">_get_template_param</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s2">&quot;icon&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-352" name="__codelineno-0-352"></a>                <span class="n">effect</span> <span class="o">=</span> <span class="n">_get_template_param</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_get_template_param</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s2">&quot;effect&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-353" name="__codelineno-0-353"></a>                <span class="n">perks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-<a id="__codelineno-0-354" name="__codelineno-0-354"></a>                    <span class="s2">&quot;skill_image&quot;</span><span class="p">:</span> <span class="n">skill_image</span><span class="p">,</span>
-<a id="__codelineno-0-355" name="__codelineno-0-355"></a>                    <span class="s2">&quot;icon&quot;</span><span class="p">:</span> <span class="n">icon</span><span class="p">,</span>
-<a id="__codelineno-0-356" name="__codelineno-0-356"></a>                    <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="n">effect</span><span class="p">,</span>
-<a id="__codelineno-0-357" name="__codelineno-0-357"></a>                <span class="p">})</span>
-<a id="__codelineno-0-358" name="__codelineno-0-358"></a>            <span class="k">if</span> <span class="n">perks</span><span class="p">:</span>
-<a id="__codelineno-0-359" name="__codelineno-0-359"></a>                <span class="n">levels</span><span class="p">[</span><span class="n">perk_level</span><span class="p">]</span> <span class="o">=</span> <span class="n">perks</span>
-<a id="__codelineno-0-360" name="__codelineno-0-360"></a>        <span class="k">if</span> <span class="n">levels</span><span class="p">:</span>
-<a id="__codelineno-0-361" name="__codelineno-0-361"></a>            <span class="n">parsed_tables</span><span class="p">[</span><span class="n">section_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">levels</span>
-<a id="__codelineno-0-362" name="__codelineno-0-362"></a>    <span class="k">return</span> <span class="n">parsed_tables</span>
+<a id="__codelineno-0-341" name="__codelineno-0-341"></a>            <span class="n">key</span> <span class="o">=</span> <span class="n">strip_code</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-342" name="__codelineno-0-342"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;perk_&quot;</span><span class="p">):</span>
+<a id="__codelineno-0-343" name="__codelineno-0-343"></a>                <span class="k">continue</span>
+<a id="__codelineno-0-344" name="__codelineno-0-344"></a>            <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-345" name="__codelineno-0-345"></a>                <span class="n">perk_level</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">5</span><span class="p">:])</span>
+<a id="__codelineno-0-346" name="__codelineno-0-346"></a>            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+<a id="__codelineno-0-347" name="__codelineno-0-347"></a>                <span class="k">continue</span>
+<a id="__codelineno-0-348" name="__codelineno-0-348"></a>            <span class="n">perks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-349" name="__codelineno-0-349"></a>            <span class="k">for</span> <span class="n">button</span> <span class="ow">in</span> <span class="n">mwparserfromhell</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">ifilter_templates</span><span class="p">(</span><span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<a id="__codelineno-0-350" name="__codelineno-0-350"></a>                <span class="n">name</span> <span class="o">=</span> <span class="n">strip_code</span><span class="p">(</span><span class="n">button</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+<a id="__codelineno-0-351" name="__codelineno-0-351"></a>                <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;weapon proficiency button&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-352" name="__codelineno-0-352"></a>                    <span class="k">continue</span>
+<a id="__codelineno-0-353" name="__codelineno-0-353"></a>                <span class="n">skill_image</span> <span class="o">=</span> <span class="n">_get_template_param</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s2">&quot;skill_image&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-354" name="__codelineno-0-354"></a>                <span class="n">icon</span> <span class="o">=</span> <span class="n">_get_template_param</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s2">&quot;icon&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-355" name="__codelineno-0-355"></a>                <span class="n">effect</span> <span class="o">=</span> <span class="n">_get_template_param</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_get_template_param</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s2">&quot;effect&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-356" name="__codelineno-0-356"></a>                <span class="n">perks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+<a id="__codelineno-0-357" name="__codelineno-0-357"></a>                    <span class="s2">&quot;skill_image&quot;</span><span class="p">:</span> <span class="n">skill_image</span><span class="p">,</span>
+<a id="__codelineno-0-358" name="__codelineno-0-358"></a>                    <span class="s2">&quot;icon&quot;</span><span class="p">:</span> <span class="n">icon</span><span class="p">,</span>
+<a id="__codelineno-0-359" name="__codelineno-0-359"></a>                    <span class="s2">&quot;effect&quot;</span><span class="p">:</span> <span class="n">effect</span><span class="p">,</span>
+<a id="__codelineno-0-360" name="__codelineno-0-360"></a>                <span class="p">})</span>
+<a id="__codelineno-0-361" name="__codelineno-0-361"></a>            <span class="k">if</span> <span class="n">perks</span><span class="p">:</span>
+<a id="__codelineno-0-362" name="__codelineno-0-362"></a>                <span class="n">levels</span><span class="p">[</span><span class="n">perk_level</span><span class="p">]</span> <span class="o">=</span> <span class="n">perks</span>
+<a id="__codelineno-0-363" name="__codelineno-0-363"></a>        <span class="k">if</span> <span class="n">levels</span><span class="p">:</span>
+<a id="__codelineno-0-364" name="__codelineno-0-364"></a>            <span class="n">parsed_tables</span><span class="p">[</span><span class="n">section_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">levels</span>
+<a id="__codelineno-0-365" name="__codelineno-0-365"></a>    <span class="k">return</span> <span class="n">parsed_tables</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3822,10 +3829,7 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-403">403</a></span>
-<span class="normal"><a href="#__codelineno-0-404">404</a></span>
-<span class="normal"><a href="#__codelineno-0-405">405</a></span>
-<span class="normal"><a href="#__codelineno-0-406">406</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-406">406</a></span>
 <span class="normal"><a href="#__codelineno-0-407">407</a></span>
 <span class="normal"><a href="#__codelineno-0-408">408</a></span>
 <span class="normal"><a href="#__codelineno-0-409">409</a></span>
@@ -3837,22 +3841,25 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 <span class="normal"><a href="#__codelineno-0-415">415</a></span>
 <span class="normal"><a href="#__codelineno-0-416">416</a></span>
 <span class="normal"><a href="#__codelineno-0-417">417</a></span>
-<span class="normal"><a href="#__codelineno-0-418">418</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-403" name="__codelineno-0-403"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_min_max</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<a id="__codelineno-0-404" name="__codelineno-0-404"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the minimum and maximum amounts of a loot drop.</span>
-<a id="__codelineno-0-405" name="__codelineno-0-405"></a>
-<a id="__codelineno-0-406" name="__codelineno-0-406"></a><span class="sd">    They consist of two numbers separated by a hyphen, e.g. ``0-40``</span>
-<a id="__codelineno-0-407" name="__codelineno-0-407"></a>
-<a id="__codelineno-0-408" name="__codelineno-0-408"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-409" name="__codelineno-0-409"></a><span class="sd">        value: A string containing minimum and maximum values.</span>
+<span class="normal"><a href="#__codelineno-0-418">418</a></span>
+<span class="normal"><a href="#__codelineno-0-419">419</a></span>
+<span class="normal"><a href="#__codelineno-0-420">420</a></span>
+<span class="normal"><a href="#__codelineno-0-421">421</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-406" name="__codelineno-0-406"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_min_max</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<a id="__codelineno-0-407" name="__codelineno-0-407"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the minimum and maximum amounts of a loot drop.</span>
+<a id="__codelineno-0-408" name="__codelineno-0-408"></a>
+<a id="__codelineno-0-409" name="__codelineno-0-409"></a><span class="sd">    They consist of two numbers separated by a hyphen, e.g. ``0-40``</span>
 <a id="__codelineno-0-410" name="__codelineno-0-410"></a>
-<a id="__codelineno-0-411" name="__codelineno-0-411"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-412" name="__codelineno-0-412"></a><span class="sd">        The minimum and maximum amounts.</span>
+<a id="__codelineno-0-411" name="__codelineno-0-411"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-412" name="__codelineno-0-412"></a><span class="sd">        value: A string containing minimum and maximum values.</span>
 <a id="__codelineno-0-413" name="__codelineno-0-413"></a>
-<a id="__codelineno-0-414" name="__codelineno-0-414"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-415" name="__codelineno-0-415"></a>    <span class="n">match</span> <span class="o">=</span> <span class="n">min_max_pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-<a id="__codelineno-0-416" name="__codelineno-0-416"></a>    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-<a id="__codelineno-0-417" name="__codelineno-0-417"></a>        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-<a id="__codelineno-0-418" name="__codelineno-0-418"></a>    <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-0-414" name="__codelineno-0-414"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-415" name="__codelineno-0-415"></a><span class="sd">        The minimum and maximum amounts.</span>
+<a id="__codelineno-0-416" name="__codelineno-0-416"></a>
+<a id="__codelineno-0-417" name="__codelineno-0-417"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-418" name="__codelineno-0-418"></a>    <span class="n">match</span> <span class="o">=</span> <span class="n">min_max_pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<a id="__codelineno-0-419" name="__codelineno-0-419"></a>    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+<a id="__codelineno-0-420" name="__codelineno-0-420"></a>        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<a id="__codelineno-0-421" name="__codelineno-0-421"></a>    <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3931,10 +3938,7 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-421">421</a></span>
-<span class="normal"><a href="#__codelineno-0-422">422</a></span>
-<span class="normal"><a href="#__codelineno-0-423">423</a></span>
-<span class="normal"><a href="#__codelineno-0-424">424</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-424">424</a></span>
 <span class="normal"><a href="#__codelineno-0-425">425</a></span>
 <span class="normal"><a href="#__codelineno-0-426">426</a></span>
 <span class="normal"><a href="#__codelineno-0-427">427</a></span>
@@ -3944,20 +3948,23 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 <span class="normal"><a href="#__codelineno-0-431">431</a></span>
 <span class="normal"><a href="#__codelineno-0-432">432</a></span>
 <span class="normal"><a href="#__codelineno-0-433">433</a></span>
-<span class="normal"><a href="#__codelineno-0-434">434</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-421" name="__codelineno-0-421"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_sounds</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<a id="__codelineno-0-422" name="__codelineno-0-422"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a list of sounds, using Template:Sound_List.</span>
-<a id="__codelineno-0-423" name="__codelineno-0-423"></a>
-<a id="__codelineno-0-424" name="__codelineno-0-424"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-425" name="__codelineno-0-425"></a><span class="sd">        value: A string containing the list of sounds.</span>
+<span class="normal"><a href="#__codelineno-0-434">434</a></span>
+<span class="normal"><a href="#__codelineno-0-435">435</a></span>
+<span class="normal"><a href="#__codelineno-0-436">436</a></span>
+<span class="normal"><a href="#__codelineno-0-437">437</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-424" name="__codelineno-0-424"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_sounds</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<a id="__codelineno-0-425" name="__codelineno-0-425"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a list of sounds, using Template:Sound_List.</span>
 <a id="__codelineno-0-426" name="__codelineno-0-426"></a>
-<a id="__codelineno-0-427" name="__codelineno-0-427"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-428" name="__codelineno-0-428"></a><span class="sd">        A list of sounds.</span>
+<a id="__codelineno-0-427" name="__codelineno-0-427"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-428" name="__codelineno-0-428"></a><span class="sd">        value: A string containing the list of sounds.</span>
 <a id="__codelineno-0-429" name="__codelineno-0-429"></a>
-<a id="__codelineno-0-430" name="__codelineno-0-430"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-431" name="__codelineno-0-431"></a>    <span class="n">template</span> <span class="o">=</span> <span class="n">find_template</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Sound&quot;</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-0-432" name="__codelineno-0-432"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">template</span><span class="p">:</span>
-<a id="__codelineno-0-433" name="__codelineno-0-433"></a>        <span class="k">return</span> <span class="p">[]</span>
-<a id="__codelineno-0-434" name="__codelineno-0-434"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">strip_code</span><span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">template</span><span class="o">.</span><span class="n">params</span> <span class="k">if</span> <span class="n">param</span><span class="p">]</span>
+<a id="__codelineno-0-430" name="__codelineno-0-430"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-431" name="__codelineno-0-431"></a><span class="sd">        A list of sounds.</span>
+<a id="__codelineno-0-432" name="__codelineno-0-432"></a>
+<a id="__codelineno-0-433" name="__codelineno-0-433"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-434" name="__codelineno-0-434"></a>    <span class="n">template</span> <span class="o">=</span> <span class="n">find_template</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;Sound&quot;</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-0-435" name="__codelineno-0-435"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">template</span><span class="p">:</span>
+<a id="__codelineno-0-436" name="__codelineno-0-436"></a>        <span class="k">return</span> <span class="p">[]</span>
+<a id="__codelineno-0-437" name="__codelineno-0-437"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">strip_code</span><span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">template</span><span class="o">.</span><span class="n">params</span> <span class="k">if</span> <span class="n">param</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4036,10 +4043,7 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-437">437</a></span>
-<span class="normal"><a href="#__codelineno-0-438">438</a></span>
-<span class="normal"><a href="#__codelineno-0-439">439</a></span>
-<span class="normal"><a href="#__codelineno-0-440">440</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-440">440</a></span>
 <span class="normal"><a href="#__codelineno-0-441">441</a></span>
 <span class="normal"><a href="#__codelineno-0-442">442</a></span>
 <span class="normal"><a href="#__codelineno-0-443">443</a></span>
@@ -4048,19 +4052,22 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 <span class="normal"><a href="#__codelineno-0-446">446</a></span>
 <span class="normal"><a href="#__codelineno-0-447">447</a></span>
 <span class="normal"><a href="#__codelineno-0-448">448</a></span>
-<span class="normal"><a href="#__codelineno-0-449">449</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-437" name="__codelineno-0-437"></a><span class="k">def</span><span class="w"> </span><span class="nf">client_color_to_rgb</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<a id="__codelineno-0-438" name="__codelineno-0-438"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a color number from Tibia&#39;s client data to a RGB value.</span>
-<a id="__codelineno-0-439" name="__codelineno-0-439"></a>
-<a id="__codelineno-0-440" name="__codelineno-0-440"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-441" name="__codelineno-0-441"></a><span class="sd">        value: A numeric value representing a color.</span>
+<span class="normal"><a href="#__codelineno-0-449">449</a></span>
+<span class="normal"><a href="#__codelineno-0-450">450</a></span>
+<span class="normal"><a href="#__codelineno-0-451">451</a></span>
+<span class="normal"><a href="#__codelineno-0-452">452</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-440" name="__codelineno-0-440"></a><span class="k">def</span><span class="w"> </span><span class="nf">client_color_to_rgb</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<a id="__codelineno-0-441" name="__codelineno-0-441"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a color number from Tibia&#39;s client data to a RGB value.</span>
 <a id="__codelineno-0-442" name="__codelineno-0-442"></a>
-<a id="__codelineno-0-443" name="__codelineno-0-443"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-444" name="__codelineno-0-444"></a><span class="sd">        The hexadecimal color represented.</span>
+<a id="__codelineno-0-443" name="__codelineno-0-443"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-444" name="__codelineno-0-444"></a><span class="sd">        value: A numeric value representing a color.</span>
 <a id="__codelineno-0-445" name="__codelineno-0-445"></a>
-<a id="__codelineno-0-446" name="__codelineno-0-446"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-447" name="__codelineno-0-447"></a>    <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">215</span><span class="p">:</span>
-<a id="__codelineno-0-448" name="__codelineno-0-448"></a>        <span class="k">return</span> <span class="mi">0</span>
-<a id="__codelineno-0-449" name="__codelineno-0-449"></a>    <span class="k">return</span> <span class="p">((</span><span class="n">value</span> <span class="o">//</span> <span class="mi">36</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">value</span> <span class="o">//</span> <span class="mi">6</span> <span class="o">%</span> <span class="mi">6</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">value</span> <span class="o">%</span> <span class="mi">6</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">)</span>
+<a id="__codelineno-0-446" name="__codelineno-0-446"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-447" name="__codelineno-0-447"></a><span class="sd">        The hexadecimal color represented.</span>
+<a id="__codelineno-0-448" name="__codelineno-0-448"></a>
+<a id="__codelineno-0-449" name="__codelineno-0-449"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-450" name="__codelineno-0-450"></a>    <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">215</span><span class="p">:</span>
+<a id="__codelineno-0-451" name="__codelineno-0-451"></a>        <span class="k">return</span> <span class="mi">0</span>
+<a id="__codelineno-0-452" name="__codelineno-0-452"></a>    <span class="k">return</span> <span class="p">((</span><span class="n">value</span> <span class="o">//</span> <span class="mi">36</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">value</span> <span class="o">//</span> <span class="mi">6</span> <span class="o">%</span> <span class="mi">6</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">value</span> <span class="o">%</span> <span class="mi">6</span> <span class="o">*</span> <span class="mh">0x33</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4141,10 +4148,7 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-452">452</a></span>
-<span class="normal"><a href="#__codelineno-0-453">453</a></span>
-<span class="normal"><a href="#__codelineno-0-454">454</a></span>
-<span class="normal"><a href="#__codelineno-0-455">455</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-455">455</a></span>
 <span class="normal"><a href="#__codelineno-0-456">456</a></span>
 <span class="normal"><a href="#__codelineno-0-457">457</a></span>
 <span class="normal"><a href="#__codelineno-0-458">458</a></span>
@@ -4165,31 +4169,34 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 <span class="normal"><a href="#__codelineno-0-473">473</a></span>
 <span class="normal"><a href="#__codelineno-0-474">474</a></span>
 <span class="normal"><a href="#__codelineno-0-475">475</a></span>
-<span class="normal"><a href="#__codelineno-0-476">476</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-452" name="__codelineno-0-452"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_templatates_data</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
-<a id="__codelineno-0-453" name="__codelineno-0-453"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the attributes of an Infobox template.</span>
-<a id="__codelineno-0-454" name="__codelineno-0-454"></a>
-<a id="__codelineno-0-455" name="__codelineno-0-455"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-456" name="__codelineno-0-456"></a><span class="sd">        content: A string containing an Infobox template.</span>
+<span class="normal"><a href="#__codelineno-0-476">476</a></span>
+<span class="normal"><a href="#__codelineno-0-477">477</a></span>
+<span class="normal"><a href="#__codelineno-0-478">478</a></span>
+<span class="normal"><a href="#__codelineno-0-479">479</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-455" name="__codelineno-0-455"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_templatates_data</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<a id="__codelineno-0-456" name="__codelineno-0-456"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the attributes of an Infobox template.</span>
 <a id="__codelineno-0-457" name="__codelineno-0-457"></a>
-<a id="__codelineno-0-458" name="__codelineno-0-458"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-459" name="__codelineno-0-459"></a><span class="sd">        A dictionary with every attribute as key.</span>
+<a id="__codelineno-0-458" name="__codelineno-0-458"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-459" name="__codelineno-0-459"></a><span class="sd">        content: A string containing an Infobox template.</span>
 <a id="__codelineno-0-460" name="__codelineno-0-460"></a>
-<a id="__codelineno-0-461" name="__codelineno-0-461"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-462" name="__codelineno-0-462"></a>    <span class="n">parsed</span> <span class="o">=</span> <span class="n">mwparserfromhell</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-<a id="__codelineno-0-463" name="__codelineno-0-463"></a>    <span class="n">templates</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">filter_templates</span><span class="p">(</span><span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<a id="__codelineno-0-464" name="__codelineno-0-464"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">templates</span><span class="p">:</span>
-<a id="__codelineno-0-465" name="__codelineno-0-465"></a>        <span class="k">return</span> <span class="p">{}</span>
-<a id="__codelineno-0-466" name="__codelineno-0-466"></a>    <span class="n">data</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
-<a id="__codelineno-0-467" name="__codelineno-0-467"></a>    <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">templates</span><span class="p">:</span>
-<a id="__codelineno-0-468" name="__codelineno-0-468"></a>        <span class="n">template_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-469" name="__codelineno-0-469"></a>        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">template</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
-<a id="__codelineno-0-470" name="__codelineno-0-470"></a>            <span class="n">key</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-471" name="__codelineno-0-471"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">param</span><span class="o">.</span><span class="n">showkey</span><span class="p">:</span>
-<a id="__codelineno-0-472" name="__codelineno-0-472"></a>                <span class="n">key</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<a id="__codelineno-0-473" name="__codelineno-0-473"></a>            <span class="n">value</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-474" name="__codelineno-0-474"></a>            <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
-<a id="__codelineno-0-475" name="__codelineno-0-475"></a>                <span class="n">data</span><span class="p">[</span><span class="n">template_name</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-<a id="__codelineno-0-476" name="__codelineno-0-476"></a>    <span class="k">return</span> <span class="n">data</span>
+<a id="__codelineno-0-461" name="__codelineno-0-461"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-462" name="__codelineno-0-462"></a><span class="sd">        A dictionary with every attribute as key.</span>
+<a id="__codelineno-0-463" name="__codelineno-0-463"></a>
+<a id="__codelineno-0-464" name="__codelineno-0-464"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-465" name="__codelineno-0-465"></a>    <span class="n">parsed</span> <span class="o">=</span> <span class="n">mwparserfromhell</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+<a id="__codelineno-0-466" name="__codelineno-0-466"></a>    <span class="n">templates</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">filter_templates</span><span class="p">(</span><span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-0-467" name="__codelineno-0-467"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">templates</span><span class="p">:</span>
+<a id="__codelineno-0-468" name="__codelineno-0-468"></a>        <span class="k">return</span> <span class="p">{}</span>
+<a id="__codelineno-0-469" name="__codelineno-0-469"></a>    <span class="n">data</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+<a id="__codelineno-0-470" name="__codelineno-0-470"></a>    <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">templates</span><span class="p">:</span>
+<a id="__codelineno-0-471" name="__codelineno-0-471"></a>        <span class="n">template_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-472" name="__codelineno-0-472"></a>        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">template</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+<a id="__codelineno-0-473" name="__codelineno-0-473"></a>            <span class="n">key</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-474" name="__codelineno-0-474"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">param</span><span class="o">.</span><span class="n">showkey</span><span class="p">:</span>
+<a id="__codelineno-0-475" name="__codelineno-0-475"></a>                <span class="n">key</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<a id="__codelineno-0-476" name="__codelineno-0-476"></a>            <span class="n">value</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-477" name="__codelineno-0-477"></a>            <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+<a id="__codelineno-0-478" name="__codelineno-0-478"></a>                <span class="n">data</span><span class="p">[</span><span class="n">template_name</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+<a id="__codelineno-0-479" name="__codelineno-0-479"></a>    <span class="k">return</span> <span class="n">data</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4268,10 +4275,7 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-479">479</a></span>
-<span class="normal"><a href="#__codelineno-0-480">480</a></span>
-<span class="normal"><a href="#__codelineno-0-481">481</a></span>
-<span class="normal"><a href="#__codelineno-0-482">482</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-482">482</a></span>
 <span class="normal"><a href="#__codelineno-0-483">483</a></span>
 <span class="normal"><a href="#__codelineno-0-484">484</a></span>
 <span class="normal"><a href="#__codelineno-0-485">485</a></span>
@@ -4290,29 +4294,32 @@ e.g. match "Loot Table" when searching for "Loot"</p>
 <span class="normal"><a href="#__codelineno-0-498">498</a></span>
 <span class="normal"><a href="#__codelineno-0-499">499</a></span>
 <span class="normal"><a href="#__codelineno-0-500">500</a></span>
-<span class="normal"><a href="#__codelineno-0-501">501</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-479" name="__codelineno-0-479"></a><span class="k">def</span><span class="w"> </span><span class="nf">strip_code</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-480" name="__codelineno-0-480"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Strip code from Wikicode elements into plain strings.</span>
-<a id="__codelineno-0-481" name="__codelineno-0-481"></a>
-<a id="__codelineno-0-482" name="__codelineno-0-482"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-483" name="__codelineno-0-483"></a><span class="sd">        value: A string or object containing wiki code.</span>
+<span class="normal"><a href="#__codelineno-0-501">501</a></span>
+<span class="normal"><a href="#__codelineno-0-502">502</a></span>
+<span class="normal"><a href="#__codelineno-0-503">503</a></span>
+<span class="normal"><a href="#__codelineno-0-504">504</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-482" name="__codelineno-0-482"></a><span class="k">def</span><span class="w"> </span><span class="nf">strip_code</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-483" name="__codelineno-0-483"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Strip code from Wikicode elements into plain strings.</span>
 <a id="__codelineno-0-484" name="__codelineno-0-484"></a>
-<a id="__codelineno-0-485" name="__codelineno-0-485"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-486" name="__codelineno-0-486"></a><span class="sd">        A string representing the plain text content.</span>
+<a id="__codelineno-0-485" name="__codelineno-0-485"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-486" name="__codelineno-0-486"></a><span class="sd">        value: A string or object containing wiki code.</span>
 <a id="__codelineno-0-487" name="__codelineno-0-487"></a>
-<a id="__codelineno-0-488" name="__codelineno-0-488"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-489" name="__codelineno-0-489"></a>    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-<a id="__codelineno-0-490" name="__codelineno-0-490"></a>        <span class="k">return</span> <span class="n">value</span>
-<a id="__codelineno-0-491" name="__codelineno-0-491"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-<a id="__codelineno-0-492" name="__codelineno-0-492"></a>        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-493" name="__codelineno-0-493"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">):</span>
-<a id="__codelineno-0-494" name="__codelineno-0-494"></a>        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip_code</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-495" name="__codelineno-0-495"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Wikicode</span><span class="p">):</span>
-<a id="__codelineno-0-496" name="__codelineno-0-496"></a>        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">strip_code</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-497" name="__codelineno-0-497"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-<a id="__codelineno-0-498" name="__codelineno-0-498"></a>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-0-499" name="__codelineno-0-499"></a>            <span class="n">value</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">strip_code</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-<a id="__codelineno-0-500" name="__codelineno-0-500"></a>        <span class="k">return</span> <span class="n">value</span>
-<a id="__codelineno-0-501" name="__codelineno-0-501"></a>    <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-0-488" name="__codelineno-0-488"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-489" name="__codelineno-0-489"></a><span class="sd">        A string representing the plain text content.</span>
+<a id="__codelineno-0-490" name="__codelineno-0-490"></a>
+<a id="__codelineno-0-491" name="__codelineno-0-491"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-492" name="__codelineno-0-492"></a>    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+<a id="__codelineno-0-493" name="__codelineno-0-493"></a>        <span class="k">return</span> <span class="n">value</span>
+<a id="__codelineno-0-494" name="__codelineno-0-494"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-0-495" name="__codelineno-0-495"></a>        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-496" name="__codelineno-0-496"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">):</span>
+<a id="__codelineno-0-497" name="__codelineno-0-497"></a>        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip_code</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-498" name="__codelineno-0-498"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Wikicode</span><span class="p">):</span>
+<a id="__codelineno-0-499" name="__codelineno-0-499"></a>        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">strip_code</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-500" name="__codelineno-0-500"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<a id="__codelineno-0-501" name="__codelineno-0-501"></a>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-0-502" name="__codelineno-0-502"></a>            <span class="n">value</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">strip_code</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+<a id="__codelineno-0-503" name="__codelineno-0-503"></a>        <span class="k">return</span> <span class="n">value</span>
+<a id="__codelineno-0-504" name="__codelineno-0-504"></a>    <span class="k">return</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
