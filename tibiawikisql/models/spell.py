@@ -24,6 +24,8 @@ class Spell(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=Spell
     """The group of the rune created by this spell."""
     element: str | None = Field(None)
     """The element of the damage made by the spell."""
+    base_power: int | None = Field(None)
+    """The spell's base power, used to determine its damage or healing."""
     mana: int
     """The mana cost of the spell."""
     soul: int

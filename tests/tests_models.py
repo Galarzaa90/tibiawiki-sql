@@ -241,12 +241,14 @@ class TestModels(unittest.TestCase):
                           content=load_resource("content_spell.txt"))
         spell = models.Spell.from_article(article)
         self.assertIsInstance(spell, models.Spell)
+        self.assertEqual(spell.base_power, 45)
 
         spell.insert(self.conn)
         db_spell = models.Spell.get_one_by_field(self.conn, "article_id", 1)
 
         self.assertIsInstance(db_spell, models.Spell)
         self.assertEqual(db_spell.name, spell.name)
+        self.assertEqual(db_spell.base_power, spell.base_power)
 
     def test_world(self):
         article = Article(1, "Mortera", timestamp="2018-08-20T04:33:15Z",

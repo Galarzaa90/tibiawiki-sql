@@ -5,6 +5,7 @@
 | type          = Instant
 | subclass      = Attack
 | damagetype    = Fire
+| basepower     = 45
 | words         = exori flam
 | premium       = yes
 | mana          = 20

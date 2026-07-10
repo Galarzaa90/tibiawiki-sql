@@ -23,6 +23,7 @@ class SpellParser(BaseParser):
         "group_secondary": AttributeParser.optional("secondarygroup"),
         "group_rune": AttributeParser.optional("runegroup"),
         "element": AttributeParser.optional("damagetype"),
+        "base_power": AttributeParser.optional("basepower", parse_integer),
         "mana": AttributeParser.optional("mana", parse_integer),
         "soul": AttributeParser.optional("soul", parse_integer, 0),
         "cooldown": AttributeParser.required("cooldown"),

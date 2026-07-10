@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Add spell base power (`base_power`) to parser, schema and models.
+
 ## 8.0.1 (2026-06-16)
 
 - Add support for new NPC transport template.
