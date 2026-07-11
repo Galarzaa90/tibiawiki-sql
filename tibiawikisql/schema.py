@@ -340,6 +340,7 @@ class SpellTable(Table):
     group_secondary = Column(Text, index=True)
     group_rune = Column(Text, index=True)
     element = Column(Text, index=True)
+    base_power = Column(Integer, nullable=True)
     level = Column(Integer)
     mana = Column(Integer)
     soul = Column(Integer, default=0)
