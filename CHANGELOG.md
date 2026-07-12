@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 8.1.0 (2026-07-11)
 
 - Add spell base power (`base_power`) to parser, schema and models.
 
