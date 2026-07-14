@@ -12,18 +12,20 @@
         <meta name="author" content="Allan Galarza">
       
       
+        <link rel="canonical" href="https://galarzaa90.github.io/tibiawiki-sql/api/models/achievement/">
+      
       
         <link rel="prev" href="../base/">
       
       
-        <link rel="next" href="../charm/">
+        <link rel="next" href="../book.md">
       
       
         
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="zensical-0.0.50">
     
     
       
@@ -31,10 +33,15 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      <link rel="stylesheet" href="../../../assets/stylesheets/modern/main.62c9b9cc.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/modern/palette.dfe2e883.min.css">
       
       
 
@@ -48,14 +55,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
-    
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
     
       
 
@@ -76,7 +81,7 @@
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" for="__drawer"></label>
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
     <div data-md-component="skip">
       
         
@@ -98,12 +103,12 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../.." title="TibiaWikiSQL" class="md-header__button md-logo" aria-label="TibiaWikiSQL" data-md-component="logo">
       
-  <img src="../../../images/logo.gif" alt="logo">
+  <img src="../../../images/logo.gif" alt="TibiaWikiSQL">
 
     </a>
-    <label class="md-header__button md-icon" for="__drawer">
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
       
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -165,64 +170,30 @@
     
       
       
-        <label class="md-header__button md-icon" for="__search">
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
           
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
         </label>
-        <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Search">
-        
-          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
-            
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
-          </a>
-        
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
-      </nav>
-      
-        <div class="md-search__suggest" data-md-component="search-suggest"></div>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
-            Initializing search
-          </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
 </div>
       
     
-    
-      <div class="md-header__source">
+    <div class="md-header__source">
+      
         <a href="https://github.com/Galarzaa90/tibiawiki-sql" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
   </div>
   <div class="md-source__repository">
     Galarzaa90/tibiawiki-sql
   </div>
 </a>
-      </div>
-    
+      
+    </div>
   </nav>
   
     
@@ -237,11 +208,13 @@
   
   
     
+      
+    
+    
     
       <li class="md-tabs__item">
         <a href="../../.." class="md-tabs__link">
           
-  
   
   Home
 
@@ -259,11 +232,13 @@
   
   
     
+      
+    
+    
     
       <li class="md-tabs__item md-tabs__item--active">
         <a href="../../api/" class="md-tabs__link">
           
-  
   
   API Reference
 
@@ -303,7 +278,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../../.." title="TibiaWikiSQL" class="md-nav__button md-logo" aria-label="TibiaWikiSQL" data-md-component="logo">
       
-  <img src="../../../images/logo.gif" alt="logo">
+  <img src="../../../images/logo.gif" alt="TibiaWikiSQL">
 
     </a>
     TibiaWikiSQL
@@ -313,7 +288,7 @@
       <a href="https://github.com/Galarzaa90/tibiawiki-sql" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
   </div>
   <div class="md-source__repository">
     Galarzaa90/tibiawiki-sql
@@ -351,8 +326,7 @@
   <span class="md-ellipsis">
     
   
-    Home
-  
+  Home
 
     
   </span>
@@ -367,8 +341,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Home
-  
+  Home
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
@@ -387,8 +360,7 @@
   <span class="md-ellipsis">
     
   
-    Home
-  
+  Home
 
     
   </span>
@@ -415,8 +387,7 @@
   <span class="md-ellipsis">
     
   
-    Introduction
-  
+  Introduction
 
     
   </span>
@@ -443,8 +414,7 @@
   <span class="md-ellipsis">
     
   
-    Changelog
-  
+  Changelog
 
     
   </span>
@@ -471,8 +441,7 @@
   <span class="md-ellipsis">
     
   
-    Database Schema
-  
+  Database Schema
 
     
   </span>
@@ -525,8 +494,7 @@
   <span class="md-ellipsis">
     
   
-    API Reference
-  
+  API Reference
 
     
   </span>
@@ -541,8 +509,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    API Reference
-  
+  API Reference
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
@@ -561,8 +528,7 @@
   <span class="md-ellipsis">
     
   
-    TibiaWiki API
-  
+  TibiaWiki API
 
     
   </span>
@@ -589,8 +555,7 @@
   <span class="md-ellipsis">
     
   
-    Database
-  
+  Database
 
     
   </span>
@@ -617,8 +582,7 @@
   <span class="md-ellipsis">
     
   
-    Generation
-  
+  Generation
 
     
   </span>
@@ -645,8 +609,7 @@
   <span class="md-ellipsis">
     
   
-    Errors
-  
+  Errors
 
     
   </span>
@@ -689,8 +652,7 @@
   <span class="md-ellipsis">
     
   
-    Models
-  
+  Models
 
     
   </span>
@@ -705,8 +667,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Models
-  
+  Models
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
@@ -725,8 +686,7 @@
   <span class="md-ellipsis">
     
   
-    Package Index
-  
+  Package Index
 
     
   </span>
@@ -753,8 +713,7 @@
   <span class="md-ellipsis">
     
   
-    Base
-  
+  Base
 
     
   </span>
@@ -777,7 +736,7 @@
   
     <li class="md-nav__item md-nav__item--active">
       
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
       
       
       
@@ -788,8 +747,7 @@
   <span class="md-ellipsis">
     
   
-    Achievement
-  
+  Achievement
 
     
   </span>
@@ -799,15 +757,14 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="./" class="md-nav__link md-nav__link--active">
+      <a href="././" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    Achievement
-  
+  Achievement
 
     
   </span>
@@ -818,23 +775,24 @@
       
         
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
   
   
   
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      On this page
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         achievement
-      
+      </span>
     </span>
   </a>
   
@@ -844,9 +802,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         Achievement
-      
+      </span>
     </span>
   </a>
   
@@ -856,9 +814,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.name" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         name
-      
+      </span>
     </span>
   </a>
   
@@ -867,9 +825,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.grade" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         grade
-      
+      </span>
     </span>
   </a>
   
@@ -878,9 +836,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.points" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         points
-      
+      </span>
     </span>
   </a>
   
@@ -889,9 +847,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.description" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         description
-      
+      </span>
     </span>
   </a>
   
@@ -900,9 +858,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.spoiler" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         spoiler
-      
+      </span>
     </span>
   </a>
   
@@ -911,9 +869,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.is_secret" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         is_secret
-      
+      </span>
     </span>
   </a>
   
@@ -922,9 +880,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.is_premium" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         is_premium
-      
+      </span>
     </span>
   </a>
   
@@ -933,9 +891,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.achievement_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         achievement_id
-      
+      </span>
     </span>
   </a>
   
@@ -974,8 +932,7 @@
   <span class="md-ellipsis">
     
   
-    Book
-  
+  Book
 
     
   </span>
@@ -1002,8 +959,7 @@
   <span class="md-ellipsis">
     
   
-    Charm
-  
+  Charm
 
     
   </span>
@@ -1030,8 +986,7 @@
   <span class="md-ellipsis">
     
   
-    Creature
-  
+  Creature
 
     
   </span>
@@ -1058,8 +1013,7 @@
   <span class="md-ellipsis">
     
   
-    House
-  
+  House
 
     
   </span>
@@ -1086,8 +1040,7 @@
   <span class="md-ellipsis">
     
   
-    Imbuement
-  
+  Imbuement
 
     
   </span>
@@ -1114,8 +1067,7 @@
   <span class="md-ellipsis">
     
   
-    Item
-  
+  Item
 
     
   </span>
@@ -1142,8 +1094,7 @@
   <span class="md-ellipsis">
     
   
-    Mount
-  
+  Mount
 
     
   </span>
@@ -1170,8 +1121,7 @@
   <span class="md-ellipsis">
     
   
-    Npc
-  
+  Npc
 
     
   </span>
@@ -1198,8 +1148,7 @@
   <span class="md-ellipsis">
     
   
-    Outfit
-  
+  Outfit
 
     
   </span>
@@ -1226,8 +1175,7 @@
   <span class="md-ellipsis">
     
   
-    Quest
-  
+  Quest
 
     
   </span>
@@ -1254,8 +1202,7 @@
   <span class="md-ellipsis">
     
   
-    Spell
-  
+  Spell
 
     
   </span>
@@ -1282,8 +1229,7 @@
   <span class="md-ellipsis">
     
   
-    Update
-  
+  Update
 
     
   </span>
@@ -1310,8 +1256,7 @@
   <span class="md-ellipsis">
     
   
-    World
-  
+  World
 
     
   </span>
@@ -1346,8 +1291,7 @@
   <span class="md-ellipsis">
     
   
-    Parsers
-  
+  Parsers
 
     
   </span>
@@ -1374,8 +1318,7 @@
   <span class="md-ellipsis">
     
   
-    Schema
-  
+  Schema
 
     
   </span>
@@ -1402,8 +1345,7 @@
   <span class="md-ellipsis">
     
   
-    Utilities
-  
+  Utilities
 
     
   </span>
@@ -1433,26 +1375,38 @@
               
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
                   <div class="md-sidebar__inner">
                     
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
   
   
   
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      On this page
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         achievement
-      
+      </span>
     </span>
   </a>
   
@@ -1462,9 +1416,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         Achievement
-      
+      </span>
     </span>
   </a>
   
@@ -1474,9 +1428,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.name" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         name
-      
+      </span>
     </span>
   </a>
   
@@ -1485,9 +1439,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.grade" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         grade
-      
+      </span>
     </span>
   </a>
   
@@ -1496,9 +1450,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.points" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         points
-      
+      </span>
     </span>
   </a>
   
@@ -1507,9 +1461,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.description" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         description
-      
+      </span>
     </span>
   </a>
   
@@ -1518,9 +1472,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.spoiler" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         spoiler
-      
+      </span>
     </span>
   </a>
   
@@ -1529,9 +1483,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.is_secret" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         is_secret
-      
+      </span>
     </span>
   </a>
   
@@ -1540,9 +1494,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.is_premium" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         is_premium
-      
+      </span>
     </span>
   </a>
   
@@ -1551,9 +1505,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.achievement.Achievement.achievement_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         achievement_id
-      
+      </span>
     </span>
   </a>
   
@@ -1583,13 +1537,11 @@
               <article class="md-content__inner md-typeset">
                 
                   
-
-
   
   
 
 
-  <h1>Achievement</h1>
+  <h1 id="__skip">Achievement</h1>
 
 <div class="doc doc-object doc-module">
 
@@ -1622,12 +1574,12 @@
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="            Achievement
+            <td><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;Achievement&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.achievement.Achievement)" href="#tibiawikisql.models.achievement.Achievement">Achievement</a></code></td>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.achievement.Achievement">Achievement</a></code></td>
             <td>
               <div class="doc-md-description">
                 <p>Represents an Achievement.</p>
@@ -1670,27 +1622,27 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="            WikiEntry
+              Bases: <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;WikiEntry&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.api.WikiEntry)" href="../../api/#tibiawikisql.api.WikiEntry">WikiEntry</a></code>, <code><a class="autorefs autorefs-internal" title="            WithStatus
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry">WikiEntry</a></code>, <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;WithStatus&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.base.WithStatus)" href="../base/#tibiawikisql.models.base.WithStatus">WithStatus</a></code>, <code><a class="autorefs autorefs-internal" title="            WithVersion
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithStatus">WithStatus</a></code>, <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;WithVersion&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.base.WithVersion)" href="../base/#tibiawikisql.models.base.WithVersion">WithVersion</a></code>, <code><a class="autorefs autorefs-internal" title="            RowModel
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithVersion">WithVersion</a></code>, <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;RowModel&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.base.RowModel)" href="../base/#tibiawikisql.models.base.RowModel">RowModel</a></code></p>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.RowModel">RowModel</a></code></p>
 
         <p>Represents an Achievement.</p>
 
@@ -1812,120 +1764,120 @@
         <p>Fields:</p>
         <ul>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            version
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;version&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.achievement.Achievement.version)" href="../base/#tibiawikisql.models.base.WithVersion.version">version</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithVersion.version">version</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            status
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;status&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.achievement.Achievement.status)" href="../base/#tibiawikisql.models.base.WithStatus.status">status</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithStatus.status">status</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            article_id
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;article_id&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.achievement.Achievement.article_id)" href="../../api/#tibiawikisql.api.WikiEntry.article_id">article_id</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry.article_id">article_id</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            title
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;title&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.achievement.Achievement.title)" href="../../api/#tibiawikisql.api.WikiEntry.title">title</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry.title">title</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            timestamp
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;timestamp&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.achievement.Achievement.timestamp)" href="../../api/#tibiawikisql.api.WikiEntry.timestamp">timestamp</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry.timestamp">timestamp</a></code>
                 (<code><a class="autorefs autorefs-external" title="datetime.datetime" href="https://docs.python.org/3/library/datetime.html#datetime.datetime">datetime</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            name
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;name&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.achievement.Achievement.name)" href="#tibiawikisql.models.achievement.Achievement.name">name</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.achievement.Achievement.name">name</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            grade
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;grade&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.achievement.Achievement.grade)" href="#tibiawikisql.models.achievement.Achievement.grade">grade</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.achievement.Achievement.grade">grade</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            points
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;points&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.achievement.Achievement.points)" href="#tibiawikisql.models.achievement.Achievement.points">points</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.achievement.Achievement.points">points</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            description
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;description&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.achievement.Achievement.description)" href="#tibiawikisql.models.achievement.Achievement.description">description</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.achievement.Achievement.description">description</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            spoiler
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;spoiler&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.achievement.Achievement.spoiler)" href="#tibiawikisql.models.achievement.Achievement.spoiler">spoiler</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.achievement.Achievement.spoiler">spoiler</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            is_secret
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;is_secret&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.achievement.Achievement.is_secret)" href="#tibiawikisql.models.achievement.Achievement.is_secret">is_secret</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.achievement.Achievement.is_secret">is_secret</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            is_premium
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;is_premium&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.achievement.Achievement.is_premium)" href="#tibiawikisql.models.achievement.Achievement.is_premium">is_premium</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.achievement.Achievement.is_premium">is_premium</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            achievement_id
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;achievement_id&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.achievement.Achievement.achievement_id)" href="#tibiawikisql.models.achievement.Achievement.achievement_id">achievement_id</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.achievement.Achievement.achievement_id">achievement_id</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>)
             </li>
         </ul>
@@ -2164,6 +2116,8 @@
 
 
 
+
+
                 
               </article>
             </div>
@@ -2174,7 +2128,7 @@
         
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
   Back to top
 </button>
         
@@ -2190,7 +2144,7 @@
           <a href="../base/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Base">
             <div class="md-footer__button md-icon">
               
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
             </div>
             <div class="md-footer__title">
               <span class="md-footer__direction">
@@ -2204,18 +2158,18 @@
         
         
           
-          <a href="../charm/" class="md-footer__link md-footer__link--next" aria-label="Next: Charm">
+          <a href="../book.md" class="md-footer__link md-footer__link--next" aria-label="Next: Book">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Charm
+                Book
               </div>
             </div>
             <div class="md-footer__button md-icon">
               
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </div>
           </a>
         
@@ -2227,14 +2181,16 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      &copy; 2025 Allan Galarza<br> <a href="https://www.tibia.com">Tibia</a> is made by <a href="https://www.cipsoft.com/">CipSoft</a>, all Tibia content is copyrighted by <a href="https://www.cipsoft.com/">CipSoft GmbH</a>.<br> The data collected by this library is provided by <a href="https://tibia.fandom.com/">TibiaWiki</a>.
+      &copy; 2026 Allan Galarza<br>
+<a href="https://www.tibia.com">Tibia</a> is made by <a href="https://www.cipsoft.com/">CipSoft</a>, all Tibia content is copyrighted by <a href="https://www.cipsoft.com/">CipSoft GmbH</a>.<br>
+The data collected by this library is provided by <a href="https://tibia.fandom.com/">TibiaWiki</a>.
 
     </div>
   
   
     Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
     </a>
   
 </div>
@@ -2250,7 +2206,7 @@
       
     
     <a href="https://github.com/Galarzaa90/tibiawiki-sql" target="_blank" rel="noopener" title="github.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
     </a>
   
     
@@ -2261,7 +2217,7 @@
       
     
     <a href="https://pypi.org/project/tibiawikisql/" target="_blank" rel="noopener" title="pypi.org" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.922 13.58v3.912L20.55 18.72l-.078.055.052.037 3.45-1.256.026-.036v-3.997l-.053-.036-.025.092zm-.301-7.962-3.04 1.107v3.912l3.339-1.215V5.509zm.299 7.839V9.544l-3.336 1.215v3.913zm-3.45 1.253V10.8l-3.3 1.2v3.913zm-3.436 5.286v-3.912l-3.313 1.206v3.912zm.136-3.939v3.868l3.314-1.206V14.85zm2.093 1.882c-.367.134-.663-.074-.663-.463s.296-.814.663-.947c.365-.133.662.075.662.464s-.297.814-.662.946m-6.038-8.624.365-.132-3.285-1.197-3.323 1.21.102.037 3.184 1.16zm7.282 1.349V6.751L17.17 7.965v3.913zm-3.449 1.254V8.005l-3.302 1.202v3.912zm-3.415-2.672-3.336 1.215v3.913l3.336-1.215zm-6.736 3.919 3.322 1.209v-3.913L6.907 9.252zm3.433-5.292 3.281 1.193V5.198l-3.28-1.193zm10.167-5.158L17.19 3.922v3.913l3.317-1.207zM16.95 3.903 13.724 2.73l-3.269 1.19 3.225 1.174zm-1.585.703-1.624.592v3.868l3.317-1.207V3.991zm-.391 2.778c-.367.134-.662-.074-.662-.464s.295-.813.662-.946c.366-.133.663.074.663.464s-.297.813-.663.946M10.229 18.41v-3.914l-3.322-1.209V17.2zm3.449-1.228v-3.913l-3.371 1.227v3.913zm.078-.028 3.3-1.2V12.04l-3.3 1.2zm-.078 4.063-3.371 1.227v-3.912h-.078v3.912l-3.322-1.209v-3.913l-.053-.058-.025-.06-3.336-1.21v-3.948l.034.013 3.287 1.196.015-.078-3.261-1.187 3.26-1.187v-.109L3.876 9.62l-.307-.112 3.26-1.188v.877l.079-.055V6.769l3.257 1.185.058-.061L7.084 6.75l-.102-.037 3.24-1.179v-.083L6.854 6.677v.018l-.025.018v1.523L3.44 9.47v.02l-.025.017v4.007l-3.39 1.233v.019L0 14.784v3.995l.025.037 3.4 1.237.008-.006.007.01 3.4 1.238.008-.006.006.01 3.4 1.237.014-.009.012.01 3.45-1.256.026-.037zM3.493 9.563l3.257 1.185-3.257 1.187V9.562zM3.4 19.96.078 18.752v-3.913l2.361.86.96.349zm.015-3.99-3.08-1.12-.182-.066 3.262-1.187zm3.399 5.231-3.321-1.209V16.08l3.321 1.209zM23.791 5.434l-3.21-1.17v2.338zm-3.404-2.791-3.24-1.18-3.27 1.19 3.247 1.182z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>PyPI</title><path d="M23.922 13.58v3.912L20.55 18.72l-.078.055.052.037 3.45-1.256.026-.036v-3.997l-.053-.036-.025.092zm-.301-7.962-3.04 1.107v3.912l3.339-1.215V5.509zm.299 7.839V9.544l-3.336 1.215v3.913zm-3.45 1.253V10.8l-3.3 1.2v3.913zm-3.436 5.286v-3.912l-3.313 1.206v3.912zm.136-3.939v3.868l3.314-1.206V14.85zm2.093 1.882c-.367.134-.663-.074-.663-.463s.296-.814.663-.947c.365-.133.662.075.662.464s-.297.814-.662.946m-6.038-8.624.365-.132-3.285-1.197-3.323 1.21.102.037 3.184 1.16zm7.282 1.349V6.751L17.17 7.965v3.913zm-3.449 1.254V8.005l-3.302 1.202v3.912zm-3.415-2.672-3.336 1.215v3.913l3.336-1.215zm-6.736 3.919 3.322 1.209v-3.913L6.907 9.252zm3.433-5.292 3.281 1.193V5.198l-3.28-1.193zm10.167-5.158L17.19 3.922v3.913l3.317-1.207zM16.95 3.903 13.724 2.73l-3.269 1.19 3.225 1.174zm-1.585.703-1.624.592v3.868l3.317-1.207V3.991zm-.391 2.778c-.367.134-.662-.074-.662-.464s.295-.813.662-.946c.366-.133.663.074.663.464s-.297.813-.663.946M10.229 18.41v-3.914l-3.322-1.209V17.2zm3.449-1.228v-3.913l-3.371 1.227v3.913zm.078-.028 3.3-1.2V12.04l-3.3 1.2zm-.078 4.063-3.371 1.227v-3.912h-.078v3.912l-3.322-1.209v-3.913l-.053-.058-.025-.06-3.336-1.21v-3.948l.034.013 3.287 1.196.015-.078-3.261-1.187 3.26-1.187v-.109L3.876 9.62l-.307-.112 3.26-1.188v.877l.079-.055V6.769l3.257 1.185.058-.061L7.084 6.75l-.102-.037 3.24-1.179v-.083L6.854 6.677v.018l-.025.018v1.523L3.44 9.47v.02l-.025.017v4.007l-3.39 1.233v.019L0 14.784v3.995l.025.037 3.4 1.237.008-.006.007.01 3.4 1.238.008-.006.006.01 3.4 1.237.014-.009.012.01 3.45-1.256.026-.037zM3.493 9.563l3.257 1.185-3.257 1.187V9.562zM3.4 19.96.078 18.752v-3.913l2.361.86.96.349zm.015-3.99-3.08-1.12-.182-.066 3.262-1.187zm3.399 5.231-3.321-1.209V16.08l3.321 1.209zM23.791 5.434l-3.21-1.17v2.338zm-3.404-2.791-3.24-1.18-3.27 1.19 3.247 1.182z"/></svg>
     </a>
   
     
@@ -2272,7 +2228,7 @@
       
     
     <a href="https://hub.docker.com/r/galarzaa90/tibiawiki-sql" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
     </a>
   
 </div>
@@ -2292,10 +2248,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "search.share", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate":null,"base":"../../..","features":["content.code.copy","navigation.footer","navigation.instant","navigation.instant.progress","navigation.tabs","navigation.tabs.sticky","navigation.top","navigation.tracking","search.suggest","search.highlight","search.share","toc.follow"],"search":"../../../assets/javascripts/workers/search.b6b7e04f.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7f30b55.min.js"></script>
       
     
   </body>

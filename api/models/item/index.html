@@ -12,6 +12,8 @@
         <meta name="author" content="Allan Galarza">
       
       
+        <link rel="canonical" href="https://galarzaa90.github.io/tibiawiki-sql/api/models/item/">
+      
       
         <link rel="prev" href="../imbuement/">
       
@@ -23,7 +25,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="zensical-0.0.50">
     
     
       
@@ -31,10 +33,15 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      <link rel="stylesheet" href="../../../assets/stylesheets/modern/main.62c9b9cc.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/modern/palette.dfe2e883.min.css">
       
       
 
@@ -48,14 +55,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
-    
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
     
       
 
@@ -76,7 +81,7 @@
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" for="__drawer"></label>
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
     <div data-md-component="skip">
       
         
@@ -98,12 +103,12 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../.." title="TibiaWikiSQL" class="md-header__button md-logo" aria-label="TibiaWikiSQL" data-md-component="logo">
       
-  <img src="../../../images/logo.gif" alt="logo">
+  <img src="../../../images/logo.gif" alt="TibiaWikiSQL">
 
     </a>
-    <label class="md-header__button md-icon" for="__drawer">
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
       
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -165,64 +170,30 @@
     
       
       
-        <label class="md-header__button md-icon" for="__search">
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
           
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
         </label>
-        <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Search">
-        
-          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
-            
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
-          </a>
-        
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
-      </nav>
-      
-        <div class="md-search__suggest" data-md-component="search-suggest"></div>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
-            Initializing search
-          </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
 </div>
       
     
-    
-      <div class="md-header__source">
+    <div class="md-header__source">
+      
         <a href="https://github.com/Galarzaa90/tibiawiki-sql" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
   </div>
   <div class="md-source__repository">
     Galarzaa90/tibiawiki-sql
   </div>
 </a>
-      </div>
-    
+      
+    </div>
   </nav>
   
     
@@ -237,11 +208,13 @@
   
   
     
+      
+    
+    
     
       <li class="md-tabs__item">
         <a href="../../.." class="md-tabs__link">
           
-  
   
   Home
 
@@ -259,11 +232,13 @@
   
   
     
+      
+    
+    
     
       <li class="md-tabs__item md-tabs__item--active">
         <a href="../../api/" class="md-tabs__link">
           
-  
   
   API Reference
 
@@ -303,7 +278,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../../.." title="TibiaWikiSQL" class="md-nav__button md-logo" aria-label="TibiaWikiSQL" data-md-component="logo">
       
-  <img src="../../../images/logo.gif" alt="logo">
+  <img src="../../../images/logo.gif" alt="TibiaWikiSQL">
 
     </a>
     TibiaWikiSQL
@@ -313,7 +288,7 @@
       <a href="https://github.com/Galarzaa90/tibiawiki-sql" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
   </div>
   <div class="md-source__repository">
     Galarzaa90/tibiawiki-sql
@@ -351,8 +326,7 @@
   <span class="md-ellipsis">
     
   
-    Home
-  
+  Home
 
     
   </span>
@@ -367,8 +341,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Home
-  
+  Home
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
@@ -387,8 +360,7 @@
   <span class="md-ellipsis">
     
   
-    Home
-  
+  Home
 
     
   </span>
@@ -415,8 +387,7 @@
   <span class="md-ellipsis">
     
   
-    Introduction
-  
+  Introduction
 
     
   </span>
@@ -443,8 +414,7 @@
   <span class="md-ellipsis">
     
   
-    Changelog
-  
+  Changelog
 
     
   </span>
@@ -471,8 +441,7 @@
   <span class="md-ellipsis">
     
   
-    Database Schema
-  
+  Database Schema
 
     
   </span>
@@ -525,8 +494,7 @@
   <span class="md-ellipsis">
     
   
-    API Reference
-  
+  API Reference
 
     
   </span>
@@ -541,8 +509,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    API Reference
-  
+  API Reference
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
@@ -561,8 +528,7 @@
   <span class="md-ellipsis">
     
   
-    TibiaWiki API
-  
+  TibiaWiki API
 
     
   </span>
@@ -589,8 +555,7 @@
   <span class="md-ellipsis">
     
   
-    Database
-  
+  Database
 
     
   </span>
@@ -617,8 +582,7 @@
   <span class="md-ellipsis">
     
   
-    Generation
-  
+  Generation
 
     
   </span>
@@ -645,8 +609,7 @@
   <span class="md-ellipsis">
     
   
-    Errors
-  
+  Errors
 
     
   </span>
@@ -689,8 +652,7 @@
   <span class="md-ellipsis">
     
   
-    Models
-  
+  Models
 
     
   </span>
@@ -705,8 +667,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Models
-  
+  Models
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
@@ -725,8 +686,7 @@
   <span class="md-ellipsis">
     
   
-    Package Index
-  
+  Package Index
 
     
   </span>
@@ -753,8 +713,7 @@
   <span class="md-ellipsis">
     
   
-    Base
-  
+  Base
 
     
   </span>
@@ -781,8 +740,7 @@
   <span class="md-ellipsis">
     
   
-    Achievement
-  
+  Achievement
 
     
   </span>
@@ -809,8 +767,7 @@
   <span class="md-ellipsis">
     
   
-    Book
-  
+  Book
 
     
   </span>
@@ -837,8 +794,7 @@
   <span class="md-ellipsis">
     
   
-    Charm
-  
+  Charm
 
     
   </span>
@@ -865,8 +821,7 @@
   <span class="md-ellipsis">
     
   
-    Creature
-  
+  Creature
 
     
   </span>
@@ -893,8 +848,7 @@
   <span class="md-ellipsis">
     
   
-    House
-  
+  House
 
     
   </span>
@@ -921,8 +875,7 @@
   <span class="md-ellipsis">
     
   
-    Imbuement
-  
+  Imbuement
 
     
   </span>
@@ -945,7 +898,7 @@
   
     <li class="md-nav__item md-nav__item--active">
       
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
       
       
       
@@ -956,8 +909,7 @@
   <span class="md-ellipsis">
     
   
-    Item
-  
+  Item
 
     
   </span>
@@ -967,15 +919,14 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="./" class="md-nav__link md-nav__link--active">
+      <a href="././" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    Item
-  
+  Item
 
     
   </span>
@@ -986,23 +937,24 @@
       
         
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
   
   
   
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      On this page
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#tibiawikisql.models.item" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         item
-      
+      </span>
     </span>
   </a>
   
@@ -1012,9 +964,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemAttribute" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         ItemAttribute
-      
+      </span>
     </span>
   </a>
   
@@ -1024,9 +976,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemAttribute.name" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         name
-      
+      </span>
     </span>
   </a>
   
@@ -1035,9 +987,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemAttribute.value" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         value
-      
+      </span>
     </span>
   </a>
   
@@ -1051,9 +1003,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemOffer" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         ItemOffer
-      
+      </span>
     </span>
   </a>
   
@@ -1063,9 +1015,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemOffer.npc_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         npc_id
-      
+      </span>
     </span>
   </a>
   
@@ -1074,9 +1026,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemOffer.npc_title" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         npc_title
-      
+      </span>
     </span>
   </a>
   
@@ -1085,9 +1037,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemOffer.currency_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         currency_id
-      
+      </span>
     </span>
   </a>
   
@@ -1096,9 +1048,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemOffer.currency_title" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         currency_title
-      
+      </span>
     </span>
   </a>
   
@@ -1107,9 +1059,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemOffer.value" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         value
-      
+      </span>
     </span>
   </a>
   
@@ -1123,9 +1075,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemStoreOffer" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         ItemStoreOffer
-      
+      </span>
     </span>
   </a>
   
@@ -1135,9 +1087,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemStoreOffer.price" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         price
-      
+      </span>
     </span>
   </a>
   
@@ -1146,9 +1098,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemStoreOffer.amount" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         amount
-      
+      </span>
     </span>
   </a>
   
@@ -1157,9 +1109,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemStoreOffer.currency" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         currency
-      
+      </span>
     </span>
   </a>
   
@@ -1173,9 +1125,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemDrop" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         ItemDrop
-      
+      </span>
     </span>
   </a>
   
@@ -1185,9 +1137,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemDrop.creature_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         creature_id
-      
+      </span>
     </span>
   </a>
   
@@ -1196,9 +1148,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemDrop.creature_title" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         creature_title
-      
+      </span>
     </span>
   </a>
   
@@ -1207,9 +1159,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemDrop.min" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         min
-      
+      </span>
     </span>
   </a>
   
@@ -1218,9 +1170,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemDrop.max" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         max
-      
+      </span>
     </span>
   </a>
   
@@ -1229,9 +1181,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemDrop.chance" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         chance
-      
+      </span>
     </span>
   </a>
   
@@ -1245,9 +1197,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemQuestReward" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         ItemQuestReward
-      
+      </span>
     </span>
   </a>
   
@@ -1257,9 +1209,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemQuestReward.quest_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         quest_id
-      
+      </span>
     </span>
   </a>
   
@@ -1268,9 +1220,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemQuestReward.quest_title" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         quest_title
-      
+      </span>
     </span>
   </a>
   
@@ -1284,9 +1236,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemProficiencyPerk" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         ItemProficiencyPerk
-      
+      </span>
     </span>
   </a>
   
@@ -1296,9 +1248,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemProficiencyPerk.proficiency_level" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         proficiency_level
-      
+      </span>
     </span>
   </a>
   
@@ -1307,9 +1259,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemProficiencyPerk.skill_image" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         skill_image
-      
+      </span>
     </span>
   </a>
   
@@ -1318,9 +1270,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemProficiencyPerk.icon" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         icon
-      
+      </span>
     </span>
   </a>
   
@@ -1329,9 +1281,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemProficiencyPerk.effect" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         effect
-      
+      </span>
     </span>
   </a>
   
@@ -1345,9 +1297,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         Item
-      
+      </span>
     </span>
   </a>
   
@@ -1357,9 +1309,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.name" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         name
-      
+      </span>
     </span>
   </a>
   
@@ -1368,9 +1320,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.actual_name" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         actual_name
-      
+      </span>
     </span>
   </a>
   
@@ -1379,9 +1331,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.plural" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         plural
-      
+      </span>
     </span>
   </a>
   
@@ -1390,9 +1342,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.article" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         article
-      
+      </span>
     </span>
   </a>
   
@@ -1401,9 +1353,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.is_marketable" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         is_marketable
-      
+      </span>
     </span>
   </a>
   
@@ -1412,9 +1364,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.is_stackable" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         is_stackable
-      
+      </span>
     </span>
   </a>
   
@@ -1423,9 +1375,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.is_pickupable" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         is_pickupable
-      
+      </span>
     </span>
   </a>
   
@@ -1434,9 +1386,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.is_immobile" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         is_immobile
-      
+      </span>
     </span>
   </a>
   
@@ -1445,9 +1397,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.value_sell" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         value_sell
-      
+      </span>
     </span>
   </a>
   
@@ -1456,9 +1408,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.value_buy" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         value_buy
-      
+      </span>
     </span>
   </a>
   
@@ -1467,9 +1419,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.weight" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         weight
-      
+      </span>
     </span>
   </a>
   
@@ -1478,9 +1430,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.item_class" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         item_class
-      
+      </span>
     </span>
   </a>
   
@@ -1489,9 +1441,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.item_type" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         item_type
-      
+      </span>
     </span>
   </a>
   
@@ -1500,9 +1452,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.type_secondary" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         type_secondary
-      
+      </span>
     </span>
   </a>
   
@@ -1511,9 +1463,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.flavor_text" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         flavor_text
-      
+      </span>
     </span>
   </a>
   
@@ -1522,9 +1474,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.light_color" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         light_color
-      
+      </span>
     </span>
   </a>
   
@@ -1533,9 +1485,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.light_radius" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         light_radius
-      
+      </span>
     </span>
   </a>
   
@@ -1544,9 +1496,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.client_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         client_id
-      
+      </span>
     </span>
   </a>
   
@@ -1555,9 +1507,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.attributes" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         attributes
-      
+      </span>
     </span>
   </a>
   
@@ -1566,9 +1518,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.dropped_by" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         dropped_by
-      
+      </span>
     </span>
   </a>
   
@@ -1577,9 +1529,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.sold_by" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         sold_by
-      
+      </span>
     </span>
   </a>
   
@@ -1588,9 +1540,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.bought_by" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         bought_by
-      
+      </span>
     </span>
   </a>
   
@@ -1599,9 +1551,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.awarded_in" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         awarded_in
-      
+      </span>
     </span>
   </a>
   
@@ -1610,9 +1562,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.sounds" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         sounds
-      
+      </span>
     </span>
   </a>
   
@@ -1621,9 +1573,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.store_offers" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         store_offers
-      
+      </span>
     </span>
   </a>
   
@@ -1632,9 +1584,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.proficiency_perks" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         proficiency_perks
-      
+      </span>
     </span>
   </a>
   
@@ -1643,9 +1595,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.attributes_dict" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         attributes_dict
-      
+      </span>
     </span>
   </a>
   
@@ -1654,9 +1606,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.resistances" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         resistances
-      
+      </span>
     </span>
   </a>
   
@@ -1665,9 +1617,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.look_text" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         look_text
-      
+      </span>
     </span>
   </a>
   
@@ -1676,9 +1628,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.insert" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         insert
-      
+      </span>
     </span>
   </a>
   
@@ -1687,9 +1639,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.get_one_by_field" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         get_one_by_field
-      
+      </span>
     </span>
   </a>
   
@@ -1703,9 +1655,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         Book
-      
+      </span>
     </span>
   </a>
   
@@ -1715,9 +1667,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.name" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         name
-      
+      </span>
     </span>
   </a>
   
@@ -1726,9 +1678,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.book_type" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         book_type
-      
+      </span>
     </span>
   </a>
   
@@ -1737,9 +1689,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.item_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         item_id
-      
+      </span>
     </span>
   </a>
   
@@ -1748,9 +1700,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.location" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         location
-      
+      </span>
     </span>
   </a>
   
@@ -1759,9 +1711,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.blurb" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         blurb
-      
+      </span>
     </span>
   </a>
   
@@ -1770,9 +1722,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.author" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         author
-      
+      </span>
     </span>
   </a>
   
@@ -1781,9 +1733,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.prev_book" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         prev_book
-      
+      </span>
     </span>
   </a>
   
@@ -1792,9 +1744,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.next_book" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         next_book
-      
+      </span>
     </span>
   </a>
   
@@ -1803,9 +1755,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.text" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         text
-      
+      </span>
     </span>
   </a>
   
@@ -1814,9 +1766,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.insert" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         insert
-      
+      </span>
     </span>
   </a>
   
@@ -1830,9 +1782,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         Key
-      
+      </span>
     </span>
   </a>
   
@@ -1842,9 +1794,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.name" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         name
-      
+      </span>
     </span>
   </a>
   
@@ -1853,9 +1805,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.number" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         number
-      
+      </span>
     </span>
   </a>
   
@@ -1864,9 +1816,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.item_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         item_id
-      
+      </span>
     </span>
   </a>
   
@@ -1875,9 +1827,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.material" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         material
-      
+      </span>
     </span>
   </a>
   
@@ -1886,9 +1838,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.location" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         location
-      
+      </span>
     </span>
   </a>
   
@@ -1897,9 +1849,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.notes" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         notes
-      
+      </span>
     </span>
   </a>
   
@@ -1908,9 +1860,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.origin" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         origin
-      
+      </span>
     </span>
   </a>
   
@@ -1919,9 +1871,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.insert" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         insert
-      
+      </span>
     </span>
   </a>
   
@@ -1960,8 +1912,7 @@
   <span class="md-ellipsis">
     
   
-    Mount
-  
+  Mount
 
     
   </span>
@@ -1988,8 +1939,7 @@
   <span class="md-ellipsis">
     
   
-    Npc
-  
+  Npc
 
     
   </span>
@@ -2016,8 +1966,7 @@
   <span class="md-ellipsis">
     
   
-    Outfit
-  
+  Outfit
 
     
   </span>
@@ -2044,8 +1993,7 @@
   <span class="md-ellipsis">
     
   
-    Quest
-  
+  Quest
 
     
   </span>
@@ -2072,8 +2020,7 @@
   <span class="md-ellipsis">
     
   
-    Spell
-  
+  Spell
 
     
   </span>
@@ -2100,8 +2047,7 @@
   <span class="md-ellipsis">
     
   
-    Update
-  
+  Update
 
     
   </span>
@@ -2128,8 +2074,7 @@
   <span class="md-ellipsis">
     
   
-    World
-  
+  World
 
     
   </span>
@@ -2164,8 +2109,7 @@
   <span class="md-ellipsis">
     
   
-    Parsers
-  
+  Parsers
 
     
   </span>
@@ -2192,8 +2136,7 @@
   <span class="md-ellipsis">
     
   
-    Schema
-  
+  Schema
 
     
   </span>
@@ -2220,8 +2163,7 @@
   <span class="md-ellipsis">
     
   
-    Utilities
-  
+  Utilities
 
     
   </span>
@@ -2251,26 +2193,38 @@
               
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
                   <div class="md-sidebar__inner">
                     
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
   
   
   
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      On this page
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#tibiawikisql.models.item" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         item
-      
+      </span>
     </span>
   </a>
   
@@ -2280,9 +2234,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemAttribute" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         ItemAttribute
-      
+      </span>
     </span>
   </a>
   
@@ -2292,9 +2246,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemAttribute.name" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         name
-      
+      </span>
     </span>
   </a>
   
@@ -2303,9 +2257,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemAttribute.value" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         value
-      
+      </span>
     </span>
   </a>
   
@@ -2319,9 +2273,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemOffer" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         ItemOffer
-      
+      </span>
     </span>
   </a>
   
@@ -2331,9 +2285,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemOffer.npc_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         npc_id
-      
+      </span>
     </span>
   </a>
   
@@ -2342,9 +2296,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemOffer.npc_title" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         npc_title
-      
+      </span>
     </span>
   </a>
   
@@ -2353,9 +2307,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemOffer.currency_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         currency_id
-      
+      </span>
     </span>
   </a>
   
@@ -2364,9 +2318,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemOffer.currency_title" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         currency_title
-      
+      </span>
     </span>
   </a>
   
@@ -2375,9 +2329,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemOffer.value" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         value
-      
+      </span>
     </span>
   </a>
   
@@ -2391,9 +2345,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemStoreOffer" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         ItemStoreOffer
-      
+      </span>
     </span>
   </a>
   
@@ -2403,9 +2357,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemStoreOffer.price" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         price
-      
+      </span>
     </span>
   </a>
   
@@ -2414,9 +2368,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemStoreOffer.amount" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         amount
-      
+      </span>
     </span>
   </a>
   
@@ -2425,9 +2379,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemStoreOffer.currency" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         currency
-      
+      </span>
     </span>
   </a>
   
@@ -2441,9 +2395,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemDrop" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         ItemDrop
-      
+      </span>
     </span>
   </a>
   
@@ -2453,9 +2407,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemDrop.creature_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         creature_id
-      
+      </span>
     </span>
   </a>
   
@@ -2464,9 +2418,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemDrop.creature_title" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         creature_title
-      
+      </span>
     </span>
   </a>
   
@@ -2475,9 +2429,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemDrop.min" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         min
-      
+      </span>
     </span>
   </a>
   
@@ -2486,9 +2440,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemDrop.max" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         max
-      
+      </span>
     </span>
   </a>
   
@@ -2497,9 +2451,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemDrop.chance" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         chance
-      
+      </span>
     </span>
   </a>
   
@@ -2513,9 +2467,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemQuestReward" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         ItemQuestReward
-      
+      </span>
     </span>
   </a>
   
@@ -2525,9 +2479,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemQuestReward.quest_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         quest_id
-      
+      </span>
     </span>
   </a>
   
@@ -2536,9 +2490,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemQuestReward.quest_title" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         quest_title
-      
+      </span>
     </span>
   </a>
   
@@ -2552,9 +2506,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemProficiencyPerk" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         ItemProficiencyPerk
-      
+      </span>
     </span>
   </a>
   
@@ -2564,9 +2518,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemProficiencyPerk.proficiency_level" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         proficiency_level
-      
+      </span>
     </span>
   </a>
   
@@ -2575,9 +2529,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemProficiencyPerk.skill_image" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         skill_image
-      
+      </span>
     </span>
   </a>
   
@@ -2586,9 +2540,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemProficiencyPerk.icon" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         icon
-      
+      </span>
     </span>
   </a>
   
@@ -2597,9 +2551,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.ItemProficiencyPerk.effect" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         effect
-      
+      </span>
     </span>
   </a>
   
@@ -2613,9 +2567,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         Item
-      
+      </span>
     </span>
   </a>
   
@@ -2625,9 +2579,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.name" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         name
-      
+      </span>
     </span>
   </a>
   
@@ -2636,9 +2590,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.actual_name" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         actual_name
-      
+      </span>
     </span>
   </a>
   
@@ -2647,9 +2601,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.plural" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         plural
-      
+      </span>
     </span>
   </a>
   
@@ -2658,9 +2612,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.article" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         article
-      
+      </span>
     </span>
   </a>
   
@@ -2669,9 +2623,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.is_marketable" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         is_marketable
-      
+      </span>
     </span>
   </a>
   
@@ -2680,9 +2634,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.is_stackable" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         is_stackable
-      
+      </span>
     </span>
   </a>
   
@@ -2691,9 +2645,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.is_pickupable" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         is_pickupable
-      
+      </span>
     </span>
   </a>
   
@@ -2702,9 +2656,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.is_immobile" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         is_immobile
-      
+      </span>
     </span>
   </a>
   
@@ -2713,9 +2667,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.value_sell" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         value_sell
-      
+      </span>
     </span>
   </a>
   
@@ -2724,9 +2678,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.value_buy" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         value_buy
-      
+      </span>
     </span>
   </a>
   
@@ -2735,9 +2689,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.weight" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         weight
-      
+      </span>
     </span>
   </a>
   
@@ -2746,9 +2700,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.item_class" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         item_class
-      
+      </span>
     </span>
   </a>
   
@@ -2757,9 +2711,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.item_type" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         item_type
-      
+      </span>
     </span>
   </a>
   
@@ -2768,9 +2722,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.type_secondary" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         type_secondary
-      
+      </span>
     </span>
   </a>
   
@@ -2779,9 +2733,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.flavor_text" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         flavor_text
-      
+      </span>
     </span>
   </a>
   
@@ -2790,9 +2744,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.light_color" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         light_color
-      
+      </span>
     </span>
   </a>
   
@@ -2801,9 +2755,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.light_radius" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         light_radius
-      
+      </span>
     </span>
   </a>
   
@@ -2812,9 +2766,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.client_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         client_id
-      
+      </span>
     </span>
   </a>
   
@@ -2823,9 +2777,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.attributes" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         attributes
-      
+      </span>
     </span>
   </a>
   
@@ -2834,9 +2788,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.dropped_by" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         dropped_by
-      
+      </span>
     </span>
   </a>
   
@@ -2845,9 +2799,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.sold_by" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         sold_by
-      
+      </span>
     </span>
   </a>
   
@@ -2856,9 +2810,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.bought_by" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         bought_by
-      
+      </span>
     </span>
   </a>
   
@@ -2867,9 +2821,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.awarded_in" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         awarded_in
-      
+      </span>
     </span>
   </a>
   
@@ -2878,9 +2832,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.sounds" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         sounds
-      
+      </span>
     </span>
   </a>
   
@@ -2889,9 +2843,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.store_offers" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         store_offers
-      
+      </span>
     </span>
   </a>
   
@@ -2900,9 +2854,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.proficiency_perks" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         proficiency_perks
-      
+      </span>
     </span>
   </a>
   
@@ -2911,9 +2865,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.attributes_dict" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         attributes_dict
-      
+      </span>
     </span>
   </a>
   
@@ -2922,9 +2876,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.resistances" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         resistances
-      
+      </span>
     </span>
   </a>
   
@@ -2933,9 +2887,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.look_text" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         look_text
-      
+      </span>
     </span>
   </a>
   
@@ -2944,9 +2898,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.insert" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         insert
-      
+      </span>
     </span>
   </a>
   
@@ -2955,9 +2909,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Item.get_one_by_field" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         get_one_by_field
-      
+      </span>
     </span>
   </a>
   
@@ -2971,9 +2925,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         Book
-      
+      </span>
     </span>
   </a>
   
@@ -2983,9 +2937,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.name" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         name
-      
+      </span>
     </span>
   </a>
   
@@ -2994,9 +2948,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.book_type" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         book_type
-      
+      </span>
     </span>
   </a>
   
@@ -3005,9 +2959,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.item_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         item_id
-      
+      </span>
     </span>
   </a>
   
@@ -3016,9 +2970,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.location" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         location
-      
+      </span>
     </span>
   </a>
   
@@ -3027,9 +2981,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.blurb" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         blurb
-      
+      </span>
     </span>
   </a>
   
@@ -3038,9 +2992,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.author" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         author
-      
+      </span>
     </span>
   </a>
   
@@ -3049,9 +3003,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.prev_book" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         prev_book
-      
+      </span>
     </span>
   </a>
   
@@ -3060,9 +3014,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.next_book" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         next_book
-      
+      </span>
     </span>
   </a>
   
@@ -3071,9 +3025,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.text" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         text
-      
+      </span>
     </span>
   </a>
   
@@ -3082,9 +3036,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Book.insert" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         insert
-      
+      </span>
     </span>
   </a>
   
@@ -3098,9 +3052,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         Key
-      
+      </span>
     </span>
   </a>
   
@@ -3110,9 +3064,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.name" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         name
-      
+      </span>
     </span>
   </a>
   
@@ -3121,9 +3075,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.number" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         number
-      
+      </span>
     </span>
   </a>
   
@@ -3132,9 +3086,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.item_id" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         item_id
-      
+      </span>
     </span>
   </a>
   
@@ -3143,9 +3097,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.material" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         material
-      
+      </span>
     </span>
   </a>
   
@@ -3154,9 +3108,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.location" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         location
-      
+      </span>
     </span>
   </a>
   
@@ -3165,9 +3119,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.notes" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         notes
-      
+      </span>
     </span>
   </a>
   
@@ -3176,9 +3130,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.origin" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         origin
-      
+      </span>
     </span>
   </a>
   
@@ -3187,9 +3141,9 @@
           <li class="md-nav__item">
   <a href="#tibiawikisql.models.item.Key.insert" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         insert
-      
+      </span>
     </span>
   </a>
   
@@ -3219,13 +3173,11 @@
               <article class="md-content__inner md-typeset">
                 
                   
-
-
   
   
 
 
-  <h1>Item</h1>
+  <h1 id="__skip">Item</h1>
 
 <div class="doc doc-object doc-module">
 
@@ -3258,12 +3210,12 @@
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="            ItemAttribute
+            <td><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemAttribute&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemAttribute)" href="#tibiawikisql.models.item.ItemAttribute">ItemAttribute</a></code></td>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemAttribute">ItemAttribute</a></code></td>
             <td>
               <div class="doc-md-description">
                 <p>Represents an Item's attribute.</p>
@@ -3271,12 +3223,12 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="            ItemOffer
+            <td><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemOffer&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemOffer)" href="#tibiawikisql.models.item.ItemOffer">ItemOffer</a></code></td>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemOffer">ItemOffer</a></code></td>
             <td>
               <div class="doc-md-description">
                 <p>Represents an offer to buy or sell the item.</p>
@@ -3284,12 +3236,12 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="            ItemStoreOffer
+            <td><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemStoreOffer&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemStoreOffer)" href="#tibiawikisql.models.item.ItemStoreOffer">ItemStoreOffer</a></code></td>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemStoreOffer">ItemStoreOffer</a></code></td>
             <td>
               <div class="doc-md-description">
                 <p>Represents an offer for an item on the Tibia Store.</p>
@@ -3297,12 +3249,12 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="            ItemDrop
+            <td><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemDrop&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemDrop)" href="#tibiawikisql.models.item.ItemDrop">ItemDrop</a></code></td>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemDrop">ItemDrop</a></code></td>
             <td>
               <div class="doc-md-description">
                 <p>Represents a creature that drops the item.</p>
@@ -3310,12 +3262,12 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="            ItemQuestReward
+            <td><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemQuestReward&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemQuestReward)" href="#tibiawikisql.models.item.ItemQuestReward">ItemQuestReward</a></code></td>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemQuestReward">ItemQuestReward</a></code></td>
             <td>
               <div class="doc-md-description">
                 <p>A quest where the item is awarded.</p>
@@ -3323,12 +3275,12 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="            ItemProficiencyPerk
+            <td><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemProficiencyPerk&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemProficiencyPerk)" href="#tibiawikisql.models.item.ItemProficiencyPerk">ItemProficiencyPerk</a></code></td>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemProficiencyPerk">ItemProficiencyPerk</a></code></td>
             <td>
               <div class="doc-md-description">
                 <p>A weapon proficiency perk for an item.</p>
@@ -3336,12 +3288,12 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="            Item
+            <td><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;Item&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.Item)" href="#tibiawikisql.models.item.Item">Item</a></code></td>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item">Item</a></code></td>
             <td>
               <div class="doc-md-description">
                 <p>Represents an Item.</p>
@@ -3349,12 +3301,12 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="            Book
+            <td><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;Book&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.Book)" href="#tibiawikisql.models.item.Book">Book</a></code></td>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Book">Book</a></code></td>
             <td>
               <div class="doc-md-description">
                 <p>Represents a book or written document in Tibia.</p>
@@ -3362,12 +3314,12 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="            Key
+            <td><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;Key&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.Key)" href="#tibiawikisql.models.item.Key">Key</a></code></td>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Key">Key</a></code></td>
             <td>
               <div class="doc-md-description">
                 <p>Represents a key item.</p>
@@ -3441,21 +3393,21 @@
         <p>Fields:</p>
         <ul>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            name
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;name&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemAttribute.name)" href="#tibiawikisql.models.item.ItemAttribute.name">name</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemAttribute.name">name</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            value
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;value&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemAttribute.value)" href="#tibiawikisql.models.item.ItemAttribute.value">value</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemAttribute.value">value</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
         </ul>
@@ -3593,48 +3545,48 @@
         <p>Fields:</p>
         <ul>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            npc_id
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;npc_id&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemOffer.npc_id)" href="#tibiawikisql.models.item.ItemOffer.npc_id">npc_id</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemOffer.npc_id">npc_id</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            npc_title
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;npc_title&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemOffer.npc_title)" href="#tibiawikisql.models.item.ItemOffer.npc_title">npc_title</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemOffer.npc_title">npc_title</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            currency_id
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;currency_id&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemOffer.currency_id)" href="#tibiawikisql.models.item.ItemOffer.currency_id">currency_id</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemOffer.currency_id">currency_id</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            currency_title
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;currency_title&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemOffer.currency_title)" href="#tibiawikisql.models.item.ItemOffer.currency_title">currency_title</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemOffer.currency_title">currency_title</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            value
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;value&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemOffer.value)" href="#tibiawikisql.models.item.ItemOffer.value">value</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemOffer.value">value</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
         </ul>
@@ -3834,30 +3786,30 @@
         <p>Fields:</p>
         <ul>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            price
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;price&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemStoreOffer.price)" href="#tibiawikisql.models.item.ItemStoreOffer.price">price</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemStoreOffer.price">price</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            amount
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;amount&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemStoreOffer.amount)" href="#tibiawikisql.models.item.ItemStoreOffer.amount">amount</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemStoreOffer.amount">amount</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            currency
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;currency&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemStoreOffer.currency)" href="#tibiawikisql.models.item.ItemStoreOffer.currency">currency</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemStoreOffer.currency">currency</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
         </ul>
@@ -4033,48 +3985,48 @@
         <p>Fields:</p>
         <ul>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            creature_id
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;creature_id&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemDrop.creature_id)" href="#tibiawikisql.models.item.ItemDrop.creature_id">creature_id</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemDrop.creature_id">creature_id</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            creature_title
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;creature_title&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemDrop.creature_title)" href="#tibiawikisql.models.item.ItemDrop.creature_title">creature_title</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemDrop.creature_title">creature_title</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            min
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;min&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemDrop.min)" href="#tibiawikisql.models.item.ItemDrop.min">min</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemDrop.min">min</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            max
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;max&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemDrop.max)" href="#tibiawikisql.models.item.ItemDrop.max">max</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemDrop.max">max</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            chance
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;chance&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemDrop.chance)" href="#tibiawikisql.models.item.ItemDrop.chance">chance</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemDrop.chance">chance</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>)
             </li>
         </ul>
@@ -4269,21 +4221,21 @@
         <p>Fields:</p>
         <ul>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            quest_id
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;quest_id&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemQuestReward.quest_id)" href="#tibiawikisql.models.item.ItemQuestReward.quest_id">quest_id</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemQuestReward.quest_id">quest_id</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            quest_title
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;quest_title&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemQuestReward.quest_title)" href="#tibiawikisql.models.item.ItemQuestReward.quest_title">quest_title</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemQuestReward.quest_title">quest_title</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
         </ul>
@@ -4423,39 +4375,39 @@
         <p>Fields:</p>
         <ul>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            proficiency_level
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;proficiency_level&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemProficiencyPerk.proficiency_level)" href="#tibiawikisql.models.item.ItemProficiencyPerk.proficiency_level">proficiency_level</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemProficiencyPerk.proficiency_level">proficiency_level</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            skill_image
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;skill_image&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemProficiencyPerk.skill_image)" href="#tibiawikisql.models.item.ItemProficiencyPerk.skill_image">skill_image</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemProficiencyPerk.skill_image">skill_image</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            icon
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;icon&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemProficiencyPerk.icon)" href="#tibiawikisql.models.item.ItemProficiencyPerk.icon">icon</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemProficiencyPerk.icon">icon</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            effect
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;effect&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.ItemProficiencyPerk.effect)" href="#tibiawikisql.models.item.ItemProficiencyPerk.effect">effect</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemProficiencyPerk.effect">effect</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
         </ul>
@@ -4595,32 +4547,32 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="            WikiEntry
+              Bases: <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;WikiEntry&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.api.WikiEntry)" href="../../api/#tibiawikisql.api.WikiEntry">WikiEntry</a></code>, <code><a class="autorefs autorefs-internal" title="            WithVersion
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry">WikiEntry</a></code>, <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;WithVersion&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.base.WithVersion)" href="../base/#tibiawikisql.models.base.WithVersion">WithVersion</a></code>, <code><a class="autorefs autorefs-internal" title="            WithStatus
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithVersion">WithVersion</a></code>, <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;WithStatus&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.base.WithStatus)" href="../base/#tibiawikisql.models.base.WithStatus">WithStatus</a></code>, <code><a class="autorefs autorefs-internal" title="            WithImage
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithStatus">WithStatus</a></code>, <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;WithImage&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.base.WithImage)" href="../base/#tibiawikisql.models.base.WithImage">WithImage</a></code>, <code><a class="autorefs autorefs-internal" title="            RowModel
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithImage">WithImage</a></code>, <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;RowModel&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.base.RowModel)" href="../base/#tibiawikisql.models.base.RowModel">RowModel</a></code></p>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.RowModel">RowModel</a></code></p>
 
         <p>Represents an Item.</p>
 
@@ -5106,327 +5058,327 @@
         <p>Fields:</p>
         <ul>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            image
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;image&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.image)" href="../base/#tibiawikisql.models.base.WithImage.image">image</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithImage.image">image</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#bytes">bytes</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            status
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;status&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.status)" href="../base/#tibiawikisql.models.base.WithStatus.status">status</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithStatus.status">status</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            version
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;version&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.version)" href="../base/#tibiawikisql.models.base.WithVersion.version">version</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithVersion.version">version</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            article_id
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;article_id&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.article_id)" href="../../api/#tibiawikisql.api.WikiEntry.article_id">article_id</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry.article_id">article_id</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            title
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;title&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.title)" href="../../api/#tibiawikisql.api.WikiEntry.title">title</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry.title">title</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            timestamp
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;timestamp&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.timestamp)" href="../../api/#tibiawikisql.api.WikiEntry.timestamp">timestamp</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry.timestamp">timestamp</a></code>
                 (<code><a class="autorefs autorefs-external" title="datetime.datetime" href="https://docs.python.org/3/library/datetime.html#datetime.datetime">datetime</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            name
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;name&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.name)" href="#tibiawikisql.models.item.Item.name">name</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.name">name</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            actual_name
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;actual_name&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.actual_name)" href="#tibiawikisql.models.item.Item.actual_name">actual_name</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.actual_name">actual_name</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            plural
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;plural&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.plural)" href="#tibiawikisql.models.item.Item.plural">plural</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.plural">plural</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            article
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;article&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.article)" href="#tibiawikisql.models.item.Item.article">article</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.article">article</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            is_marketable
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;is_marketable&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.is_marketable)" href="#tibiawikisql.models.item.Item.is_marketable">is_marketable</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.is_marketable">is_marketable</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            is_stackable
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;is_stackable&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.is_stackable)" href="#tibiawikisql.models.item.Item.is_stackable">is_stackable</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.is_stackable">is_stackable</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            is_pickupable
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;is_pickupable&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.is_pickupable)" href="#tibiawikisql.models.item.Item.is_pickupable">is_pickupable</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.is_pickupable">is_pickupable</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            is_immobile
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;is_immobile&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.is_immobile)" href="#tibiawikisql.models.item.Item.is_immobile">is_immobile</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.is_immobile">is_immobile</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            value_sell
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;value_sell&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.value_sell)" href="#tibiawikisql.models.item.Item.value_sell">value_sell</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.value_sell">value_sell</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            value_buy
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;value_buy&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.value_buy)" href="#tibiawikisql.models.item.Item.value_buy">value_buy</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.value_buy">value_buy</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            weight
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;weight&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.weight)" href="#tibiawikisql.models.item.Item.weight">weight</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.weight">weight</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            item_class
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;item_class&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.item_class)" href="#tibiawikisql.models.item.Item.item_class">item_class</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.item_class">item_class</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            item_type
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;item_type&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.item_type)" href="#tibiawikisql.models.item.Item.item_type">item_type</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.item_type">item_type</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            type_secondary
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;type_secondary&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.type_secondary)" href="#tibiawikisql.models.item.Item.type_secondary">type_secondary</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.type_secondary">type_secondary</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            flavor_text
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;flavor_text&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.flavor_text)" href="#tibiawikisql.models.item.Item.flavor_text">flavor_text</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.flavor_text">flavor_text</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            light_color
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;light_color&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.light_color)" href="#tibiawikisql.models.item.Item.light_color">light_color</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.light_color">light_color</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            light_radius
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;light_radius&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.light_radius)" href="#tibiawikisql.models.item.Item.light_radius">light_radius</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.light_radius">light_radius</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            client_id
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;client_id&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.client_id)" href="#tibiawikisql.models.item.Item.client_id">client_id</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.client_id">client_id</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            attributes
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;attributes&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.attributes)" href="#tibiawikisql.models.item.Item.attributes">attributes</a></code>
-                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="            ItemAttribute
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.attributes">attributes</a></code>
+                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemAttribute&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemAttribute)" href="#tibiawikisql.models.item.ItemAttribute">ItemAttribute</a>]</code>)
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemAttribute">ItemAttribute</a>]</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            dropped_by
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;dropped_by&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.dropped_by)" href="#tibiawikisql.models.item.Item.dropped_by">dropped_by</a></code>
-                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="            ItemDrop
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.dropped_by">dropped_by</a></code>
+                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemDrop&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemDrop)" href="#tibiawikisql.models.item.ItemDrop">ItemDrop</a>]</code>)
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemDrop">ItemDrop</a>]</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            sold_by
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;sold_by&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.sold_by)" href="#tibiawikisql.models.item.Item.sold_by">sold_by</a></code>
-                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="            ItemOffer
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.sold_by">sold_by</a></code>
+                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemOffer&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemOffer)" href="#tibiawikisql.models.item.ItemOffer">ItemOffer</a>]</code>)
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemOffer">ItemOffer</a>]</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            bought_by
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;bought_by&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.bought_by)" href="#tibiawikisql.models.item.Item.bought_by">bought_by</a></code>
-                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="            ItemOffer
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.bought_by">bought_by</a></code>
+                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemOffer&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemOffer)" href="#tibiawikisql.models.item.ItemOffer">ItemOffer</a>]</code>)
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemOffer">ItemOffer</a>]</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            awarded_in
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;awarded_in&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.awarded_in)" href="#tibiawikisql.models.item.Item.awarded_in">awarded_in</a></code>
-                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="            ItemQuestReward
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.awarded_in">awarded_in</a></code>
+                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemQuestReward&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemQuestReward)" href="#tibiawikisql.models.item.ItemQuestReward">ItemQuestReward</a>]</code>)
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemQuestReward">ItemQuestReward</a>]</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            sounds
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;sounds&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.sounds)" href="#tibiawikisql.models.item.Item.sounds">sounds</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.sounds">sounds</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            store_offers
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;store_offers&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.store_offers)" href="#tibiawikisql.models.item.Item.store_offers">store_offers</a></code>
-                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="            ItemStoreOffer
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.store_offers">store_offers</a></code>
+                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemStoreOffer&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemStoreOffer)" href="#tibiawikisql.models.item.ItemStoreOffer">ItemStoreOffer</a>]</code>)
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemStoreOffer">ItemStoreOffer</a>]</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            proficiency_perks
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;proficiency_perks&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Item.proficiency_perks)" href="#tibiawikisql.models.item.Item.proficiency_perks">proficiency_perks</a></code>
-                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="            ItemProficiencyPerk
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Item.proficiency_perks">proficiency_perks</a></code>
+                (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemProficiencyPerk&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemProficiencyPerk)" href="#tibiawikisql.models.item.ItemProficiencyPerk">ItemProficiencyPerk</a>]</code>)
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemProficiencyPerk">ItemProficiencyPerk</a>]</code>)
             </li>
         </ul>
 
@@ -5886,12 +5838,12 @@
   </span>
 
 <a href="#tibiawikisql.models.item.Item.attributes" class="headerlink" title="Permanent link">&para;</a></h5>
-<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attributes</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            ItemAttribute
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attributes</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemAttribute&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemAttribute)" href="#tibiawikisql.models.item.ItemAttribute">ItemAttribute</a></span><span class="p">]</span>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemAttribute">ItemAttribute</a></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -5915,12 +5867,12 @@
   </span>
 
 <a href="#tibiawikisql.models.item.Item.dropped_by" class="headerlink" title="Permanent link">&para;</a></h5>
-<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">dropped_by</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            ItemDrop
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">dropped_by</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemDrop&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemDrop)" href="#tibiawikisql.models.item.ItemDrop">ItemDrop</a></span><span class="p">]</span>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemDrop">ItemDrop</a></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -5944,12 +5896,12 @@
   </span>
 
 <a href="#tibiawikisql.models.item.Item.sold_by" class="headerlink" title="Permanent link">&para;</a></h5>
-<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">sold_by</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            ItemOffer
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">sold_by</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemOffer&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemOffer)" href="#tibiawikisql.models.item.ItemOffer">ItemOffer</a></span><span class="p">]</span>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemOffer">ItemOffer</a></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -5973,12 +5925,12 @@
   </span>
 
 <a href="#tibiawikisql.models.item.Item.bought_by" class="headerlink" title="Permanent link">&para;</a></h5>
-<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">bought_by</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            ItemOffer
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">bought_by</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemOffer&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemOffer)" href="#tibiawikisql.models.item.ItemOffer">ItemOffer</a></span><span class="p">]</span>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemOffer">ItemOffer</a></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6002,12 +5954,12 @@
   </span>
 
 <a href="#tibiawikisql.models.item.Item.awarded_in" class="headerlink" title="Permanent link">&para;</a></h5>
-<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">awarded_in</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            ItemQuestReward
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">awarded_in</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemQuestReward&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemQuestReward)" href="#tibiawikisql.models.item.ItemQuestReward">ItemQuestReward</a></span><span class="p">]</span>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemQuestReward">ItemQuestReward</a></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6055,12 +6007,12 @@
   </span>
 
 <a href="#tibiawikisql.models.item.Item.store_offers" class="headerlink" title="Permanent link">&para;</a></h5>
-<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">store_offers</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            ItemStoreOffer
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">store_offers</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemStoreOffer&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemStoreOffer)" href="#tibiawikisql.models.item.ItemStoreOffer">ItemStoreOffer</a></span><span class="p">]</span>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemStoreOffer">ItemStoreOffer</a></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6084,12 +6036,12 @@
   </span>
 
 <a href="#tibiawikisql.models.item.Item.proficiency_perks" class="headerlink" title="Permanent link">&para;</a></h5>
-<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">proficiency_perks</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            ItemProficiencyPerk
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">proficiency_perks</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;ItemProficiencyPerk&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.item.ItemProficiencyPerk)" href="#tibiawikisql.models.item.ItemProficiencyPerk">ItemProficiencyPerk</a></span><span class="p">]</span>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.ItemProficiencyPerk">ItemProficiencyPerk</a></span><span class="p">]</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6257,12 +6209,7 @@
   </span>
 
 <a href="#tibiawikisql.models.item.Item.get_one_by_field" class="headerlink" title="Permanent link">&para;</a></h5>
-<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">get_one_by_field</span><span class="p">(</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">conn</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="sqlite3.Connection" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection">Connection</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" title="sqlite3.Cursor" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Cursor">Cursor</a></span><span class="p">,</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">field</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">value</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">,</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">use_like</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span> <span class="o">|</span> <span class="kc">None</span>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">get_one_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="sqlite3.Connection" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection">Connection</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" title="sqlite3.Cursor" href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Cursor">Cursor</a></span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">,</span> <span class="n">use_like</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -6521,27 +6468,27 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="            WikiEntry
+              Bases: <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;WikiEntry&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.api.WikiEntry)" href="../../api/#tibiawikisql.api.WikiEntry">WikiEntry</a></code>, <code><a class="autorefs autorefs-internal" title="            WithStatus
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry">WikiEntry</a></code>, <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;WithStatus&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.base.WithStatus)" href="../base/#tibiawikisql.models.base.WithStatus">WithStatus</a></code>, <code><a class="autorefs autorefs-internal" title="            WithVersion
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithStatus">WithStatus</a></code>, <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;WithVersion&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.base.WithVersion)" href="../base/#tibiawikisql.models.base.WithVersion">WithVersion</a></code>, <code><a class="autorefs autorefs-internal" title="            RowModel
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithVersion">WithVersion</a></code>, <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;RowModel&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.base.RowModel)" href="../base/#tibiawikisql.models.base.RowModel">RowModel</a></code></p>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.RowModel">RowModel</a></code></p>
 
         <p>Represents a book or written document in Tibia.</p>
 
@@ -6682,129 +6629,129 @@
         <p>Fields:</p>
         <ul>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            version
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;version&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.version)" href="../base/#tibiawikisql.models.base.WithVersion.version">version</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithVersion.version">version</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            status
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;status&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.status)" href="../base/#tibiawikisql.models.base.WithStatus.status">status</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithStatus.status">status</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            article_id
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;article_id&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.article_id)" href="../../api/#tibiawikisql.api.WikiEntry.article_id">article_id</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry.article_id">article_id</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            title
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;title&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.title)" href="../../api/#tibiawikisql.api.WikiEntry.title">title</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry.title">title</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            timestamp
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;timestamp&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.timestamp)" href="../../api/#tibiawikisql.api.WikiEntry.timestamp">timestamp</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry.timestamp">timestamp</a></code>
                 (<code><a class="autorefs autorefs-external" title="datetime.datetime" href="https://docs.python.org/3/library/datetime.html#datetime.datetime">datetime</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            name
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;name&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.name)" href="#tibiawikisql.models.item.Book.name">name</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Book.name">name</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            book_type
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;book_type&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.book_type)" href="#tibiawikisql.models.item.Book.book_type">book_type</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Book.book_type">book_type</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            item_id
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;item_id&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.item_id)" href="#tibiawikisql.models.item.Book.item_id">item_id</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Book.item_id">item_id</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            location
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;location&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.location)" href="#tibiawikisql.models.item.Book.location">location</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Book.location">location</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            blurb
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;blurb&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.blurb)" href="#tibiawikisql.models.item.Book.blurb">blurb</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Book.blurb">blurb</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            author
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;author&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.author)" href="#tibiawikisql.models.item.Book.author">author</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Book.author">author</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            prev_book
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;prev_book&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.prev_book)" href="#tibiawikisql.models.item.Book.prev_book">prev_book</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Book.prev_book">prev_book</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            next_book
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;next_book&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.next_book)" href="#tibiawikisql.models.item.Book.next_book">next_book</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Book.next_book">next_book</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            text
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;text&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Book.text)" href="#tibiawikisql.models.item.Book.text">text</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Book.text">text</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
         </ul>
@@ -7218,27 +7165,27 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="            WikiEntry
+              Bases: <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;WikiEntry&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.api.WikiEntry)" href="../../api/#tibiawikisql.api.WikiEntry">WikiEntry</a></code>, <code><a class="autorefs autorefs-internal" title="            WithStatus
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry">WikiEntry</a></code>, <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;WithStatus&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.base.WithStatus)" href="../base/#tibiawikisql.models.base.WithStatus">WithStatus</a></code>, <code><a class="autorefs autorefs-internal" title="            WithVersion
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithStatus">WithStatus</a></code>, <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;WithVersion&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.base.WithVersion)" href="../base/#tibiawikisql.models.base.WithVersion">WithVersion</a></code>, <code><a class="autorefs autorefs-internal" title="            RowModel
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithVersion">WithVersion</a></code>, <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;RowModel&lt;/span&gt;
 
 
-  
-      pydantic-model
-   (tibiawikisql.models.base.RowModel)" href="../base/#tibiawikisql.models.base.RowModel">RowModel</a></code></p>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-model&quot;&gt;&lt;code&gt;pydantic-model&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.RowModel">RowModel</a></code></p>
 
         <p>Represents a key item.</p>
 
@@ -7362,111 +7309,111 @@
         <p>Fields:</p>
         <ul>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            version
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;version&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Key.version)" href="../base/#tibiawikisql.models.base.WithVersion.version">version</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithVersion.version">version</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            status
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;status&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Key.status)" href="../base/#tibiawikisql.models.base.WithStatus.status">status</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../base/#tibiawikisql.models.base.WithStatus.status">status</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            article_id
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;article_id&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Key.article_id)" href="../../api/#tibiawikisql.api.WikiEntry.article_id">article_id</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry.article_id">article_id</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            title
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;title&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Key.title)" href="../../api/#tibiawikisql.api.WikiEntry.title">title</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry.title">title</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            timestamp
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;timestamp&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Key.timestamp)" href="../../api/#tibiawikisql.api.WikiEntry.timestamp">timestamp</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="../../api/#tibiawikisql.api.WikiEntry.timestamp">timestamp</a></code>
                 (<code><a class="autorefs autorefs-external" title="datetime.datetime" href="https://docs.python.org/3/library/datetime.html#datetime.datetime">datetime</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            name
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;name&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Key.name)" href="#tibiawikisql.models.item.Key.name">name</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Key.name">name</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            number
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;number&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Key.number)" href="#tibiawikisql.models.item.Key.number">number</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Key.number">number</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            item_id
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;item_id&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Key.item_id)" href="#tibiawikisql.models.item.Key.item_id">item_id</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Key.item_id">item_id</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            material
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;material&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Key.material)" href="#tibiawikisql.models.item.Key.material">material</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Key.material">material</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            location
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;location&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Key.location)" href="#tibiawikisql.models.item.Key.location">location</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Key.location">location</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            notes
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;notes&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Key.notes)" href="#tibiawikisql.models.item.Key.notes">notes</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Key.notes">notes</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
             <li>
-              <code><a class="autorefs autorefs-internal" title="            origin
+              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;origin&lt;/span&gt;
 
 
-  
-      pydantic-field
-   (tibiawikisql.models.item.Key.origin)" href="#tibiawikisql.models.item.Key.origin">origin</a></code>
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-pydantic-field&quot;&gt;&lt;code&gt;pydantic-field&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt;" href="./#tibiawikisql.models.item.Key.origin">origin</a></code>
                 (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>)
             </li>
         </ul>
@@ -7827,6 +7774,8 @@
 
 
 
+
+
                 
               </article>
             </div>
@@ -7837,7 +7786,7 @@
         
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
   Back to top
 </button>
         
@@ -7853,7 +7802,7 @@
           <a href="../imbuement/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Imbuement">
             <div class="md-footer__button md-icon">
               
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
             </div>
             <div class="md-footer__title">
               <span class="md-footer__direction">
@@ -7878,7 +7827,7 @@
             </div>
             <div class="md-footer__button md-icon">
               
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </div>
           </a>
         
@@ -7890,14 +7839,16 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      &copy; 2025 Allan Galarza<br> <a href="https://www.tibia.com">Tibia</a> is made by <a href="https://www.cipsoft.com/">CipSoft</a>, all Tibia content is copyrighted by <a href="https://www.cipsoft.com/">CipSoft GmbH</a>.<br> The data collected by this library is provided by <a href="https://tibia.fandom.com/">TibiaWiki</a>.
+      &copy; 2026 Allan Galarza<br>
+<a href="https://www.tibia.com">Tibia</a> is made by <a href="https://www.cipsoft.com/">CipSoft</a>, all Tibia content is copyrighted by <a href="https://www.cipsoft.com/">CipSoft GmbH</a>.<br>
+The data collected by this library is provided by <a href="https://tibia.fandom.com/">TibiaWiki</a>.
 
     </div>
   
   
     Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
     </a>
   
 </div>
@@ -7913,7 +7864,7 @@
       
     
     <a href="https://github.com/Galarzaa90/tibiawiki-sql" target="_blank" rel="noopener" title="github.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
     </a>
   
     
@@ -7924,7 +7875,7 @@
       
     
     <a href="https://pypi.org/project/tibiawikisql/" target="_blank" rel="noopener" title="pypi.org" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.922 13.58v3.912L20.55 18.72l-.078.055.052.037 3.45-1.256.026-.036v-3.997l-.053-.036-.025.092zm-.301-7.962-3.04 1.107v3.912l3.339-1.215V5.509zm.299 7.839V9.544l-3.336 1.215v3.913zm-3.45 1.253V10.8l-3.3 1.2v3.913zm-3.436 5.286v-3.912l-3.313 1.206v3.912zm.136-3.939v3.868l3.314-1.206V14.85zm2.093 1.882c-.367.134-.663-.074-.663-.463s.296-.814.663-.947c.365-.133.662.075.662.464s-.297.814-.662.946m-6.038-8.624.365-.132-3.285-1.197-3.323 1.21.102.037 3.184 1.16zm7.282 1.349V6.751L17.17 7.965v3.913zm-3.449 1.254V8.005l-3.302 1.202v3.912zm-3.415-2.672-3.336 1.215v3.913l3.336-1.215zm-6.736 3.919 3.322 1.209v-3.913L6.907 9.252zm3.433-5.292 3.281 1.193V5.198l-3.28-1.193zm10.167-5.158L17.19 3.922v3.913l3.317-1.207zM16.95 3.903 13.724 2.73l-3.269 1.19 3.225 1.174zm-1.585.703-1.624.592v3.868l3.317-1.207V3.991zm-.391 2.778c-.367.134-.662-.074-.662-.464s.295-.813.662-.946c.366-.133.663.074.663.464s-.297.813-.663.946M10.229 18.41v-3.914l-3.322-1.209V17.2zm3.449-1.228v-3.913l-3.371 1.227v3.913zm.078-.028 3.3-1.2V12.04l-3.3 1.2zm-.078 4.063-3.371 1.227v-3.912h-.078v3.912l-3.322-1.209v-3.913l-.053-.058-.025-.06-3.336-1.21v-3.948l.034.013 3.287 1.196.015-.078-3.261-1.187 3.26-1.187v-.109L3.876 9.62l-.307-.112 3.26-1.188v.877l.079-.055V6.769l3.257 1.185.058-.061L7.084 6.75l-.102-.037 3.24-1.179v-.083L6.854 6.677v.018l-.025.018v1.523L3.44 9.47v.02l-.025.017v4.007l-3.39 1.233v.019L0 14.784v3.995l.025.037 3.4 1.237.008-.006.007.01 3.4 1.238.008-.006.006.01 3.4 1.237.014-.009.012.01 3.45-1.256.026-.037zM3.493 9.563l3.257 1.185-3.257 1.187V9.562zM3.4 19.96.078 18.752v-3.913l2.361.86.96.349zm.015-3.99-3.08-1.12-.182-.066 3.262-1.187zm3.399 5.231-3.321-1.209V16.08l3.321 1.209zM23.791 5.434l-3.21-1.17v2.338zm-3.404-2.791-3.24-1.18-3.27 1.19 3.247 1.182z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>PyPI</title><path d="M23.922 13.58v3.912L20.55 18.72l-.078.055.052.037 3.45-1.256.026-.036v-3.997l-.053-.036-.025.092zm-.301-7.962-3.04 1.107v3.912l3.339-1.215V5.509zm.299 7.839V9.544l-3.336 1.215v3.913zm-3.45 1.253V10.8l-3.3 1.2v3.913zm-3.436 5.286v-3.912l-3.313 1.206v3.912zm.136-3.939v3.868l3.314-1.206V14.85zm2.093 1.882c-.367.134-.663-.074-.663-.463s.296-.814.663-.947c.365-.133.662.075.662.464s-.297.814-.662.946m-6.038-8.624.365-.132-3.285-1.197-3.323 1.21.102.037 3.184 1.16zm7.282 1.349V6.751L17.17 7.965v3.913zm-3.449 1.254V8.005l-3.302 1.202v3.912zm-3.415-2.672-3.336 1.215v3.913l3.336-1.215zm-6.736 3.919 3.322 1.209v-3.913L6.907 9.252zm3.433-5.292 3.281 1.193V5.198l-3.28-1.193zm10.167-5.158L17.19 3.922v3.913l3.317-1.207zM16.95 3.903 13.724 2.73l-3.269 1.19 3.225 1.174zm-1.585.703-1.624.592v3.868l3.317-1.207V3.991zm-.391 2.778c-.367.134-.662-.074-.662-.464s.295-.813.662-.946c.366-.133.663.074.663.464s-.297.813-.663.946M10.229 18.41v-3.914l-3.322-1.209V17.2zm3.449-1.228v-3.913l-3.371 1.227v3.913zm.078-.028 3.3-1.2V12.04l-3.3 1.2zm-.078 4.063-3.371 1.227v-3.912h-.078v3.912l-3.322-1.209v-3.913l-.053-.058-.025-.06-3.336-1.21v-3.948l.034.013 3.287 1.196.015-.078-3.261-1.187 3.26-1.187v-.109L3.876 9.62l-.307-.112 3.26-1.188v.877l.079-.055V6.769l3.257 1.185.058-.061L7.084 6.75l-.102-.037 3.24-1.179v-.083L6.854 6.677v.018l-.025.018v1.523L3.44 9.47v.02l-.025.017v4.007l-3.39 1.233v.019L0 14.784v3.995l.025.037 3.4 1.237.008-.006.007.01 3.4 1.238.008-.006.006.01 3.4 1.237.014-.009.012.01 3.45-1.256.026-.037zM3.493 9.563l3.257 1.185-3.257 1.187V9.562zM3.4 19.96.078 18.752v-3.913l2.361.86.96.349zm.015-3.99-3.08-1.12-.182-.066 3.262-1.187zm3.399 5.231-3.321-1.209V16.08l3.321 1.209zM23.791 5.434l-3.21-1.17v2.338zm-3.404-2.791-3.24-1.18-3.27 1.19 3.247 1.182z"/></svg>
     </a>
   
     
@@ -7935,7 +7886,7 @@
       
     
     <a href="https://hub.docker.com/r/galarzaa90/tibiawiki-sql" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M349.9 236.3h-66.1v-59.4h66.1zm0-204.3h-66.1v60.7h66.1zm78.2 144.8H362v59.4h66.1zm-156.3-72.1h-66.1v60.1h66.1zm78.1 0h-66.1v60.1h66.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1zm78.1 0h-66.1v59.4h66.1zm-78.1-72.1h-66.1v60.1h66.1z"/></svg>
     </a>
   
 </div>
@@ -7955,10 +7906,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.copy", "navigation.footer", "navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "search.share", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate":null,"base":"../../..","features":["content.code.copy","navigation.footer","navigation.instant","navigation.instant.progress","navigation.tabs","navigation.tabs.sticky","navigation.top","navigation.tracking","search.suggest","search.highlight","search.share","toc.follow"],"search":"../../../assets/javascripts/workers/search.b6b7e04f.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7f30b55.min.js"></script>
       
     
   </body>
