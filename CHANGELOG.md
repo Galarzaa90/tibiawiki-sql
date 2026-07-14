@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.2.0 (2026-07-14)
+
+- Add `-I`/`--include-deprecated-images` argument to download images from deprecated entities even when skipping them.
+
 ## 8.1.0 (2026-07-11)
 
 - Add spell base power (`base_power`) to parser, schema and models.
