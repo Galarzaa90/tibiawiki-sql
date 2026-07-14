@@ -1,0 +1,138 @@
+[project]
+site_name = "TibiaWikiSQL"
+site_author = "Allan Galarza"
+site_description = "TibiaWikiSQL is a script that generates a SQLite database from TibiaWiki articles by using its API."
+site_url = "https://galarzaa90.github.io/tibiawiki-sql/"
+repo_url = "https://github.com/Galarzaa90/tibiawiki-sql"
+repo_name = "Galarzaa90/tibiawiki-sql"
+copyright = """
+&copy; 2026 Allan Galarza<br>
+<a href="https://www.tibia.com">Tibia</a> is made by <a href="https://www.cipsoft.com/">CipSoft</a>, all Tibia content is copyrighted by <a href="https://www.cipsoft.com/">CipSoft GmbH</a>.<br>
+The data collected by this library is provided by <a href="https://tibia.fandom.com/">TibiaWiki</a>.
+"""
+nav = [
+  { Home = [
+    { Home = "index.md" },
+    { Introduction = "intro.md" },
+    { Changelog = "changelog.md" },
+    { "Database Schema" = "schema.md" },
+  ] },
+  { "API Reference" = [
+    { "TibiaWiki API" = "api/api.md" },
+    { Database = "api/database.md" },
+    { Generation = "api/generation.md" },
+    { Errors = "api/errors.md" },
+    { Models = [
+      { "Package Index" = "api/models/index.md" },
+      { Base = "api/models/base.md" },
+      { Achievement = "api/models/achievement.md" },
+      { Book = "api/models/book.md" },
+      { Charm = "api/models/charm.md" },
+      { Creature = "api/models/creature.md" },
+      { House = "api/models/house.md" },
+      { Imbuement = "api/models/imbuement.md" },
+      { Item = "api/models/item.md" },
+      { Mount = "api/models/mount.md" },
+      { Npc = "api/models/npc.md" },
+      { Outfit = "api/models/outfit.md" },
+      { Quest = "api/models/quest.md" },
+      { Spell = "api/models/spell.md" },
+      { Update = "api/models/update.md" },
+      { World = "api/models/world.md" },
+    ] },
+    { Parsers = "api/parsers.md" },
+    { Schema = "api/schema.md" },
+    { Utilities = "api/utils.md" },
+  ] },
+]
+
+[project.theme]
+language = "en"
+logo = "images/logo.gif"
+features = [
+  "content.code.copy",
+  "navigation.footer",
+  "navigation.instant",
+  "navigation.instant.progress",
+  "navigation.tabs",
+  "navigation.tabs.sticky",
+  "navigation.top",
+  "navigation.tracking",
+  "search.suggest",
+  "search.highlight",
+  "search.share",
+  "toc.follow",
+]
+
+[project.theme.icon]
+repo = "fontawesome/brands/github"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "material/brightness-auto"
+toggle.name = "Switch to light mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "brown"
+toggle.icon = "material/brightness-7"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "brown"
+toggle.icon = "material/brightness-4"
+toggle.name = "Switch to system preference"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/Galarzaa90/tibiawiki-sql"
+
+[[project.extra.social]]
+icon = "simple/pypi"
+link = "https://pypi.org/project/tibiawikisql/"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/docker"
+link = "https://hub.docker.com/r/galarzaa90/tibiawiki-sql"
+
+[project.plugins.mkdocstrings.handlers.python]
+inventories = ["https://docs.python.org/3/objects.inv"]
+paths = ["."]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+allow_inspection = true
+extensions = [
+  { griffe_pydantic = { schema = true } },
+  "griffe_inherited_docstrings",
+  "docstring_inheritance.griffe",
+]
+find_stubs_package = false
+force_inspection = false
+preload_modules = []
+show_bases = true
+show_source = true
+annotations_path = "brief"
+docstring_style = "google"
+members_order = "source"
+separate_signature = true
+show_signature_annotations = true
+signature_crossrefs = true
+show_symbol_type_heading = true
+show_root_heading = true
+show_overloads = true
+heading_level = 3
+docstring_options = { ignore_init_summary = true }
+merge_init_into_class = true
+summary = true
+
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.superfences]
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+[project.markdown_extensions.pymdownx.snippets]
+[project.markdown_extensions.toc]
+permalink = true

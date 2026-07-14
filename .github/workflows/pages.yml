@@ -21,9 +21,9 @@ jobs:
         run: |
           pip install -U -e .[docs]
 
-      - name: Build MkDocs 📙
+      - name: Build Zensical 📙
         run: |
-          mkdocs build
+          zensical build --clean
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4

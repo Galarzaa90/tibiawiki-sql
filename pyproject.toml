@@ -42,10 +42,10 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://tibiawiki-sql.readthedocs.io/"
-"Documentation" = "https://tibiawiki-sql.readthedocs.io/"
+"Homepage" = "https://galarzaa90.github.io/tibiawiki-sql/"
+"Documentation" = "https://galarzaa90.github.io/tibiawiki-sql/"
 "Repository" = "https://github.com/Galarzaa90/tibiawiki-sql"
-"Changelog" = "https://tibiawiki-sql.readthedocs.io/en/stable/changelog/"
+"Changelog" = "https://galarzaa90.github.io/tibiawiki-sql/changelog/"
 "Docker Hub: Repo" = "https://hub.docker.com/repository/docker/galarzaa90/tibiawiki-sql"
 
 [project.scripts]

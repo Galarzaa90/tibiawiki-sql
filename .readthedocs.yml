@@ -4,6 +4,12 @@ build:
   os: "ubuntu-24.04"
   tools:
     python: "3"
+  jobs:
+    build:
+      html:
+        - zensical build --clean
+        - mkdir -p $READTHEDOCS_OUTPUT/html
+        - cp -r site/. $READTHEDOCS_OUTPUT/html/
 
 python:
   install:
@@ -11,6 +17,3 @@ python:
       path: .
       extra_requirements:
         - docs
-
-mkdocs:
-  configuration: mkdocs.yaml
