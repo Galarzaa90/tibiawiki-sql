@@ -57,6 +57,7 @@ def save_images(
     key: str,
     category: Any,
     *,
+    additional_titles: list[str] | None = None,
     wiki_client: Any,
     progress_bar: Any,
     img_label: Any,
@@ -69,7 +70,9 @@ def save_images(
     category_table = Table(table)
     select_query = Query.from_(category_table).select(category_table.title)
     results = conn.execute(select_query.get_sql())
-    titles = [f"{row[0]}{extension}" for row in results]
+    article_titles = [row[0] for row in results]
+    article_titles.extend(additional_titles or ())
+    titles = [f"{title}{extension}" for title in dict.fromkeys(article_titles)]
     os.makedirs(f"images/{table}", exist_ok=True)
     cache_info = get_cache_info(table)
     cache_count = 0
@@ -143,21 +146,42 @@ def save_maps(conn: sqlite3.Connection | sqlite3.Cursor) -> None:
         conn.execute(insert_query.get_sql(), (z, image))
 
 
-def generate_outfit_image_names(rows: list[tuple[int, str]]) -> tuple[list[str], dict[str, tuple[int, int, str]]]:
+def generate_outfit_image_names(
+    rows: list[tuple[int | None, str]],
+) -> tuple[list[str], dict[str, tuple[int | None, int, str]]]:
     """Generate outfit image file names and tuple metadata."""
     titles = []
-    image_info: dict[str, tuple[int, int, str]] = {}
+    image_info: dict[str, tuple[int | None, int, str]] = {}
     for article_id, name in rows:
         for i, template in enumerate(OUTFIT_NAME_TEMPLATES):
             file_name = template % name
-            image_info[file_name] = (article_id, OUTFIT_ADDON_SEQUENCE[i], OUTFIT_SEX_SEQUENCE[i])
+            image_info[file_name] = (
+                article_id,
+                OUTFIT_ADDON_SEQUENCE[i],
+                OUTFIT_SEX_SEQUENCE[i],
+            )
             titles.append(file_name)
     return titles, image_info
+
+
+def add_additional_outfit_names(
+    rows: list[tuple[int, str]],
+    additional_titles: list[str] | None,
+) -> list[tuple[int | None, str]]:
+    """Add outfit names derived from article titles without database IDs."""
+    expanded_rows: list[tuple[int | None, str]] = list(rows)
+    existing_names = {row[1] for row in rows}
+    for title in additional_titles or ():
+        name = title.removesuffix(" Outfits")
+        if name not in existing_names:
+            expanded_rows.append((None, name))
+    return expanded_rows
 
 
 def save_outfit_images(
     conn: sqlite3.Connection | sqlite3.Cursor,
     *,
+    additional_titles: list[str] | None = None,
     wiki_client: Any,
     progress_bar: Any,
     img_label: Any,
@@ -184,6 +208,7 @@ def save_outfit_images(
         results = conn.execute(query.get_sql())
     except sqlite3.Error:
         results = []
+    results = add_additional_outfit_names(list(results), additional_titles)
     if not results:
         return
 
@@ -219,7 +244,8 @@ def save_outfit_images(
                 failed.append(image.file_name)
                 continue
             article_id, addons, sex = image_info[image.file_name]
-            conn.execute(insert_query.get_sql(), (article_id, addons, sex, image_bytes))
+            if article_id is not None:
+                conn.execute(insert_query.get_sql(), (article_id, addons, sex, image_bytes))
         save_cache_info(table, cache_info)
     if failed:
         echo(f"{Style.RESET_ALL}\tCould not fetch {len(failed):,} images.{Style.RESET_ALL}")
@@ -235,6 +261,7 @@ def fetch_images(
     *,
     categories: dict[str, Any],
     enabled_categories: set[str],
+    additional_titles: dict[str, list[str]] | None = None,
     wiki_client: Any,
     progress_bar: Any,
     img_label: Any,
@@ -242,6 +269,7 @@ def fetch_images(
     echo: Any,
 ) -> None:
     """Fetch all images for enabled categories and always load map floors."""
+    additional_titles = additional_titles or {}
     with conn:
         for key, category in categories.items():
             if key not in enabled_categories or category.no_images:
@@ -250,6 +278,7 @@ def fetch_images(
                 conn,
                 key,
                 category,
+                additional_titles=additional_titles.get(key),
                 wiki_client=wiki_client,
                 progress_bar=progress_bar,
                 img_label=img_label,
@@ -259,6 +288,7 @@ def fetch_images(
         if "outfits" in enabled_categories:
             save_outfit_images(
                 conn,
+                additional_titles=additional_titles.get("outfits"),
                 wiki_client=wiki_client,
                 progress_bar=progress_bar,
                 img_label=img_label,

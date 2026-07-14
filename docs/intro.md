@@ -37,6 +37,7 @@ It accepts the following parameters:
 - `-i`/`--skip-images` Option to skip fetching and saving images.
 - `-o`/ `--db-name` The name of the generated database file. `tibiawiki.db` by default.
 - `-d`/ `--skip-deprecated` Option to skip deprecated articles when parsing.
+- `-I`/`--include-deprecated-images` Fetch and save images for deprecated articles even when they are skipped with `--skip-deprecated`.
 - `-c`/ `--skip-category` Option to skip one or more categories (repeatable), using internal category keys such as `achievements`, `items`, `creatures`, `houses`, or `charms`.
 
 If skipping a category would break a hard dependency for another category, the dependent category is skipped automatically and a warning is shown.

@@ -208,6 +208,7 @@ def _run_images(conn: sqlite3.Connection, _data_store: dict[str, Any], enabled_c
         conn,
         categories=CATEGORIES,
         enabled_categories=enabled_categories,
+        additional_titles=_data_store.get("deprecated_image_titles", {}),
         wiki_client=wiki_client,
         progress_bar=progress_bar,
         img_label=img_label,
@@ -341,6 +342,7 @@ def generate(
     conn: sqlite3.Connection,
     skip_images: bool = False,
     skip_deprecated: bool = False,
+    include_deprecated_images: bool = False,
     skip_categories: tuple[str, ...] = (),
     parsing_errors_file: str | None = None,
 ) -> None:
@@ -365,11 +367,23 @@ def generate(
     else:
         deprecated = set()
 
+    deprecated_image_titles: dict[str, list[str]] = {}
+
     for key, category in CATEGORIES.items():
         if key not in enabled_categories:
             continue
-        excluded_titles = deprecated if not category.include_deprecated else None
-        data_store[key] = fetch_category_entries(category.name, excluded_titles)
+        excludes_deprecated = skip_deprecated and not category.include_deprecated
+        category_has_images = not category.no_images or key == "outfits"
+        if include_deprecated_images and not skip_images and excludes_deprecated and category_has_images:
+            entries = fetch_category_entries(category.name)
+            data_store[key] = [entry for entry in entries if entry.title not in deprecated]
+            deprecated_image_titles[key] = [entry.title for entry in entries if entry.title in deprecated]
+        else:
+            excluded_titles = deprecated if excludes_deprecated else None
+            data_store[key] = fetch_category_entries(category.name, excluded_titles)
+
+    if deprecated_image_titles:
+        data_store["deprecated_image_titles"] = deprecated_image_titles
 
     parsing_errors_path = Path(parsing_errors_file) if parsing_errors_file else None
     if parsing_errors_path:
