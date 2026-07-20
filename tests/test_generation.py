@@ -286,12 +286,15 @@ class TestGenerationOrchestration(unittest.TestCase):
         timestamp = datetime.datetime.fromisoformat("2024-01-01T00:00:00+00:00")
         active = WikiEntry(article_id=1, title="Amber Axe", timestamp=timestamp)
         deprecated = WikiEntry(article_id=2, title="Old Axe", timestamp=timestamp)
+        unavailable = WikiEntry(article_id=3, title="Unavailable Axe", timestamp=timestamp)
         captured_data_store = {}
 
         def fetch_entries(category: str, _exclude_titles: set[str] | None = None) -> list[WikiEntry]:
             if category == "Deprecated":
                 return [deprecated]
-            return [active, deprecated]
+            if category == "Unavailable":
+                return [unavailable]
+            return [active, deprecated, unavailable]
 
         post_tasks = (
             generation_module.PostTask(
@@ -319,7 +322,10 @@ class TestGenerationOrchestration(unittest.TestCase):
             )
 
         self.assertEqual([active], captured_data_store["items"])
-        self.assertEqual({"items": ["Old Axe"]}, captured_data_store["deprecated_image_titles"])
+        self.assertEqual(
+            {"items": ["Old Axe", "Unavailable Axe"]},
+            captured_data_store["deprecated_image_titles"],
+        )
 
     def test_generate_loot_statistics_early_return_without_maps(self):
         wiki_client = Mock()

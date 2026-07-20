@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Fix NPC offers with thousand separators not being parsed properly (e.g. NPC Coco)
+- Also consider `Category:Unavailable` when skipping deprecated articles.
 
 ## 8.2.0 (2026-07-14)
 

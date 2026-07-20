@@ -363,7 +363,11 @@ def generate(
     data_store: dict[str, Any] = {}
 
     if skip_deprecated:
-        deprecated = {entry.title for entry in fetch_category_entries("Deprecated")}
+        deprecated = {
+            entry.title
+            for category in ("Deprecated", "Unavailable")
+            for entry in fetch_category_entries(category)
+        }
     else:
         deprecated = set()
 
