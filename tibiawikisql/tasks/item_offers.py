@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     import sqlite3
 
 lua = LuaRuntime()
-link_pattern = re.compile(r"(?P<price>\d+)?\s?\[\[([^]|]+)")
+link_pattern = re.compile(r"(?P<price>[\d,]+)?\s?\[\[([^]|]+)")
 
 
 def process_offer_list(
@@ -31,7 +31,7 @@ def process_offer_list(
             match = link_pattern.search(price)
             if match is None:
                 continue
-            price = int(match.group("price") or 1)
+            price = int((match.group("price") or "1").replace(",", ""))
             currency = match.group(2)
         item_name = data["item"]
         item_id = data_store["items_map"].get(item_name.lower())
@@ -104,4 +104,3 @@ def generate_item_offers(
         echo(f"{Fore.RED}Could not parse offers for {len(unknown_items):,} items.{Style.RESET_ALL}")
         echo(f"\t-> {Fore.RED}{f'{Style.RESET_ALL},{Fore.RED}'.join(unknown_items)}{Style.RESET_ALL}")
     echo(f"{Fore.GREEN}\tSaved {total_offers:,} NPC offers in {t.elapsed:.2f} seconds.")
-

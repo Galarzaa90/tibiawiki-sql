@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fix NPC offers with thousand separators not being parsed properly (e.g. NPC Coco)
+
 ## 8.2.0 (2026-07-14)
 
 - Add `-I`/`--include-deprecated-images` argument to download images from deprecated entities even when skipping them.
