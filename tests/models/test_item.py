@@ -52,6 +52,8 @@ class TestItemParser(unittest.TestCase):
         self.assertIsInstance(item, Item)
         self.assertIn("perfect_shot", item.attributes_dict)
         self.assertIn("perfect_shot_range", item.attributes_dict)
+        self.assertEqual("+2", item.attributes_dict["magic_level"])
+        self.assertEqual("+1", item.attributes_dict["magic_level_fire"])
 
     def test_item_parser_from_article_damage_reflection(self):
         article = Article(

@@ -116,7 +116,7 @@ class TestModels(unittest.TestCase):
                           content=load_resource("content_item_resist.txt"))
         item = models.Item.from_article(article)
         self.assertIsInstance(item, models.Item)
-        self.assertIn("energy%", item.attributes_dict)
+        self.assertIn("resistance_energy", item.attributes_dict)
         self.assertEqual(item.attributes_dict["magic"], "+3")
 
         dream_shroud_look_text = ("You see a dream shroud (Arm:12, magic level +3, protection energy +10%)."

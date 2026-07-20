@@ -4,6 +4,47 @@
 
 - Fix NPC offers with thousand separators not being parsed properly (e.g. NPC Coco)
 - Also consider `Category:Unavailable` when skipping deprecated articles.
+- Avoid creating duplicate `damage_reflection` item attributes.
+- Renamed many item attributes (`item_attribute`) for more clarity:
+  - `level` -> `required_level`
+  - `vocation` -> `required_vocation`
+  - `attack+` -> `attack_extra`
+  - `imbue_slots` -> `imbuement_slots`
+  - `hit%+` -> `hit_chance_extra`
+  - `magic` -> `magic_level`
+  - `magic_level` -> `required_magic_level`
+  - `critical_chance` -> `critical_hit_extra_chance`
+  - `critical%` -> `critical_hit_extra_damage`
+  - `hpleech_chance` -> `hp_leech_chance`
+  - `hpleech%` -> `hp_leech_amount`
+  - `manaleech_chance` -> `mana_leech_chance`
+  - `manaleech%` -> `mana_leech_amount`
+  - `fire_attack` -> `attack_fire`
+  - `energy_attack` -> `attack_energy`
+  - `ice_attack` -> `attack_ice`
+  - `earth_attack` -> `attack_earth`
+  - `death_attack` -> `attack_death`
+  - `physical%` -> `resistance_physical`
+  - `earth%` -> `resistance_earth`
+  - `fire%` -> `resistance_fire`
+  - `energy%` -> `resistance_energy`
+  - `ice%` -> `resistance_ice`
+  - `holy%` -> `resistance_holy`
+  - `death%` -> `resistance_death`
+  - `drowning%` -> `resistance_drowning`
+  - `death_magic_level` -> `magic_level_death`
+  - `earth_magic_level` -> `magic_level_earth`
+  - `energy_magic_level` -> `magic_level_energy`
+  - `fire_magic_level` -> `magic_level_fire`
+  - `healing_magic_level` -> `magic_level_healing`
+  - `holy_magic_level` -> `magic_level_holy`
+  - `ice_magic_level` -> `magic_level_ice`
+- Parse additional item attributes:
+  - `hit_chance`
+  - `mantra`
+  - `base_power`
+  - `wrappable`
+  - `cooldown`
 
 ## 8.2.0 (2026-07-14)
 

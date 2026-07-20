@@ -24,10 +24,18 @@ from tibiawikisql.schema import (
     QuestRewardTable,
 )
 
-ELEMENTAL_RESISTANCES = ["physical%", "earth%", "fire%", "energy%", "ice%", "holy%", "death%", "drowning%"]
+ELEMENTAL_RESISTANCES = ["physical", "earth", "fire", "energy", "ice", "holy", "death", "drowning"]
 
 SKILL_ATTRIBUTES_MAPPING = {
     "magic": "magic level {0}",
+    "magic_level": "magic level {0}",
+    "magic_level_death": "death magic level {0}",
+    "magic_level_earth": "earth magic level {0}",
+    "magic_level_energy": "energy magic level {0}",
+    "magic_level_fire": "fire magic level {0}",
+    "magic_level_healing": "healing magic level {0}",
+    "magic_level_holy": "holy magic level {0}",
+    "magic_level_ice": "ice magic level {0}",
     "axe": "axe fighting {0}",
     "sword": "sword fighting {0}",
     "club": "club fighting {0}",
@@ -175,9 +183,9 @@ class Item(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=ItemTa
         resistances = {}
         attributes = self.attributes_dict
         for element in ELEMENTAL_RESISTANCES:
-            value = attributes.get(element)
+            value = attributes.get(f"resistance_{element}")
             if value is not None:
-                resistances[element[:-1]] = int(value)
+                resistances[element] = int(value)
         return dict(sorted(resistances.items(), key=lambda t: t[1], reverse=True))
 
     @property

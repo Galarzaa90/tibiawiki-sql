@@ -48,38 +48,39 @@ class ItemParser(BaseParser):
     }
 
     item_attributes: ClassVar = {
-        "level": "levelrequired",
-        "vocation": "vocrequired",
+        "required_level": "levelrequired",
+        "required_vocation": "vocrequired",
         "attack": "attack",
+        "attack_extra": "atk_mod",
         "defense": "defense",
         "defense_modifier": "defensemod",
         "armor": "armor",
         "hands": "hands",
-        "imbue_slots": "imbueslots",
+        "imbuement_slots": "imbueslots",
         "imbuements": "imbuements",
-        "attack+": "atk_mod",
-        "hit%+": "hit_mod",
+        "hit_chance": "hit_chance",
+        "hit_chance_extra": "hit_mod",
         "range": "range",
         "damage_type": "damagetype",
         "damage_range": "damagerange",
         "mana_cost": "manacost",
-        "magic_level": "mlrequired",
+        "required_magic_level": "mlrequired",
         "words": "words",
-        "critical_chance": "crithit_ch",
-        "critical%": "critextra_dmg",
-        "hpleech_chance": "hpleech_ch",
-        "hpleech%": "hpleech_am",
-        "manaleech_chance": "manaleech_ch",
-        "manaleech%": "manaleech_am",
+        "critical_hit_extra_chance": "crithit_ch",
+        "critical_hit_extra_damage": "critextra_dmg",
+        "hp_leech_chance": "hpleech_ch",
+        "hp_leech_amount": "hpleech_am",
+        "mana_leech_chance": "manaleech_ch",
+        "mana_leech_amount": "manaleech_am",
         "volume": "volume",
         "charges": "charges",
         "food_time": "regenseconds",
         "duration": "duration",
-        "fire_attack": "fire_attack",
-        "energy_attack": "energy_attack",
-        "ice_attack": "ice_attack",
-        "earth_attack": "earth_attack",
-        "death_attack": "death_attack",
+        "attack_fire": "fire_attack",
+        "attack_energy": "energy_attack",
+        "attack_ice": "ice_attack",
+        "attack_earth": "earth_attack",
+        "attack_death": "death_attack",
         "weapon_type": "weapontype",
         "destructible": "destructible",
         "holds_liquid": "holdsliquid",
@@ -98,6 +99,10 @@ class ItemParser(BaseParser):
         "is_rotatable": "rotatable",
         "augments": "augments",
         "elemental_bond": "elementalbond",
+        "mantra": "mantra",
+        "base_power": "basepower",
+        "cooldown": "cooldown",
+        "wrappable": "wrappable",
     }
 
     @classmethod
@@ -125,7 +130,6 @@ class ItemParser(BaseParser):
         attribs = raw_attributes["attrib"].split(",")
         for attr in attribs:
             attr = attr.strip()
-            m = re.search(r"([\s\w]+)\s([+\-\d]+)", attr)
             if "perfect shot" in attr.lower():
                 numbers = re.findall(r"(\d+)", attr)
                 if len(numbers) == 2:
@@ -136,10 +140,9 @@ class ItemParser(BaseParser):
                     continue
             if "damage reflection" in attr.lower():
                 value = parse_integer(attr)
-                attributes.append(ItemAttribute(name="damage_reflection", value=str(value)))
-            if "damage reflection" in attr.lower():
-                value = parse_integer(attr)
-                attributes.append(ItemAttribute(name="damage_reflection", value=str(value)))
+                attributes.append(
+                    ItemAttribute(name="damage_reflection", value=str(value))
+                )
             if "magic shield capacity" in attr.lower():
                 numbers = re.findall(r"(\d+)", attr)
                 if len(numbers) == 2:
@@ -148,8 +151,24 @@ class ItemParser(BaseParser):
                         ItemAttribute(name="magic_shield_capacity%", value=f"{numbers[1]}%"),
                     ])
                     continue
+            magic_level = re.fullmatch(
+                r"(?:(.+?)\s+)?magic level\s+([+\-]?\d+)", attr, re.IGNORECASE
+            )
+            if magic_level:
+                prefix = magic_level.group(1)
+                attribute = "magic_level"
+                if prefix:
+                    normalized_prefix = prefix.strip().lower().replace(" ", "_")
+                    attribute = f"magic_level_{normalized_prefix}"
+                attributes.append(
+                    ItemAttribute(name=attribute, value=magic_level.group(2))
+                )
+                continue
+            m = re.search(r"([\s\w]+)\s([+\-\d]+)", attr)
             if m:
-                attribute = m.group(1).replace("fighting", "").replace("level", "").strip().replace(" ", "_").lower()
+                attribute = (
+                    m.group(1).lower().replace("fighting", "").strip().replace(" ", "_")
+                )
                 value = m.group(2)
                 attributes.append(ItemAttribute(name=attribute.lower(), value=value))
             if "regeneration" in attr:
@@ -167,7 +186,8 @@ class ItemParser(BaseParser):
             m = re.search(r"([a-zA-Z0-9_ ]+) +(-?\+?\d+)%", element)
             if not m:
                 continue
-            attribute = m.group(1) + "%"
+            element = m.group(1).strip().lower().replace(" ", "_")
+            attribute = f"resistance_{element}"
             try:
                 value = int(m.group(2))
             except ValueError:
