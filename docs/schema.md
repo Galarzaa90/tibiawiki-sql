@@ -133,7 +133,7 @@ The generated database has the following tables.
 | hitpoints           | `INTEGER`             | The number of hitpoints the creature has. May be `NULL` if unknown.                                                                     |
 | experience          | `INTEGER`             | The number of experience the creature yields . May be `NULL` if unknown.                                                                |
 | armor               | `INTEGER`             | The armor value of the creature. May be `NULL` if unknown.                                                                              |
-| mitigation          | `INTEGER`             | The creature's mitigation value.                                                                                                        |
+| mitigation          | `REAL`                | The creature's mitigation value.                                                                                                        |
 | speed               | `INTEGER`             | The speed value of the creature. May be `NULL` if unknown.                                                                              |
 | creature_class      | `TEXT`                | The class this creature belongs to (e.g. `Demons`, `Humanoids`, `Mammals`).                                                             |
 | type_primary        | `TEXT`                | The type this creature belongs to (e.g. `Archdemons`, `Dwarves`, `Apes`).                                                               |

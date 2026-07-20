@@ -50,7 +50,7 @@ class CreatureTable(Table):
     hitpoints = Column(Integer)
     experience = Column(Integer)
     armor = Column(Integer)
-    mitigation = Column(Integer)
+    mitigation = Column(Real)
     speed = Column(Integer)
     creature_class = Column(Text, index=True)
     type_primary = Column(Text, index=True)

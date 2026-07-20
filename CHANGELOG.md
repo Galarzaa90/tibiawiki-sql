@@ -3,8 +3,8 @@
 ## Unreleased
 
 - Fix NPC offers with thousand separators not being parsed properly (e.g. NPC Coco)
+- `Creature.mitigation` is now a float.
 - Also consider `Category:Unavailable` when skipping deprecated articles.
-- Avoid creating duplicate `damage_reflection` item attributes.
 - Renamed many item attributes (`item_attribute`) for more clarity:
   - `level` -> `required_level`
   - `vocation` -> `required_vocation`

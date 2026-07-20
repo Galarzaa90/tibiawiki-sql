@@ -219,7 +219,7 @@ class CreatureParser(BaseParser):
         "hitpoints": AttributeParser.optional("hp", parse_integer),
         "experience": AttributeParser.optional("exp", parse_integer),
         "armor": AttributeParser.optional("armor", parse_integer),
-        "mitigation": AttributeParser.optional("mitigation", parse_integer),
+        "mitigation": AttributeParser.optional("mitigation", parse_float),
         "speed": AttributeParser.optional("speed", parse_integer),
         "runs_at": AttributeParser.optional("runsat", parse_integer),
         "summon_cost": AttributeParser.optional("summon", parse_integer),
@@ -281,4 +281,3 @@ class CreatureParser(BaseParser):
             if max_damage:
                 row["max_damage"] = CreatureMaxDamage(**max_damage)
         return row
-

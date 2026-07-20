@@ -180,7 +180,7 @@ class Creature(WikiEntry, WithStatus, WithVersion, WithImage, RowModel, table=Cr
     """Experience points yielded by the creature. Might be `None` if unknown."""
     armor: int | None
     """The creature's armor value."""
-    mitigation: int | None
+    mitigation: float | None
     """The creature's mitigation value."""
     speed: int | None
     """The creature's speed value."""

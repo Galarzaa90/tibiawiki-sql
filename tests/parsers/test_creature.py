@@ -1,9 +1,14 @@
 import unittest
 
-from tibiawikisql.parsers.creature import parse_abilities, parse_maximum_damage
+from tibiawikisql.parsers.creature import CreatureParser, parse_abilities, parse_maximum_damage
 
 
 class TestCreatureParser(unittest.TestCase):
+
+    def test_parse_mitigation_as_float(self):
+        mitigation_parser = CreatureParser.attribute_map["mitigation"]
+
+        self.assertEqual(1.5, mitigation_parser({"mitigation": "1.5"}))
 
     def test_parse_abilities_with_template(self):
         ability_content = ("{{Ability List|{{Melee|0-500}}|{{Ability|Great Fireball|150-250|fire|scene="
