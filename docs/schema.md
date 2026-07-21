@@ -104,18 +104,20 @@ The generated database has the following tables.
 
 ### charm
 
-| Column     | Type                  | Description                                                   |
-| ---------- | --------------------- | ------------------------------------------------------------- |
-| article_id | `INTEGER` / `PRIMARY` | The id of the article containing this charm.                  |
-| title      | `TEXT`                | The title of the article containing this charn.               |
-| name       | `TEXT`                | The name of the charm.                                        |
-| type       | `TEXT`                | The type of the charm: `Offensive`, `Defensive` or `Passive`. |
-| effect     | `TEXT`                | The effect of this charm.                                     |
-| cost       | `INTEGER`             | The number of charm points needed to unlock.                  |
-| image      | `BLOB`                | The charm's image bytes.                                      |
-| version    | `TEXT`                | Client version this charm was implemented in.                 |
-| status     | `TEXT`                | The status of the charm in game.                              |
-| timestamp  | `TIMESTAMP`           | Unix timestamp of the article's last edit.                    |
+|    Column    |         Type          |                          Description                          |
+| ------------ | --------------------- | ------------------------------------------------------------- |
+| article_id   | `INTEGER` / `PRIMARY` | The id of the article containing this charm.                  |
+| title        | `TEXT`                | The title of the article containing this charn.               |
+| name         | `TEXT`                | The name of the charm.                                        |
+| type         | `TEXT`                | The type of the charm: `Offensive`, `Defensive` or `Passive`. |
+| effect       | `TEXT`                | The effect of this charm.                                     |
+| cost_level_1 | `INTEGER`             | The charm points needed to unlock level 1.                    |
+| cost_level_2 | `INTEGER`             | The charm points needed to unlock level 2.                    |
+| cost_level_3 | `INTEGER`             | The charm points needed to unlock level 3.                    |
+| image        | `BLOB`                | The charm's image bytes.                                      |
+| version      | `TEXT`                | Client version this charm was implemented in.                 |
+| status       | `TEXT`                | The status of the charm in game.                              |
+| timestamp    | `TIMESTAMP`           | Unix timestamp of the article's last edit.                    |
 
 
 

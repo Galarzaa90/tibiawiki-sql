@@ -12,5 +12,9 @@ class Charm(WikiEntry, WithStatus, WithVersion, WithImage, RowModel, table=Charm
     """The type of the charm."""
     effect: str
     """The charm's description."""
-    cost: int
-    """The number of charm points needed to unlock."""
+    cost_level_1: int
+    """The charm points needed to unlock level 1."""
+    cost_level_2: int
+    """The charm points needed to unlock level 2."""
+    cost_level_3: int
+    """The charm points needed to unlock level 3."""

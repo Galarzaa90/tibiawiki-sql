@@ -283,8 +283,10 @@ class TestModels(unittest.TestCase):
                           content=load_resource("content_charm.txt"))
         charm = models.Charm.from_article(article)
         self.assertIsInstance(charm, models.Charm)
-        self.assertEqual(900, charm.cost)
-        self.assertEqual("Offensive", charm.type)
+        self.assertEqual(360, charm.cost_level_1)
+        self.assertEqual(540, charm.cost_level_2)
+        self.assertEqual(1800, charm.cost_level_3)
+        self.assertEqual("Major", charm.type)
         self.assertIsInstance(charm.effect, str)
         self.assertEqual("11.50.6055", charm.version)
 
@@ -293,6 +295,7 @@ class TestModels(unittest.TestCase):
 
         self.assertIsInstance(db_charm, models.Charm)
         self.assertEqual(db_charm.name, charm.name)
+        self.assertEqual(db_charm.cost_level_3, charm.cost_level_3)
 
     def test_outfit(self):
         article = Article(1, "Barbarian Outfits", timestamp="2018-08-20T04:33:15Z",
