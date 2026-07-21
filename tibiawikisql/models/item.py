@@ -213,16 +213,16 @@ class Item(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=ItemTa
         separator = " and " if self.item_class != "Runes" else ", "
         vocation = "players"
         verb = "wielded properly" if self.item_class != "Runes" else "used"
-        if "vocation" in attributes:
-            vocation = separator.join(attributes["vocation"].split("+"))
+        if "required_vocation" in attributes:
+            vocation = separator.join(attributes["required_vocation"].split("+"))
         if "without" in vocation:
             vocation = "players without vocations"
-        if "level" in attributes or vocation != "players":
+        if "required_level" in attributes or vocation != "players":
             look_text.append(f" It can only be {verb} by {vocation}")
-            if "level" in attributes:
-                look_text.append(f" of level {attributes['level']}")
-                if "magic_level" in attributes and attributes["magic_level"] != "0":
-                    look_text.append(f" and magic level {attributes['magic_level']}")
+            if "required_level" in attributes:
+                look_text.append(f" of level {attributes['required_level']}")
+                if "required_magic_level" in attributes and attributes["required_magic_level"] != "0":
+                    look_text.append(f" and magic level {attributes['required_magic_level']}")
                 look_text.append(" or higher")
             look_text.append(".")
 
@@ -247,19 +247,19 @@ class Item(WikiEntry, WithVersion, WithStatus, WithImage, RowModel, table=ItemTa
     def _parse_combat_attributes(attributes: dict[str, str], attributes_rep: list[str]) -> None:
         if "range" in attributes:
             attributes_rep.append(f"Range: {attributes['range']}")
-        if "attack+" in attributes:
-            attributes_rep.append(f"Atk+{attributes['attack+']}")
-        if "hit%+" in attributes:
-            attributes_rep.append(f"Hit%+{attributes['hit%+']}")
+        if "attack_extra" in attributes:
+            attributes_rep.append(f"Atk+{attributes['attack_extra']}")
+        if "hit_chance_extra" in attributes:
+            attributes_rep.append(f"Hit%+{attributes['hit_chance_extra']}")
 
         if "attack" in attributes:
-            elements = ["fire_attack", "earth_attack", "ice_attack", "energy_attack"]
+            elements = ["attack_fire", "attack_earth", "attack_ice", "attack_energy", "attack_death"]
             attacks = {}
             physical_attack = int(attributes["attack"])
             for element in elements:
-                value = attributes.pop(element, None)
+                value = attributes.get(element)
                 if value:
-                    attacks[element[:-7]] = int(value)
+                    attacks[element.removeprefix("attack_")] = int(value)
             attack = f"Atk:{physical_attack}"
             if attacks:
                 attack += " physical + "
