@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="zensical-0.0.50">
+      <meta name="generator" content="zensical-0.0.51">
     
     
       
@@ -6176,21 +6176,21 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/models/item.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-274">274</a></span>
-<span class="normal"><a href="#__codelineno-0-275">275</a></span>
-<span class="normal"><a href="#__codelineno-0-276">276</a></span>
-<span class="normal"><a href="#__codelineno-0-277">277</a></span>
-<span class="normal"><a href="#__codelineno-0-278">278</a></span>
-<span class="normal"><a href="#__codelineno-0-279">279</a></span>
-<span class="normal"><a href="#__codelineno-0-280">280</a></span>
-<span class="normal"><a href="#__codelineno-0-281">281</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-274" name="__codelineno-0-274"></a><span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-275" name="__codelineno-0-275"></a>    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
-<a id="__codelineno-0-276" name="__codelineno-0-276"></a>    <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
-<a id="__codelineno-0-277" name="__codelineno-0-277"></a>        <span class="n">ItemAttributeTable</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="o">**</span><span class="n">attribute</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
-<a id="__codelineno-0-278" name="__codelineno-0-278"></a>    <span class="k">for</span> <span class="n">sound</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sounds</span><span class="p">:</span>
-<a id="__codelineno-0-279" name="__codelineno-0-279"></a>        <span class="n">ItemSoundTable</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">sound</span><span class="p">)</span>
-<a id="__codelineno-0-280" name="__codelineno-0-280"></a>    <span class="k">for</span> <span class="n">offer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">store_offers</span><span class="p">:</span>
-<a id="__codelineno-0-281" name="__codelineno-0-281"></a>        <span class="n">ItemStoreOfferTable</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="o">**</span><span class="n">offer</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-282">282</a></span>
+<span class="normal"><a href="#__codelineno-0-283">283</a></span>
+<span class="normal"><a href="#__codelineno-0-284">284</a></span>
+<span class="normal"><a href="#__codelineno-0-285">285</a></span>
+<span class="normal"><a href="#__codelineno-0-286">286</a></span>
+<span class="normal"><a href="#__codelineno-0-287">287</a></span>
+<span class="normal"><a href="#__codelineno-0-288">288</a></span>
+<span class="normal"><a href="#__codelineno-0-289">289</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-282" name="__codelineno-0-282"></a><span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-283" name="__codelineno-0-283"></a>    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+<a id="__codelineno-0-284" name="__codelineno-0-284"></a>    <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+<a id="__codelineno-0-285" name="__codelineno-0-285"></a>        <span class="n">ItemAttributeTable</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="o">**</span><span class="n">attribute</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
+<a id="__codelineno-0-286" name="__codelineno-0-286"></a>    <span class="k">for</span> <span class="n">sound</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sounds</span><span class="p">:</span>
+<a id="__codelineno-0-287" name="__codelineno-0-287"></a>        <span class="n">ItemSoundTable</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">sound</span><span class="p">)</span>
+<a id="__codelineno-0-288" name="__codelineno-0-288"></a>    <span class="k">for</span> <span class="n">offer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">store_offers</span><span class="p">:</span>
+<a id="__codelineno-0-289" name="__codelineno-0-289"></a>        <span class="n">ItemStoreOfferTable</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span> <span class="o">**</span><span class="n">offer</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -6344,15 +6344,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/models/item.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-283">283</a></span>
-<span class="normal"><a href="#__codelineno-0-284">284</a></span>
-<span class="normal"><a href="#__codelineno-0-285">285</a></span>
-<span class="normal"><a href="#__codelineno-0-286">286</a></span>
-<span class="normal"><a href="#__codelineno-0-287">287</a></span>
-<span class="normal"><a href="#__codelineno-0-288">288</a></span>
-<span class="normal"><a href="#__codelineno-0-289">289</a></span>
-<span class="normal"><a href="#__codelineno-0-290">290</a></span>
-<span class="normal"><a href="#__codelineno-0-291">291</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-291">291</a></span>
 <span class="normal"><a href="#__codelineno-0-292">292</a></span>
 <span class="normal"><a href="#__codelineno-0-293">293</a></span>
 <span class="normal"><a href="#__codelineno-0-294">294</a></span>
@@ -6390,53 +6382,61 @@
 <span class="normal"><a href="#__codelineno-0-326">326</a></span>
 <span class="normal"><a href="#__codelineno-0-327">327</a></span>
 <span class="normal"><a href="#__codelineno-0-328">328</a></span>
-<span class="normal"><a href="#__codelineno-0-329">329</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-283" name="__codelineno-0-283"></a><span class="nd">@classmethod</span>
-<a id="__codelineno-0-284" name="__codelineno-0-284"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_one_by_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">use_like</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-285" name="__codelineno-0-285"></a>    <span class="n">item</span><span class="p">:</span> <span class="n">Self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_one_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">use_like</span><span class="p">)</span>
-<a id="__codelineno-0-286" name="__codelineno-0-286"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
-<a id="__codelineno-0-287" name="__codelineno-0-287"></a>        <span class="k">return</span> <span class="kc">None</span>
-<a id="__codelineno-0-288" name="__codelineno-0-288"></a>    <span class="n">attributes</span> <span class="o">=</span> <span class="n">ItemAttributeTable</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
-<a id="__codelineno-0-289" name="__codelineno-0-289"></a>    <span class="n">item</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="o">**</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">]</span>
-<a id="__codelineno-0-290" name="__codelineno-0-290"></a>
-<a id="__codelineno-0-291" name="__codelineno-0-291"></a>    <span class="n">dropped_by</span> <span class="o">=</span> <span class="n">CreatureDropTable</span><span class="o">.</span><span class="n">get_by_item_id</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
-<a id="__codelineno-0-292" name="__codelineno-0-292"></a>    <span class="n">item</span><span class="o">.</span><span class="n">dropped_by</span> <span class="o">=</span> <span class="p">[</span><span class="n">ItemDrop</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">dropped_by</span><span class="p">]</span>
-<a id="__codelineno-0-293" name="__codelineno-0-293"></a>
-<a id="__codelineno-0-294" name="__codelineno-0-294"></a>    <span class="n">store_offers</span> <span class="o">=</span> <span class="n">ItemStoreOfferTable</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
-<a id="__codelineno-0-295" name="__codelineno-0-295"></a>    <span class="n">item</span><span class="o">.</span><span class="n">store_offers</span> <span class="o">=</span> <span class="p">[</span><span class="n">ItemStoreOffer</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">store_offers</span><span class="p">]</span>
-<a id="__codelineno-0-296" name="__codelineno-0-296"></a>
-<a id="__codelineno-0-297" name="__codelineno-0-297"></a>    <span class="n">perks</span> <span class="o">=</span> <span class="n">ItemProficiencyPerkTable</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span>
-<a id="__codelineno-0-298" name="__codelineno-0-298"></a>        <span class="n">conn</span><span class="p">,</span>
-<a id="__codelineno-0-299" name="__codelineno-0-299"></a>        <span class="s2">&quot;item_id&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-300" name="__codelineno-0-300"></a>        <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span>
-<a id="__codelineno-0-301" name="__codelineno-0-301"></a>        <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;proficiency_level&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-302" name="__codelineno-0-302"></a>    <span class="p">)</span>
-<a id="__codelineno-0-303" name="__codelineno-0-303"></a>    <span class="n">item</span><span class="o">.</span><span class="n">proficiency_perks</span> <span class="o">=</span> <span class="p">[</span><span class="n">ItemProficiencyPerk</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">perks</span><span class="p">]</span>
+<span class="normal"><a href="#__codelineno-0-329">329</a></span>
+<span class="normal"><a href="#__codelineno-0-330">330</a></span>
+<span class="normal"><a href="#__codelineno-0-331">331</a></span>
+<span class="normal"><a href="#__codelineno-0-332">332</a></span>
+<span class="normal"><a href="#__codelineno-0-333">333</a></span>
+<span class="normal"><a href="#__codelineno-0-334">334</a></span>
+<span class="normal"><a href="#__codelineno-0-335">335</a></span>
+<span class="normal"><a href="#__codelineno-0-336">336</a></span>
+<span class="normal"><a href="#__codelineno-0-337">337</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-291" name="__codelineno-0-291"></a><span class="nd">@classmethod</span>
+<a id="__codelineno-0-292" name="__codelineno-0-292"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_one_by_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">use_like</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-293" name="__codelineno-0-293"></a>    <span class="n">item</span><span class="p">:</span> <span class="n">Self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_one_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">use_like</span><span class="p">)</span>
+<a id="__codelineno-0-294" name="__codelineno-0-294"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
+<a id="__codelineno-0-295" name="__codelineno-0-295"></a>        <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-0-296" name="__codelineno-0-296"></a>    <span class="n">attributes</span> <span class="o">=</span> <span class="n">ItemAttributeTable</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+<a id="__codelineno-0-297" name="__codelineno-0-297"></a>    <span class="n">item</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ItemAttribute</span><span class="p">(</span><span class="o">**</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">]</span>
+<a id="__codelineno-0-298" name="__codelineno-0-298"></a>
+<a id="__codelineno-0-299" name="__codelineno-0-299"></a>    <span class="n">dropped_by</span> <span class="o">=</span> <span class="n">CreatureDropTable</span><span class="o">.</span><span class="n">get_by_item_id</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+<a id="__codelineno-0-300" name="__codelineno-0-300"></a>    <span class="n">item</span><span class="o">.</span><span class="n">dropped_by</span> <span class="o">=</span> <span class="p">[</span><span class="n">ItemDrop</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">dropped_by</span><span class="p">]</span>
+<a id="__codelineno-0-301" name="__codelineno-0-301"></a>
+<a id="__codelineno-0-302" name="__codelineno-0-302"></a>    <span class="n">store_offers</span> <span class="o">=</span> <span class="n">ItemStoreOfferTable</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+<a id="__codelineno-0-303" name="__codelineno-0-303"></a>    <span class="n">item</span><span class="o">.</span><span class="n">store_offers</span> <span class="o">=</span> <span class="p">[</span><span class="n">ItemStoreOffer</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">store_offers</span><span class="p">]</span>
 <a id="__codelineno-0-304" name="__codelineno-0-304"></a>
-<a id="__codelineno-0-305" name="__codelineno-0-305"></a>    <span class="n">sounds</span> <span class="o">=</span> <span class="n">ItemSoundTable</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
-<a id="__codelineno-0-306" name="__codelineno-0-306"></a>    <span class="n">item</span><span class="o">.</span><span class="n">sounds</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">sounds</span><span class="p">]</span>
-<a id="__codelineno-0-307" name="__codelineno-0-307"></a>
-<a id="__codelineno-0-308" name="__codelineno-0-308"></a>    <span class="n">item</span><span class="o">.</span><span class="n">bought_by</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-309" name="__codelineno-0-309"></a>        <span class="n">ItemOffer</span><span class="p">(</span>
-<a id="__codelineno-0-310" name="__codelineno-0-310"></a>            <span class="n">npc_id</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;npc_id&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-311" name="__codelineno-0-311"></a>            <span class="n">npc_title</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;npc_title&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-312" name="__codelineno-0-312"></a>            <span class="n">currency_id</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;currency_id&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-313" name="__codelineno-0-313"></a>            <span class="n">currency_title</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;currency_title&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-314" name="__codelineno-0-314"></a>            <span class="n">value</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-315" name="__codelineno-0-315"></a>        <span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">NpcBuyingTable</span><span class="o">.</span><span class="n">get_by_item_id</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
-<a id="__codelineno-0-316" name="__codelineno-0-316"></a>    <span class="p">]</span>
-<a id="__codelineno-0-317" name="__codelineno-0-317"></a>    <span class="n">item</span><span class="o">.</span><span class="n">sold_by</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-0-318" name="__codelineno-0-318"></a>        <span class="n">ItemOffer</span><span class="p">(</span>
-<a id="__codelineno-0-319" name="__codelineno-0-319"></a>            <span class="n">npc_id</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;npc_id&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-320" name="__codelineno-0-320"></a>            <span class="n">npc_title</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;npc_title&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-321" name="__codelineno-0-321"></a>            <span class="n">currency_id</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;currency_id&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-322" name="__codelineno-0-322"></a>            <span class="n">currency_title</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;currency_title&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-323" name="__codelineno-0-323"></a>            <span class="n">value</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
-<a id="__codelineno-0-324" name="__codelineno-0-324"></a>        <span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">NpcSellingTable</span><span class="o">.</span><span class="n">get_by_item_id</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
-<a id="__codelineno-0-325" name="__codelineno-0-325"></a>    <span class="p">]</span>
-<a id="__codelineno-0-326" name="__codelineno-0-326"></a>
-<a id="__codelineno-0-327" name="__codelineno-0-327"></a>    <span class="n">awarded_in</span> <span class="o">=</span> <span class="n">QuestRewardTable</span><span class="o">.</span><span class="n">get_list_by_item_id</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
-<a id="__codelineno-0-328" name="__codelineno-0-328"></a>    <span class="n">item</span><span class="o">.</span><span class="n">awarded_in</span> <span class="o">=</span> <span class="p">[</span><span class="n">ItemQuestReward</span><span class="p">(</span><span class="o">**</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">awarded_in</span><span class="p">]</span>
-<a id="__codelineno-0-329" name="__codelineno-0-329"></a>    <span class="k">return</span> <span class="n">item</span>
+<a id="__codelineno-0-305" name="__codelineno-0-305"></a>    <span class="n">perks</span> <span class="o">=</span> <span class="n">ItemProficiencyPerkTable</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span>
+<a id="__codelineno-0-306" name="__codelineno-0-306"></a>        <span class="n">conn</span><span class="p">,</span>
+<a id="__codelineno-0-307" name="__codelineno-0-307"></a>        <span class="s2">&quot;item_id&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-308" name="__codelineno-0-308"></a>        <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">,</span>
+<a id="__codelineno-0-309" name="__codelineno-0-309"></a>        <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;proficiency_level&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-310" name="__codelineno-0-310"></a>    <span class="p">)</span>
+<a id="__codelineno-0-311" name="__codelineno-0-311"></a>    <span class="n">item</span><span class="o">.</span><span class="n">proficiency_perks</span> <span class="o">=</span> <span class="p">[</span><span class="n">ItemProficiencyPerk</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">perks</span><span class="p">]</span>
+<a id="__codelineno-0-312" name="__codelineno-0-312"></a>
+<a id="__codelineno-0-313" name="__codelineno-0-313"></a>    <span class="n">sounds</span> <span class="o">=</span> <span class="n">ItemSoundTable</span><span class="o">.</span><span class="n">get_list_by_field</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="s2">&quot;item_id&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+<a id="__codelineno-0-314" name="__codelineno-0-314"></a>    <span class="n">item</span><span class="o">.</span><span class="n">sounds</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">sounds</span><span class="p">]</span>
+<a id="__codelineno-0-315" name="__codelineno-0-315"></a>
+<a id="__codelineno-0-316" name="__codelineno-0-316"></a>    <span class="n">item</span><span class="o">.</span><span class="n">bought_by</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-0-317" name="__codelineno-0-317"></a>        <span class="n">ItemOffer</span><span class="p">(</span>
+<a id="__codelineno-0-318" name="__codelineno-0-318"></a>            <span class="n">npc_id</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;npc_id&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-319" name="__codelineno-0-319"></a>            <span class="n">npc_title</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;npc_title&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-320" name="__codelineno-0-320"></a>            <span class="n">currency_id</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;currency_id&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-321" name="__codelineno-0-321"></a>            <span class="n">currency_title</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;currency_title&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-322" name="__codelineno-0-322"></a>            <span class="n">value</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-323" name="__codelineno-0-323"></a>        <span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">NpcBuyingTable</span><span class="o">.</span><span class="n">get_by_item_id</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+<a id="__codelineno-0-324" name="__codelineno-0-324"></a>    <span class="p">]</span>
+<a id="__codelineno-0-325" name="__codelineno-0-325"></a>    <span class="n">item</span><span class="o">.</span><span class="n">sold_by</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-0-326" name="__codelineno-0-326"></a>        <span class="n">ItemOffer</span><span class="p">(</span>
+<a id="__codelineno-0-327" name="__codelineno-0-327"></a>            <span class="n">npc_id</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;npc_id&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-328" name="__codelineno-0-328"></a>            <span class="n">npc_title</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;npc_title&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-329" name="__codelineno-0-329"></a>            <span class="n">currency_id</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;currency_id&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-330" name="__codelineno-0-330"></a>            <span class="n">currency_title</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;currency_title&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-331" name="__codelineno-0-331"></a>            <span class="n">value</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-332" name="__codelineno-0-332"></a>        <span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">NpcSellingTable</span><span class="o">.</span><span class="n">get_by_item_id</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+<a id="__codelineno-0-333" name="__codelineno-0-333"></a>    <span class="p">]</span>
+<a id="__codelineno-0-334" name="__codelineno-0-334"></a>
+<a id="__codelineno-0-335" name="__codelineno-0-335"></a>    <span class="n">awarded_in</span> <span class="o">=</span> <span class="n">QuestRewardTable</span><span class="o">.</span><span class="n">get_list_by_item_id</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+<a id="__codelineno-0-336" name="__codelineno-0-336"></a>    <span class="n">item</span><span class="o">.</span><span class="n">awarded_in</span> <span class="o">=</span> <span class="p">[</span><span class="n">ItemQuestReward</span><span class="p">(</span><span class="o">**</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">awarded_in</span><span class="p">]</span>
+<a id="__codelineno-0-337" name="__codelineno-0-337"></a>    <span class="k">return</span> <span class="n">item</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -7035,15 +7035,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/models/item.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-354">354</a></span>
-<span class="normal"><a href="#__codelineno-0-355">355</a></span>
-<span class="normal"><a href="#__codelineno-0-356">356</a></span>
-<span class="normal"><a href="#__codelineno-0-357">357</a></span>
-<span class="normal"><a href="#__codelineno-0-358">358</a></span>
-<span class="normal"><a href="#__codelineno-0-359">359</a></span>
-<span class="normal"><a href="#__codelineno-0-360">360</a></span>
-<span class="normal"><a href="#__codelineno-0-361">361</a></span>
-<span class="normal"><a href="#__codelineno-0-362">362</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-362">362</a></span>
 <span class="normal"><a href="#__codelineno-0-363">363</a></span>
 <span class="normal"><a href="#__codelineno-0-364">364</a></span>
 <span class="normal"><a href="#__codelineno-0-365">365</a></span>
@@ -7084,56 +7076,64 @@
 <span class="normal"><a href="#__codelineno-0-400">400</a></span>
 <span class="normal"><a href="#__codelineno-0-401">401</a></span>
 <span class="normal"><a href="#__codelineno-0-402">402</a></span>
-<span class="normal"><a href="#__codelineno-0-403">403</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-354" name="__codelineno-0-354"></a><span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-355" name="__codelineno-0-355"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-356" name="__codelineno-0-356"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
-<a id="__codelineno-0-357" name="__codelineno-0-357"></a>        <span class="k">return</span>
-<a id="__codelineno-0-358" name="__codelineno-0-358"></a>
-<a id="__codelineno-0-359" name="__codelineno-0-359"></a>    <span class="n">book_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__table__</span>
-<a id="__codelineno-0-360" name="__codelineno-0-360"></a>    <span class="n">item_table</span> <span class="o">=</span> <span class="n">ItemTable</span><span class="o">.</span><span class="n">__table__</span>
-<a id="__codelineno-0-361" name="__codelineno-0-361"></a>
-<a id="__codelineno-0-362" name="__codelineno-0-362"></a>    <span class="n">q</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-0-363" name="__codelineno-0-363"></a>        <span class="n">Query</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="n">book_table</span><span class="p">)</span>
-<a id="__codelineno-0-364" name="__codelineno-0-364"></a>        <span class="o">.</span><span class="n">columns</span><span class="p">(</span>
-<a id="__codelineno-0-365" name="__codelineno-0-365"></a>            <span class="s2">&quot;article_id&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-366" name="__codelineno-0-366"></a>            <span class="s2">&quot;title&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-367" name="__codelineno-0-367"></a>            <span class="s2">&quot;name&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-368" name="__codelineno-0-368"></a>            <span class="s2">&quot;book_type&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-369" name="__codelineno-0-369"></a>            <span class="s2">&quot;item_id&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-370" name="__codelineno-0-370"></a>            <span class="s2">&quot;location&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-371" name="__codelineno-0-371"></a>            <span class="s2">&quot;blurb&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-372" name="__codelineno-0-372"></a>            <span class="s2">&quot;author&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-373" name="__codelineno-0-373"></a>            <span class="s2">&quot;prev_book&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-374" name="__codelineno-0-374"></a>            <span class="s2">&quot;next_book&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-375" name="__codelineno-0-375"></a>            <span class="s2">&quot;text&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-376" name="__codelineno-0-376"></a>            <span class="s2">&quot;version&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-377" name="__codelineno-0-377"></a>            <span class="s2">&quot;status&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-378" name="__codelineno-0-378"></a>            <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-379" name="__codelineno-0-379"></a>        <span class="p">)</span>
-<a id="__codelineno-0-380" name="__codelineno-0-380"></a>        <span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-<a id="__codelineno-0-381" name="__codelineno-0-381"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:article_id&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-382" name="__codelineno-0-382"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:title&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-383" name="__codelineno-0-383"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:name&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-384" name="__codelineno-0-384"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:book_type&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-385" name="__codelineno-0-385"></a>            <span class="p">(</span>
-<a id="__codelineno-0-386" name="__codelineno-0-386"></a>                <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">item_table</span><span class="p">)</span>
-<a id="__codelineno-0-387" name="__codelineno-0-387"></a>                <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">item_table</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
-<a id="__codelineno-0-388" name="__codelineno-0-388"></a>                <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">item_table</span><span class="o">.</span><span class="n">title</span> <span class="o">==</span> <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:book_type&quot;</span><span class="p">))</span>
-<a id="__codelineno-0-389" name="__codelineno-0-389"></a>            <span class="p">),</span>
-<a id="__codelineno-0-390" name="__codelineno-0-390"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:location&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-391" name="__codelineno-0-391"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:blurb&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-392" name="__codelineno-0-392"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:author&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-393" name="__codelineno-0-393"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:prev_book&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-394" name="__codelineno-0-394"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:next_book&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-395" name="__codelineno-0-395"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:text&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-396" name="__codelineno-0-396"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:version&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-397" name="__codelineno-0-397"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:status&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-398" name="__codelineno-0-398"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:timestamp&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-399" name="__codelineno-0-399"></a>        <span class="p">)</span>
-<a id="__codelineno-0-400" name="__codelineno-0-400"></a>    <span class="p">)</span>
-<a id="__codelineno-0-401" name="__codelineno-0-401"></a>
-<a id="__codelineno-0-402" name="__codelineno-0-402"></a>    <span class="n">query_str</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">get_sql</span><span class="p">()</span>
-<a id="__codelineno-0-403" name="__codelineno-0-403"></a>    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">))</span>
+<span class="normal"><a href="#__codelineno-0-403">403</a></span>
+<span class="normal"><a href="#__codelineno-0-404">404</a></span>
+<span class="normal"><a href="#__codelineno-0-405">405</a></span>
+<span class="normal"><a href="#__codelineno-0-406">406</a></span>
+<span class="normal"><a href="#__codelineno-0-407">407</a></span>
+<span class="normal"><a href="#__codelineno-0-408">408</a></span>
+<span class="normal"><a href="#__codelineno-0-409">409</a></span>
+<span class="normal"><a href="#__codelineno-0-410">410</a></span>
+<span class="normal"><a href="#__codelineno-0-411">411</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-362" name="__codelineno-0-362"></a><span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-363" name="__codelineno-0-363"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-364" name="__codelineno-0-364"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+<a id="__codelineno-0-365" name="__codelineno-0-365"></a>        <span class="k">return</span>
+<a id="__codelineno-0-366" name="__codelineno-0-366"></a>
+<a id="__codelineno-0-367" name="__codelineno-0-367"></a>    <span class="n">book_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__table__</span>
+<a id="__codelineno-0-368" name="__codelineno-0-368"></a>    <span class="n">item_table</span> <span class="o">=</span> <span class="n">ItemTable</span><span class="o">.</span><span class="n">__table__</span>
+<a id="__codelineno-0-369" name="__codelineno-0-369"></a>
+<a id="__codelineno-0-370" name="__codelineno-0-370"></a>    <span class="n">q</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-371" name="__codelineno-0-371"></a>        <span class="n">Query</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="n">book_table</span><span class="p">)</span>
+<a id="__codelineno-0-372" name="__codelineno-0-372"></a>        <span class="o">.</span><span class="n">columns</span><span class="p">(</span>
+<a id="__codelineno-0-373" name="__codelineno-0-373"></a>            <span class="s2">&quot;article_id&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-374" name="__codelineno-0-374"></a>            <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-375" name="__codelineno-0-375"></a>            <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-376" name="__codelineno-0-376"></a>            <span class="s2">&quot;book_type&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-377" name="__codelineno-0-377"></a>            <span class="s2">&quot;item_id&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-378" name="__codelineno-0-378"></a>            <span class="s2">&quot;location&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-379" name="__codelineno-0-379"></a>            <span class="s2">&quot;blurb&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-380" name="__codelineno-0-380"></a>            <span class="s2">&quot;author&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-381" name="__codelineno-0-381"></a>            <span class="s2">&quot;prev_book&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-382" name="__codelineno-0-382"></a>            <span class="s2">&quot;next_book&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-383" name="__codelineno-0-383"></a>            <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-384" name="__codelineno-0-384"></a>            <span class="s2">&quot;version&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-385" name="__codelineno-0-385"></a>            <span class="s2">&quot;status&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-386" name="__codelineno-0-386"></a>            <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-387" name="__codelineno-0-387"></a>        <span class="p">)</span>
+<a id="__codelineno-0-388" name="__codelineno-0-388"></a>        <span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+<a id="__codelineno-0-389" name="__codelineno-0-389"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:article_id&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-390" name="__codelineno-0-390"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:title&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-391" name="__codelineno-0-391"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:name&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-392" name="__codelineno-0-392"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:book_type&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-393" name="__codelineno-0-393"></a>            <span class="p">(</span>
+<a id="__codelineno-0-394" name="__codelineno-0-394"></a>                <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">item_table</span><span class="p">)</span>
+<a id="__codelineno-0-395" name="__codelineno-0-395"></a>                <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">item_table</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+<a id="__codelineno-0-396" name="__codelineno-0-396"></a>                <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">item_table</span><span class="o">.</span><span class="n">title</span> <span class="o">==</span> <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:book_type&quot;</span><span class="p">))</span>
+<a id="__codelineno-0-397" name="__codelineno-0-397"></a>            <span class="p">),</span>
+<a id="__codelineno-0-398" name="__codelineno-0-398"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:location&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-399" name="__codelineno-0-399"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:blurb&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-400" name="__codelineno-0-400"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:author&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-401" name="__codelineno-0-401"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:prev_book&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-402" name="__codelineno-0-402"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:next_book&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-403" name="__codelineno-0-403"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:text&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-404" name="__codelineno-0-404"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:version&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-405" name="__codelineno-0-405"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:status&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-406" name="__codelineno-0-406"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:timestamp&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-407" name="__codelineno-0-407"></a>        <span class="p">)</span>
+<a id="__codelineno-0-408" name="__codelineno-0-408"></a>    <span class="p">)</span>
+<a id="__codelineno-0-409" name="__codelineno-0-409"></a>
+<a id="__codelineno-0-410" name="__codelineno-0-410"></a>    <span class="n">query_str</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">get_sql</span><span class="p">()</span>
+<a id="__codelineno-0-411" name="__codelineno-0-411"></a>    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -7649,15 +7649,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>tibiawikisql/models/item.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-424">424</a></span>
-<span class="normal"><a href="#__codelineno-0-425">425</a></span>
-<span class="normal"><a href="#__codelineno-0-426">426</a></span>
-<span class="normal"><a href="#__codelineno-0-427">427</a></span>
-<span class="normal"><a href="#__codelineno-0-428">428</a></span>
-<span class="normal"><a href="#__codelineno-0-429">429</a></span>
-<span class="normal"><a href="#__codelineno-0-430">430</a></span>
-<span class="normal"><a href="#__codelineno-0-431">431</a></span>
-<span class="normal"><a href="#__codelineno-0-432">432</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-432">432</a></span>
 <span class="normal"><a href="#__codelineno-0-433">433</a></span>
 <span class="normal"><a href="#__codelineno-0-434">434</a></span>
 <span class="normal"><a href="#__codelineno-0-435">435</a></span>
@@ -7694,52 +7686,60 @@
 <span class="normal"><a href="#__codelineno-0-466">466</a></span>
 <span class="normal"><a href="#__codelineno-0-467">467</a></span>
 <span class="normal"><a href="#__codelineno-0-468">468</a></span>
-<span class="normal"><a href="#__codelineno-0-469">469</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-424" name="__codelineno-0-424"></a><span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-425" name="__codelineno-0-425"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-426" name="__codelineno-0-426"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
-<a id="__codelineno-0-427" name="__codelineno-0-427"></a>        <span class="k">return</span>
-<a id="__codelineno-0-428" name="__codelineno-0-428"></a>
-<a id="__codelineno-0-429" name="__codelineno-0-429"></a>    <span class="n">key_table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
-<a id="__codelineno-0-430" name="__codelineno-0-430"></a>    <span class="n">item_table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">ItemTable</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
-<a id="__codelineno-0-431" name="__codelineno-0-431"></a>
-<a id="__codelineno-0-432" name="__codelineno-0-432"></a>    <span class="n">q</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-0-433" name="__codelineno-0-433"></a>        <span class="n">Query</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="n">key_table</span><span class="p">)</span>
-<a id="__codelineno-0-434" name="__codelineno-0-434"></a>        <span class="o">.</span><span class="n">columns</span><span class="p">(</span>
-<a id="__codelineno-0-435" name="__codelineno-0-435"></a>            <span class="s2">&quot;article_id&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-436" name="__codelineno-0-436"></a>            <span class="s2">&quot;title&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-437" name="__codelineno-0-437"></a>            <span class="s2">&quot;name&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-438" name="__codelineno-0-438"></a>            <span class="s2">&quot;number&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-439" name="__codelineno-0-439"></a>            <span class="s2">&quot;item_id&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-440" name="__codelineno-0-440"></a>            <span class="s2">&quot;material&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-441" name="__codelineno-0-441"></a>            <span class="s2">&quot;location&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-442" name="__codelineno-0-442"></a>            <span class="s2">&quot;notes&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-443" name="__codelineno-0-443"></a>            <span class="s2">&quot;origin&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-444" name="__codelineno-0-444"></a>            <span class="s2">&quot;version&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-445" name="__codelineno-0-445"></a>            <span class="s2">&quot;status&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-446" name="__codelineno-0-446"></a>            <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-447" name="__codelineno-0-447"></a>        <span class="p">)</span>
-<a id="__codelineno-0-448" name="__codelineno-0-448"></a>        <span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-<a id="__codelineno-0-449" name="__codelineno-0-449"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:article_id&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-450" name="__codelineno-0-450"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:title&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-451" name="__codelineno-0-451"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:name&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-452" name="__codelineno-0-452"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:number&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-453" name="__codelineno-0-453"></a>            <span class="p">(</span>
-<a id="__codelineno-0-454" name="__codelineno-0-454"></a>                <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">item_table</span><span class="p">)</span>
-<a id="__codelineno-0-455" name="__codelineno-0-455"></a>                <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">item_table</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
-<a id="__codelineno-0-456" name="__codelineno-0-456"></a>                <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">item_table</span><span class="o">.</span><span class="n">title</span> <span class="o">==</span> <span class="n">LiteralValue</span><span class="p">(</span><span class="s2">&quot;:material || &#39; Key&#39;&quot;</span><span class="p">))</span>
-<a id="__codelineno-0-457" name="__codelineno-0-457"></a>            <span class="p">),</span>
-<a id="__codelineno-0-458" name="__codelineno-0-458"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:material&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-459" name="__codelineno-0-459"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:location&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-460" name="__codelineno-0-460"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:notes&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-461" name="__codelineno-0-461"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:origin&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-462" name="__codelineno-0-462"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:version&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-463" name="__codelineno-0-463"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:status&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-464" name="__codelineno-0-464"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:timestamp&quot;</span><span class="p">),</span>
-<a id="__codelineno-0-465" name="__codelineno-0-465"></a>        <span class="p">)</span>
-<a id="__codelineno-0-466" name="__codelineno-0-466"></a>    <span class="p">)</span>
-<a id="__codelineno-0-467" name="__codelineno-0-467"></a>
-<a id="__codelineno-0-468" name="__codelineno-0-468"></a>    <span class="n">query_str</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">get_sql</span><span class="p">()</span>
-<a id="__codelineno-0-469" name="__codelineno-0-469"></a>    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">))</span>
+<span class="normal"><a href="#__codelineno-0-469">469</a></span>
+<span class="normal"><a href="#__codelineno-0-470">470</a></span>
+<span class="normal"><a href="#__codelineno-0-471">471</a></span>
+<span class="normal"><a href="#__codelineno-0-472">472</a></span>
+<span class="normal"><a href="#__codelineno-0-473">473</a></span>
+<span class="normal"><a href="#__codelineno-0-474">474</a></span>
+<span class="normal"><a href="#__codelineno-0-475">475</a></span>
+<span class="normal"><a href="#__codelineno-0-476">476</a></span>
+<span class="normal"><a href="#__codelineno-0-477">477</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-432" name="__codelineno-0-432"></a><span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">:</span> <span class="n">Connection</span> <span class="o">|</span> <span class="n">Cursor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-433" name="__codelineno-0-433"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-434" name="__codelineno-0-434"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+<a id="__codelineno-0-435" name="__codelineno-0-435"></a>        <span class="k">return</span>
+<a id="__codelineno-0-436" name="__codelineno-0-436"></a>
+<a id="__codelineno-0-437" name="__codelineno-0-437"></a>    <span class="n">key_table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
+<a id="__codelineno-0-438" name="__codelineno-0-438"></a>    <span class="n">item_table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">ItemTable</span><span class="o">.</span><span class="n">__tablename__</span><span class="p">)</span>
+<a id="__codelineno-0-439" name="__codelineno-0-439"></a>
+<a id="__codelineno-0-440" name="__codelineno-0-440"></a>    <span class="n">q</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-441" name="__codelineno-0-441"></a>        <span class="n">Query</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="n">key_table</span><span class="p">)</span>
+<a id="__codelineno-0-442" name="__codelineno-0-442"></a>        <span class="o">.</span><span class="n">columns</span><span class="p">(</span>
+<a id="__codelineno-0-443" name="__codelineno-0-443"></a>            <span class="s2">&quot;article_id&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-444" name="__codelineno-0-444"></a>            <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-445" name="__codelineno-0-445"></a>            <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-446" name="__codelineno-0-446"></a>            <span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-447" name="__codelineno-0-447"></a>            <span class="s2">&quot;item_id&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-448" name="__codelineno-0-448"></a>            <span class="s2">&quot;material&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-449" name="__codelineno-0-449"></a>            <span class="s2">&quot;location&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-450" name="__codelineno-0-450"></a>            <span class="s2">&quot;notes&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-451" name="__codelineno-0-451"></a>            <span class="s2">&quot;origin&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-452" name="__codelineno-0-452"></a>            <span class="s2">&quot;version&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-453" name="__codelineno-0-453"></a>            <span class="s2">&quot;status&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-454" name="__codelineno-0-454"></a>            <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-455" name="__codelineno-0-455"></a>        <span class="p">)</span>
+<a id="__codelineno-0-456" name="__codelineno-0-456"></a>        <span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+<a id="__codelineno-0-457" name="__codelineno-0-457"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:article_id&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-458" name="__codelineno-0-458"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:title&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-459" name="__codelineno-0-459"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:name&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-460" name="__codelineno-0-460"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:number&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-461" name="__codelineno-0-461"></a>            <span class="p">(</span>
+<a id="__codelineno-0-462" name="__codelineno-0-462"></a>                <span class="n">Query</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">item_table</span><span class="p">)</span>
+<a id="__codelineno-0-463" name="__codelineno-0-463"></a>                <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">item_table</span><span class="o">.</span><span class="n">article_id</span><span class="p">)</span>
+<a id="__codelineno-0-464" name="__codelineno-0-464"></a>                <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">item_table</span><span class="o">.</span><span class="n">title</span> <span class="o">==</span> <span class="n">LiteralValue</span><span class="p">(</span><span class="s2">&quot;:material || &#39; Key&#39;&quot;</span><span class="p">))</span>
+<a id="__codelineno-0-465" name="__codelineno-0-465"></a>            <span class="p">),</span>
+<a id="__codelineno-0-466" name="__codelineno-0-466"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:material&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-467" name="__codelineno-0-467"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:location&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-468" name="__codelineno-0-468"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:notes&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-469" name="__codelineno-0-469"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:origin&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-470" name="__codelineno-0-470"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:version&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-471" name="__codelineno-0-471"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:status&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-472" name="__codelineno-0-472"></a>            <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;:timestamp&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-473" name="__codelineno-0-473"></a>        <span class="p">)</span>
+<a id="__codelineno-0-474" name="__codelineno-0-474"></a>    <span class="p">)</span>
+<a id="__codelineno-0-475" name="__codelineno-0-475"></a>
+<a id="__codelineno-0-476" name="__codelineno-0-476"></a>    <span class="n">query_str</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">get_sql</span><span class="p">()</span>
+<a id="__codelineno-0-477" name="__codelineno-0-477"></a>    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
