@@ -1583,6 +1583,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#tibiawikisql.parsers.charm.parse_cost_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        parse_cost_level
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3226,6 +3237,17 @@
         
       </ul>
     </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tibiawikisql.parsers.charm.parse_cost_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        parse_cost_level
+      </span>
+    </span>
+  </a>
   
 </li>
         
@@ -6580,6 +6602,27 @@ It is called by <code>parse_article</code>.</p>
 
 
 
+<p><span class="doc-section-title">Functions:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-function&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;parse_cost_level&lt;/span&gt;" href="./#tibiawikisql.parsers.charm.parse_cost_level">parse_cost_level</a></code></td>
+              <td>
+                <div class="doc-md-description">
+                  <p>Extract a charm cost for a one-based level from the wiki value.</p>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+
 
 
 
@@ -6808,7 +6851,7 @@ It is called by <code>parse_article</code>.</p>
   </span>
 
 <a href="#tibiawikisql.parsers.charm.CharmParser.attribute_map" class="headerlink" title="Permanent link">&para;</a></h5>
-<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><span title="x">x</span></span><span class="o">.</span><span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s1">&#39;actualname&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n"><span title="x">x</span></span><span class="o">.</span><span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)),</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><span title="x">x</span></span><span class="o">.</span><span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)),</span> <span class="s1">&#39;effect&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-function&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;clean_links&lt;/span&gt;" href="../utils/#tibiawikisql.utils.clean_links">clean_links</a></span><span class="p">(</span><span class="n"><span title="x">x</span></span><span class="o">.</span><span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s1">&#39;effect&#39;</span><span class="p">))),</span> <span class="s1">&#39;cost&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-function&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;parse_integer&lt;/span&gt;" href="../utils/#tibiawikisql.utils.parse_integer">parse_integer</a></span><span class="p">(</span><span class="n"><span title="x">x</span></span><span class="o">.</span><span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s1">&#39;cost&#39;</span><span class="p">))),</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><span title="x">x</span></span><span class="o">.</span><span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s1">&#39;implemented&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">),</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="o">.</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;status&lt;/span&gt;
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">attribute_map</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.ClassVar" href="https://docs.python.org/3/library/typing.html#typing.ClassVar">ClassVar</a></span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><span title="x">x</span></span><span class="o">.</span><span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s1">&#39;actualname&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n"><span title="x">x</span></span><span class="o">.</span><span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)),</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><span title="x">x</span></span><span class="o">.</span><span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)),</span> <span class="s1">&#39;effect&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-function&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;clean_links&lt;/span&gt;" href="../utils/#tibiawikisql.utils.clean_links">clean_links</a></span><span class="p">(</span><span class="n"><span title="x">x</span></span><span class="o">.</span><span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s1">&#39;effect&#39;</span><span class="p">))),</span> <span class="s1">&#39;cost_level_1&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-function&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;parse_cost_level&lt;/span&gt;" href="./#tibiawikisql.parsers.charm.parse_cost_level">parse_cost_level</a></span><span class="p">(</span><span class="n"><span title="x">x</span></span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">)),</span> <span class="s1">&#39;cost_level_2&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-function&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;parse_cost_level&lt;/span&gt;" href="./#tibiawikisql.parsers.charm.parse_cost_level">parse_cost_level</a></span><span class="p">(</span><span class="n"><span title="x">x</span></span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)),</span> <span class="s1">&#39;cost_level_3&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-function&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;parse_cost_level&lt;/span&gt;" href="./#tibiawikisql.parsers.charm.parse_cost_level">parse_cost_level</a></span><span class="p">(</span><span class="n"><span title="x">x</span></span><span class="p">[</span><span class="s1">&#39;cost&#39;</span><span class="p">],</span> <span class="mi">3</span><span class="p">)),</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n"><span title="x">x</span></span><span class="o">.</span><span class="n"><span title="x.get">get</span></span><span class="p">(</span><span class="s1">&#39;implemented&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">),</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AttributeParser&lt;/span&gt;" href="./#tibiawikisql.parsers.base.AttributeParser">AttributeParser</a></span><span class="o">.</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;status&lt;/span&gt;
 
 
   &lt;span class=&quot;doc doc-labels&quot;&gt;
@@ -6835,6 +6878,43 @@ It is called by <code>parse_article</code>.</p>
 
 </div>
 
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="tibiawikisql.parsers.charm.parse_cost_level" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">parse_cost_level</span>
+
+
+<a href="#tibiawikisql.parsers.charm.parse_cost_level" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">parse_cost_level</span><span class="p">(</span><span class="n">cost</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Extract a charm cost for a one-based level from the wiki value.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>tibiawikisql/parsers/charm.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_cost_level</span><span class="p">(</span><span class="n">cost</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a charm cost for a one-based level from the wiki value.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a>    <span class="n">costs</span> <span class="o">=</span> <span class="n">cost</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Expected three charm costs, got </span><span class="si">{</span><span class="n">cost</span><span class="si">!r}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16"></a>    <span class="k">return</span> <span class="n">parse_integer</span><span class="p">(</span><span class="n">costs</span><span class="p">[</span><span class="n">level</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
 
 
 
