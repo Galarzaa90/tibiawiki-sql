@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 9.0.0 (2026-07-22)
 
 - Fix NPC offers with thousand separators not being parsed properly (e.g. NPC Coco)
 - `Creature.mitigation` is now a float.
