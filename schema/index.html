@@ -2468,17 +2468,17 @@
 <tr>
 <td>version</td>
 <td><code>TEXT</code></td>
-<td>The client version this key was introduced to the game.</td>
+<td>The client version this book was introduced to the game.</td>
 </tr>
 <tr>
 <td>status</td>
 <td><code>TEXT</code></td>
-<td>The status of the key in game.</td>
+<td>The status of the book in game.</td>
 </tr>
 <tr>
 <td>timestamp</td>
 <td><code>TIMESTAMP</code></td>
-<td>Unix timestamp of the article's last edit.</td>
+<td>ISO 8601 timestamp of the article's last edit.</td>
 </tr>
 </tbody>
 </table>
@@ -2500,7 +2500,7 @@
 <tr>
 <td>title</td>
 <td><code>TEXT</code></td>
-<td>The title of the article containing this charn.</td>
+<td>The title of the article containing this charm.</td>
 </tr>
 <tr>
 <td>name</td>
@@ -2550,7 +2550,7 @@
 <tr>
 <td>timestamp</td>
 <td><code>TIMESTAMP</code></td>
-<td>Unix timestamp of the article's last edit.</td>
+<td>ISO 8601 timestamp of the article's last edit.</td>
 </tr>
 </tbody>
 </table>
@@ -2792,7 +2792,7 @@
 <tr>
 <td>timestamp</td>
 <td><code>TIMESTAMP</code></td>
-<td>Unix timestamp of the article's last edit.</td>
+<td>ISO 8601 timestamp of the article's last edit.</td>
 </tr>
 </tbody>
 </table>
@@ -2814,7 +2814,7 @@
 <tr>
 <td>name</td>
 <td><code>TEXT</code></td>
-<td>The name of th ability</td>
+<td>The name of the ability.</td>
 </tr>
 <tr>
 <td>effect</td>
@@ -2933,7 +2933,7 @@
 <tr>
 <td>summons</td>
 <td><code>INTEGER</code></td>
-<td>The maximum summons damage dealt by the creature. This is not coounted as part of the total. If it is unknown, but the creature does deal damage, it will be -1.</td>
+<td>The maximum summons damage dealt by the creature. This is not counted as part of the total. If it is unknown, but the creature does deal damage, it will be -1.</td>
 </tr>
 <tr>
 <td>total</td>
@@ -3166,7 +3166,7 @@
 <tr>
 <td>timestamp</td>
 <td><code>TIMESTAMP</code></td>
-<td>Unix timestamp of the article's last edit.</td>
+<td>ISO 8601 timestamp of the article's last edit.</td>
 </tr>
 </tbody>
 </table>
@@ -3238,7 +3238,7 @@
 <tr>
 <td>timestamp</td>
 <td><code>TIMESTAMP</code></td>
-<td>Unix timestamp of the article's last edit.</td>
+<td>ISO 8601 timestamp of the article's last edit.</td>
 </tr>
 </tbody>
 </table>
@@ -3397,7 +3397,7 @@
 <tr>
 <td>timestamp</td>
 <td><code>TIMESTAMP</code></td>
-<td>Unix timestamp of the article's last edit.</td>
+<td>ISO 8601 timestamp of the article's last edit.</td>
 </tr>
 </tbody>
 </table>
@@ -3496,7 +3496,7 @@
 <tr>
 <td>timestamp</td>
 <td><code>TIMESTAMP</code></td>
-<td>Unix timestamp of the article's last edit.</td>
+<td>ISO 8601 timestamp of the article's last edit.</td>
 </tr>
 </tbody>
 </table>
@@ -3609,7 +3609,7 @@
 <tr>
 <td>image</td>
 <td><code>BLOB</code></td>
-<td>The map’s image for that that floor, in PNG format.</td>
+<td>The map’s image for that floor, in PNG format.</td>
 </tr>
 </tbody>
 </table>
@@ -3691,7 +3691,7 @@
 <tr>
 <td>timestamp</td>
 <td><code>TIMESTAMP</code></td>
-<td>Unix timestamp of the article's last edit.</td>
+<td>ISO 8601 timestamp of the article's last edit.</td>
 </tr>
 </tbody>
 </table>
@@ -3743,7 +3743,7 @@
 <tr>
 <td>version</td>
 <td><code>TEXT</code></td>
-<td>The client version this NPC was introduced to to the game.</td>
+<td>The client version this NPC was introduced to the game.</td>
 </tr>
 <tr>
 <td>x</td>
@@ -3773,7 +3773,7 @@
 <tr>
 <td>timestamp</td>
 <td><code>TIMESTAMP</code></td>
-<td>Unix timestamp of the article's last edit.</td>
+<td>ISO 8601 timestamp of the article's last edit.</td>
 </tr>
 </tbody>
 </table>
@@ -3980,12 +3980,12 @@
 <tr>
 <td>status</td>
 <td><code>TEXT</code></td>
-<td>The status of the iytfut in game.</td>
+<td>The status of the outfit in game.</td>
 </tr>
 <tr>
 <td>timestamp</td>
 <td><code>TIMESTAMP</code></td>
-<td>Unix timestamp of the UTC time of the last edit made to this article.</td>
+<td>ISO 8601 timestamp of the article's last edit.</td>
 </tr>
 </tbody>
 </table>
@@ -4136,7 +4136,7 @@
 <tr>
 <td>timestamp</td>
 <td><code>TIMESTAMP</code></td>
-<td>Unix timestamp of the UTC time of the last edit made to this article.</td>
+<td>ISO 8601 timestamp of the article's last edit.</td>
 </tr>
 </tbody>
 </table>
@@ -4239,12 +4239,12 @@
 <tr>
 <td>article_id</td>
 <td><code>INTEGER</code> / <code>PRIMARY</code></td>
-<td>The id of the article containing this achievement.</td>
+<td>The id of the article containing this spell.</td>
 </tr>
 <tr>
 <td>title</td>
 <td><code>TEXT</code></td>
-<td>The title of the article containing the achievement.</td>
+<td>The title of the article containing the spell.</td>
 </tr>
 <tr>
 <td>name</td>
@@ -4285,6 +4285,11 @@
 <td>element</td>
 <td><code>TEXT</code></td>
 <td>The type of damage this spell deals, if applicable.</td>
+</tr>
+<tr>
+<td>base_power</td>
+<td><code>INTEGER</code></td>
+<td>The spell's base power, if applicable.</td>
 </tr>
 <tr>
 <td>level</td>
@@ -4379,7 +4384,7 @@
 <tr>
 <td>version</td>
 <td><code>TEXT</code></td>
-<td>Client version where this quest was implemented.</td>
+<td>Client version where this spell was implemented.</td>
 </tr>
 <tr>
 <td>status</td>
@@ -4389,7 +4394,7 @@
 <tr>
 <td>timestamp</td>
 <td><code>TIMESTAMP</code></td>
-<td>Unix timestamp of the article's last edit.</td>
+<td>ISO 8601 timestamp of the article's last edit.</td>
 </tr>
 </tbody>
 </table>
@@ -4481,7 +4486,7 @@
 <tr>
 <td>timestamp</td>
 <td><code>TIMESTAMP</code></td>
-<td>Unix timestamp of the article's last edit.</td>
+<td>ISO 8601 timestamp of the article's last edit.</td>
 </tr>
 </tbody>
 </table>
