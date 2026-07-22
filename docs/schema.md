@@ -9,7 +9,7 @@ The generated database has the following tables.
 ## Tables
 
 
-| Table                   | Description                                                                         |
+|          Table          |                                     Description                                     |
 | ----------------------- | ----------------------------------------------------------------------------------- |
 | `achievement`           | Contains information for all achievements.                                          |
 | `book`                  | Contains information about books.                                                   |
@@ -64,7 +64,7 @@ The generated database has the following tables.
 
 ### achievement
 
-| Column         | Type                  | Description                                          |
+|     Column     |         Type          |                     Description                      |
 | -------------- | --------------------- | ---------------------------------------------------- |
 | article_id     | `INTEGER` / `PRIMARY` | The ID of the article containing this achievement.   |
 | title          | `TEXT`                | The title of the article containing the achievement. |
@@ -83,7 +83,7 @@ The generated database has the following tables.
 
 
 ### book
-| Column     | Type                  | Description                                                       |
+|   Column   |         Type          |                            Description                            |
 | ---------- | --------------------- | ----------------------------------------------------------------- |
 | article_id | `INTEGER` / `PRIMARY` | The id of the article containing this book.                       |
 | title      | `TEXT`                | The title of the article containing this book.                    |
@@ -96,9 +96,9 @@ The generated database has the following tables.
 | prev_book  | `TEXT`                | If the book is part of a series, the book that precedes this one. |
 | next_book  | `TEXT`                | If the book is part of a series, the book that follows this one.  |
 | text       | `TEXT`                | The content of the book.                                          |
-| version    | `TEXT`                | The client version this key was introduced to the game.           |
-| status     | `TEXT`                | The status of the key in game.                                    |
-| timestamp  | `TIMESTAMP`           | Unix timestamp of the article's last edit.                        |
+| version    | `TEXT`                | The client version this book was introduced to the game.          |
+| status     | `TEXT`                | The status of the book in game.                                   |
+| timestamp  | `TIMESTAMP`           | ISO 8601 timestamp of the article's last edit.                    |
 
 
 
@@ -107,7 +107,7 @@ The generated database has the following tables.
 |    Column    |         Type          |                          Description                          |
 | ------------ | --------------------- | ------------------------------------------------------------- |
 | article_id   | `INTEGER` / `PRIMARY` | The id of the article containing this charm.                  |
-| title        | `TEXT`                | The title of the article containing this charn.               |
+| title        | `TEXT`                | The title of the article containing this charm.               |
 | name         | `TEXT`                | The name of the charm.                                        |
 | type         | `TEXT`                | The type of the charm: `Offensive`, `Defensive` or `Passive`. |
 | effect       | `TEXT`                | The effect of this charm.                                     |
@@ -117,14 +117,14 @@ The generated database has the following tables.
 | image        | `BLOB`                | The charm's image bytes.                                      |
 | version      | `TEXT`                | Client version this charm was implemented in.                 |
 | status       | `TEXT`                | The status of the charm in game.                              |
-| timestamp    | `TIMESTAMP`           | Unix timestamp of the article's last edit.                    |
+| timestamp    | `TIMESTAMP`           | ISO 8601 timestamp of the article's last edit.                |
 
 
 
 
 ### creature
 
-| Column              | Type                  | Description                                                                                                                             |
+|       Column        |         Type          |                                                               Description                                                               |
 | ------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | article_id          | `INTEGER` / `PRIMARY` | The id of the article containing this creature.                                                                                         |
 | title               | `TEXT`                | The title of the article containing this creature.                                                                                      |
@@ -171,17 +171,17 @@ The generated database has the following tables.
 | version             | `TEXT`                | The client version this creature was introduced to the game.                                                                            |
 | image               | `BLOB`                | The creature’s image bytes.                                                                                                             |
 | status              | `TEXT`                | The status of the creature in game.                                                                                                     |
-| timestamp           | `TIMESTAMP`           | Unix timestamp of the article's last edit.                                                                                              |
+| timestamp           | `TIMESTAMP`           | ISO 8601 timestamp of the article's last edit.                                                                                          |
 
 
 
 
 ### creature_ability
 
-| Column      | Type      | Description                                                                               |
+|   Column    |   Type    |                                        Description                                        |
 | ----------- | --------- | ----------------------------------------------------------------------------------------- |
 | creature_id | `INTEGER` | The id of the creature that does this ability.                                            |
-| name        | `TEXT`    | The name of th ability                                                                    |
+| name        | `TEXT`    | The name of the ability.                                                                  |
 | effect      | `TEXT`    | The effect of the ability, or the damage range.                                           |
 | element     | `TEXT`    | The element of damage type of the ability. This could also be a status condition instead. |
 
@@ -189,7 +189,7 @@ The generated database has the following tables.
 
 ### creature_drop
 
-| Column      | Type      | Description                                            |
+|   Column    |   Type    |                      Description                       |
 | ----------- | --------- | ------------------------------------------------------ |
 | creature_id | `INTEGER` | The id of the creature that yields this drop.          |
 | item_id     | `INTEGER` | The id of the dropped item.                            |
@@ -202,7 +202,7 @@ The generated database has the following tables.
 
 ### creature_max_damage
 
-| Column      | Type      | Description                                                                                                                                                                                                                                |
+|   Column    |   Type    |                                                                                                                Description                                                                                                                 |
 | ----------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | creature_id | `INTEGER` | The id of the creature this max damage belongs to.                                                                                                                                                                                         |
 | physical    | `INTEGER` | The maximum physical damage dealt by the creature. If it is unknown, but the creature does deal damage, it will be -1.                                                                                                                     |
@@ -215,14 +215,14 @@ The generated database has the following tables.
 | drown       | `INTEGER` | The maximum drown damage dealt by the creature. If it is unknown, but the creature does deal damage, it will be -1.                                                                                                                        |
 | lifedrain   | `INTEGER` | The maximum life drain damage dealt by the creature. If it is unknown, but the creature does deal damage, it will be -1.                                                                                                                   |
 | manadrain   | `INTEGER` | The maximum mana drain damage dealt by the creature. The maximum manadrain damage dealt by the creature. This is not counted as part of the total. If it is unknown, but the creature does deal damage, it will be -1.                     |
-| summons     | `INTEGER` | The maximum summons damage dealt by the creature. This is not coounted as part of the total. If it is unknown, but the creature does deal damage, it will be -1.                                                                           |
+| summons     | `INTEGER` | The maximum summons damage dealt by the creature. This is not counted as part of the total. If it is unknown, but the creature does deal damage, it will be -1.                                                                            |
 | total       | `INTEGER` | The maximum damage the creature can deal in a single turn. In most cases, this is simply the sum of the other damages, but in some cases, the amount may be different. If it is unknown, but the creature does deal damage, it will be -1. |
 
 
 
 ### creature_sound
 
-| Column      | Type      | Description                                  |
+|   Column    |   Type    |                 Description                  |
 | ----------- | --------- | -------------------------------------------- |
 | creature_id | `INTEGER` | The id of the creature that does this sound. |
 | content     | `TEXT`    | The content of the sound.                    |
@@ -231,7 +231,7 @@ The generated database has the following tables.
 
 ### database_info
 
-| Column | Type               | Description                      |
+| Column |        Type        |           Description            |
 | ------ | ------------------ | -------------------------------- |
 | key    | `TEXT` / `PRIMARY` | The name of the value contained. |
 | value  | `TEXT`             | The value of the property.       |
@@ -240,7 +240,7 @@ The generated database has the following tables.
 
 ### game_update
 
-| Column         | Type                  | Description                                                 |
+|     Column     |         Type          |                         Description                         |
 | -------------- | --------------------- | ----------------------------------------------------------- |
 | article_id     | `INTEGER` / `PRIMARY` | The id of the article containing this update.               |
 | title          | `TEXT`                | The title of the article containing the update.             |
@@ -260,7 +260,7 @@ The generated database has the following tables.
 
 ### house
 
-| Column       | Type                  | Description                                     |
+|    Column    |         Type          |                   Description                   |
 | ------------ | --------------------- | ----------------------------------------------- |
 | article_id   | `INTEGER` / `PRIMARY` | The id of the article containing this house.    |
 | house_id     | `INTEGER`             | The id of the house according to tibia.com.     |
@@ -280,13 +280,13 @@ The generated database has the following tables.
 | is_guildhall | `INTEGER`             | Whether this house is a guildhall or not.       |
 | version      | `TEXT`                | The client version this was implemented in.     |
 | status       | `TEXT`                | The status of the house in game.                |
-| timestamp    | `TIMESTAMP`           | Unix timestamp of the article's last edit.      |
+| timestamp    | `TIMESTAMP`           | ISO 8601 timestamp of the article's last edit.  |
 
 
 
 ### imbuement
 
-| Column     | Type                  | Description                                                   |
+|   Column   |         Type          |                          Description                          |
 | ---------- | --------------------- | ------------------------------------------------------------- |
 | article_id | `INTEGER` / `PRIMARY` | The id of the article containing this imbuement.              |
 | title      | `TEXT`                | The title of the article containing this imbuement.           |
@@ -299,13 +299,13 @@ The generated database has the following tables.
 | version    | `TEXT`                | The client version this imbuement was introduced to the game. |
 | image      | `BLOB`                | The imbuement’s image bytes.                                  |
 | status     | `TEXT`                | The status of the imbuement in game.                          |
-| timestamp  | `TIMESTAMP`           | Unix timestamp of the article's last edit.                    |
+| timestamp  | `TIMESTAMP`           | ISO 8601 timestamp of the article's last edit.                |
 
 
 
 ### imbuement_material
 
-| Column       | Type      | Description                                      |
+|    Column    |   Type    |                   Description                    |
 | ------------ | --------- | ------------------------------------------------ |
 | imbuement_id | `INTEGER` | The id of the imbuement this material belongs to |
 | item_id      | `INTEGER` | The id of the item material.                     |
@@ -315,7 +315,7 @@ The generated database has the following tables.
 
 ### item
 
-| Column         | Type                  | Description                                                         |
+|     Column     |         Type          |                             Description                             |
 | -------------- | --------------------- | ------------------------------------------------------------------- |
 | article_id     | `INTEGER` / `PRIMARY` | The id of the article containing this item.                         |
 | title          | `TEXT`                | The title of the article containing this item.                      |
@@ -340,13 +340,13 @@ The generated database has the following tables.
 | client_id      | `INTEGER`             | The client id of the item.                                          |
 | image          | `BLOB`                | The item’s image bytes.                                             |
 | status         | `TEXT`                | The status of the item in game.                                     |
-| timestamp      | `TIMESTAMP`           | Unix timestamp of the article's last edit.                          |
+| timestamp      | `TIMESTAMP`           | ISO 8601 timestamp of the article's last edit.                      |
 
 
 
 ### item_attribute
 
-| Column  | Type      | Description                                   |
+| Column  |   Type    |                  Description                  |
 | ------- | --------- | --------------------------------------------- |
 | item_id | `INTEGER` | The id of the item this attribute belongs to. |
 | name    | `TEXT`    | The name of the attribute.                    |
@@ -356,7 +356,7 @@ The generated database has the following tables.
 
 ### item_key
 
-| Column     | Type                  | Description                                                                        |
+|   Column   |         Type          |                                    Description                                     |
 | ---------- | --------------------- | ---------------------------------------------------------------------------------- |
 | article_id | `INTEGER` / `PRIMARY` | The id of the article containing this key.                                         |
 | title      | `TEXT`                | The title of the article containing this key.                                      |
@@ -369,13 +369,13 @@ The generated database has the following tables.
 | notes      | `TEXT`                | Where this key is used or other notes.                                             |
 | version    | `TEXT`                | The client version this key was introduced to the game.                            |
 | status     | `TEXT`                | The status of the key in game.                                                     |
-| timestamp  | `TIMESTAMP`           | Unix timestamp of the article's last edit.                                         |
+| timestamp  | `TIMESTAMP`           | ISO 8601 timestamp of the article's last edit.                                     |
 
 
 
 ### item_sound
 
-| Column  | Type      | Description                              |
+| Column  |   Type    |               Description                |
 | ------- | --------- | ---------------------------------------- |
 | item_id | `INTEGER` | The id of the item that does this sound. |
 | content | `TEXT`    | The content of the sound.                |
@@ -384,7 +384,7 @@ The generated database has the following tables.
 
 ### item_store_offer
 
-| Column   | Type      | Description                                      |
+|  Column  |   Type    |                   Description                    |
 | -------- | --------- | ------------------------------------------------ |
 | item_id  | `INTEGER` | The id of the item the offer is for              |
 | price    | `INTEGER` | The price of the item.                           |
@@ -395,7 +395,7 @@ The generated database has the following tables.
 
 ### item_proficiency_perk
 
-| Column            | Type      | Description                                               |
+|      Column       |   Type    |                        Description                        |
 | ----------------- | --------- | --------------------------------------------------------- |
 | item_id           | `INTEGER` | The id of the item this perk belongs to.                  |
 | proficiency_level | `INTEGER` | The weapon proficiency level where this perk is unlocked. |
@@ -406,17 +406,17 @@ The generated database has the following tables.
 
 ### map
 
-| Column | Type                  | Description                                         |
-| ------ | --------------------- | --------------------------------------------------- |
-| z      | `INTEGER` / `PRIMARY` | The floor’s level, where 7 is the ground floor.     |
-| image  | `BLOB`                | The map’s image for that that floor, in PNG format. |
+| Column |         Type          |                   Description                   |
+| ------ | --------------------- | ----------------------------------------------- |
+| z      | `INTEGER` / `PRIMARY` | The floor’s level, where 7 is the ground floor. |
+| image  | `BLOB`                | The map’s image for that floor, in PNG format.  |
 
 
 
 
 ### mount
 
-| Column        | Type                  | Description                                                     |
+|    Column     |         Type          |                           Description                           |
 | ------------- | --------------------- | --------------------------------------------------------------- |
 | article_id    | `INTEGER` / `PRIMARY` | The id of the article containing this mount.                    |
 | title         | `TEXT`                | The title of the article containing the mount.                  |
@@ -431,34 +431,34 @@ The generated database has the following tables.
 | version       | `TEXT`                | The client version where this mount was introduced to the game. |
 | image         | `BLOB`                | The mount's image bytes.                                        |
 | status        | `TEXT`                | The status of the mount in game.                                |
-| timestamp     | `TIMESTAMP`           | Unix timestamp of the article's last edit.                      |
+| timestamp     | `TIMESTAMP`           | ISO 8601 timestamp of the article's last edit.                  |
 
 
 
 ### npc
 
-| Column     | Type                  | Description                                                |
-| ---------- | --------------------- | ---------------------------------------------------------- |
-| article_id | `INTEGER` / `PRIMARY` | The id of the article containing this NPC.                 |
-| title      | `TEXT`                | The title of the article containing the NPC.               |
-| name       | `TEXT`                | The actual name of the NPC in-game.                        |
-| gender     | `TEXT`                | The gender of the NPC in-game.                             |
-| city       | `TEXT`                | City where the NPC is found.                               |
-| subarea    | `TEXT`                | A finer location of the NPC.                               |
-| location   | `TEXT`                | The location where the NPC is found.                       |
-| version    | `TEXT`                | The client version this NPC was introduced to to the game. |
-| x          | `INTEGER`             | The x position where the NPC is usually located.           |
-| y          | `INTEGER`             | The y position where the NPC is usually located.           |
-| z          | `INTEGER`             | The z position where the NPC is usually located.           |
-| image      | `BLOB`                | The NPC's image bytes.                                     |
-| status     | `TEXT`                | The status of the NPC in game.                             |
-| timestamp  | `TIMESTAMP`           | Unix timestamp of the article's last edit.                 |
+|   Column   |         Type          |                       Description                       |
+| ---------- | --------------------- | ------------------------------------------------------- |
+| article_id | `INTEGER` / `PRIMARY` | The id of the article containing this NPC.              |
+| title      | `TEXT`                | The title of the article containing the NPC.            |
+| name       | `TEXT`                | The actual name of the NPC in-game.                     |
+| gender     | `TEXT`                | The gender of the NPC in-game.                          |
+| city       | `TEXT`                | City where the NPC is found.                            |
+| subarea    | `TEXT`                | A finer location of the NPC.                            |
+| location   | `TEXT`                | The location where the NPC is found.                    |
+| version    | `TEXT`                | The client version this NPC was introduced to the game. |
+| x          | `INTEGER`             | The x position where the NPC is usually located.        |
+| y          | `INTEGER`             | The y position where the NPC is usually located.        |
+| z          | `INTEGER`             | The z position where the NPC is usually located.        |
+| image      | `BLOB`                | The NPC's image bytes.                                  |
+| status     | `TEXT`                | The status of the NPC in game.                          |
+| timestamp  | `TIMESTAMP`           | ISO 8601 timestamp of the article's last edit.          |
 
 
 
 ### npc_destination
 
-| Column | Type      | Description                                                              |
+| Column |   Type    |                               Description                                |
 | ------ | --------- | ------------------------------------------------------------------------ |
 | npc_id | `INTEGER` | The id of the NPC this destination belongs to.                           |
 | name   | `TEXT`    | The name of the place this NPC can take you to.                          |
@@ -469,7 +469,7 @@ The generated database has the following tables.
 
 ### npc_job
 
-| Column | Type      | Description                        |
+| Column |   Type    |            Description             |
 | ------ | --------- | ---------------------------------- |
 | npc_id | `INTEGER` | The id of the NPC this job is for. |
 | name   | `TEXT`    | The name of the job.               |
@@ -478,7 +478,7 @@ The generated database has the following tables.
 
 ### npc_offer_buy
 
-| Column      | Type      | Description                                                                                    |
+|   Column    |   Type    |                                          Description                                           |
 | ----------- | --------- | ---------------------------------------------------------------------------------------------- |
 | npc_id      | `INTEGER` | The id of the NPC this offer belongs to                                                        |
 | item_id     | `INTEGER` | The id of the item this offer refers to                                                        |
@@ -489,7 +489,7 @@ The generated database has the following tables.
 
 ### npc_offer_sell
 
-| Column      | Type      | Description                                                                                    |
+|   Column    |   Type    |                                          Description                                           |
 | ----------- | --------- | ---------------------------------------------------------------------------------------------- |
 | npc_id      | `INTEGER` | The id of the NPC this offer belongs to                                                        |
 | item_id     | `INTEGER` | The id of the item this offer refers to                                                        |
@@ -501,7 +501,7 @@ The generated database has the following tables.
 
 ### npc_race
 
-| Column | Type      | Description                         |
+| Column |   Type    |             Description             |
 | ------ | --------- | ----------------------------------- |
 | npc_id | `INTEGER` | The id of the NPC this race is for. |
 | name   | `TEXT`    | The name of the race.               |
@@ -510,26 +510,26 @@ The generated database has the following tables.
 
 ### outfit
 
-| Column        | Type                  | Description                                                           |
-| ------------- | --------------------- | --------------------------------------------------------------------- |
-| article_id    | `INTEGER` / `PRIMARY` | The id of the article containing this outfit.                         |
-| title         | `TEXT`                | The title of the article containing the outfit.                       |
-| name          | `TEXT`                | The name of the outfit.                                               |
-| outfit_type   | `TEXT`                | The type of outfit. Basic, Quest, Special, Premium.                   |
-| is_premium    | `BOOLEAN`             | Whether this outfit is requires a premium account or not.             |
-| is_bought     | `BOOLEAN`             | Whether the outfit can be bought from the Store or not.               |
-| is_tournament | `BOOLEAN`             | Whether the outfit can be bought with Tournament coins or not.        |
-| full_price    | `INTEGER`             | The price of the full outfit in Tibia Coins.                          |
-| achievement   | `TEXT`                | The achievement obtained by getting this full outfit.                 |
-| version       | `TEXT`                | Client version where this outfit was implemented.                     |
-| status        | `TEXT`                | The status of the iytfut in game.                                     |
-| timestamp     | `TIMESTAMP`           | Unix timestamp of the UTC time of the last edit made to this article. |
+|    Column     |         Type          |                          Description                           |
+| ------------- | --------------------- | -------------------------------------------------------------- |
+| article_id    | `INTEGER` / `PRIMARY` | The id of the article containing this outfit.                  |
+| title         | `TEXT`                | The title of the article containing the outfit.                |
+| name          | `TEXT`                | The name of the outfit.                                        |
+| outfit_type   | `TEXT`                | The type of outfit. Basic, Quest, Special, Premium.            |
+| is_premium    | `BOOLEAN`             | Whether this outfit is requires a premium account or not.      |
+| is_bought     | `BOOLEAN`             | Whether the outfit can be bought from the Store or not.        |
+| is_tournament | `BOOLEAN`             | Whether the outfit can be bought with Tournament coins or not. |
+| full_price    | `INTEGER`             | The price of the full outfit in Tibia Coins.                   |
+| achievement   | `TEXT`                | The achievement obtained by getting this full outfit.          |
+| version       | `TEXT`                | Client version where this outfit was implemented.              |
+| status        | `TEXT`                | The status of the outfit in game.                              |
+| timestamp     | `TIMESTAMP`           | ISO 8601 timestamp of the article's last edit.                 |
 
 
 
 ### outfit_image
 
-| Column    | Type      | Description                            |
+|  Column   |   Type    |              Description               |
 | --------- | --------- | -------------------------------------- |
 | outfit_id | `INTEGER` | Id of the outfit this image belongs to |
 | sex       | `TEXT`    | The sex this outfit image is for.      |
@@ -540,7 +540,7 @@ The generated database has the following tables.
 
 ### outfit_quest
 
-| Column      | Type      | Description                                        |
+|   Column    |   Type    |                    Description                     |
 | ----------- | --------- | -------------------------------------------------- |
 | outfit_id   | `INTEGER` | Id of the outfit this image belongs to             |
 | quest_id    | `INTEGER` | Id of the quest this image belongs to              |
@@ -550,30 +550,30 @@ The generated database has the following tables.
 
 ### quest
 
-| Column             | Type                  | Description                                                           |
-| ------------------ | --------------------- | --------------------------------------------------------------------- |
-| article_id         | `INTEGER` / `PRIMARY` | The id of the article containing this quest.                          |
-| title              | `TEXT`                | The title of the article containing the quest.                        |
-| name               | `TEXT`                | The name of the quest.                                                |
-| location           | `TEXT`                | Location where the quest starts or takes place.                       |
-| is_rookgaard_quest | `BOOLEAN`             | Whether this quest is in Rookgaard or not.                            |
-| type               | `TEXT`                | The type of quest.                                                    |
-| quest_log          | `BOOLEAN`             | Whether this quest is registered in the quest log or not.             |
-| legend             | `TEXT`                | Short description of the quest.                                       |
-| level_required     | `INTEGER`             | The level required to finish the quest.                               |
-| level_recommended  | `INTEGER`             | The level recommended to finish the quest.                            |
-| active_time        | `TEXT`                | Times of the year when this quest is active.                          |
-| estimated_time     | `TEXT`                | Estimated time to finish this quest.                                  |
-| is_premium         | `BOOLEAN`             | Whether premium account is required to finish the quest.              |
-| version            | `TEXT`                | Client version where this quest was implemented.                      |
-| status             | `TEXT`                | The status of the quest in game.                                      |
-| timestamp          | `TIMESTAMP`           | Unix timestamp of the UTC time of the last edit made to this article. |
+|       Column       |         Type          |                        Description                        |
+| ------------------ | --------------------- | --------------------------------------------------------- |
+| article_id         | `INTEGER` / `PRIMARY` | The id of the article containing this quest.              |
+| title              | `TEXT`                | The title of the article containing the quest.            |
+| name               | `TEXT`                | The name of the quest.                                    |
+| location           | `TEXT`                | Location where the quest starts or takes place.           |
+| is_rookgaard_quest | `BOOLEAN`             | Whether this quest is in Rookgaard or not.                |
+| type               | `TEXT`                | The type of quest.                                        |
+| quest_log          | `BOOLEAN`             | Whether this quest is registered in the quest log or not. |
+| legend             | `TEXT`                | Short description of the quest.                           |
+| level_required     | `INTEGER`             | The level required to finish the quest.                   |
+| level_recommended  | `INTEGER`             | The level recommended to finish the quest.                |
+| active_time        | `TEXT`                | Times of the year when this quest is active.              |
+| estimated_time     | `TEXT`                | Estimated time to finish this quest.                      |
+| is_premium         | `BOOLEAN`             | Whether premium account is required to finish the quest.  |
+| version            | `TEXT`                | Client version where this quest was implemented.          |
+| status             | `TEXT`                | The status of the quest in game.                          |
+| timestamp          | `TIMESTAMP`           | ISO 8601 timestamp of the article's last edit.            |
 
 
 
 ### quest_danger
 
-| Column      | Type      | Description                             |
+|   Column    |   Type    |               Description               |
 | ----------- | --------- | --------------------------------------- |
 | quest_id    | `INTEGER` | Id of the quest this danger belongs to. |
 | creature_id | `INTEGER` | Id of the creature found in this quest. |
@@ -582,7 +582,7 @@ The generated database has the following tables.
 
 ### quest_reward
 
-| Column   | Type      | Description                             |
+|  Column  |   Type    |               Description               |
 | -------- | --------- | --------------------------------------- |
 | quest_id | `INTEGER` | Id of the quest this reward belongs to. |
 | item_id  | `INTEGER` | Id of the item obtained in this quest.  |
@@ -591,7 +591,7 @@ The generated database has the following tables.
 
 ### rashid_position
 
-| Column   | Type                  | Description                              |
+|  Column  |         Type          |               Description                |
 | -------- | --------------------- | ---------------------------------------- |
 | day      | `INTEGER` / `PRIMARY` | Day of the week, where Monday is `0`.    |
 | city     | `TEXT`                | Name of the city Rashid is located.      |
@@ -604,10 +604,10 @@ The generated database has the following tables.
 
 ### spell
 
-| Column                   | Type                  | Description                                                                   |
+|          Column          |         Type          |                                  Description                                  |
 | ------------------------ | --------------------- | ----------------------------------------------------------------------------- |
-| article_id               | `INTEGER` / `PRIMARY` | The id of the article containing this achievement.                            |
-| title                    | `TEXT`                | The title of the article containing the achievement.                          |
+| article_id               | `INTEGER` / `PRIMARY` | The id of the article containing this spell.                                  |
+| title                    | `TEXT`                | The title of the article containing the spell.                                |
 | name                     | `TEXT`                | The name of the spell.                                                        |
 | words                    | `TEXT`                | The words used to cast the spell.                                             |
 | effect                   | `TEXT`                | The effect of this spell.                                                     |
@@ -616,6 +616,7 @@ The generated database has the following tables.
 | group_secondary          | `TEXT`                | The secondary cooldown group of this spell.                                   |
 | group_rune               | `TEXT`                | The cooldown group of the rune created by this spell.                         |
 | element                  | `TEXT`                | The type of damage this spell deals, if applicable.                           |
+| base_power               | `INTEGER`             | The spell's base power, if applicable.                                        |
 | level                    | `INTEGER`             | Level required to cast this spell                                             |
 | mana                     | `INTEGER`             | Mana required to cast this spell. `0` means special conditions apply.         |
 | soul                     | `INTEGER`             | Soul points required to cast this spell.                                      |
@@ -634,9 +635,9 @@ The generated database has the following tables.
 | paladin                  | `BOOLEAN`             | Whether this spell can be used by paladins or not.                            |
 | monk                     | `BOOLEAN`             | Whether the spell can be used by monks or not.                                |
 | image                    | `BLOB`                | The spell’s image bytes.                                                      |
-| version                  | `TEXT`                | Client version where this quest was implemented.                              |
+| version                  | `TEXT`                | Client version where this spell was implemented.                              |
 | status                   | `TEXT`                | The status of the spell in game.                                              |
-| timestamp                | `TIMESTAMP`           | Unix timestamp of the article's last edit.                                    |
+| timestamp                | `TIMESTAMP`           | ISO 8601 timestamp of the article's last edit.                                |
 
 
 
@@ -644,7 +645,7 @@ The generated database has the following tables.
 
 ### world
 
-| Column          | Type                  | Description                                                                  |
+|     Column      |         Type          |                                 Description                                  |
 | --------------- | --------------------- | ---------------------------------------------------------------------------- |
 | article_id      | `INTEGER` / `PRIMARY` | The id of the article containing this world.                                 |
 | title           | `TEXT`                | The title of the article containing the world.                               |
@@ -661,4 +662,4 @@ The generated database has the following tables.
 | protected_since | `DATE`                | Date when the world started being protected by BattlEye, in ISO 8601 format. |
 | world_board     | `INTEGER`             | The board ID for the world's board.                                          |
 | trade_board     | `INTEGER`             | The board ID for the world's trade board.                                    |
-| timestamp       | `TIMESTAMP`           | Unix timestamp of the article's last edit.                                   |
+| timestamp       | `TIMESTAMP`           | ISO 8601 timestamp of the article's last edit.                               |
